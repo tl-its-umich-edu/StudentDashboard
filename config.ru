@@ -1,5 +1,5 @@
 $: << File.dirname(__FILE__)
-require 'address-book'
+require 'courselist'
 
-run AddressBook.new
+run CourseList.new
 

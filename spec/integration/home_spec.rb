@@ -5,6 +5,6 @@ describe "Sinatra App" do
     get '/'
 
     expect(last_response).to be_ok
-    expect(last_response.body).to match(/address book/)
+    expect(last_response.body).to match(/Course List/)
   end
 end
