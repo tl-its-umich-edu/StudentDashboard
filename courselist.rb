@@ -8,6 +8,10 @@ class CourseList < Sinatra::Base
     slim :home
   end
 
+  get '/courses/:userid' do |user|
+    slim :courses, locals: {userid: user}
+  end
+
   # ## use block parameters
   # get '/examples/block_parameters/:id' do |id|
   #                                         ...
