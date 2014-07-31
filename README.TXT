@@ -7,7 +7,7 @@ simple web server based on sinatra.  Uses
 - guard to restart web server on changes
 
 TTD:
-- add a parameter to select the courses for a user.
+- add a parameter to url to select the courses for a user.
 
 ACTIVE:
 - rename address book to courselist
