@@ -9,21 +9,30 @@ simple web server based on sinatra.  Uses:
 ----- TASKS -------
 
 ACTIVE:
-- use DataHelper instead of TinyHelper
+
+- return course data as array and loop over array in template
 
 TTD: (roughly in order)
-- return fake course data in real format
+- add doc element to get documentation.
+- understand layout better in slim
+- add css
 - add properties file [see  http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
 - query canvas
+- add example path element to demonstrate how to do things.
 
 MAYBE:
 - integrator level
 - add fake todo, schedule
 
 DONE:
+- return fake course data in real format as hash
 - add a parameter to url to select the courses for a user.
 - rename address book to courselist
 - call ruby to handle url data
+- use DataHelper instead of TinyHelper
+- how do comments in slim template?  can use /! for an html comment)
+- loop through hash in template
+- loop over array in template
 
 COMMANDS:
 guard - (run in a separate terminal window to bring up a running version

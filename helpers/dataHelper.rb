@@ -12,8 +12,19 @@
 
 
 module DataHelper
+  # demonstrate returing text data with parameter.
   def HelloWorld(a)
     return "Howdy World from DataHelper. (I see you #{a}.)"
+  end
+
+  def CourseData(a)
+    return { :title => "English 323",
+             :subtitle => "Austen and her contemporaries and me #{a}",
+             :location => "canvas",
+             :link => "google.com",
+             :instructor => "me: #{a}",
+             :instructor_email => "howdy ho"
+    }
   end
   
 end

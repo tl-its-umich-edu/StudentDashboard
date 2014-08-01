@@ -11,10 +11,16 @@ class CourseList < Sinatra::Base
   end
 
   # using block parameters
-  get '/courses/:userid' do |user|
+  get '/hello/:userid' do |user|
     ## call helper with parameters and get back locals array to pass to slim template engine.
     courseListForX = HelloWorld(user)
-    slim :courses, locals: {userid: courseListForX}
+    slim :hello, locals: {userid: courseListForX}
+  end
+
+  get '/courses/:userid' do |user|
+    ## call helper with parameters and get back locals array to pass to slim template engine.
+    courseDataForX = CourseData(user)
+    slim :courses, locals: {userid: user, courseData: courseDataForX}
   end
 
 
