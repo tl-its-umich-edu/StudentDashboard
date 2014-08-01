@@ -1,9 +1,9 @@
 div class="container"
-    h1 Course List for: #{userid}
-    h2 #{courseData[:title]}
-    ul
-        - courseData.each do |key, value| 
-            #{key} - #{value}
+h1 Course List for: #{userid}
+h2 #{courseData[:title]}
+ul
+   - courseData.each do |key, value| 
+    #content #{key} - #{value}
 
 
 /! http://rubydoc.info/github/slim-template/slim/master/file/test/literate/TESTS.md

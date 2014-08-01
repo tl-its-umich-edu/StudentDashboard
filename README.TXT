@@ -15,7 +15,7 @@ ACTIVE:
 TTD: (roughly in order)
 - add doc element to get documentation.
 - understand layout better in slim
-- add css
+
 - add properties file [see  http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
 - query canvas
 - add example path element to demonstrate how to do things.
@@ -33,6 +33,7 @@ DONE:
 - how do comments in slim template?  can use /! for an html comment)
 - loop through hash in template
 - loop over array in template
+- add css
 
 COMMANDS:
 guard - (run in a separate terminal window to bring up a running version

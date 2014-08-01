@@ -6,6 +6,9 @@ class CourseList < Sinatra::Base
 
   helpers DataHelper
 
+# Indent html for pretty debugging and do not sort attributes (Ruby 1.9)
+Slim::Engine.set_default_options pretty: true, sort_attrs: false
+
   get '/' do
     slim :home
   end
