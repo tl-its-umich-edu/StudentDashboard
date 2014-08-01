@@ -1,18 +1,24 @@
 Based on: 
 http://proquest.safaribooksonline.com.proxy.lib.umich.edu/book/web-development/ruby/9781782168218
 
-simple web server based on sinatra.  Uses 
+simple web server based on sinatra.  Uses: 
 - slim for templates
 - bootstrap for styling
 - guard to restart web server on changes
 
+----- TASKS -------
+
 ACTIVE:
+- use DataHelper instead of TinyHelper
 
-
-TTD:
-- return fake data in real format
-- add properties file
+TTD: (roughly in order)
+- return fake course data in real format
+- add properties file [see  http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
 - query canvas
+
+MAYBE:
+- integrator level
+- add fake todo, schedule
 
 DONE:
 - add a parameter to url to select the courses for a user.
