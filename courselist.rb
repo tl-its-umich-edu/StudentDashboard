@@ -1,18 +1,23 @@
 require 'sinatra/base'
 require 'slim'
-
-### Use parameters in addressbook
+require 'helpers/TinyHelper'
 
 class CourseList < Sinatra::Base
+
+  helpers TinyHelper
+
   get '/' do
     slim :home
   end
 
+  # using block parameters
   get '/courses/:userid' do |user|
-    slim :courses, locals: {userid: user}
+    ## call helper with parameters and get back locals array to pass to slim template engine.
+    courseListForX = HelloWorld(user)
+    slim :courses, locals: {userid: courseListForX}
   end
 
-  # ## use block parameters
+
   # get '/examples/block_parameters/:id' do |id|
   #                                         ...
   # end
@@ -24,12 +29,3 @@ class CourseList < Sinatra::Base
 
 end
 
-## want to return information in this format
-# {
-#       "title": "English 323",
-#       "subtitle": "Austen and her contemporaries",
-#       "location": "canvas",
-#       "link": "https://some.canvas.url",
-#       "instructor": "Jane Austen",
-#       "instructor_email": "jausten@umich.edu"
-#   }

@@ -6,11 +6,18 @@ simple web server based on sinatra.  Uses
 - bootstrap for styling
 - guard to restart web server on changes
 
-TTD:
-- add a parameter to url to select the courses for a user.
-
 ACTIVE:
+
+
+TTD:
+- return fake data in real format
+- add properties file
+- query canvas
+
+DONE:
+- add a parameter to url to select the courses for a user.
 - rename address book to courselist
+- call ruby to handle url data
 
 COMMANDS:
 guard - (run in a separate terminal window to bring up a running version
