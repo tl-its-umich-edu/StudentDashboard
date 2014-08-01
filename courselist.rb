@@ -1,10 +1,10 @@
 require 'sinatra/base'
 require 'slim'
-require 'helpers/TinyHelper'
+require 'helpers/DataHelper'
 
 class CourseList < Sinatra::Base
 
-  helpers TinyHelper
+  helpers DataHelper
 
   get '/' do
     slim :home

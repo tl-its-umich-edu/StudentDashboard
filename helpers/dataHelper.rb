@@ -12,5 +12,8 @@
 
 
 module DataHelper
+  def HelloWorld(a)
+    return "Howdy World from DataHelper. (I see you #{a}.)"
+  end
   
 end
