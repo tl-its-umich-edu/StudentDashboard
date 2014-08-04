@@ -9,13 +9,13 @@ simple web server based on sinatra.  Uses:
 ----- TASKS -------
 
 ACTIVE:
-
-- return course data as array and loop over array in template
+- add logging
 
 TTD: (roughly in order)
+- make it return json
+- return course data as array and loop over array in template
 - add doc element to get documentation.
 - understand layout better in slim
-
 - add properties file [see  http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
 - query canvas
 - add example path element to demonstrate how to do things.
