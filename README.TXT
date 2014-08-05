@@ -9,14 +9,12 @@ simple web server based on sinatra.  Uses:
 ----- TASKS -------
 
 ACTIVE:
-- return course data as array
+- add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
 
 TTD: (roughly in order)
-
-- add properties file [see
-http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
-- make it return json detecting from header also
 - query canvas
+- CLEANUP comments, extra logging etc. (keep in TTD)
+- make it return json detecting from header also
 - add doc element to get documentation.
 - add example path element to demonstrate how to do things.
 
@@ -27,6 +25,7 @@ MAYBE:
 
 
 DONE:
+- return course data as fixed array
 - make it return json from explicit url type
 - add logging
 - return fake course data in real format as hash

@@ -46,7 +46,8 @@ class CourseList < Sinatra::Base
     if "json".casecmp(format).zero? 
       content_type :json
       ## call helper with parameters and get back locals array to pass to slim template engine.
-      courseDataForX = CourseData(:user)
+      courseDataForX = CourseData(user)
+      logger.info "courseData #{courseDataForX}"
       courseDataForX.to_json
     else
       response.status = 400

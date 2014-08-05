@@ -18,13 +18,25 @@ module DataHelper
   end
 
   def CourseData(a)
-    return { :title => "English 323",
-             :subtitle => "Austen and her contemporaries and me #{a}",
-             :location => "canvas",
-             :link => "google.com",
-             :instructor => "me: #{a}",
-             :instructor_email => "howdy ho"
-    }
+    classJson = 
+     [
+      { :title => "English 323",
+        :subtitle => "Austen and her contemporaries and #{a}",
+        :location => "canvas",
+        :link => "google.com",
+        :instructor => "me: #{a}",
+        :instructor_email => "howdy ho"
+      },
+      { :title => "German 323",
+        :subtitle => "Beeoven and her contemporaries and #{a}",
+        :location => "ctools",
+        :link => "google.com",
+        :instructor => "you: Mozarty",
+        :instructor_email => "howdy haw"
+      }
+    ]
+    
+    return classJson;
   end
   
 end
