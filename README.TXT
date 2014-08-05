@@ -12,11 +12,14 @@ ACTIVE:
 - add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
 
 TTD: (roughly in order)
+- add .gitignore
+- add log directory to git as empty.
 - query canvas
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - make it return json detecting from header also
 - add doc element to get documentation.
 - add example path element to demonstrate how to do things.
+- put in github
 
 MAYBE:
 - integrator level to design (ui, integrator, providers)
