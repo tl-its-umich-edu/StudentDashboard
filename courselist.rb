@@ -1,5 +1,4 @@
 require 'sinatra/base'
-#require 'sinatra/json'
 require 'json'
 require 'slim'
 require 'yaml'
@@ -16,9 +15,16 @@ class CourseList < Sinatra::Base
 
                          $stderr.sync = true
                          $stdout.sync = true
+
+                         # read in yaml configuration into a class variable
+                         @@ls = YAML.load_file('local/local.yml')
+#                         logger.info "ls config: #{@@ls}"
                        end
 
 #  helpers DataHelper Sinatra::JSON
+
+#  localSettings = YAML.load_file('test.yml')
+#  puts localSettings
   helpers DataHelper
 
   # Indent html for pretty debugging and do not sort attributes (Ruby 1.9)
@@ -28,6 +34,12 @@ class CourseList < Sinatra::Base
 
   get '/' do
     slim :home
+  end
+
+  get '/settings' do
+#    ls = YAML.load_file('local/local.yml').to_json
+    logger.info "@@ls: (json) #{@@ls}"
+    "settings dumped to log file"
   end
 
  get '/courses.json/:userid' do |user|
@@ -56,6 +68,11 @@ class CourseList < Sinatra::Base
     end
   end
 
+  ## catch everything not matched and give an error.
+  get '*' do
+    response.status = 400
+    return "invalid query"
+  end
 
 
   # get '/examples/block_parameters/:id' do |id|
