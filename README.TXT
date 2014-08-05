@@ -12,8 +12,6 @@ ACTIVE:
 - add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
 
 TTD: (roughly in order)
-- add .gitignore
-- add log directory to git as empty.
 - query canvas
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - make it return json detecting from header also
@@ -28,6 +26,8 @@ MAYBE:
 
 
 DONE:
+- add .gitignore
+- add log directory to git as empty.
 - return course data as fixed array
 - make it return json from explicit url type
 - add logging
