@@ -41,12 +41,21 @@ class CourseList < Sinatra::Base
     slim :hello, locals: {userid: courseListForX}
   end
 
-  get '/courses/:userid' do |user|
-    ## call helper with parameters and get back locals array to pass to slim template engine.
-    logger.info "courses/:userid: #{user}"
-    courseDataForX = CourseData(user)
-    slim :courses, locals: {userid: user, courseData: courseDataForX}
+#get '/posts.?:format?' do
+
+  get '/courses/:userid.?:format?' do |user, format|
+    logger.info "courses/:userid: #{user} format: #{format}"
+    if "json".casecmp(format).zero? 
+      content_type :json
+      ## call helper with parameters and get back locals array to pass to slim template engine.
+      courseDataForX = CourseData(:user)
+      courseDataForX.to_json
+    else
+      response.status = 400
+      return "format not supported: #{format}"
+    end
   end
+
 
 
   # get '/examples/block_parameters/:id' do |id|
