@@ -37,7 +37,6 @@ class CourseList < Sinatra::Base
   end
 
   get '/settings' do
-#    ls = YAML.load_file('local/local.yml').to_json
     logger.info "@@ls: (json) #{@@ls}"
     "settings dumped to log file"
   end
@@ -56,7 +55,7 @@ class CourseList < Sinatra::Base
 
   get '/courses/:userid.?:format?' do |user, format|
     logger.info "courses/:userid: #{user} format: #{format}"
-    if "json".casecmp(format).zero? 
+    if format && "json".casecmp(format).zero? 
       content_type :json
       ## call helper with parameters and get back locals array to pass to slim template engine.
       courseDataForX = CourseData(user)
@@ -64,7 +63,7 @@ class CourseList < Sinatra::Base
       courseDataForX.to_json
     else
       response.status = 400
-      return "format not supported: #{format}"
+      return "format missing or not supported: #{format}"
     end
   end
 
