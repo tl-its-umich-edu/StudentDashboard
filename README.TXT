@@ -9,12 +9,13 @@ simple web server based on sinatra.  Uses:
 ----- TASKS -------
 
 ACTIVE:
-- make it return json
-
+- return course data as array
 
 TTD: (roughly in order)
-- return course data as array and loop over array in template
-- add properties file [see  http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
+
+- add properties file [see
+http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby
+- make it return json detecting from header also
 - query canvas
 - add doc element to get documentation.
 - add example path element to demonstrate how to do things.
@@ -22,8 +23,11 @@ TTD: (roughly in order)
 MAYBE:
 - integrator level to design (ui, integrator, providers)
 - add fake todo, schedule
+- implement html version using template for looping 
+
 
 DONE:
+- make it return json from explicit url type
 - add logging
 - return fake course data in real format as hash
 - add a parameter to url to select the courses for a user.

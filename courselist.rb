@@ -41,8 +41,6 @@ class CourseList < Sinatra::Base
     slim :hello, locals: {userid: courseListForX}
   end
 
-#get '/posts.?:format?' do
-
   get '/courses/:userid.?:format?' do |user, format|
     logger.info "courses/:userid: #{user} format: #{format}"
     if "json".casecmp(format).zero? 
