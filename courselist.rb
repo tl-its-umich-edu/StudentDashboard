@@ -1,7 +1,9 @@
+### Simple rest server for SD data
 require 'sinatra/base'
 require 'json'
 require 'slim'
 require 'yaml'
+## Get the actual course information for a user.
 require 'helpers/DataHelper'
 
 class CourseList < Sinatra::Base
@@ -18,46 +20,26 @@ class CourseList < Sinatra::Base
 
                          # read in yaml configuration into a class variable
                          @@ls = YAML.load_file('local/local.yml')
-#                         logger.info "ls config: #{@@ls}"
+                         ## logger doesn't work from here ??
                        end
 
-#  helpers DataHelper Sinatra::JSON
-
-#  localSettings = YAML.load_file('test.yml')
-#  puts localSettings
   helpers DataHelper
-
-  # Indent html for pretty debugging and do not sort attributes (Ruby 1.9)
 
   # pretty print html for development
   Slim::Engine.set_default_options pretty: true, sort_attrs: false
 
-  get '/' do
-    slim :home
-  end
-
+  ## dump settings upon request
   get '/settings' do
     logger.info "@@ls: (json) #{@@ls}"
     "settings dumped to log file"
   end
 
- get '/courses.json/:userid' do |user|
-   content_type :json
-   { :key1 => 'value1', :key2 => user } .to_json
- end
-
-  # using block parameters
-  get '/hello/:userid' do |user|
-    ## call helper with parameters and get back locals array to pass to slim template engine.
-    courseListForX = HelloWorld(user)
-    slim :hello, locals: {userid: courseListForX}
-  end
-
+  ### return json array of course object for this user.  Not specifying 
+  ### json as format is an error
   get '/courses/:userid.?:format?' do |user, format|
     logger.info "courses/:userid: #{user} format: #{format}"
     if format && "json".casecmp(format).zero? 
       content_type :json
-      ## call helper with parameters and get back locals array to pass to slim template engine.
       courseDataForX = CourseData(user)
       logger.info "courseData #{courseDataForX}"
       courseDataForX.to_json
@@ -73,26 +55,5 @@ class CourseList < Sinatra::Base
     return "invalid query"
   end
 
-
-  # get '/examples/block_parameters/:id' do |id|
-  #                                         ...
-  # end
-
-  # ##  use normal parameters
-  # get '/examples/params/:id' do
-  #   params[:id]
-  # end
-
-# require 'yaml' # STEP ONE, REQUIRE YAML!
-# # Parse a YAML string
-# YAML.load("--- foo") #=> "foo"
-
-# # Emit some YAML
-# YAML.dump("foo")     # => "--- foo\n...\n"
-# { :a => 'b'}.to_yaml  # => "---\n:a: b\n"
-
-# require 'yaml'
-# thing = YAML.load_file('some.yml')
-# puts thing.inspect
 end
 

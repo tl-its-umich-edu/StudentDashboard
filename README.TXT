@@ -9,10 +9,9 @@ simple web server based on sinatra.  Uses:
 ----- TASKS -------
 
 ACTIVE:
-- add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
+- query canvas for courses
 
 TTD: (roughly in order)
-- query canvas
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - make it return json detecting from header also
 - add doc element to get documentation.
@@ -24,8 +23,9 @@ MAYBE:
 - add fake todo, schedule
 - implement html version using template for looping 
 
-
 DONE:
+- CLEANUP comments, extra logging etc. (keep in TTD)
+- add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
 - add .gitignore
 - add log directory to git as empty.
 - return course data as fixed array
