@@ -2,6 +2,7 @@ require 'sinatra/base'
 #require 'sinatra/json'
 require 'json'
 require 'slim'
+require 'yaml'
 require 'helpers/DataHelper'
 
 class CourseList < Sinatra::Base
@@ -66,5 +67,16 @@ class CourseList < Sinatra::Base
   #   params[:id]
   # end
 
+# require 'yaml' # STEP ONE, REQUIRE YAML!
+# # Parse a YAML string
+# YAML.load("--- foo") #=> "foo"
+
+# # Emit some YAML
+# YAML.dump("foo")     # => "--- foo\n...\n"
+# { :a => 'b'}.to_yaml  # => "---\n:a: b\n"
+
+# require 'yaml'
+# thing = YAML.load_file('some.yml')
+# puts thing.inspect
 end
 
