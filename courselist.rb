@@ -1,4 +1,6 @@
 require 'sinatra/base'
+#require 'sinatra/json'
+require 'json'
 require 'slim'
 require 'helpers/DataHelper'
 
@@ -15,6 +17,7 @@ class CourseList < Sinatra::Base
                          $stdout.sync = true
                        end
 
+#  helpers DataHelper Sinatra::JSON
   helpers DataHelper
 
   # Indent html for pretty debugging and do not sort attributes (Ruby 1.9)
@@ -22,11 +25,14 @@ class CourseList < Sinatra::Base
   # pretty print html for development
   Slim::Engine.set_default_options pretty: true, sort_attrs: false
 
-
-
   get '/' do
     slim :home
   end
+
+ get '/courses.json/:userid' do |user|
+   content_type :json
+   { :key1 => 'value1', :key2 => user } .to_json
+ end
 
   # using block parameters
   get '/hello/:userid' do |user|
