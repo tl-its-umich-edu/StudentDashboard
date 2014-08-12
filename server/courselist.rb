@@ -1,12 +1,13 @@
 ### Simple rest server for SD data
-require 'sinatra/base'
+require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
-## Get the actual course information for a user.
-require 'helpers/DataHelper'
 
 class CourseList < Sinatra::Base
+
+  ## class variable for strings
+  @@invalid = "invalid query. what U want?"
 
   ## make sure logging is available
   configure :production, :development do
@@ -23,10 +24,29 @@ class CourseList < Sinatra::Base
                          ## logger doesn't work from here ??
                        end
 
-  helpers DataHelper
-
-  # pretty print html for development
-  Slim::Engine.set_default_options pretty: true, sort_attrs: false
+  ### helper function
+  def CourseData(a)
+    classJson = 
+      [
+        { :title => "English 323",
+          :subtitle => "Austen and her contemporaries and #{a}",
+          :location => "canvas",
+          :link => "google.com",
+          :instructor => "me: #{a}",
+          :instructor_email => "howdy ho"
+        },
+        { :title => "German 323",
+          :subtitle => "Beeoven and her contemporaries and #{a}",
+          :location => "ctools",
+          :link => "google.com",
+          :instructor => "you: Mozarty",
+          :instructor_email => "howdy haw"
+        }
+      ]
+    
+    return classJson
+  end
+  
 
   ## dump settings upon request
   get '/settings' do
@@ -34,7 +54,7 @@ class CourseList < Sinatra::Base
     "settings dumped to log file"
   end
 
-  ### return json array of course object for this user.  Not specifying 
+  ### return json array of the course objects for this user.  Not specifying 
   ### json as format is an error
   get '/courses/:userid.?:format?' do |user, format|
     logger.info "courses/:userid: #{user} format: #{format}"
@@ -52,7 +72,7 @@ class CourseList < Sinatra::Base
   ## catch everything not matched and give an error.
   get '*' do
     response.status = 400
-    return "invalid query"
+    return "#{@@invalid}"
   end
 
 end
