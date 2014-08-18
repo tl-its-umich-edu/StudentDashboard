@@ -17,11 +17,15 @@ ACTIVE:
 - query canvas for courses
 
 TTD: (roughly in order)
+- query canvas for courses
 - CLEANUP comments, extra logging etc. (keep in TTD)
-- make it return json detecting from header also
-- add doc element to get documentation.
+- make it detect json preference from header too
 - add example path element to demonstrate how to do things.
 - put in github
+- add api/doc element to get documentation.
+- Add API docs as slim template
+- clean up route expressions (regex? trailing /?.....)
+
 
 MAYBE:
 - integrator level to design (ui, integrator, providers)
