@@ -4,7 +4,8 @@ require 'json'
 require 'slim'
 require 'yaml'
 
-## class variable for strings
+### Class variables for documentation
+
 @@invalid = "invalid query. what U want?"
 
 ## api docs
@@ -14,9 +15,9 @@ a
 p
 i
 
-BETTER YET MAKE THIS A SLIM TEMPLATE
 END
 
+### configuration
                 ## make sure logging is available
                 configure :production, :development do
                                        enable :logging
@@ -55,20 +56,20 @@ def CourseData(a)
   return classJson
 end
 
-## print api docs
-## TODO: change to regex
+########### ROUTERS ##############
+
+### get documentation
 get '/api' do
-  @@apidoc
+#  @@apidoc
   ## inline may require classic, not modular, organization
-  ## slim :apidocA
+  slim :apidocA
 end
 
-## dump settings upon request`
+## dump settings to log upon request`
 get '/settings' do
   logger.info "@@ls: (json) #{@@ls}"
   "settings dumped to log file"
 end
-
 
 ### return json array of the course objects for this user.  Not specifying 
 ### json as format is an error
@@ -81,7 +82,7 @@ get '/courses/:userid.?:format?' do |user, format|
     courseDataForX.to_json
   else
     response.status = 400
-    return "format missing or not supported: #{format}"
+    return "format missing or not supported: [#{format}]"
   end
 end
 
@@ -93,6 +94,11 @@ end
 
 __END__
 
+###### Line templates are here.
+
+### API documentation as slim template.
 @@ apidocA
-I'm the API documentation
-doesn't work
+h1 This is the API documentation
+  h2 '/api' will return api documentation.
+  h2 '/courses/{userid}.json' will return course objects for this user.
+

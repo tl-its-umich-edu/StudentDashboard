@@ -7,13 +7,14 @@ Based on:
 http://proquest.safaribooksonline.com.proxy.lib.umich.edu/book/web-development/ruby/9781782168218
 
 simple web server based on sinatra.  Uses: 
-- slim for templates
-- bootstrap for styling
-- guard to restart web server on changes
+- Everything is in a single file because the app is simple
+- return json or slim template
 
 ----- TASKS -------
 
 ACTIVE:
+- GET GUARD to work
+= get a bit of api documentation to work from template.
 - query canvas for courses
 
 TTD: (roughly in order)
