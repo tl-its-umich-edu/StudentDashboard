@@ -1,10 +1,10 @@
 $: << File.expand_path('../..', __FILE__)
 
-require 'address-book'
+require 'courselist'
 require 'rack/test'
 
 def app
-  AddressBook.new
+  CourseList.new
 end
 
 RSpec.configure do |config|
