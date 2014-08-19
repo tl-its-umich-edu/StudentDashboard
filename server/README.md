@@ -7,21 +7,26 @@ Based on:
 http://proquest.safaribooksonline.com.proxy.lib.umich.edu/book/web-development/ruby/9781782168218
 
 simple web server based on sinatra.  Uses: 
-- slim for templates
-- bootstrap for styling
-- guard to restart web server on changes
+- Everything is in a single file because the app is simple
+- return json or slim template
 
 ----- TASKS -------
 
 ACTIVE:
+- GET GUARD to work
+= get a bit of api documentation to work from template.
 - query canvas for courses
 
 TTD: (roughly in order)
+- query canvas for courses
 - CLEANUP comments, extra logging etc. (keep in TTD)
-- make it return json detecting from header also
-- add doc element to get documentation.
+- make it detect json preference from header too
 - add example path element to demonstrate how to do things.
 - put in github
+- add api/doc element to get documentation.
+- Add API docs as slim template
+- clean up route expressions (regex? trailing /?.....)
+
 
 MAYBE:
 - integrator level to design (ui, integrator, providers)
