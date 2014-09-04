@@ -12,10 +12,16 @@ class CourseList < Sinatra::Base
 
   ## api docs
   @@apidoc = <<END
-My Api is great. here it is:
-a
-p
-i
+My Api is great. Here it is:
+<p/>
+HOST://api - this documentation.
+ <p/>
+HOST://courses/{uniqname}.json - An array of (fake) course data for this person.
+ <p/> 
+HOST://settings - dump data to the log.
+
+<p/>
+It could use a bit of improvement so feel free to help!
 
 END
 
@@ -53,6 +59,13 @@ END
           :instructor => "you: Mozarty",
           :instructor_email => "howdy haw"
         }
+        { :title => "Philosophy 323",
+          :subtitle => "Everybody and nobody at all along with you: #{a}",
+          :location => "none",
+          :link => "google.com",
+          :instructor => "Life",
+          :instructor_email => "google@google.goo"
+        }
       ]
     
     return classJson
@@ -62,9 +75,9 @@ END
 
   ### get documentation
   get '/api' do
-    #  @@apidoc
+    @@apidoc
     ## inline may require classic, not modular, organization
-    slim :apidocA
+ #    slim :apidocA
   end
 
   ## dump settings to log upon request`
