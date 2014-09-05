@@ -15,7 +15,10 @@ Jabba is the user name.  The data currently is fake.
 
 The ./runServer.sh script in this directory will start up a
 development server on localhost port 3000 to exercise the SD back
-end. 
+end.
+
+NOTE: errors in the ruby may be much easier to find if run with
+"bundle exec rackup -p 3000" instead of runServer.sh or guard.
 
 ----- TASKS -------
 
