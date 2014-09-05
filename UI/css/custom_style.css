@@ -1,0 +1,218 @@
+#content {
+    background: #eee;
+    border-width:0 1px;
+    border-style: solid;
+    border-color: #ccc;
+ }
+
+ul {
+    padding: 1px 0 0 0;
+    list-style: none;
+}
+
+li {
+    border-bottom: 1px solid #ddd;
+    position:relative;
+    margin: 0;
+    padding: 10px 0;
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+.row {
+    margin: 0 0 5px 0;
+}
+
+.row > div {
+}
+
+.iconContainer {
+    height: 20px;
+    width:20px;
+    padding:0;
+}
+.canvas {
+    background: transparent url(../images/canvas-logo-sm.png) 0 0 no-repeat;
+}
+
+.ctools {
+    background: transparent url(../images/sakaiger-sm.png) 0 0 no-repeat;
+}
+
+.gt {
+    padding: 1px 2px 3px 4px;
+}
+
+#spinner {
+    background: transparent url(../images/ajax_loader_blue_256.gif) 0 0 no-repeat;
+    height: 256px;
+    width: 256px;
+    position:absolute;
+    top:10%;
+    left: 40%
+}
+
+.itemPanel {
+    border-radius: 3px;
+    padding: 0 5px;
+    background: #fff;
+}
+
+
+.muted {
+    color: #555
+}
+
+.date {
+    padding-right: 0;
+    text-align: right;
+}
+
+.calDate {
+    padding: 0;
+    text-align: right;
+}
+.customIcon {
+    color:#888;
+}
+.Auditions:before, .Performance:before {
+    content:"\e002"
+}
+.Presentation:before {
+    content:"\e002"
+}
+
+.Exhibition:before {
+    content:"\e060"
+}
+.Other:before {
+    content:"\2a"
+}
+.Meeting:before {
+    content:"\e097"
+}
+.Workshop:before {
+    content:"\e006"
+}
+i[class*="Ceremony"]:before {
+    content: "\e006";
+}
+i[class*="House"]:before {
+    content: "\e001";
+}
+i[class*="Conference"]:before {
+    content: "\e097";
+}
+i[class*="Service"]:before {
+    content: "\e097";
+}
+i[class*="Lecture"]:before {
+    content: "\e111";
+}
+i[class*="Festival"]:before {
+    content: "\e125";
+}
+i[class*="Sporting"]:before {
+    content: "\e105";
+}
+i[class*="Exercise"]:before {
+    content: "\e005";
+}
+i[class*="Instruction"]:before {
+    content: "\e111";
+}
+
+i[class*="Informal"]:before {
+    content: "\e001";
+}
+i[class*="Film"]:before {
+    content: "\e009";
+}
+i[class*="Games"]:before {
+    content: "\e135";
+}
+.course_quiz:before {
+    content: "\e085";
+}
+.course_announcement:before {
+    content: "\e034";
+}
+.course_resources:before {
+    content: "\e118";
+}
+.mastHead {
+    background: #00274c;
+    color:#fff;
+}
+.mastHead h1{
+    background: transparent url("../images/block-m.png") 0 0 no-repeat;
+    color:#fff;
+    padding-left:90px;
+}
+
+.contentWrapper {
+    margin-top: -5px;
+    padding:0;
+}
+#todo{
+    padding: 0 5px;
+    background: #fff;
+}
+
+.overdue:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -5px;
+  border-width: 0 25px 25px 0;
+  border-style: solid;
+  border-color: transparent #cc3b3b transparent transparent;
+}
+.overdueFlag{
+    display:none
+}
+
+.overdue .overdueFlag{
+    display:block;
+    position:absolute;
+    top:1px;
+    right:0;
+    color:#fff;
+    font-family:Arial;
+    font-weight:bold;
+    font-size:11px
+}
+
+.overdue .dateSpan{
+    color:#c00
+}
+.firstTime {
+    background: #fff;
+    animation: myfirst 5s;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes myfirst {
+    from {background: #ffe;}
+    to {background: #fff;}
+}
+
+/* Standard syntax */
+@keyframes myfirst {
+    from {background: #ffe;}
+    to {background: #fff;}
+}
+.newToDo label {
+    font-weight:normal;
+}
+@media (max-width: 480px) {
+    .col1, .col2, .col3 {
+        padding:0
+    }
+    .colHeader {
+        padding:0 10px;
+    }
+}
+    
