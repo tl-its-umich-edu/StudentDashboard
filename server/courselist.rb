@@ -12,7 +12,7 @@ class CourseList < Sinatra::Base
 
   ## api docs
   @@apidoc = <<END
-My Api is great. Here it is:
+
 <p/>
 HOST://api - this documentation.
  <p/>
@@ -58,7 +58,7 @@ END
           :link => "google.com",
           :instructor => "you: Mozarty",
           :instructor_email => "howdy haw"
-        }
+        },
         { :title => "Philosophy 323",
           :subtitle => "Everybody and nobody at all along with you: #{a}",
           :location => "none",
