@@ -2,13 +2,23 @@ Readme file in markdown
 
 https://help.github.com/articles/markdown-basics
 
-
 Based on: 
 http://proquest.safaribooksonline.com.proxy.lib.umich.edu/book/web-development/ruby/9781782168218
 
-simple web server based on sinatra.  Uses: 
-- Everything is in a single file because the app is simple
-- return json or slim template
+This implements a simple REST ruby web server based on sinatra. 
+It expects to return data in json format.
+
+The url format is:
+http://localhost:3000/courses/jabba.json
+
+Jabba is the user name.  The data currently is fake.
+
+The ./runServer.sh script in this directory will start up a
+development server on localhost port 3000 to exercise the SD back
+end.
+
+NOTE: errors in the ruby may be much easier to find if run with
+"bundle exec rackup -p 3000" instead of runServer.sh or guard.
 
 ----- TASKS -------
 
@@ -52,6 +62,8 @@ DONE:
 - add css
 
 COMMANDS:
+
+
 guard - (run in a separate terminal window to bring up a running version
 that reloads on changes.  
 bundle exec rackup -p 3000 - will run on port 3000 but need to tell it
