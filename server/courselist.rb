@@ -29,12 +29,17 @@ END
                   ## make sure logging is available
                   configure :production, :development do
                                          enable :logging
-                                         log = File.new("log/sinatra.log", "a+") 
+                                         log = File.new("log/sinatra.log", "a+")
                                          $stdout.reopen(log)
                                          $stderr.reopen(log)
 
                                          $stderr.sync = true
                                          $stdout.sync = true
+                                         
+                                         ## look for the UI files in a parallel directory.
+                                         f = File.dirname(__FILE__)+"/../UI"
+                                         puts "UI files: "+f
+                                         set :public_folder, f
 
                                          # read in yaml configuration into a class variable
                                          @@ls = YAML.load_file('local/local.yml')
@@ -72,6 +77,11 @@ END
   end
 
   ########### ROUTERS ##############
+
+  ## by default invoke the UI.
+  get '/' do
+    send_file "../UI/index.html"
+  end 
 
   ### get documentation
   get '/api' do
