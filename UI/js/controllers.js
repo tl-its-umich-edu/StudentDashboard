@@ -10,7 +10,7 @@ dashboardApp.controller('scheduleController', ['$scope', '$http', function ($sco
 }]);
 
 dashboardApp.controller('coursesController', ['$scope', '$http', function ($scope, $http) {
-  var url = 'data/classes.json';
+  var url = '/courses/gsilver.json';
   $http.get(url).success(function (data) {
     $scope.courses = data;
   });
