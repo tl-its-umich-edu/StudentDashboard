@@ -8,33 +8,27 @@ http://proquest.safaribooksonline.com.proxy.lib.umich.edu/book/web-development/r
 This implements a simple REST ruby web server based on sinatra. 
 It expects to return data in json format.
 
+It also supports the main dashboard page for development purposes.
+
 The url format is:
 http://localhost:3000/courses/jabba.json
 
-Jabba is the user name.  The data currently is fake.
+Handy scripts:
 
-The ./runServer.sh script in this directory will start up a
-development server on localhost port 3000 to exercise the SD back
-end.
-
-NOTE: errors in the ruby may be much easier to find if run with
-"bundle exec rackup -p 3000" instead of runServer.sh or guard.
+runServerGuard.sh - run server via guard.
+runServerBundle.sh - run server directly using bundle and rackup
+better visibility for startup errors.
 
 ----- TASKS -------
 
 ACTIVE:
-- GET GUARD to work
-= get a bit of api documentation to work from template.
-- query canvas for courses
 
 TTD: (roughly in order)
+
+- rename server script to be specific to dev
 - query canvas for courses
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - make it detect json preference from header too
-- add example path element to demonstrate how to do things.
-- put in github
-- add api/doc element to get documentation.
-- Add API docs as slim template
 - clean up route expressions (regex? trailing /?.....)
 
 
@@ -44,6 +38,7 @@ MAYBE:
 - implement html version using template for looping 
 
 DONE:
+- pass in the uniqname to the index.html file.
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
 - add .gitignore
@@ -60,9 +55,13 @@ DONE:
 - loop through hash in template
 - loop over array in template
 - add css
+- GET GUARD to work
+- get a bit of api documentation to work from template.
+- add UI files
+- put in github
+- add api/doc element to get documentation.
 
 COMMANDS:
-
 
 guard - (run in a separate terminal window to bring up a running version
 that reloads on changes.  
