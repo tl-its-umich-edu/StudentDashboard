@@ -150,6 +150,7 @@ i[class*="Games"]:before {
     background: transparent url("../images/block-m.png") 0 0 no-repeat;
     color:#fff;
     padding-left:90px;
+    margin-top:10px
 }
 
 .contentWrapper {
@@ -188,22 +189,7 @@ i[class*="Games"]:before {
 .overdue .dateSpan{
     color:#c00
 }
-.firstTime {
-    background: #fff;
-    animation: myfirst 5s;
-}
 
-/* Chrome, Safari, Opera */
-@-webkit-keyframes myfirst {
-    from {background: #ffe;}
-    to {background: #fff;}
-}
-
-/* Standard syntax */
-@keyframes myfirst {
-    from {background: #ffe;}
-    to {background: #fff;}
-}
 .newToDo label {
     font-weight:normal;
 }
@@ -215,4 +201,6 @@ i[class*="Games"]:before {
         padding:0 10px;
     }
 }
-    
+.phasePlusOne {
+  display:none;
+}
