@@ -107,5 +107,7 @@ $(document).on('click', '#selectTodos a', function(e){
     if (whatToDo === 'selectAll') {
         $('#todo ul li').show();
     }
-    
+});
+$(document).on('click', '#showAllPanels', function(e){
+  $('.phasePlusOne').css('display','block')
 });

@@ -9,7 +9,7 @@
     <body>
         <div class="contaner-fluid mastHead">
             <div class="row">
-                <div class="col-md-10 col-xs-10 col-xs-10 logo">
+                <div class="col-md-10 col-xs-10 col-xs-10 logo" id="showAllPanels">
                     <h1><span class="visible-xs-block">A Dash</span><span class="visible-sm-inline">Academic Dashboard</span><span class="visible-md-inline">Academic Dashboard</span><span class="visible-lg-inline">Academic Dashboard</span></h1>
                 </div>
                 <div class="col-md-2 col-xs-2 col-xs-2">
@@ -20,8 +20,8 @@
         <div class="container-fluid contentWrapper">
             <div class="row row-eq-heigh" id="content">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
-                    <h3 class="colHeader">Schedule</h3>
-                    <div id="schedule" class="itemPanel" ng-controller = "scheduleController" ng-cloak>
+                    <h3 class="colHeader phasePlusOne">Schedule</h3>
+                    <div id="schedule" class="itemPanel phasePlusOne" ng-controller = "scheduleController" ng-cloak>
                         <ul>
                             <li ng-repeat="item in schedule | orderBy:'tf'" class="container-fluid {{'ad' + item.tf}}">
                                 <div class="row">
@@ -69,7 +69,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col2">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col2 phasePlusOne">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
                             <h3 class="colHeader">To Do</h3>
@@ -131,10 +131,8 @@
                             </li>
                         </ul>
                     </div>
-                    <!--
                     <h3 class="colHeader">UM Events</h3>
                     <div id="uniEvents" class="itemPanel" ng-controller = "uniEventsController">
-                        
                         <ul>
                             <li ng-repeat="item in unievents" class="container-fluid">
                                 <div class="row">
@@ -152,10 +150,9 @@
                             </li>
                         </ul>
                     </div>
-                    -->
                 </div>
             
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col3">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col3 phasePlusOne">
                 <h3 class="colHeader">Recent Activity</h3>
                 <div id="events" class="itemPanel" ng-controller = "eventsController" ng-cloak>
                     <ul>
