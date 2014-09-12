@@ -1,2 +1,4 @@
 admin_user: ADAM
 admin_token: TOKER
+data_file_dir: ./test-files
+data_file_type: courses

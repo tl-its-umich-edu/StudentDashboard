@@ -1,0 +1,23 @@
+[
+    { "title" : "SI 100",
+      "subtitle" : "Every thing is cool",
+      "location" : "canvas",
+      "link" : "google.com",
+      "instructor" : "me: CSEV",
+      "instructor_email" : "howdy ho"
+    },
+    { "title" : "SI 1000",
+      "subtitle" : "You can be cool too!",
+      "location" : "ctools",
+      "link" : "google.com",
+      "instructor" : "dknuth",
+      "instructor_email" : "howdy haw"
+    },
+    { "title" : "SI 10000",
+      "subtitle" : "Everybody is cool, they just don't know it.",
+      "location" : "none",
+      "link" : "google.com",
+      "instructor" : "Life",
+      "instructor_email" : "allThat@nowhere.edu"
+    }
+]
