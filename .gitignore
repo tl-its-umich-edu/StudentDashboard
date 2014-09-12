@@ -1,4 +1,5 @@
 *.log
 *.pid
+**/logs/*log*
+**/log/*log*
 .DS_Store
-tmp_.*

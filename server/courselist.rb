@@ -76,11 +76,32 @@ END
     return classJson
   end
 
+ @@FAKE_UNIQNAME = ["ME","YOU","THEY","instx","dlhaines","csev"]
+
   ########### ROUTERS ##############
 
+  ### TESTING:
+#### for the moment generate a fake uniqname in request.env['REMOTE_USER'] 
+#### for each request so can checkout what happens when different uniqnames are used.
+#### This entire "before" section can be deleted when this testing is done as it
+#### works by resetting the variable the real code will use.
+  before do
+   offset = Random.rand(@@FAKE_UNIQNAME.length)
+    fake_uname = @@FAKE_UNIQNAME[offset]
+    puts "fake_uname: #{fake_uname} offset: #{offset}"
+    request.env['REMOTE_USER'] = fake_uname
+  end
+
   ## by default invoke the UI.
+
+  ### return the index.html page but replace the value of UNIQNAME by
+  ### the contents of the request remote user parameter.
   get '/' do
-    send_file "../UI/index.html"
+    puts "remote user: "+request.env['REMOTE_USER']
+    remoteUser = request.env['REMOTE_USER']
+    idx = File.read("../UI/index.html")
+    idx = idx.gsub(/UNIQNAME/,remoteUser);
+    erb idx
   end 
 
   ### get documentation
