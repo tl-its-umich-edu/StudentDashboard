@@ -5,22 +5,23 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/custom_style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Dashboard</title>
     </head>
     <body>
         <div class="contaner-fluid mastHead">
             <div class="row">
                 <div class="col-md-10 col-xs-10 col-xs-10 logo" id="showAllPanels">
-                    <h1><span class="visible-xs-block">A Dash</span><span class="visible-sm-inline">Academic Dashboard</span><span class="visible-md-inline">Academic Dashboard</span><span class="visible-lg-inline">Academic Dashboard</span></h1>
+                    <h1><span class="visible-xs-block">M-Dash</span><span class="visible-sm-inline">Academic Dashboard</span><span class="visible-md-inline">Academic Dashboard</span><span class="visible-lg-inline">Academic Dashboard</span></h1>
                 </div>
                 <div class="col-md-2 col-xs-2 col-xs-2">
-                    <h2 class="pull-right"></h2>
                 </div>
             </div>
         </div>
         <div class="container-fluid contentWrapper">
             <div class="row row-eq-heigh" id="content">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
-                    <h3 class="colHeader phasePlusOne">Schedule</h3>
+                    <h2 class="colHeader phasePlusOne">Schedule</h2>
                     <div id="schedule" class="itemPanel phasePlusOne" ng-controller = "scheduleController" ng-cloak>
                         <ul>
                             <li ng-repeat="item in schedule | orderBy:'tf'" class="container-fluid {{'ad' + item.tf}}">
@@ -38,14 +39,14 @@
                                         {{item.title}}
                                         <br>
                                         <small>
-                                            <a target ="_blank" href="{{item.location_link}}">{{item.location}}</a>
+                                            <a title="See map (opens in new window)" target ="_blank" href="{{item.location_link}}"><span class="sr-only">See map for </span>{{item.location}}</a>
                                         </small>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    <h3 class="colHeader">Courses</h3>
+                    <h2 class="colHeader">Courses</h2>
                     <div id="courses" class="itemPanel" ng-controller = "coursesController" ng-cloak>
                         <ul>
                             <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
@@ -53,7 +54,7 @@
                                     <div class ="col-lg-1 col-md-1 col-xs-1 {{item.location}} iconContainer">
                                     </div>
                                     <div class ="col-lg-11 col-md-11 col-xs-11">
-                                        <span ng-if="item.link"><a class="courseLink" href="{{item.link}}">{{item.title}}</a></span>
+                                        <span ng-if="item.link"><a class="courseLink" href="{{item.link}}"><span class="sr-only">Go to site for </span>{{item.title}}</a></span>
                                         <span ng-if ="!item.link">{{item.title}}</span>
                                         <br>
                                         <small>
@@ -72,7 +73,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col2 phasePlusOne">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
-                            <h3 class="colHeader">To Do</h3>
+                            <h2 class="colHeader">To Do</h2>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6" style="margin-top:18px;padding-right:0">
                             <div class="dropdown pull-right">
@@ -95,10 +96,10 @@
                                 </ul>
                             </div>
                             <button type="button" id="addToDo" class="btn btn-sm btn-default pull-right" style="margin:0 5px" data-toggle="modal" data-target="#newToDoModal">
-                                +
+                                + <span class="sr-only">Add a new to do</span>
                             </button>
                             <button type="button" id="removeToDos" class="btn btn-sm btn-primary pull-right" style="margin:0 5px;display:none">
-                                -
+                                - <span class="sr-only">Delete selected to dos</span>
                             </button>
                         </div>
                     </div>
@@ -116,7 +117,7 @@
                                         {{item.title}}
                                         <br>
                                         <small>
-                                            <span ng-if="item.origin !=='gt'"><a class="courseLink" href="{{item.course_link}}">{{item.context}}</a></span>
+                                            <span ng-if="item.origin !=='gt'"><a class="courseLink" href="{{item.course_link}}"><span class="sr-only">View item in site for </span>{{item.context}}</a></span>
                                             <span ng-if="item.origin ==='gt'">{{item.info.message}}</span>
                                             <span class="noDueDate" ng-if="item.due ===''"></span>
                                             <span class="dueDate" ng-if="item.due !==''"></span>
@@ -131,7 +132,7 @@
                             </li>
                         </ul>
                     </div>
-                    <h3 class="colHeader">UM Events</h3>
+                    <h2 class="colHeader">UM Events</h2>
                     <div id="uniEvents" class="itemPanel" ng-controller = "uniEventsController">
                         <ul>
                             <li ng-repeat="item in unievents" class="container-fluid">
@@ -141,7 +142,7 @@
                                     </div>
                                     <div class ="col-lg-7 col-md-7 col-xs-7">
                                         <a target="_blank" href="{{item.permalink}}">{{item.event_title}}</a> 
-                                         <a class="btn btn-xs btn-link popOver" data-toggle="popover" title="{{item.event_title}}" data-content="{{item.description}}">(more?)</a>
+                                         <a class="btn btn-xs btn-link popOver" data-toggle="popover" title="{{item.event_title}}" data-content="{{item.description}}">(more<span class="sr-only"> on {{item.event_title}}</span>?)</a>
                                     </div>
                                     <div class ="col-lg-4 col-md-4 col-sm-4 col-xs-4 date">
                                         <small class="dateSpan">{{ item.datetime_start | date:'MM/dd HH:mm a'}}</small>
@@ -153,7 +154,7 @@
                 </div>
             
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col3 phasePlusOne">
-                <h3 class="colHeader">Recent Activity</h3>
+                <h2 class="colHeader">Recent Activity</h2>
                 <div id="events" class="itemPanel" ng-controller = "eventsController" ng-cloak>
                     <ul>
                         <li ng-repeat="item in events  | orderBy:'-date'" class="container-fluid">
@@ -207,7 +208,7 @@
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">New To Do</h4>
+                        <h3 class="modal-title" id="myModalLabel">New To Do</h3>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
