@@ -10,7 +10,7 @@ dashboardApp.controller('scheduleController', ['$scope', '$http', function ($sco
 }]);
 
 dashboardApp.controller('coursesController', ['$scope', '$http', function ($scope, $http) {
-  var url = '/courses/gsilver.json';
+  var url = '/courses/jabba.json';
   $http.get(url).success(function (data) {
     $scope.courses = data;
   });
@@ -40,8 +40,9 @@ dashboardApp.controller('eventsController', ['$scope', '$http', function ($scope
 }]);
 
 dashboardApp.controller('uniEventsController', ['$scope', '$http', function ($scope, $http) {
-  //var url = 'data/uniWeekEvents.json';
-  var url = 'data/uniEvents.json';
+  var url = 'data/uniWeekEvents.json';
+  //var url = 'data/uniEvents.json';
+  var url = 'https://events.umich.edu/week/json'
   $http.get(url).success(function (data) {
     $scope.unievents = data;
   });

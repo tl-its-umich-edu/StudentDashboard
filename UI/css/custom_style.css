@@ -193,6 +193,10 @@ i[class*="Games"]:before {
 .newToDo label {
     font-weight:normal;
 }
+.phasePlusOne {
+  display:none;
+}
+
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
         padding:0
@@ -200,7 +204,4 @@ i[class*="Games"]:before {
     .colHeader {
         padding:0 10px;
     }
-}
-.phasePlusOne {
-  display:none;
 }
