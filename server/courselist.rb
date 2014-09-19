@@ -26,11 +26,12 @@ API changes.
 
 END
 
+set :environment, :development
                   ### configuration
                   ## make sure logging is available
                   configure :production, :development do
                                          enable :logging
-                                         log = File.new("log/sinatra.log", "a+")
+                                         log = File.new("server/log/sinatra.log", "a+")
                                          $stdout.reopen(log)
                                          $stderr.reopen(log)
 
@@ -43,13 +44,15 @@ END
                                          set :public_folder, f
 
                                          # read in yaml configuration into a class variable
-                                         @@ls = YAML.load_file('local/local.yml')
+                                         @@ls = YAML.load_file('server/local/local.yml')
                                          ## logger doesn't work from here ??
                                        end
 
 
   ### global data for testing the authenticated user processing.
   @@FAKE_UNIQNAME = ["ME","YOU","THEY","instx","dlhaines","csev"]
+  ## base directory for files in the war
+  @@BASE_DIR = File.dirname(File.dirname(__FILE__))
 
   ########### URL ROUTERS ##############
   ## Clause with first sufficient match wins.
@@ -74,7 +77,7 @@ END
   get '/' do
     puts "remote user: "+request.env['REMOTE_USER']
     remoteUser = request.env['REMOTE_USER']
-    idx = File.read("../UI/index.html")
+    idx = File.read("#{@@BASE_DIR}/UI/index.html")
     idx = idx.gsub(/UNIQNAME/,remoteUser);
     erb idx
   end 
@@ -141,7 +144,9 @@ END
 
   def CourseDataProviderFile(a)
     puts "data provider is CourseDataProviderFile.\n"
-    dataFile = @@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
+#    dataFile = @@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
+
+    dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
     puts "data file string: "+dataFile
 
     if File.exists?(dataFile) 
