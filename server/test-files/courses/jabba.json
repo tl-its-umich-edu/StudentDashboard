@@ -1,0 +1,23 @@
+[
+    { "title": "English 323",
+      "subtitle" :"Austen and her contemporaries and jabba",
+      "site" :"canvas",
+      "link" :"google.com",
+      "instructor" :"me jabba",
+      "instructor_email" :"howdyho@nowhere.edu"
+    },
+    { "title" :"German 323",
+      "subtitle" :"Beeoven and her contemporaries and jabba",
+      "site" :"ctools",
+      "link" :"google.com",
+      "instructor" :"you Mozarty",
+      "instructor_email" :"howdyhaw@umich.edu"
+    },
+    { "title" :"Philosophy 323",
+      "subtitle" :"Everybody and nobody at all along with you jabba",
+      "site" :"none",
+      "link" :"google.com",
+      "instructor" :"Life",
+      "instructor_email" :"allThat@nowhere.edu"
+    }
+]

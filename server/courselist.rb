@@ -1,4 +1,9 @@
 ### Simple rest server for SD data
+### This version will also server up the HTML page if no
+### specific page is requested.
+
+### Sinatra is a DSL (domain specific language) for working with HTTP requests.
+
 require 'sinatra'
 require 'json'
 require 'slim'
@@ -6,9 +11,16 @@ require 'yaml'
 
 class CourseList < Sinatra::Base
 
-  ### Class variables for documentation
+  ### Class variables
 
+  ### response to query that is not understood.
   @@invalid = "invalid query. what U want?"
+
+  ## base directory to ease referencing files in the war
+  @@BASE_DIR = File.dirname(File.dirname(__FILE__))
+
+  ### global data for testing the authenticated user processing.
+  @@FAKE_UNIQNAME = ["ME","YOU","THEY","instx","dlhaines","csev"]
 
   ## api docs
   @@apidoc = <<END
@@ -26,6 +38,8 @@ API changes.
 
 END
 
+#### Ruby approach to configuring environment.
+
 set :environment, :development
                   ### configuration
                   ## make sure logging is available
@@ -39,6 +53,7 @@ set :environment, :development
                                          $stdout.sync = true
                                          
                                          ## look for the UI files in a parallel directory.
+                                         ## this may not be necessary.
                                          f = File.dirname(__FILE__)+"/../UI"
                                          puts "UI files: "+f
                                          set :public_folder, f
@@ -48,31 +63,26 @@ set :environment, :development
                                          ## logger doesn't work from here ??
                                        end
 
-
-  ### global data for testing the authenticated user processing.
-  @@FAKE_UNIQNAME = ["ME","YOU","THEY","instx","dlhaines","csev"]
-  ## base directory for files in the war
-  @@BASE_DIR = File.dirname(File.dirname(__FILE__))
-
   ########### URL ROUTERS ##############
-  ## Clause with first sufficient match wins.
+  # Note that the first clause to match will win.
 
-  ### TESTING:
+  ### TESTING / HACKING
   #### for the moment generate a fake uniqname in request.env['REMOTE_USER'] 
   #### for each request so can checkout what happens when different uniqnames are used.
   #### This entire "before" section can be deleted when this testing is done as it
   #### works by resetting the variable the real code will use.
   before do
+                    puts "base_dir: "+@@BASE_DIR
     offset = Random.rand(@@FAKE_UNIQNAME.length)
     fake_uname = @@FAKE_UNIQNAME[offset]
     puts "fake_uname: #{fake_uname} offset: #{offset}"
     request.env['REMOTE_USER'] = fake_uname
   end
 
-  ### Return the index.html page but replace the value of UNIQNAME by
-  ### the contents of the request remote user parameter.
-
   ## If the request isn't for anything specific then return the UI page.
+
+  ### Return the index.html page but replace the value of UNIQNAME by
+  ### the contents of the request remote user parameter.  This approach is a hack.
 
   get '/' do
     puts "remote user: "+request.env['REMOTE_USER']
@@ -82,7 +92,7 @@ set :environment, :development
     erb idx
   end 
 
-  ### get documentation
+  ### send the documentation
   get '/api' do
     @@apidoc
   end
@@ -93,8 +103,8 @@ set :environment, :development
     "settings dumped to log file"
   end
 
-  ### Return json array of the course objects for this user.  Currently not specifying 
-  ### json as format is an error.
+  ### Return json array of the course objects for this user.  Currently if you don't 
+  ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |user, format|
     logger.info "courses/:userid: #{user} format: #{format}"
     if format && "json".casecmp(format).zero? 
@@ -107,12 +117,14 @@ set :environment, :development
         return ""
       end
 
-      # parse return value as json to convert from string
+      # parse return value as json so it is converted from string
+      # format.
       courseDataForXJson = JSON.parse courseDataForX
       logger.info "courseData #{courseDataForX}"
 
       # return data as json
       courseDataForXJson.to_json
+
     else
       response.status = 400
       return "format missing or not supported: [#{format}]"
@@ -125,16 +137,19 @@ set :environment, :development
     return "#{@@invalid}"
   end
 
-  #################### Data provider functions #################
 
-  ### Use the desired data provider
-  ### Make the provider selection settable via properties.
+  #################### Data provider functions #################
+  
+
+  ### Grab the desiried data provider.
+  ### Need to make the provider selection settable via properties.
   def CourseDataProvider(a)
     #return CourseDataProviderStatic(a)
     puts "CourseDataProvider a: #{a}"
     return CourseDataProviderFile(a)
   end
 
+  ###### File provider ################
   ### Return the data from a matching file.  The file must be in a sub-directory
   ### under the directory specified by the property data_file_dir.
   ### The sub-directory will be the name of the type of data requested (e.g. courses)
@@ -144,7 +159,6 @@ set :environment, :development
 
   def CourseDataProviderFile(a)
     puts "data provider is CourseDataProviderFile.\n"
-#    dataFile = @@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
 
     dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
     puts "data file string: "+dataFile
@@ -162,7 +176,7 @@ set :environment, :development
   end
 
 
-  #### Test provider with internal static data.
+  ##### Trivial static data provider
   def CourseDataProviderStatic(a)
     puts "data provider is CourseDataProviderStatic\n"
     classJson = 
@@ -197,7 +211,7 @@ end
 
 __END__
 
-###### Line templates are here.
+###### inline templates are here.
 
 ### API documentation as slim template.
 @@ apidocA
