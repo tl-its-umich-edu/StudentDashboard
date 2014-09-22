@@ -1,8 +1,9 @@
 $: << File.dirname(__FILE__)
-require './courselist'
+require './server/courselist'
 
 set :environment, :development
 
 run CourseList.new
-# server directory
+# studentdashboard directory
+
 
