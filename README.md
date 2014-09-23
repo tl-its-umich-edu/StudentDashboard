@@ -20,9 +20,12 @@ Tomcat 7.
 In the top level directory run to get dependencies:
 
 	bundle install
+
+and then 
+
 	warble
 
-This is easiest if you have rvm installed. It will great the war file.
+To create the war file. This is easiest if you have rvm installed. 
 
 #Organization
 
