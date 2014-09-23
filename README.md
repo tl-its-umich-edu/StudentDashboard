@@ -17,8 +17,12 @@ Tomcat 7.
 
 # Building the project
 
-In the top level directory run the command warble.  This is easiest if
-you have rvm installed.
+In the top level directory run to get dependencies:
+
+	bundle install
+	warble
+
+This is easiest if you have rvm installed. It will great the war file.
 
 #Organization
 
