@@ -13,7 +13,9 @@ The server is implemented using Ruby Sinatra.
 
 It is packaged into a war file along with
 JRuby 1.7 (implementing Ruby 1.9.3).  It is expected to run within
-Tomcat 7.
+Tomcat 7.  Tomcat must be configured to supply the REMOTE_USER 
+environment variable value in the request.  An example server.xml file
+is included.
 
 # Building the project
 
