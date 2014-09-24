@@ -5,16 +5,19 @@ It expects to return data in json format.
 For development purposes it also supports running the main dashboard
 page.
 
-The url format is:
-http://localhost:3000/courses/jabba.json
+To get the UI page simply visit the base URL for 
+the application.  E.g. https://<host>/StudentDashboard/
+The root element of the URL can be configured.
 
-The API is self documented at : http://localhost:3000/api
+The url format for the courses data is:
+http://localhost:3000/StudentDashboard/courses/jabba.json
+
+The API is documented at : http://localhost:3000/StudentDashboard/api
 
 See Tips section at the end for information on:
 
 * useful scripts included
 * useful links
-
 
 # Data providers
 There are three major data providers:
