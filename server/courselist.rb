@@ -19,9 +19,6 @@ class CourseList < Sinatra::Base
   ## base directory to ease referencing files in the war
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
 
-  ### global data for testing the authenticated user processing.
-  @@FAKE_UNIQNAME = ["ME","YOU","THEY","instx","dlhaines","csev"]
-
   ## api docs
   @@apidoc = <<END
 
@@ -76,6 +73,12 @@ set :environment, :development
     ### change this.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
     @remote_user = request.env['REMOTE_USER']
+    if @remote_user.empty? 
+      @remote_user = "Anonymous"
+    end
+    puts "REMOTE_USER: #{@report_user}"
+    logger.info "REMOTE_USER: #{@remote_user}"
+
     erb idx
   end 
 
