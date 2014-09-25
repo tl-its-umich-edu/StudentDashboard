@@ -64,20 +64,7 @@ set :environment, :development
                                        end
 
   ########### URL ROUTERS ##############
-  # Note that the first clause to match will win.
-
-  ### TESTING / HACKING
-  #### for the moment generate a fake uniqname in request.env['REMOTE_USER'] 
-  #### for each request so can checkout what happens when different uniqnames are used.
-  #### This entire "before" section can be deleted when this testing is done as it
-  #### works by resetting the variable the real code will use.
-  before do
-                    puts "base_dir: "+@@BASE_DIR
-    offset = Random.rand(@@FAKE_UNIQNAME.length)
-    fake_uname = @@FAKE_UNIQNAME[offset]
-    puts "fake_uname: #{fake_uname} offset: #{offset}"
-    request.env['REMOTE_USER'] = fake_uname
-  end
+  # Note that the first matching clause will win.
 
   ## If the request isn't for anything specific then return the UI page.
 
@@ -85,10 +72,10 @@ set :environment, :development
   ### the contents of the request remote user parameter.  This approach is a hack.
 
   get '/' do
-    puts "remote user: "+request.env['REMOTE_USER']
-    remoteUser = request.env['REMOTE_USER']
-    idx = File.read("#{@@BASE_DIR}/UI/index.html")
-    idx = idx.gsub(/UNIQNAME/,remoteUser);
+    ### pull the erb file from the UI directory.  May want to
+    ### change this.
+    idx = File.read("#{@@BASE_DIR}/UI/index.erb")
+    @remote_user = request.env['REMOTE_USER']
     erb idx
   end 
 
