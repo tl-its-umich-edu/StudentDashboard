@@ -76,6 +76,12 @@ set :environment, :development
     ### change this.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
     @remote_user = request.env['REMOTE_USER']
+    if @remote_user.empty? 
+      @remote_user = "Anonymous"
+    end
+    puts "REMOTE_USER: #{@report_user}"
+    logger.info "REMOTE_USER: #{@remote_user}"
+
     erb idx
   end 
 
