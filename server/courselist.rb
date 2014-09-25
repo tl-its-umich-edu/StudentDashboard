@@ -19,9 +19,6 @@ class CourseList < Sinatra::Base
   ## base directory to ease referencing files in the war
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
 
-  ### global data for testing the authenticated user processing.
-  @@FAKE_UNIQNAME = ["ME","YOU","THEY","instx","dlhaines","csev"]
-
   ## api docs
   @@apidoc = <<END
 
