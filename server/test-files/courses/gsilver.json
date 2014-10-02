@@ -1,23 +1,35 @@
 [
-    { "title": "English 323",
-      "subtitle" :"Austen and her contemporaries and gsilver",
-      "site" :"canvas",
-      "link" :"google.com",
-      "instructor" :"me gsilver",
-      "instructor_email" :"howdyho@nowhere.edu"
+    {
+        "title": "English 123",
+        "subtitle": "Apostrophes and their abuses",
+        "site": "canvas",
+        "link": "https://some.canvas.url",
+        "instructor":"Beefy Bingham",
+        "instructor_email":"beefy@woodehouse.org"
     },
-    { "title" :"German 323",
-      "subtitle" :"Beeoven and her contemporaries and gsilver",
-      "site" :"ctools",
-      "link" :"google.com",
-      "instructor" :"you Mozarty",
-      "instructor_email" :"howdyhaw@umich.edu"
+    {
+        "title": "Chemistry 123",
+        "subtitle": "Corrosives, what is up with them?",
+        "site": "canvas",
+        "link": "https://some.canvas.url",
+        "instructor":"Stanley Gervais-Gervais",
+        "instructor_email":"sirstan@woodehouse.org"
     },
-    { "title" :"Philosophy 323",
-      "subtitle" :"Everybody and nobody at all along with you gsilver",
-      "site" :"none",
-      "link" :"google.com",
-      "instructor" :"Life",
-      "instructor_email" :"allThat@nowhere.edu"
-    }
+    {
+        "title": "Philosophy 350",
+        "subtitle": "Why is there something and not nothing?",
+        "site": "ctools",
+        "link": "https://some.ctools.url",
+        "instructor":"Hildebrand Glossop",
+        "instructor_email":"hildebrand@woodehouse.org"
+    },
+    {
+        "title": "Span 902",
+        "subtitle": "Super advanced Spanish",
+        "site": "ctools",
+        "link": "https://some.ctools.url",
+        "instructor":"Stiffy Byng",
+        "instructor_email":"stiffy@woodehouse.org"
+        
+    },
 ]
