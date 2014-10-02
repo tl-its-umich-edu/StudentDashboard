@@ -58,6 +58,9 @@ about updates yourself.
 
 ### Tips :
 
+The command "lsof -i :3000" will check what is running using
+port 3000.  This can be useful if you need to kill an existing Ruby server.
+
 handy scripts:
 
 * runServerGuard.sh - run server via guard.  Will spawn xterms for
@@ -66,6 +69,8 @@ messages and the log if xterm is available.
 * runServerBundle.sh - run server directly using bundle and rackup
 better visibility for startup errors.
 
+These scripts are both in the StudentDashboard directory and in the
+server directory since it is convient to run them from either spot.
 
 GitHub readme files are formated in Markdown:
 

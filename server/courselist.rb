@@ -42,7 +42,7 @@ set :environment, :development
                   ## make sure logging is available
                   configure :production, :development do
                                          enable :logging
-                                         log = File.new("server/log/sinatra.log", "a+")
+                                         log = File.new("log/sinatra.log", "a+")
                                          $stdout.reopen(log)
                                          $stderr.reopen(log)
 
@@ -56,7 +56,7 @@ set :environment, :development
                                          set :public_folder, f
 
                                          # read in yaml configuration into a class variable
-                                         @@ls = YAML.load_file('server/local/local.yml')
+                                         @@ls = YAML.load_file('local/local.yml')
                                          ## logger doesn't work from here ??
                                        end
 
@@ -72,11 +72,8 @@ set :environment, :development
     ### pull the erb file from the UI directory.  May want to
     ### change this.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
-    @remote_user = request.env['REMOTE_USER']
-    if @remote_user.empty? 
-      @remote_user = "Anonymous"
-    end
-    puts "REMOTE_USER: #{@report_user}"
+    @remote_user = request.env['REMOTE_USER'] || "ANONYMOUS"
+    puts "@remote_user: #{@remote_user}"
     logger.info "REMOTE_USER: #{@remote_user}"
 
     erb idx
