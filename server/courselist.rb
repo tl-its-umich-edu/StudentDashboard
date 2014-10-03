@@ -72,7 +72,7 @@ set :environment, :development
     ### pull the erb file from the UI directory.  May want to
     ### change this.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
-    @remote_user = request.env['REMOTE_USER'] || "ANONYMOUS"
+    @remote_user = request.env['REMOTE_USER'] || "anonymous"
     puts "@remote_user: #{@remote_user}"
     logger.info "REMOTE_USER: #{@remote_user}"
 
