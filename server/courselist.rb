@@ -42,7 +42,7 @@ set :environment, :development
                   ## make sure logging is available
                   configure :production, :development do
                                          enable :logging
-                                         log = File.new("log/sinatra.log", "a+")
+                                         log = File.new("server/log/sinatra.log", "a+")
                                          $stdout.reopen(log)
                                          $stderr.reopen(log)
 
@@ -56,7 +56,7 @@ set :environment, :development
                                          set :public_folder, f
 
                                          # read in yaml configuration into a class variable
-                                         @@ls = YAML.load_file('local/local.yml')
+                                         @@ls = YAML.load_file('server/local/local.yml')
                                          ## logger doesn't work from here ??
                                        end
 
