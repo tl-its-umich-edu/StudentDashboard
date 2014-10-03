@@ -4,32 +4,31 @@
         "subtitle": "Basic ortography",
         "site": "canvas",
         "link": "https://some.canvas.url",
-        "instructor":"Beefy Bingham",
-        "instructor_email":"beefy@woodehouse.org"
+        "instructor": "Beefy Bingham",
+        "instructor_email": "beefy@woodehouse.org"
     },
     {
         "title": "Chemistry 723",
         "subtitle": "Cold fusion",
         "site": "canvas",
         "link": "https://some.canvas.url",
-        "instructor":"Stanley Gervais-Gervais",
-        "instructor_email":"sirstan@woodehouse.org"
+        "instructor": "Stanley Gervais-Gervais",
+        "instructor_email": "sirstan@woodehouse.org"
     },
     {
         "title": "Philosophy 250",
         "subtitle": "Paradoxes",
         "site": "ctools",
         "link": "https://some.ctools.url",
-        "instructor":"Hildebrand Glossop",
-        "instructor_email":"hildebrand@woodehouse.org"
-    {
+        "instructor": "Hildebrand Glossop",
+        "instructor_email": "hildebrand@woodehouse.org"
     },
+    {
         "title": "Span 502",
         "subtitle": "Medium advanced Spanish",
         "site": "ctools",
         "link": "https://some.ctools.url",
-        "instructor":"Stiffy Byng",
-        "instructor_email":"stiffy@woodehouse.org"
-        
-    },
+        "instructor": "Stiffy Byng",
+        "instructor_email": "stiffy@woodehouse.org"
+    }
 ]
