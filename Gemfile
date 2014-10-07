@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 gem 'sinatra'
 gem 'slim'
+gem 'rack'
+gem 'rack-protection'
 group :development do
   gem 'unicorn'
   gem 'guard'
