@@ -69,11 +69,12 @@ set :environment, :development
   ### the contents of the request remote user parameter.  This approach is a hack.
 
   get '/' do
-    ### pull the erb file from the UI directory.  May want to
-    ### change this.
+    ### Currently pull the erb file from the UI directory.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
-    @remote_user = request.env['REMOTE_USER'] || "anonymous"
-    puts "@remote_user: #{@remote_user}"
+
+    # get some value for remote_user even if it isn't in the request.
+    @remote_user = request.env['REMOTE_USER']
+    @remote_user = "anonymous" if @remote_user.nil? || @remote_user.empty?
     logger.info "REMOTE_USER: #{@remote_user}"
 
     erb idx
