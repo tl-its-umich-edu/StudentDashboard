@@ -12,7 +12,7 @@ dashboardApp.controller('scheduleController', ['$scope', '$http', function ($sco
 dashboardApp.controller('coursesController', ['$scope', '$http', function ($scope, $http) {
   var url = 'courses/' + userId + '.json';
   $http.get(url).success(function (data) {
-    $scope.courses = data;
+    $scope.courses = data.getMyRegClassesResponse.RegisteredClasses;
   });
 }]);
 
