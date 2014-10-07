@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 gem 'sinatra'
 gem 'slim'
+gem 'rest-client'
 group :development do
   gem 'unicorn'
   gem 'guard'
