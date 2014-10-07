@@ -1,6 +1,7 @@
 #!/bin/bash
 # Build script to assemble and test StudentDashboard.
 
+<<<<<<< HEAD
 ## Setup RVM
 source ~/.rvm/scripts/rvm
 # verify that it is setup
@@ -10,6 +11,8 @@ rvm use ruby-1.9.3-p484
 #rvm list
 
 set -x
+
+./runTests.sh
 
 ## should test return code
 
