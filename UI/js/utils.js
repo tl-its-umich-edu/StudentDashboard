@@ -109,5 +109,5 @@ $(document).on('click', '#selectTodos a', function(e){
     }
 });
 $(document).on('click', '#showAllPanels', function(e){
-  $('.phasePlusOne').toggle();
+  //$('.phasePlusOne').toggle();
 });
