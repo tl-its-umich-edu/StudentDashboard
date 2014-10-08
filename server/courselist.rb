@@ -40,28 +40,28 @@ END
 
 #### Ruby approach to configuring environment.
 
-set :environment, :development
-                  ### configuration
-                  ## make sure logging is available
-                  configure :production, :development do
-                                         enable :logging
-                                         log = File.new("server/log/sinatra.log", "a+")
-                                         $stdout.reopen(log)
-                                         $stderr.reopen(log)
+  set :environment, :development
+### configuration
+## make sure logging is available
+  configure :production, :development do
+    enable :logging
+    log = File.new("server/log/sinatra.log", "a+")
+    $stdout.reopen(log)
+    $stderr.reopen(log)
 
-                                         $stderr.sync = true
-                                         $stdout.sync = true
-                                         
-                                         ## look for the UI files in a parallel directory.
-                                         ## this may not be necessary.
-                                         f = File.dirname(__FILE__)+"/../UI"
-                                         puts "UI files: "+f
-                                         set :public_folder, f
+    $stderr.sync = true
+    $stdout.sync = true
 
-                                         # read in yaml configuration into a class variable
-                                         @@ls = YAML.load_file('server/local/local.yml')
+    ## look for the UI files in a parallel directory.
+    ## this may not be necessary.
+    f = File.dirname(__FILE__)+"/../UI"
+    puts "UI files: "+f
+    set :public_folder, f
 
-                                       end
+    # read in yaml configuration into a class variable
+    @@ls = YAML.load_file('server/local/local.yml')
+
+  end
 
   ########### URL ROUTERS ##############
   # Note that the first matching clause will win.
@@ -81,7 +81,7 @@ set :environment, :development
     logger.info "REMOTE_USER: #{@remote_user}"
 
     erb idx
-  end 
+  end
 
   ### send the documentation
   get '/api' do
@@ -98,7 +98,7 @@ set :environment, :development
   ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |user, format|
     logger.info "courses/:userid: #{user} format: #{format}"
-    if format && "json".casecmp(format).zero? 
+    if format && "json".casecmp(format).zero?
       content_type :json
       courseDataForX = CourseDataProvider(user)
       logger.info "courseDataForX: #{courseDataForX}"
@@ -130,7 +130,7 @@ set :environment, :development
 
 
   #################### Data provider functions #################
-  
+
 
   ### Grab the desiried data provider.
   ### Need to make the provider selection settable via properties.
@@ -155,10 +155,10 @@ set :environment, :development
     dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
     puts "data file string: "+dataFile
 
-    if File.exists?(dataFile) 
+    if File.exists?(dataFile)
       logger.debug("file exists: #{dataFile}")
       classes = File.read(dataFile)
-    else 
+    else
       logger.debug("file does not exist: #{dataFile}")
       classes = "404"
     end
@@ -167,69 +167,64 @@ set :environment, :development
     return classes
   end
 
- def CourseDataProviderESB(uniqname)
-   puts "data provider is CourseDataProviderESB.\n"
-   ## if necessary initialize the ESB connection.
-   if @w.nil?
-     initESB
-   end
+  def CourseDataProviderESB(uniqname)
+    puts "data provider is CourseDataProviderESB.\n"
+    ## if necessary initialize the ESB connection.
+    if @w.nil?
+      @w = initESB
+    end
 
-   url = "/Students/#{@uniqname}/Terms/2010/Schedule"
+    url = "/Students/#{uniqname}/Terms/2010/Schedule"
 
-   logger.debug("ESB: url: "+url)
-   puts "ESB: url: "+url
-   puts "@w: "+@w.to_s
+    logger.debug("ESB: url: "+url)
+    puts "ESB: url: "+url
+    puts "@w: "+@w.to_s
 
-   classes = @w.get_request(url)
-   logger.debug("returning: "+classes)
-   return classes
+    classes = @w.get_request(url)
+    logger.debug("returning: "+classes)
+    return classes
   end
 
 
- def initESB
-   @@yaml_file = "./server/spec/security.yaml"
-   @@yaml= YAML.load_file(@@yaml_file)
-   app_name="SD-QA"
-   application = @@yaml[app_name]
-   @token_server = application['token_server']
-   @prefix = application['prefix']
-   @key = application['key']
-   @secret = application['secret']
-   @token = application['token']
-   ## special uniqname is supplied for testing
-   @uniqname = application['uniqname']
+  def initESB
+    @@yaml_file = "./server/spec/security.yaml"
+    @@yaml= YAML.load_file(@@yaml_file)
+    app_name="SD-QA"
+    setup_WAPI(app_name)
+  end
 
-   @w = WAPI.new @prefix, @key, @secret, @token_server
-   puts "config: @w: " + @w.to_s
- end
+  def setup_WAPI(app_name)
+    application = @@yaml[app_name]
+    @w = WAPI.new application
+  end
 
   ##### Trivial static data provider
   def CourseDataProviderStatic(a)
     puts "data provider is CourseDataProviderStatic\n"
-    classJson = 
-      [
-        { :title => "English 323",
-          :subtitle => "Austen and her contemporaries and #{a}",
-          :location => "canvas",
-          :link => "google.com",
-          :instructor => "me: #{a}",
-          :instructor_email => "howdy ho"
-        },
-        { :title => "German 323",
-          :subtitle => "Beeoven and her contemporaries and #{a}",
-          :location => "ctools",
-          :link => "google.com",
-          :instructor => "you: Mozarty",
-          :instructor_email => "howdy haw"
-        },
-        { :title => "Philosophy 323",
-          :subtitle => "Everybody and nobody at all along with you: #{a}",
-          :location => "none",
-          :link => "google.com",
-          :instructor => "Life",
-          :instructor_email => "google@google.goo"
-        }
-      ]
+    classJson =
+        [
+            {:title => "English 323",
+             :subtitle => "Austen and her contemporaries and #{a}",
+             :location => "canvas",
+             :link => "google.com",
+             :instructor => "me: #{a}",
+             :instructor_email => "howdy ho"
+            },
+            {:title => "German 323",
+             :subtitle => "Beeoven and her contemporaries and #{a}",
+             :location => "ctools",
+             :link => "google.com",
+             :instructor => "you: Mozarty",
+             :instructor_email => "howdy haw"
+            },
+            {:title => "Philosophy 323",
+             :subtitle => "Everybody and nobody at all along with you: #{a}",
+             :location => "none",
+             :link => "google.com",
+             :instructor => "Life",
+             :instructor_email => "google@google.goo"
+            }
+        ]
     return classJson
   end
 
