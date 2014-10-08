@@ -64,7 +64,8 @@ END
     if !@@ls['allow_uniqname_override'].nil?
       @@allow_uniqname_override = @@ls['allow_uniqname_override']
     end
-    logger.debug("allow authz parameter: #{@@allow_uniqname_override}")
+    ## logging doesn't work from here.
+    #logger.debug("allow authz parameter: #{@@allow_uniqname_override}")
 
     ## TODO: logger doesn't work from here ??
   end
