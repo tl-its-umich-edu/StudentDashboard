@@ -16,8 +16,18 @@ class TestNew < Minitest::Test
 
   def setup
     @token_server="http://tokenserver.micky.edu"
-    @prefix = "PREFIX"
-    @w = WAPI.new @prefix, "A", "B", @token_server
+    @api_prefix = "PREFIX"
+
+    a = Hash[
+        'api_prefix' => @api_prefix,
+        'token_server' => @token_server,
+        'key' => 'A',
+        'secret' => 'B',
+        'token_server' => @token_server,
+        'token' => 'sweet!'
+    ]
+
+    @w = WAPI.new(a)
   end
 
   def test_new_creates_something
@@ -54,7 +64,14 @@ class TestNew < Minitest::Test
         with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!'}).
         to_return(:status => 200, :body => '{"mystuff":"yourstuff"}')
 
-    h = WAPI.new("https://api.edu/WSO2", "key", "secret", "notoken", "sweet!")
+    a = Hash['api_prefix' => "https://api.edu/WSO2",
+             'key' => 'key',
+             'secret' => 'secret',
+             'token_server' => 'notoken',
+             'token' => 'sweet!'
+    ]
+
+    h = WAPI.new(a)
 
     r = h.get_request("/Students/BitterDancer/Terms")
     assert_equal 200, r.code
@@ -63,13 +80,18 @@ class TestNew < Minitest::Test
   def test_run_request_sample_query
 
     stub_request(:get, "https://start/hey").
-        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer Toker', 'User-Agent' => 'Ruby'}).
+        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!', 'User-Agent' => 'Ruby'}).
         to_return(:status => 200, :body => '{"mystuff":"yourstuff"}', :headers => {})
 
-    h = WAPI.new("https://start", "key", "secret", "nowhere.edu");
+    a = Hash['api_prefix' => "https://start",
+             'key' => 'key',
+             'secret' => 'secret',
+             'token_server' => 'nowhere.edu',
+             'token' => 'sweet!'
+    ]
+    h = WAPI.new(a)
     r = h.get_request("/hey")
     rb = JSON.parse(r.body)
-    #puts r
     assert_equal "yourstuff", rb["mystuff"]
 
   end
@@ -80,16 +102,16 @@ class TestNew < Minitest::Test
   def test_token_invalid_and_is_renewed
     skip("inconsistent test results")
     #stub_request(:get, "https://start/hey").
-     #  with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer Toker', 'User-Agent' => 'Ruby'}).
-     #   to_return(:status => 401, :body => '{"mystuff":"yourstuff"}', :headers => {})
+    #  with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer Toker', 'User-Agent' => 'Ruby'}).
+    #   to_return(:status => 401, :body => '{"mystuff":"yourstuff"}', :headers => {})
 
     stub_request(:get, "https://start/hey").
-        with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'Authorization'=>'Bearer', 'User-Agent'=>'Ruby', 'Verify-Ssl'=>'true'}).
+        with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 'Authorization' => 'Bearer', 'User-Agent' => 'Ruby', 'Verify-Ssl' => 'true'}).
         to_return(:status => 200, :body => "", :headers => {})
 
     stub_request(:post, "http://key:secret@nowhere.edu/").
-        with(:body => {"grant_type"=>"client_credentials", "scope"=>"PRODUCTION"},
-             :headers => {'Accept'=>'*/*; q=0.5, application/xml',  'Content-Length'=>'46', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+        with(:body => {"grant_type" => "client_credentials", "scope" => "PRODUCTION"},
+             :headers => {'Accept' => '*/*; q=0.5, application/xml', 'Content-Length' => '46', 'Content-Type' => 'application/x-www-form-urlencoded'}).
         to_return(:status => 200, :body => "{}", :headers => {})
 
     h = WAPI.new("https://start", "key", "secret", "nowhere.edu");

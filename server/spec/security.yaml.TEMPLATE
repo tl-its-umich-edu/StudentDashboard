@@ -5,6 +5,7 @@
 
 test:
  token_server: apple
- prefix: steve
+ api_prefix: steve
  key: baseball
  secret: practice
+ token: optional

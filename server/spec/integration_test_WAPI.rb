@@ -37,7 +37,7 @@ class TestNew < Minitest::Test
   def load_application(app_name)
     application = @@yaml[app_name]
     @token_server = application['token_server']
-    @prefix = application['prefix']
+    @api_prefix = application['api_prefix']
     @key = application['key']
     @secret = application['secret']
     @token = application['token']
@@ -49,14 +49,30 @@ class TestNew < Minitest::Test
     #   setup_logger
     load_yaml
     load_application 'SD-QA'
-    @w = WAPI.new @prefix, @key, @secret, @token_server
+
+    a = Hash['api_prefix' => @api_prefix,
+             'key' => @key,
+             'secret' => @secret,
+             'token_server' => @token_server,
+             'token' => 'sweet!'
+    ]
+
+    @w = WAPI.new(a)
   end
 
   # check that try to renew token if get a not-authorized response
   def test_token_invalid_and_is_renewed
 
     load_application 'SD-QA-BAD-TOKEN'
-    w = WAPI.new @prefix, @key, @secret, @token_server
+
+    a = Hash['api_prefix' => @api_prefix,
+             'key' => @key,
+             'secret' => @secret,
+             'token_server' => @token_server,
+             'token' => @token
+    ]
+
+    w = WAPI.new(a)
     assert_equal :ArmyBoots.to_s, @token.to_s
 
     ## use a request that will work but know token is bad
