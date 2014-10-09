@@ -80,7 +80,7 @@ END
     @remote_user = "anonymous" if @remote_user.nil? || @remote_user.empty?
 
 #    @remote_user = request.env['REMOTE_USER'] || "anonymous"
-    @remote_user = request.env['REMOTE_USER'] || "jorhill"
+#    @remote_user = request.env['REMOTE_USER'] || "jorhill"
     puts "@remote_user: #{@remote_user}"
 
     logger.info "REMOTE_USER: #{@remote_user}"
