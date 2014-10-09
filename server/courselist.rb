@@ -95,7 +95,6 @@ END
     logger.debug "switching REMOTE_USER to #{uniqname}."
     puts "resetting remote_user to: #{uniqname}"
     request.env['REMOTE_USER']=uniqname
-
   end
 
   ########### URL ROUTERS ##############
@@ -166,8 +165,6 @@ END
 
 
   #################### Data provider functions #################
-
-
 
   ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
