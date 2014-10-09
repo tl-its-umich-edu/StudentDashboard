@@ -57,9 +57,7 @@ class WAPI
 
   ## internal method to actually make the request
   def do_request(request)
-    puts "WAPI: do_request: #{request}"
     url=format_url(request)
-    puts "WAPI: url: #{url}"
     response = RestClient.get url, {:Authorization => "Bearer #{@token}",
                                     :accept => :json,
                                     :verify_ssl => true}
