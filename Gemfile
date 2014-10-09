@@ -3,6 +3,7 @@ gem 'sinatra'
 gem 'slim'
 gem 'rack'
 gem 'rack-protection'
+gem 'rest-client'
 group :development do
   gem 'unicorn'
   gem 'guard'

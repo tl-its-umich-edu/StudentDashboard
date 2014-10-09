@@ -11,6 +11,8 @@ rvm use ruby-1.9.3-p484
 
 set -x
 
+./runTests.sh
+
 ## should test return code
 
 warble
