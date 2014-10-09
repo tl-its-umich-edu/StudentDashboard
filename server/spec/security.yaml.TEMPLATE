@@ -1,0 +1,11 @@
+# Configure tests.  Copy the template to a test.yaml file,
+# Duplicate the test appliation below and fill in the new values.
+
+## ALWAYS MODIFY A COPY AND NEVER CHECK IN THAT COPY.
+
+test:
+ token_server: apple
+ api_prefix: steve
+ key: baseball
+ secret: practice
+ token: optional

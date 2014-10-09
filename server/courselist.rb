@@ -8,6 +8,7 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
+require './server/WAPI'
 
 class CourseList < Sinatra::Base
 
@@ -20,6 +21,8 @@ class CourseList < Sinatra::Base
 
   ## base directory to ease referencing files in the war
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
+
+  @@yaml = "HOWDY"
 
   ## api docs
   @@apidoc = <<END
@@ -106,6 +109,10 @@ END
     # get some value for remote_user even if it isn't in the request.
     @remote_user = request.env['REMOTE_USER']
     @remote_user = "anonymous" if @remote_user.nil? || @remote_user.empty?
+
+    @remote_user = request.env['REMOTE_USER'] || "anonymous"
+    puts "@remote_user: #{@remote_user}"
+
     logger.info "REMOTE_USER: #{@remote_user}"
 
     erb idx
@@ -159,13 +166,13 @@ END
 
   #################### Data provider functions #################
 
-
   ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
   def CourseDataProvider(a)
     #return CourseDataProviderStatic(a)
     puts "CourseDataProvider a: #{a}"
-    return CourseDataProviderFile(a)
+    #return CourseDataProviderFile(a)
+    return CourseDataProviderESB(a)
   end
 
   ###### File provider ################
@@ -194,6 +201,36 @@ END
     return classes
   end
 
+  def CourseDataProviderESB(uniqname)
+    puts "data provider is CourseDataProviderESB.\n"
+    ## if necessary initialize the ESB connection.
+    if @w.nil?
+      @w = initESB
+    end
+
+    url = "/Students/#{uniqname}/Terms/2010/Schedule"
+
+    logger.debug("ESB: url: "+url)
+    puts "ESB: url: "+url
+    puts "@w: "+@w.to_s
+
+    classes = @w.get_request(url)
+    logger.debug("returning: "+classes)
+    return classes
+  end
+
+
+  def initESB
+    @@yaml_file = "./server/spec/security.yaml"
+    @@yaml= YAML.load_file(@@yaml_file)
+    app_name="SD-QA"
+    setup_WAPI(app_name)
+  end
+
+  def setup_WAPI(app_name)
+    application = @@yaml[app_name]
+    @w = WAPI.new application
+  end
 
   ##### Trivial static data provider
   def CourseDataProviderStatic(a)
