@@ -54,21 +54,29 @@
                         <ul>
                             <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
                                 <div class="row">
-                                    <div class ="col-lg-1 col-md-1 col-xs-1 {{item.site}} iconContainer">
+                                    <div class ="col-lg-1 col-md-1 col-xs-1 {{item.Source | lowercase}} iconContainer">
                                     </div>
                                     <div class ="col-lg-11 col-md-11 col-xs-11">
                                     	<strong>
-	                                        <span ng-if="item.link"><a class="courseLink" href="{{item.link}}"><span class="sr-only">Go to site for </span>{{item.title}}</a></span>
-	                                        <span ng-if ="!item.link">{{item.title}}</span>
+	                                        <span ng-if="item.Link"><a class="courseLink" href="{{item.Link}}"><span class="sr-only">Go to site for </span>{{item.Title}}</a></span>
+	                                        <span ng-if ="!item.Link">{{item.Title}}</span>
 										</strong>
                                         <br>
                                         <small>
-                                            {{item.subtitle}}
+                                            {{item.Subtitle}}
                                         </small>
-                                        <br>
-                                        <small>
-                                            {{item.instructor}} (<a class="mailTolink" href="mailto:{{item.instructor_email}}">{{item.instructor_email}}</a>)
-                                        </small>
+                                        <div ng-show="item.Instructors.length">
+                                            <div ng-repeat="instructor in item.Instructors">
+                                                    <small>
+                                                        {{instructor.Name}} (<a class="mailTolink" href="mailto:{{instructor.Email}}">{{instructor.Email}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
+                                                    </small>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-hide="item.Instructors.length">
+                                            You would see some instructors here if this was an array!
+                                        </div>
+
                                     </div>
                                 </div>
                             </li>
