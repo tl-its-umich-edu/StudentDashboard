@@ -14,6 +14,8 @@ class CourseList < Sinatra::Base
 
   ### Class variables
 
+  @@allow_uniqname_override = false
+
   ### response to query that is not understood.
   @@invalid = "invalid query. what U want?"
 
@@ -61,15 +63,45 @@ END
     # read in yaml configuration into a class variable
     @@ls = YAML.load_file('server/local/local.yml')
 
+    ## check for authn user substitution
+    if !@@ls['allow_uniqname_override'].nil?
+      @@allow_uniqname_override = @@ls['allow_uniqname_override']
+    end
+    ## logging doesn't work from here.
+    #logger.debug("allow authz parameter: #{@@allow_uniqname_override}")
+
+    ## TODO: logger doesn't work from here ??
+  end
+
+
+  #### Process requests
+
+  ###### Filter ######
+  ## Allow resetting the user considered authenticated from URL.  Only used
+  ## in test settings.  It only applies to requests for the Dashboard page.
+  before '/' do
+
+    pass unless @@allow_uniqname_override == true
+
+    # don't reset user if one has already been supplied
+    pass unless request.env['REMOTE_USER'].nil? || request.env['REMOTE_USER'].length == 0
+
+    # See if there is a candidate to use as authenticated user name.
+    uniqname = params['UNIQNAME']
+    # don't reset user if don't have a name to reset it to.
+    pass if uniqname.nil? || uniqname.length == 0
+
+    # now reset the name
+    logger.debug "switching REMOTE_USER to #{uniqname}."
+    puts "resetting remote_user to: #{uniqname}"
+    request.env['REMOTE_USER']=uniqname
+
   end
 
   ########### URL ROUTERS ##############
-  # Note that the first matching clause will win.
+  # Note that the first clause matching the url will win.
 
   ## If the request isn't for anything specific then return the UI page.
-
-  ### Return the index.html page but replace the value of UNIQNAME by
-  ### the contents of the request remote user parameter.  This approach is a hack.
 
   get '/' do
     ### Currently pull the erb file from the UI directory.
@@ -136,7 +168,8 @@ END
   #################### Data provider functions #################
 
 
-  ### Grab the desiried data provider.
+
+  ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
   def CourseDataProvider(a)
     #return CourseDataProviderStatic(a)
