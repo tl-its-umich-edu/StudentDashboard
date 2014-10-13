@@ -10,7 +10,7 @@
 # get_request(string): This string will be appended to the api_prefix and
 # executed as a GET
 
-# Only GET is explicity supported at the moment.
+# Only GET is explicitly supported at the moment.
 
 require 'Base64'
 require 'rest-client'
@@ -28,6 +28,7 @@ class WAPI
   # to use it.
 
   def initialize(application)
+    #puts "in WAPI initialize"
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -38,6 +39,7 @@ class WAPI
     @uniqname = application['uniqname']
 
     @renewal = WAPI.build_renewal(@key, @secret)
+    #puts "@renewal: #{@renewal}"
   end
 
   def self.build_renewal(key, secret)
@@ -68,17 +70,28 @@ class WAPI
 
     begin
       response = do_request(request)
-    rescue
+    rescue => excp
+      #p excp
+      if excp.response.code != 401
+        #puts "get_request unexpected exception"
+        #puts excp.inspect
+        #p excp
+        throw excp
+      end
+
       # Try fixing up the token authorization
       renew_token
       response = do_request(request)
     end
+    #puts "WAPI: get response"
+    #p response
     response
   end
 
 # Renew the current token.  Will set the current @token value in the object
   def renew_token
 
+    #puts "WAPI: renewing token: #{@token}"
     response = RestClient.post @token_server,
                                "grant_type=client_credentials&scope=PRODUCTION",
                                {
@@ -91,7 +104,7 @@ class WAPI
       puts "error renewing token"
     else
       @token = s['access_token']
-      puts "WAPI: renewed token #{@token}"
+      #puts "WAPI: renewed token #{@token}"
     end
   end
 

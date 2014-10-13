@@ -1,9 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.3.6)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     coderay (1.1.0)
+    crack (0.4.2)
+      safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
     ffi (1.9.3)
     formatador (0.2.5)
@@ -22,6 +25,9 @@ GEM
       rb-inotify (>= 0.9)
     lumberjack (1.0.9)
     method_source (0.8.2)
+    mime-types (2.4.1)
+    minitest (5.4.2)
+    netrc (0.7.7)
     pry (0.10.0)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -35,6 +41,9 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -47,6 +56,7 @@ GEM
     rspec-mocks (3.0.3)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.3)
+    safe_yaml (1.0.4)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -63,6 +73,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    webmock (1.19.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
 
 PLATFORMS
   ruby
@@ -71,10 +84,15 @@ DEPENDENCIES
   guard
   guard-unicorn
   listen
+  minitest
+  rack
+  rack-protection
   rack-test
   rb-fsevent
   rb-inotify
+  rest-client
   rspec
   sinatra
   slim
   unicorn
+  webmock

@@ -35,6 +35,14 @@ The UI and backend Server are kept in corresponding directories.  The
 top level directory contains the configuration required to build the
 war file.
 
+# Configuration
+
+The ESB connection information must be supplied in the file 
+server/spec/security.yaml.  Copy the file server/spec/security.yaml.TEMPLATE and
+fill in the appropriate values.
+
+The authn shortcut needs to be configured in the file server/local/local.yml.
+
 ---
 This readme file is written with Markdown.
 See this link for information on Markdown: https://help.github.com/articles/markdown-basics

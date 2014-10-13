@@ -7,6 +7,7 @@ require 'minitest/unit'
 require 'webmock/minitest'
 require '../WAPI'
 require 'rest-client'
+require 'logger'
 require 'Base64'
 
 # Standalone test for WAPI.  Uses webmock to allow running web requests without a real web server.
