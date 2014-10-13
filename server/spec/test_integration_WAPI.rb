@@ -103,11 +103,7 @@ class TestNew < Minitest::Test
 
   def test_term_request
     r = @w.get_request("/Students/#{@uniqname}/Terms")
-    puts "test_term_request"
-    p r
-    #j = JSON.parse(r)['Term']
     j = JSON.parse(r)['getMyRegTermsResponse']['Term']
-    p j
     assert_equal "2010", j['TermCode']
   end
 
@@ -118,10 +114,7 @@ class TestNew < Minitest::Test
 
   def test_course_request
     r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
-    puts "test_course_request"
-    puts r.inspect
     assert_equal 200, r.code
-    #r = JSON.parse(r)['getMyClsScheduleResponse']['RegisteredClasses']
     r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
   end
 
