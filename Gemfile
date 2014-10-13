@@ -15,4 +15,6 @@ end
 group :test do
   gem 'rack-test'
   gem 'rspec'
+  gem 'minitest'
+  gem 'webmock'
 end

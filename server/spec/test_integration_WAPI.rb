@@ -1,6 +1,6 @@
 ## Test WAPI module using real WSO2 API.
 
-require 'Base64'
+
 require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'
@@ -9,6 +9,8 @@ require '../WAPI'
 require 'rest-client'
 require 'logger'
 require 'yaml'
+require 'Base64'
+
 
 ### Test WAPI with real server
 
@@ -82,14 +84,19 @@ class TestNew < Minitest::Test
 
   def test_term_request
     r = @w.get_request("/Students/#{@uniqname}/Terms")
-    j = JSON.parse(r)['getMyRegTermsResponse']
-    assert_equal "2010", j['Term']['TermCode']
+    #p r
+ #   j = JSON.parse(r)['getMyRegTermsResponse']
+    j = JSON.parse(r)['Term']
+    #assert_equal "2010", j['Term']['TermCode']
+    assert_equal "2010", j['TermCode']
   end
 
   def test_course_request
     r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
+    #p r
     assert_equal 200, r.code
-    r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
+    #r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
+    r = JSON.parse(r)['getMyClsScheduleResponse']['RegisteredClasses']
   end
 
 end
