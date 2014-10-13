@@ -65,26 +65,23 @@ class WAPI
                                     :verify_ssl => true}
   end
 
-  ## run the request and renew token if it has expired and can be renewed
+  ## run the request and try to renew token if it has expired.
   def get_request(request)
 
     begin
       response = do_request(request)
-    rescue => excp
-      #p excp
+    rescue RestClient::Exception=> excp
+      # 401 is unauthorized and we can try to reauthorize
       if excp.response.code != 401
-        #puts "get_request unexpected exception"
-        #puts excp.inspect
-        #p excp
-        throw excp
+        raise excp
       end
-
-      # Try fixing up the token authorization
+      # Try fixing up the token since authorization failed.
       renew_token
       response = do_request(request)
+    rescue StandardError => se
+      # reraise other exceptions
+      raise se
     end
-    #puts "WAPI: get response"
-    #p response
     response
   end
 

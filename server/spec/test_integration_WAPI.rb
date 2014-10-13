@@ -47,19 +47,38 @@ class TestNew < Minitest::Test
     @uniqname = application['uniqname']
   end
 
-  def setup
-    #   setup_logger
-    load_yaml
-    load_application 'SD-QA'
+   def setup
+     #   setup_logger
+     load_yaml
+     load_application 'SD-QA'
 
-    a = Hash['api_prefix' => @api_prefix,
+     a = Hash['api_prefix' => @api_prefix,
+              'key' => @key,
+              'secret' => @secret,
+             'token_server' => @token_server,
+             'token' => 'sweet!'
+     ]
+
+     @w = WAPI.new(a)
+   end
+
+
+  # check that bad host gets caught.
+  def test_outside_exception_passed_on
+
+    load_application 'SD-QA-BAD-TOKEN'
+
+    a = Hash['api_prefix' => "https://nowhere_nothing_nada.com",
              'key' => @key,
              'secret' => @secret,
              'token_server' => @token_server,
-             'token' => 'sweet!'
+             'token' => @token
     ]
 
-    @w = WAPI.new(a)
+    w = WAPI.new(a)
+
+    # check that unknown errors are passed on.
+    assert_raises(URI::InvalidURIError) { r = w.get_request("/Students/#{@uniqname}/Terms") }
   end
 
   # check that try to renew token if get a not-authorized response
@@ -78,24 +97,19 @@ class TestNew < Minitest::Test
     assert_equal :ArmyBoots.to_s, @token.to_s
 
     ## use a request that will work but know token is bad
-    r = @w.get_request("/Students/#{@uniqname}/Terms")
+    r = w.get_request("/Students/#{@uniqname}/Terms")
     assert_equal 200, r.code
   end
 
   def test_term_request
     r = @w.get_request("/Students/#{@uniqname}/Terms")
-    #p r
- #   j = JSON.parse(r)['getMyRegTermsResponse']
     j = JSON.parse(r)['Term']
-    #assert_equal "2010", j['Term']['TermCode']
     assert_equal "2010", j['TermCode']
   end
 
   def test_course_request
     r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
-    #p r
     assert_equal 200, r.code
-    #r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
     r = JSON.parse(r)['getMyClsScheduleResponse']['RegisteredClasses']
   end
 
