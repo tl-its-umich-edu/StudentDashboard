@@ -10,10 +10,13 @@
 # get_request(string): This string will be appended to the api_prefix and
 # executed as a GET
 
-# Only GET is explicity supported at the moment.
+# Only GET is explicitly supported at the moment.
 
 require 'Base64'
 require 'rest-client'
+require_relative './Logging'
+
+include Logging
 
 class WAPI
 
@@ -38,6 +41,7 @@ class WAPI
     @uniqname = application['uniqname']
 
     @renewal = WAPI.build_renewal(@key, @secret)
+    logger.info("initialize WAPI with #{@api_prefix}")
   end
 
   def self.build_renewal(key, secret)
@@ -88,10 +92,10 @@ class WAPI
     s = JSON.parse(response)
 
     if response.code != 200
-      puts "error renewing token"
+      logger.warn("error renewing token"+response.inspect)
     else
       @token = s['access_token']
-      puts "WAPI: renewed token #{@token}"
+      logger.debug("renewed token #{@token}")
     end
   end
 
