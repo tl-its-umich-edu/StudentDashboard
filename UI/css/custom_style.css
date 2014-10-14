@@ -10,11 +10,17 @@ ul {
     list-style: none;
 }
 
-li {
-    border-bottom: 1px solid #ddd;
+.itemPanel li {
     position:relative;
-    margin: 0;
+    margin: 5px 0;
     padding: 10px 0;
+	background: #fff;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.15);
+	-moz-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.15);
+	box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.15);
 }
 
 ul li:last-child {
@@ -55,9 +61,7 @@ ul li:last-child {
 }
 
 .itemPanel {
-    border-radius: 3px;
     padding: 0 5px;
-    background: #fff;
 }
 
 
