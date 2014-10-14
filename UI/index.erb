@@ -54,9 +54,9 @@
                         <ul>
                             <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
                                 <div class="row">
-                                    <div class ="col-lg-1 col-md-1 col-xs-1 {{item.Source | lowercase}} iconContainer">
+                                    <div class ="col-lg-1 col-md-1 col-xs-1 visible-md visible-lg {{item.Source | lowercase}} iconContainer">
                                     </div>
-                                    <div class ="col-lg-11 col-md-11 col-xs-11">
+                                    <div class ="col-lg-11 col-md-11 col-xs-12">
                                     	<strong>
 	                                        <span ng-if="item.Link"><a class="courseLink" href="{{item.Link}}"><span class="sr-only">Go to site for </span>{{item.Title}}</a></span>
 	                                        <span ng-if ="!item.Link">{{item.Title}}</span>
@@ -66,17 +66,17 @@
                                             {{item.Subtitle}}
                                         </small>
                                         <div ng-show="item.Instructor">
-	                                        <div ng-show="item.Instructor.length">
+	                                        <div ng-if="item.Instructor.length">
 	                                            <div ng-repeat="instructor in item.Instructor | orderBy:'Role'">
 	                                                    <small>
-	                                                       {{instructor.Name.replace(',',', ')}} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
+	                                                       {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
 	                                                    </small>
 	                                                </span>
 	                                            </div>
 	                                        </div>
 	                                        <div ng-hide="item.Instructor.length">
 		                                        <small>
-		                                            {{item.Instructor.Name.replace(',',', ')}} (<a class="mailTolink" href="mailto:{{item.Instructor.Email  | lowercase}}">{{item.Instructor.Email  | lowercase}}</a>)
+		                                            {{item.Instructor.Name | fixInstructorName}} (<a class="mailTolink" href="mailto:{{item.Instructor.Email  | lowercase}}">{{item.Instructor.Email  | lowercase}}</a>)
 		                                        </small>
 	                                        </div>
 										</div>
