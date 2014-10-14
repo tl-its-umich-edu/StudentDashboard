@@ -108,14 +108,15 @@ class TestNew < Minitest::Test
   end
 
   def test_term_request_bad_user
-    skip("get 500 for unknown user")
+#    skip("get 500 for unknown user")
     r = @w.get_request("/Students/FeelingGroovy/Terms")
   end
 
   def test_course_request
     r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
     assert_equal 200, r.code
-    r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
+#    r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
+    r = JSON.parse(r)['getMyClsScheduleResponse']['RegisteredClasses']
   end
 
 end
