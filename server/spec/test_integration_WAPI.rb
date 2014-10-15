@@ -108,7 +108,7 @@ class TestNew < Minitest::Test
   end
 
   def test_term_request_bad_user
-#    skip("get 500 for unknown user")
+    skip("get 500 for unknown user")
     r = @w.get_request("/Students/FeelingGroovy/Terms")
   end
 
