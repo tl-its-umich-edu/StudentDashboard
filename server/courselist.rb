@@ -25,6 +25,8 @@ class CourseList < Sinatra::Base
 
   @@yaml = "HOWDY"
 
+  @@w = nil
+
   ## api docs
   @@apidoc = <<END
 
@@ -135,7 +137,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
       courseDataForX = CourseDataProvider(user)
-      logger.info "courseDataForX: #{courseDataForX}"
+      logger.info "courseDataForX A: #{courseDataForX}"
       if "404".casecmp(courseDataForX).zero?
         logger.debug("returning 404 for missing file")
         response.status = 404
@@ -145,7 +147,7 @@ END
       # parse return value as json so it is converted from string
       # format.
       courseDataForXJson = JSON.parse courseDataForX
-      logger.info "courseData #{courseDataForX}"
+      logger.info "courseData B: #{courseDataForX}"
 
       # return data as json
       courseDataForXJson.to_json
@@ -203,22 +205,25 @@ END
   def CourseDataProviderESB(uniqname)
     logger.debug "data provider is CourseDataProviderESB.\n"
     ## if necessary initialize the ESB connection.
-    if @w.nil?
-      @w = initESB
+    puts @@w
+    if @@w.nil?
+      puts "@@w is nil"
+      @@w = initESB
     end
 
     url = "/Students/#{uniqname}/Terms/2010/Schedule"
 
     logger.debug("ESB: url: "+url)
-    logger.debug("@w: "+@w.to_s)
+    logger.debug("@@w: "+@@w.to_s)
 
-    classes = @w.get_request(url)
+    classes = @@w.get_request(url)
     logger.debug("returning: "+classes)
     return classes
   end
 
 
   def initESB
+    puts "initESB"
     @@yaml_file = "./server/spec/security.yaml"
     @@yaml= YAML.load_file(@@yaml_file)
     app_name="SD-QA"
@@ -227,7 +232,7 @@ END
 
   def setup_WAPI(app_name)
     application = @@yaml[app_name]
-    @w = WAPI.new application
+    @@w = WAPI.new application
   end
 
   ##### Trivial static data provider

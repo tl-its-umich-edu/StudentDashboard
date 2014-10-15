@@ -31,6 +31,7 @@ class WAPI
   # to use it.
 
   def initialize(application)
+    #puts "in WAPI initialize"
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -67,15 +68,22 @@ class WAPI
                                     :verify_ssl => true}
   end
 
-  ## run the request and renew token if it has expired and can be renewed
+  ## run the request and try to renew token if it has expired.
   def get_request(request)
 
     begin
       response = do_request(request)
-    rescue
-      # Try fixing up the token authorization
+    rescue RestClient::Exception=> excp
+      # 401 is unauthorized and we can try to reauthorize
+      if excp.response.code != 401
+        raise excp
+      end
+      # Try fixing up the token since authorization failed.
       renew_token
       response = do_request(request)
+    rescue StandardError => se
+      # reraise other exceptions
+      raise se
     end
     response
   end
@@ -83,6 +91,7 @@ class WAPI
 # Renew the current token.  Will set the current @token value in the object
   def renew_token
 
+    #puts "WAPI: renewing token: #{@token}"
     response = RestClient.post @token_server,
                                "grant_type=client_credentials&scope=PRODUCTION",
                                {

@@ -7,6 +7,7 @@ require 'minitest/unit'
 require 'webmock/minitest'
 require '../WAPI'
 require 'rest-client'
+require 'logger'
 require 'Base64'
 
 # Standalone test for WAPI.  Uses webmock to allow running web requests without a real web server.
@@ -100,13 +101,9 @@ class TestNew < Minitest::Test
 
   # check that try to renew token if get a not-authorized response
   def test_token_invalid_and_is_renewed
-    skip("inconsistent test results")
-    #stub_request(:get, "https://start/hey").
-    #  with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer Toker', 'User-Agent' => 'Ruby'}).
-    #   to_return(:status => 401, :body => '{"mystuff":"yourstuff"}', :headers => {})
 
     stub_request(:get, "https://start/hey").
-        with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 'Authorization' => 'Bearer', 'User-Agent' => 'Ruby', 'Verify-Ssl' => 'true'}).
+        with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 'Authorization' => 'Bearer sweet!'}).
         to_return(:status => 200, :body => "", :headers => {})
 
     stub_request(:post, "http://key:secret@nowhere.edu/").
@@ -114,12 +111,40 @@ class TestNew < Minitest::Test
              :headers => {'Accept' => '*/*; q=0.5, application/xml', 'Content-Length' => '46', 'Content-Type' => 'application/x-www-form-urlencoded'}).
         to_return(:status => 200, :body => "{}", :headers => {})
 
-    h = WAPI.new("https://start", "key", "secret", "nowhere.edu");
+    a = Hash['api_prefix' => "https://start",
+             'key' => 'key',
+             'secret' => 'secret',
+             'token_server' => 'nowhere.edu',
+             'token' => 'sweet!'
+    ]
+    h = WAPI.new(a);
     r = h.get_request("/hey")
 
     assert_equal 200, r.code
 
   end
+
+  # check that raise (not throw) exception if unexpected result is found.
+  def test_WAPI_rest_client_exception
+
+    ## return some exception WAPI won't handle.
+    stub_request(:get, "https://start/hey").
+        with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 'Authorization' => 'Bearer sweet!'}).
+        to_return(:status => 417, :body => "", :headers => {})
+
+    a = Hash['api_prefix' => "https://start",
+             'key' => 'key',
+             'secret' => 'secret',
+             'token_server' => 'nowhere.edu',
+             'token' => 'sweet!'
+    ]
+    h = WAPI.new(a);
+
+    assert_raises(RestClient::ExpectationFailed) { r = h.get_request("/hey") }
+
+  end
+
+
 
   ### sample webmock test
   ### If webmock check fails it will print out the stub_request that would have passed so you can

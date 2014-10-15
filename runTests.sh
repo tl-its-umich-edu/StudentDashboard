@@ -8,6 +8,6 @@ echo "test_WAPI.rb"
 )
 echo "integration_test_WAPI.rb"
 (cd server/spec;
-    ruby ./integration_test_WAPI.rb
+    ruby ./test_integration_WAPI.rb
 )
 #end
