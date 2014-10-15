@@ -8,7 +8,8 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
-require './server/WAPI'
+#require './server/WAPI'
+require_relative 'WAPI'
 
 class CourseList < Sinatra::Base
 
@@ -59,7 +60,7 @@ END
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
     f = File.dirname(__FILE__)+"/../UI"
-    puts "UI files: "+f
+    logger.debug("UI files: "+f)
     set :public_folder, f
 
     # read in yaml configuration into a class variable
@@ -95,7 +96,6 @@ END
 
     # now reset the name
     logger.debug "switching REMOTE_USER to #{uniqname}."
-    puts "resetting remote_user to: #{uniqname}"
     request.env['REMOTE_USER']=uniqname
   end
 
@@ -113,7 +113,6 @@ END
     @remote_user = "anonymous" if @remote_user.nil? || @remote_user.empty?
 
     @remote_user = request.env['REMOTE_USER'] || "anonymous"
-    puts "@remote_user: #{@remote_user}"
 
     logger.info "REMOTE_USER: #{@remote_user}"
 
@@ -172,7 +171,7 @@ END
   ### Need to make the provider selection settable via properties.
   def CourseDataProvider(a)
     #return CourseDataProviderStatic(a)
-    puts "CourseDataProvider a: #{a}"
+    logger.debug "CourseDataProvider a: #{a}"
     #return CourseDataProviderFile(a)
     return CourseDataProviderESB(a)
   end
@@ -186,10 +185,10 @@ END
   ### courses sub-directory under, in this case, the test-files directory.
 
   def CourseDataProviderFile(a)
-    puts "data provider is CourseDataProviderFile.\n"
+    logger.debug "data provider is CourseDataProviderFile.\n"
 
     dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
-    puts "data file string: "+dataFile
+    logger.debug "data file string: "+dataFile
 
     if File.exists?(dataFile)
       logger.debug("file exists: #{dataFile}")
@@ -204,7 +203,7 @@ END
   end
 
   def CourseDataProviderESB(uniqname)
-    puts "data provider is CourseDataProviderESB.\n"
+    logger.debug "data provider is CourseDataProviderESB.\n"
     ## if necessary initialize the ESB connection.
     puts @@w
     if @@w.nil?
@@ -215,8 +214,7 @@ END
     url = "/Students/#{uniqname}/Terms/2010/Schedule"
 
     logger.debug("ESB: url: "+url)
-    puts "ESB: url: "+url
-    puts "@@w: "+@@w.to_s
+    logger.debug("@@w: "+@@w.to_s)
 
     classes = @@w.get_request(url)
     logger.debug("returning: "+classes)
@@ -239,7 +237,7 @@ END
 
   ##### Trivial static data provider
   def CourseDataProviderStatic(a)
-    puts "data provider is CourseDataProviderStatic\n"
+    logger.debug( "data provider is CourseDataProviderStatic")
     classJson =
         [
             {:title => "English 323",

@@ -14,6 +14,9 @@
 
 require 'Base64'
 require 'rest-client'
+require_relative './Logging'
+
+include Logging
 
 class WAPI
 
@@ -39,7 +42,7 @@ class WAPI
     @uniqname = application['uniqname']
 
     @renewal = WAPI.build_renewal(@key, @secret)
-    #puts "@renewal: #{@renewal}"
+    logger.info("initialize WAPI with #{@api_prefix}")
   end
 
   def self.build_renewal(key, secret)
@@ -98,10 +101,10 @@ class WAPI
     s = JSON.parse(response)
 
     if response.code != 200
-      puts "error renewing token"
+      logger.warn("error renewing token"+response.inspect)
     else
       @token = s['access_token']
-      #puts "WAPI: renewed token #{@token}"
+      logger.debug("renewed token #{@token}")
     end
   end
 
