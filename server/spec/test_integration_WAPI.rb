@@ -16,14 +16,14 @@ require 'Base64'
 
 class TestNew < Minitest::Test
 
-  ## security.yaml holds security configuration information for testing.
-  ## See security.yaml.TEMPLATE for details.
+  ## security.yml holds security configuration information for testing.
+  ## See security.yml.TEMPLATE for details.
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-  @@yaml_file = "./security.yaml"
+  @@yml_file = "./security.yml"
   @@application = "test"
-  @@yaml = nil
+  @@yml = nil
   @@config = nil
 
   def setup_logger
@@ -32,12 +32,12 @@ class TestNew < Minitest::Test
     RestClient.log = log
   end
 
-  def load_yaml
-    @@yaml = YAML::load_file(File.open(@@yaml_file))
+  def load_yml
+    @@yml = YAML::load_file(File.open(@@yml_file))
   end
 
   def load_application(app_name)
-    application = @@yaml[app_name]
+    application = @@yml[app_name]
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -49,7 +49,7 @@ class TestNew < Minitest::Test
 
    def setup
      #   setup_logger
-     load_yaml
+     load_yml
      load_application 'SD-QA'
 
      a = Hash['api_prefix' => @api_prefix,

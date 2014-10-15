@@ -23,7 +23,7 @@ class CourseList < Sinatra::Base
   ## base directory to ease referencing files in the war
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
 
-  @@yaml = "HOWDY"
+  @@yml = "HOWDY"
 
   @@w = nil
 
@@ -63,7 +63,7 @@ END
     logger.debug("UI files: "+f)
     set :public_folder, f
 
-    # read in yaml configuration into a class variable
+    # read in yml configuration into a class variable
     @@ls = YAML.load_file('server/local/local.yml')
 
     ## check for authn user substitution
@@ -227,14 +227,14 @@ END
 
   def initESB
     puts "initESB"
-    @@yaml_file = "./server/spec/security.yaml"
-    @@yaml= YAML.load_file(@@yaml_file)
+    @@yml_file = "./server/spec/security.yml"
+    @@yml= YAML.load_file(@@yml_file)
     app_name="SD-QA"
     setup_WAPI(app_name)
   end
 
   def setup_WAPI(app_name)
-    application = @@yaml[app_name]
+    application = @@yml[app_name]
     @@w = WAPI.new application
   end
 
