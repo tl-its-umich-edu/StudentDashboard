@@ -137,7 +137,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
       courseDataForX = CourseDataProvider(user)
-      logger.info "courseDataForX A: #{courseDataForX}"
+      logger.info "courseData from provider #{courseDataForX}"
       if "404".casecmp(courseDataForX).zero?
         logger.debug("returning 404 for missing file")
         response.status = 404
@@ -147,7 +147,7 @@ END
       # parse return value as json so it is converted from string
       # format.
       courseDataForXJson = JSON.parse courseDataForX
-      logger.info "courseData B: #{courseDataForX}"
+      logger.info "courseData as json #{courseDataForXJson}"
 
       # return data as json
       courseDataForXJson.to_json
@@ -207,7 +207,7 @@ END
     ## if necessary initialize the ESB connection.
     puts @@w
     if @@w.nil?
-      puts "@@w is nil"
+      logger.debug "@@w is nil"
       @@w = initESB
     end
 
@@ -217,8 +217,11 @@ END
     logger.debug("@@w: "+@@w.to_s)
 
     classes = @@w.get_request(url)
-    logger.debug("returning: "+classes)
-    return classes
+    logger.debug("ESB returns: "+classes)
+    r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
+    r2 = JSON.generate r
+    logger.debug "Course data provider returns: "+r2
+    return r2
   end
 
 
