@@ -32,6 +32,12 @@ class WAPI
 
   def initialize(application)
     #puts "in WAPI initialize"
+    if application.nil?
+      msg = "No ESB Application values provided to WAPI initialize"
+      logger.warn msg
+      raise StandardError, msg
+    end
+
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -63,6 +69,7 @@ class WAPI
   ## internal method to actually make the request
   def do_request(request)
     url=format_url(request)
+    logger.debug "WAPI: do_request: url: #{url}"
     response = RestClient.get url, {:Authorization => "Bearer #{@token}",
                                     :accept => :json,
                                     :verify_ssl => true}
@@ -73,18 +80,22 @@ class WAPI
 
     begin
       response = do_request(request)
-    rescue RestClient::Exception=> excp
-      # 401 is unauthorized and we can try to reauthorize
-      if excp.response.code != 401
-        raise excp
-      end
+      logger.debug("WAPI: response: "+response.inspect)
+        ## check out error conditions
+    rescue RestClient::Unauthorized => una
       # Try fixing up the token since authorization failed.
       renew_token
-      response = do_request(request)
+      begin
+        response = do_request(request)
+      rescue StandardError => nested_se
+        logger.debug "rescue nested request" + nested_se.inspect
+      end
     rescue StandardError => se
       # reraise other exceptions
+      logger.debug "WAPI: StandardError: "+se.inspect
       raise se
     end
+    logger.debug 'WAPI: response'+response.inspect
     response
   end
 
@@ -92,6 +103,7 @@ class WAPI
   def renew_token
 
     #puts "WAPI: renewing token: #{@token}"
+    logger.debug "WAPI: renew_token"
     response = RestClient.post @token_server,
                                "grant_type=client_credentials&scope=PRODUCTION",
                                {

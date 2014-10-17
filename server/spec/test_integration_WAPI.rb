@@ -16,14 +16,14 @@ require 'Base64'
 
 class TestNew < Minitest::Test
 
-  ## security.yaml holds security configuration information for testing.
-  ## See security.yaml.TEMPLATE for details.
+  ## security.yml holds security configuration information for testing.
+  ## See security.yml.TEMPLATE for details.
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-  @@yaml_file = "./security.yaml"
+  @@yml_file = "./security.yml"
   @@application = "test"
-  @@yaml = nil
+  @@yml = nil
   @@config = nil
 
   def setup_logger
@@ -32,12 +32,12 @@ class TestNew < Minitest::Test
     RestClient.log = log
   end
 
-  def load_yaml
-    @@yaml = YAML::load_file(File.open(@@yaml_file))
+  def load_yml
+    @@yml = YAML::load_file(File.open(@@yml_file))
   end
 
   def load_application(app_name)
-    application = @@yaml[app_name]
+    application = @@yml[app_name]
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -49,7 +49,7 @@ class TestNew < Minitest::Test
 
    def setup
      #   setup_logger
-     load_yaml
+     load_yml
      load_application 'SD-QA'
 
      a = Hash['api_prefix' => @api_prefix,
@@ -108,11 +108,13 @@ class TestNew < Minitest::Test
   end
 
   def test_term_request_bad_user
-    skip("get 500 for unknown user")
-    r = @w.get_request("/Students/FeelingGroovy/Terms")
+    skip("can not test without working ESB get 500 for unknown user")
+    ## code below "works" for 500 / server error currently returned, but that response isn't appropriate
+    assert_raises(RestClient::InternalServerError) { r = @w.get_request("/Students/FeelingGroovy/Terms")}
   end
 
   def test_course_request
+    skip("can not test without working ESB")
     r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
     assert_equal 200, r.code
 #    r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']

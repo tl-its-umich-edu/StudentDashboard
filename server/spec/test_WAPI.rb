@@ -145,7 +145,6 @@ class TestNew < Minitest::Test
   end
 
 
-
   ### sample webmock test
   ### If webmock check fails it will print out the stub_request that would have passed so you can
   ### see what went wrong.

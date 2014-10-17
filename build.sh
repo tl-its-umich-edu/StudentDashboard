@@ -11,6 +11,8 @@ rvm use ruby-1.9.3-p484
 
 set -x
 
+bundle install
+
 ./runTests.sh
 
 ## should test return code
