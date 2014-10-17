@@ -2,23 +2,32 @@
 ### This version will also server up the HTML page if no
 ### specific page is requested.
 
+### Configuration will be read in from /usr/local/studentdashboard/studentdashboard.yml if available
+### or from ./server/local/studentdashboard.yml in the build if necessary.
+
 ### Sinatra is a DSL (domain specific language) for working with HTTP requests.
 
 require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
-#require './server/WAPI'
 require_relative 'WAPI'
+
+include Logging
 
 class CourseList < Sinatra::Base
 
   ### Class variables
 
+  @@l = Hash.new()
+
+  @@config_base ||= '/usr/local/studentdashboard'
+
+  # forbid/allow specifying a specific user on request url
   @@allow_uniqname_override = false
 
   ### response to query that is not understood.
-  @@invalid = "invalid query. what U want?"
+  @@invalid_query_text = "invalid query. what U want?"
 
   ## base directory to ease referencing files in the war
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
@@ -26,6 +35,23 @@ class CourseList < Sinatra::Base
   @@yml = "HOWDY"
 
   @@w = nil
+
+  # name of application to use for security information
+  @@application_name = "SD-QA"
+
+  # default name of anonymous user
+  @@anonymous_user = "anonymous"
+
+  # default location for student dashboard configuration
+  #@@studentdashboard = './server/local/studentdashboard.yml'
+  @@studentdashboard = "#{@@config_base}/studentdashboard.yml"
+
+  # default location for the security information
+  #@@security_file = './server/spec/security.yml'
+  @@security_file = "#{@@config_base}/security.yml"
+
+
+  @@log_file = "server/log/sinatra.log"
 
   ## api docs
   @@apidoc = <<END
@@ -43,14 +69,37 @@ API changes.
 
 END
 
+  ## This will get the requested or default configuration file.  It returns
+  ## the contents of the file.
+  def self.get_local_config_yml(requested_file, default_file)
+    if File.exist? requested_file
+      file_name = requested_file
+    else
+      file_name = default_file
+    end
+    logger.debug "config yml file_name: #{file_name}"
+    YAML.load_file(file_name)
+  end
+
 #### Ruby approach to configuring environment.
 
   set :environment, :development
-### configuration
-## make sure logging is available
+
+  # def self.default_from_yml(setting_name, default_value)
+  #   if !@@ls[setting_name].nil?
+  #     @@allow_uniqname_override = default_value
+  #   end
+  # end
+
+  ### configuration
+  ## make sure logging is available
   configure :production, :development do
+
+    ## load requested or default yml file
+
     enable :logging
-    log = File.new("server/log/sinatra.log", "a+")
+
+    log = File.new(@@log_file, "a+")
     $stdout.reopen(log)
     $stderr.reopen(log)
 
@@ -64,16 +113,14 @@ END
     set :public_folder, f
 
     # read in yml configuration into a class variable
-    @@ls = YAML.load_file('server/local/local.yml')
+    @@ls = self.get_local_config_yml(@@studentdashboard, "./server/local/studentdashboard.yml")
 
-    ## check for authn user substitution
-    if !@@ls['allow_uniqname_override'].nil?
-      @@allow_uniqname_override = @@ls['allow_uniqname_override']
-    end
-    ## logging doesn't work from here.
-    #logger.debug("allow authz parameter: #{@@allow_uniqname_override}")
+    # override default values from configuration file if they are specified.
+    @@anonymous_user = @@ls['anonymous_user'] || "anonymous"
+    @@invalid_query_text = @@ls['invalid_query_text'] || @invalid_query_text
+    @@allow_uniqname_override = @@ls['allow_uniqname_override'] || @@allow_uniqname_override
+    @@application_name = @@ls['application_name'] || @@application_name
 
-    ## TODO: logger doesn't work from here ??
   end
 
 
@@ -84,6 +131,8 @@ END
   ## in test settings.  It only applies to requests for the Dashboard page.
   before '/' do
 
+    #puts " before / allow_uniqname_override: "+@@allow_uniqname_override.to_s
+    logger.debug "allow_uniqname_override: "+@@allow_uniqname_override.to_s
     pass unless @@allow_uniqname_override == true
 
     # don't reset user if one has already been supplied
@@ -91,6 +140,7 @@ END
 
     # See if there is a candidate to use as authenticated user name.
     uniqname = params['UNIQNAME']
+    logger.debug "found uniqname: #{uniqname}"
     # don't reset user if don't have a name to reset it to.
     pass if uniqname.nil? || uniqname.length == 0
 
@@ -110,9 +160,13 @@ END
 
     # get some value for remote_user even if it isn't in the request.
     @remote_user = request.env['REMOTE_USER']
-    @remote_user = "anonymous" if @remote_user.nil? || @remote_user.empty?
+    logger.debug "/: remote_user A: "+@remote_user.to_s
 
-    @remote_user = request.env['REMOTE_USER'] || "anonymous"
+    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
+    logger.debug "/: remote_user B: "+@remote_user.to_s
+
+    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
+    logger.debug "/: remote_user C: "+@remote_user.to_s
 
     logger.info "REMOTE_USER: #{@remote_user}"
 
@@ -161,7 +215,7 @@ END
   ## catch any request not matched and give an error.
   get '*' do
     response.status = 400
-    return "#{@@invalid}"
+    return "#{@@invalid_query_text}"
   end
 
 
@@ -205,7 +259,6 @@ END
   def CourseDataProviderESB(uniqname)
     logger.debug "data provider is CourseDataProviderESB.\n"
     ## if necessary initialize the ESB connection.
-    puts @@w
     if @@w.nil?
       logger.debug "@@w is nil"
       @@w = initESB
@@ -217,30 +270,40 @@ END
     logger.debug("@@w: "+@@w.to_s)
 
     classes = @@w.get_request(url)
-    logger.debug("ESB returns: "+classes)
+    logger.debug("CL: ESB returns: "+classes)
     r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
     r2 = JSON.generate r
     logger.debug "Course data provider returns: "+r2
     return r2
   end
 
-
   def initESB
-    puts "initESB"
-    @@yml_file = "./server/spec/security.yml"
-    @@yml= YAML.load_file(@@yml_file)
-    app_name="SD-QA"
+    logger.info "initESB"
+
+    logger.debug("security_file: "+@@security_file.to_s)
+    requested_file = @@security_file
+    default_security_file = './server/spec/security.yml'
+    if File.exist? requested_file
+      file_name = requested_file
+    else
+      file_name = default_security_file
+    end
+    logger.debug "security file_name: #{file_name}"
+    @@yml = YAML.load_file(file_name)
+
+    app_name=@@application_name
     setup_WAPI(app_name)
   end
 
   def setup_WAPI(app_name)
+    logger.info "use ESB application: #{app_name}"
     application = @@yml[app_name]
     @@w = WAPI.new application
   end
 
   ##### Trivial static data provider
   def CourseDataProviderStatic(a)
-    logger.debug( "data provider is CourseDataProviderStatic")
+    logger.debug("data provider is CourseDataProviderStatic")
     classJson =
         [
             {:title => "English 323",

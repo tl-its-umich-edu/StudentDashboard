@@ -1,0 +1,6 @@
+data_file_dir: server/test-files
+data_file_type: courses
+allow_uniqname_override: true
+application_name: SD-QA
+invalid_query_text: Come on, ask something reasonable
+anonymous_user: anonymous
