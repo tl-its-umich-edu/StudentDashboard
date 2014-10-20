@@ -108,13 +108,17 @@ class TestNew < Minitest::Test
   end
 
   def test_term_request_bad_user
-    skip("can not test without working ESB get 500 for unknown user")
+    logger.info 'test_term_request_bad_user'
+#    skip("can not test without working ESB get 500 for unknown user")
     ## code below "works" for 500 / server error currently returned, but that response isn't appropriate
-    assert_raises(RestClient::InternalServerError) { r = @w.get_request("/Students/FeelingGroovy/Terms")}
+#    assert_raises(RestClient::InternalServerError) { r = @w.get_request("/Students/FeelingGroovy/Terms")}
+
+    r = @w.get_request("/Students/FeelingGroovy/Terms")
+
   end
 
   def test_course_request
-    skip("can not test without working ESB")
+    #skip("can not test without working ESB")
     r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
     assert_equal 200, r.code
 #    r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']

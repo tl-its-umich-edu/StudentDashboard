@@ -89,6 +89,7 @@ class WAPI
         response = do_request(request)
       rescue StandardError => nested_se
         logger.debug "rescue nested request" + nested_se.inspect
+        raise nested_se
       end
     rescue StandardError => se
       # reraise other exceptions

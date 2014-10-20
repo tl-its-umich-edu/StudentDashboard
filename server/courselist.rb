@@ -48,7 +48,8 @@ class CourseList < Sinatra::Base
 
   # default location for the security information
   #@@security_file = './server/spec/security.yml'
-  @@security_file = "#{@@config_base}/security.yml"
+  @@security_file = "#{@@config_base}/security-files/security.yml"
+  puts "security file: "+@@security_file.to_s
 
 
   @@log_file = "server/log/sinatra.log"
@@ -91,14 +92,31 @@ END
   #   end
   # end
 
+
+  ## to force particular logging levels
+  # configure :test do
+  #   set :logging, Logger::ERROR
+  # end
+  #
+  # configure :development do
+  #   set :logging, Logger::DEBUG
+  # end
+  #
+  # configure :production do
+  #   set :logging, Logger::INFO
+  # end
+
   ### configuration
   ## make sure logging is available
   configure :production, :development do
 
     ## load requested or default yml file
 
-    enable :logging
+    #enable :logging
 
+    set :logging, Logger::DEBUG
+
+    ## In Tomcat commenting these three will make output show up in localhost log.
     log = File.new(@@log_file, "a+")
     $stdout.reopen(log)
     $stderr.reopen(log)
@@ -257,7 +275,7 @@ END
   end
 
   def CourseDataProviderESB(uniqname)
-    logger.debug "data provider is CourseDataProviderESB.\n"
+    logger.info "data provider is CourseDataProviderESB.\n"
     ## if necessary initialize the ESB connection.
     if @@w.nil?
       logger.debug "@@w is nil"
@@ -280,6 +298,7 @@ END
   def initESB
     logger.info "initESB"
 
+    logger.info("security_file: "+@@security_file.to_s)
     logger.debug("security_file: "+@@security_file.to_s)
     requested_file = @@security_file
     default_security_file = './server/spec/security.yml'
