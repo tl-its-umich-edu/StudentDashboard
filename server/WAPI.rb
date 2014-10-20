@@ -12,7 +12,7 @@
 
 # Only GET is explicitly supported at the moment.
 
-require 'Base64'
+require 'base64'
 require 'rest-client'
 require_relative './Logging'
 
