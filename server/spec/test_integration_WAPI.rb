@@ -9,7 +9,7 @@ require '../WAPI'
 require 'rest-client'
 require 'logger'
 require 'yaml'
-require 'Base64'
+require 'base64'
 
 
 ### Test WAPI with real server
