@@ -21,7 +21,9 @@ class CourseList < Sinatra::Base
 
   @@l = Hash.new()
 
-  @@config_base ||= '/usr/local/studentdashboard'
+  #@@config_base ||= '/usr/local/studentdashboard'
+  ## up to home this is catalina_base
+  @@config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
   # forbid/allow specifying a specific user on request url
   @@allow_uniqname_override = false
@@ -48,7 +50,7 @@ class CourseList < Sinatra::Base
 
   # default location for the security information
   #@@security_file = './server/spec/security.yml'
-  @@security_file = "#{@@config_base}/security-files/security.yml"
+  @@security_file = "#{@@config_base}/security.yml"
   puts "security file: "+@@security_file.to_s
 
 
