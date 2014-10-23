@@ -19,12 +19,12 @@ class CourseList < Sinatra::Base
 
   ### Class variables
 
-  @@l = Hash.new()
+  @@l = Hash.new
 
-  @@config_base ||= '/usr/local/studentdashboard'
+  @@config_base ||= '/usr/local/ctools/app/ctools/tl/home/'
 
   # forbid/allow specifying a specific user on request url
-  @@allow_uniqname_override = false
+  @@authn_uniqname_override = false
 
   ### response to query that is not understood.
   @@invalid_query_text = "invalid query. what U want?"
@@ -48,11 +48,18 @@ class CourseList < Sinatra::Base
 
   # default location for the security information
   #@@security_file = './server/spec/security.yml'
-  @@security_file = "#{@@config_base}/security-files/security.yml"
-  puts "security file: "+@@security_file.to_s
+  @@security_file = "#{@@config_base}/security.yml"
+  #puts "security file: "+@@security_file.to_s
 
 
   @@log_file = "server/log/sinatra.log"
+
+  # Hold data required if need to wait to simulate authn
+  # processing time.
+  @@authn_prng = nil
+  @@authn_total_wait_time = 0
+  @@authn_total_stub_calls = 0
+
 
   ## api docs
   @@apidoc = <<END
@@ -72,14 +79,17 @@ END
 
   ## This will get the requested or default configuration file.  It returns
   ## the contents of the file.
-  def self.get_local_config_yml(requested_file, default_file)
-    if File.exist? requested_file
-      file_name = requested_file
-    else
-      file_name = default_file
+
+  helpers do
+    def self.get_local_config_yml(requested_file, default_file)
+      if File.exist? requested_file
+        file_name = requested_file
+      else
+        file_name = default_file
+      end
+      logger.debug "config yml file_name: #{file_name}"
+      YAML.load_file(file_name)
     end
-    logger.debug "config yml file_name: #{file_name}"
-    YAML.load_file(file_name)
   end
 
 #### Ruby approach to configuring environment.
@@ -88,7 +98,7 @@ END
 
   # def self.default_from_yml(setting_name, default_value)
   #   if !@@ls[setting_name].nil?
-  #     @@allow_uniqname_override = default_value
+  #     @@authn_uniqname_override = default_value
   #   end
   # end
 
@@ -107,6 +117,12 @@ END
   # end
 
   ### configuration
+
+  # configure :test do
+  #   puts "in debug configure"
+  #   exit 1
+  # end
+
   ## make sure logging is available
   configure :production, :development do
 
@@ -135,12 +151,55 @@ END
 
     # override default values from configuration file if they are specified.
     @@anonymous_user = @@ls['anonymous_user'] || "anonymous"
-    @@invalid_query_text = @@ls['invalid_query_text'] || @invalid_query_text
-    @@allow_uniqname_override = @@ls['allow_uniqname_override'] || @@allow_uniqname_override
+    @@invalid_query_text = @@ls['invalid_query_text'] || @@invalid_query_text
+    @@authn_uniqname_override = @@ls['authn_uniqname_override'] || @@authn_uniqname_override
     @@application_name = @@ls['application_name'] || @@application_name
+
+    ## See if wait times are set for authn stub wait.
+    @@authn_wait_min = @@ls['authn_wait_min'] || 0
+    @@authn_wait_max = @@ls['authn_wait_max'] || 0
+
+
+    logger.debug "authn_uniqname_override: "+@@authn_uniqname_override.to_s
+    ## If there is an authn wait specified then setup a random number generator.
+    ## create a variable with a random number generator
+    if @@authn_uniqname_override && (@@authn_wait_min > 0 || @@authn_wait_max > 0)
+      @@authn_prng = Random.new
+      logger.debug "authn wait range is: #{@@authn_wait_min} to #{@@authn_wait_max}"
+    end
 
   end
 
+  ### Add helper to deal with stubbing the authentication for testing purposes.
+  helpers do
+    def uniqnameOverride
+
+      #pass unless @@authn_uniqname_override == true
+
+      # don't reset user if one has already been supplied
+      #pass unless request.env['REMOTE_USER'].nil? || request.env['REMOTE_USER'].length == 0
+
+      # See if there is a candidate to use as authenticated user name.
+      uniqname = params['UNIQNAME']
+      logger.debug "found uniqname: #{uniqname}"
+      # don't reset user if don't have a name to reset it to.
+      pass if uniqname.nil? || uniqname.length == 0
+
+      # now reset the name
+      logger.debug "switching REMOTE_USER to #{uniqname}."
+      request.env['REMOTE_USER']=uniqname
+
+      ## If desired wait for a variable amount of time before returning
+      ## to simulate authentication time waits
+      if !@@authn_prng.nil?
+        wait_sec = @@authn_prng.rand(@@authn_wait_min..@@authn_wait_max)
+        @@authn_total_wait_time += wait_sec
+        @@authn_total_stub_calls += 1
+        #sleep wait_sec
+        logger.debug "wait_sec: #{wait_sec} auth total_wait: #{@@authn_total_wait_time} total_calls: #{@@authn_total_stub_calls}"
+      end
+    end
+  end
 
   #### Process requests
 
@@ -149,22 +208,8 @@ END
   ## in test settings.  It only applies to requests for the Dashboard page.
   before '/' do
 
-    #puts " before / allow_uniqname_override: "+@@allow_uniqname_override.to_s
-    logger.debug "allow_uniqname_override: "+@@allow_uniqname_override.to_s
-    pass unless @@allow_uniqname_override == true
+    uniqnameOverride if @@authn_uniqname_override == true
 
-    # don't reset user if one has already been supplied
-    pass unless request.env['REMOTE_USER'].nil? || request.env['REMOTE_USER'].length == 0
-
-    # See if there is a candidate to use as authenticated user name.
-    uniqname = params['UNIQNAME']
-    logger.debug "found uniqname: #{uniqname}"
-    # don't reset user if don't have a name to reset it to.
-    pass if uniqname.nil? || uniqname.length == 0
-
-    # now reset the name
-    logger.debug "switching REMOTE_USER to #{uniqname}."
-    request.env['REMOTE_USER']=uniqname
   end
 
   ########### URL ROUTERS ##############
@@ -178,13 +223,8 @@ END
 
     # get some value for remote_user even if it isn't in the request.
     @remote_user = request.env['REMOTE_USER']
-    logger.debug "/: remote_user A: "+@remote_user.to_s
-
     @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
-    logger.debug "/: remote_user B: "+@remote_user.to_s
-
     @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
-    logger.debug "/: remote_user C: "+@remote_user.to_s
 
     logger.info "REMOTE_USER: #{@remote_user}"
 
@@ -299,9 +339,13 @@ END
     logger.info "initESB"
 
     logger.info("security_file: "+@@security_file.to_s)
-    logger.debug("security_file: "+@@security_file.to_s)
     requested_file = @@security_file
-    default_security_file = './server/spec/security.yml'
+
+    default_security_file = './server/local/security.yml'
+
+    #@@yml = get_local_config_yml(requested_file, default_security_file)
+
+
     if File.exist? requested_file
       file_name = requested_file
     else
