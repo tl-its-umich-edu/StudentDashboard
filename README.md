@@ -6,7 +6,7 @@ This code is kept in github and will be public for the whole world to see foreve
 # Implementation
 
 This server implements both a single page UI and a Rest API.  The Rest api can be used
-independenly if that is appropriate.  It assumes that authentication has
+independently if that is appropriate.  It assumes that authentication has
 already been done and the request object has a valid value for REMOTE_USER.
 
 The server is implemented using Ruby Sinatra.
@@ -23,25 +23,34 @@ In the top level directory run to get dependencies:
 
 	bundle install
 
-and then 
+and then create the war file with the command:
 
 	warble
 
-To create the war file. This is easiest if you have rvm installed. 
-
 #Organization
 
-The UI and backend Server are kept in corresponding directories.  The
-top level directory contains the configuration required to build the
-war file.
+The UI and backend Server are kept in the obvious directories.  The
+top level source directory contains the configuration files required to build the
+war file.  Delivery of the configuration files is handled separately.
 
 # Configuration
 
-The ESB connection information must be supplied in the file 
-server/spec/security.yaml.  Copy the file server/spec/security.yaml.TEMPLATE and
-fill in the appropriate values.
+There are two configuration files for StudentDashboard.   The configuration
+files will be read from the directory
+*/usr/local/ctools/app/ctools/tl/home* or, if a file isn't there,
+from the *server/local* directory in the expanded war file directory.
 
-The authn shortcut needs to be configured in the file server/local/local.yml.
+The file
+*security.yml* contains the ESB connection information.  There are no appropriate defaults and it must be 
+setup for each installation.  Copy the file *security.yaml.TEMPLATE* and
+fill in values appropriate for your installation.
+
+The file *studentdashboard.yml* contains values that may change from instance
+to instance but don't contain sensitive information.  The values in it 
+that are most likely to change change are: the ESB application id and the
+authn settings.  The first identifies the information in the security file that
+will be used to connect to the ESB.  The other values are for load testing
+and allow using a stub authentication service.  See the yml file for details.
 
 ---
 This readme file is written with Markdown.
