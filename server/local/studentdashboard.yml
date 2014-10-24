@@ -1,6 +1,26 @@
+# This is the name of the ESB application to be used
+# for oauth authentication.
+application_name: SD-QA
+
+##### Values below here are unlikely to change except when
+##### testing.
+# Text to use when the server gets a non-standard request.
+invalid_query_text: Come on, ask something reasonable
+# The name to use when no user name is available.
+anonymous_user: anonymous
+
+# These values allow using a stub authentication service.
+# If the first one is set to true the uniqname of the user
+# can be taken from the URL UNIQNAME parameter rather than
+# the authenticated user.
+# The "wait" values give the range of time to wait after
+# the uniqname change and are included for load testing
+# so that the effect of a production authn mechanism can
+# be echoed.
+authn_uniqname_override: false
+authn_wait_min: 0.01
+authn_wait_max: 0.02
+
+# These values are used for local testing.
 data_file_dir: server/test-files
 data_file_type: courses
-allow_uniqname_override: true
-application_name: SD-QA
-invalid_query_text: Come on, ask something reasonable
-anonymous_user: anonymous
