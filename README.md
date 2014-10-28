@@ -68,6 +68,14 @@ authn settings.  The first identifies the information in the security file that
 will be used to connect to the ESB.  The other values are for load testing
 and allow using a stub authentication service. See the sample file for details.
 
+#License#
+
+Copyright [2014] [Regents of the University of Michigan] Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+[http://www.osedu.org/licenses/ECL-2.0](http://www.osedu.org/licenses/ECL-2.0)
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
 ---
 
 This readme file is written with Markdown.
