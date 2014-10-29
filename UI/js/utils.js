@@ -27,6 +27,14 @@ $.ajaxSetup({
  */
 //$(document).on('click', '#schedule a', function(){});
 
+
+$(document).on('click', '.showMoreInstructors', function(e){
+    e.preventDefault();
+    $(this).closest('div.instructorsInfo').find('.moreInstructors').fadeIn()
+    return null;
+});
+
+
 $(document).on('click', '.courseLink', function(e){
     e.preventDefault();
     alert('This would take you to the course site for ' + $(this).text())
