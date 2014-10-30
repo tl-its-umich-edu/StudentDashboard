@@ -64,14 +64,20 @@
                                         <small>
                                             {{item.Subtitle}}
                                         </small>
-                                        <div ng-show="item.Instructor">
+                                        <div ng-show="item.Instructor" class="instructorsInfo">
 	                                        <div ng-if="item.Instructor.length">
-	                                            <div ng-repeat="instructor in item.Instructor | orderBy:'Role'">
-	                                                    <small>
-	                                                       {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
-	                                                    </small>
-	                                                </span>
-	                                            </div>
+	                                            <div ng-repeat="instructor in item.Instructor | orderBy:'Role' | limitTo:1">
+                                                    <small>
+                                                       {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span> <a href="#" class="showMoreInstructors">(more)</a>
+                                                    </small> 
+                                                </div>
+                                                <div class="moreInstructors" style="display:none">
+                                                    <div ng-repeat="instructor in item.Instructor | orderBy:'Role'" ng-show="!$first">
+                                                        <small>
+                                                           {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
+                                                        </small>
+    	                                            </div>
+                                                </div>
 	                                        </div>
 	                                        <div ng-hide="item.Instructor.length">
 		                                        <small>

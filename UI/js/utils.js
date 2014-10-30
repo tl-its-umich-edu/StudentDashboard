@@ -27,6 +27,16 @@ $.ajaxSetup({
  */
 //$(document).on('click', '#schedule a', function(){});
 
+
+$(document).on('click', '.showMoreInstructors', function(e){
+    e.preventDefault();
+    var txt = $(this).closest('div.instructorsInfo').find('.moreInstructors').is(':visible') ? '(more)' : '(less)';
+    $(this).text(txt);
+    $(this).closest('div.instructorsInfo').find('.moreInstructors').fadeToggle();
+    return null;
+});
+
+
 $(document).on('click', '.courseLink', function(e){
     e.preventDefault();
     alert('This would take you to the course site for ' + $(this).text())
