@@ -1,13 +1,19 @@
 #!/bin/bash
 
-# Run from spec directory so the test scripts don't have
-# to figure out where to find modules.
-echo "test_WAPI.rb"
-(cd server/spec;
-    ruby ./test_WAPI.rb
-)
-echo "integration_test_WAPI.rb"
-(cd server/spec;
-    ruby ./test_integration_WAPI.rb
-)
+## run specified ruby test files in the server/spec directory under here.
+
+function runTest {
+    local file=$1
+    echo "running test file: $file"
+    (
+        cd server/spec;
+        ruby ./$file
+    )
+}
+
+runTest test_WAPI.rb
+runTest test_integration_WAPI.rb
+runTest test_auth_check.rb
+
+
 #end

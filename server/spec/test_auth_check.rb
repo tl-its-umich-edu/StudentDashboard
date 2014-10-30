@@ -1,3 +1,6 @@
+# Unit test checks that can veto in appropriate users
+# from get information on other people.
+
 
 require 'rubygems'
 require 'minitest'
@@ -51,7 +54,7 @@ class AuthCheck < MiniTest::Test
     @topUrl = "http://localhost:3000/"
     @topSDUrl = "http://localhost:3000/StudentDashboard"
     @topSDUrlUNIQNAME_different = "http://localhost:3000/StudentDashboard?UNIQNAME=ignoreme"
-    @topSDUrlUNIQNAME_different = "http://localhost:3000/StudentDashboard?UNIQNAME=ststvii"
+    @topSDUrlUNIQNAME_same = "http://localhost:3000/StudentDashboard?UNIQNAME=ststvii"
   end
 
   # Called after every test method runs. Can be used to tear
@@ -61,6 +64,12 @@ class AuthCheck < MiniTest::Test
     # Do nothing
   end
 
+  #### NOTE: this method can veto requests, so the "assert r" is checking that
+  #### that the request is vetoed and "refute r" checks that the request is
+  #### not vetoed.
+  #### NOTE: The messages describe the failure state of the test.
+
+  ### test that have a user to check against.
   def test_nil_user_fails
     r = CourseList.vetoRequest nil, @coursesUrlststvii
     assert r, "veto if no authenticated user (nil)"
@@ -71,8 +80,10 @@ class AuthCheck < MiniTest::Test
     assert r, "veto if no authenticated user (empty string)"
   end
 
-  ## make sure that the user does not match
-  def test_mismatched_user
+
+  ### check to make sure unauthorized user can not request courses but
+  ### and anothorized user can
+    def test_mismatched_user
     r = CourseList.vetoRequest "abba", @coursesUrlststvii
     assert r, "allowed wrong user."
   end
@@ -83,27 +94,32 @@ class AuthCheck < MiniTest::Test
     refute r, "refused correct user"
   end
 
-  ## make sure other URLs aren't matched
+  ### Check that administrative users can do anything
+
+  def test_admin_user_works
+    skip("user from admin list should not be vetoed")
+  end
+
+  ####### check that don't affect irrelevant URLS
+
   def test_topUrl
     r = CourseList.vetoRequest "ststvii", @topUrl
-    assert r, "allowed incorrect url"
+    refute r, "refused correct url"
   end
 
   def test_topSDUrl
     r = CourseList.vetoRequest "ststvii", @topSDUrl
-    assert r, "allowed incorrect url"
+    refute r, "refused correct url"
   end
 
   def test_topSDUrlUNIQNAME_different
     r = CourseList.vetoRequest "ststvii", @topSDUrlUNIQNAME_different
-    assert r, "allowed incorrect url"
+    refute r, "refused correct url (url does not have /courses/)"
   end
+
   def test_topSDUrlUNIQNAME_same
     r = CourseList.vetoRequest "ststvii", @topSDUrlUNIQNAME_same
-    assert r, "allowed incorrect url"
+    refute r, "refused correct url"
   end
-
-
-
 
 end

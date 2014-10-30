@@ -1,26 +1,44 @@
+### This yaml file specifies configuration values that may change from
+### instance to instance.  Note that white space indentation matters
+### for yaml.
+
 # This is the name of the ESB application to be used
-# for oauth authentication.
+# for oauth authentication.  The corresponding application name
+# will be found in the security.yml file.  See that file for details.
 application_name: SD-QA
 
 ##### Values below here are unlikely to change except when
 ##### testing.
 # Text to use when the server gets a non-standard request.
 invalid_query_text: Come on, ask something reasonable
-# The name to use when no user name is available.
+# The name to use when no user name is available.  This is primarily useful
+# in test situations.
 anonymous_user: anonymous
 
 # These values allow using a stub authentication service.
-# If the first one is set to true the uniqname of the user
-# can be taken from the URL UNIQNAME parameter rather than
-# the authenticated user.
-# The "wait" values give the range of time to wait after
-# the uniqname change and are included for load testing
+# If the first one is set to true the the uniqname of the user
+# may be taken from the URL UNIQNAME parameter rather than
+# using the authenticated user.
+# The "authn_wait_..." values give the range of time to wait before returning after
+# the uniqname change and are included
 # so that the effect of a production authn mechanism can
-# be echoed.
+# be modeled during load testing.
 authn_uniqname_override: false
 authn_wait_min: 0.01
 authn_wait_max: 0.02
 
+## This entry provides a list of user names
+## for authenticated users who may act as administrators and so bypass some
+## built-in restrictions.  To activate remove the
+## leading # and put in reasonable uniqnames.  The
+## anonymous_user above should never appear here.
+
+#admin:
+#  - ABBA_IS_GREAT
+#  - DYLAN_IS_BETTER
+
+##############
 # These values are used for local testing.
-data_file_dir: server/test-files
-data_file_type: courses
+#data_file_dir: server/test-files
+#data_file_type: courses
+########## end #########

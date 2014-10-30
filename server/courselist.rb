@@ -58,6 +58,7 @@ class CourseList < Sinatra::Base
   @@authn_total_wait_time = 0
   @@authn_total_stub_calls = 0
 
+  @@admin = []
 
   ## api docs
   @@apidoc = <<END
@@ -75,8 +76,7 @@ API changes.
 
 END
 
-  ## This will get the requested or default configuration file.  It returns
-  ## the contents of the file.
+  ## This method will return the contents of the requested (or default) configuration file.
 
   helpers do
     def self.get_local_config_yml(requested_file, default_file)
@@ -90,15 +90,13 @@ END
     end
   end
 
-#### Ruby approach to configuring environment.
+
+  #### Use the Ruby approach to configuring environment.
 
   set :environment, :development
 
-  # def self.default_from_yml(setting_name, default_value)
-  #   if !@@ls[setting_name].nil?
-  #     @@authn_uniqname_override = default_value
-  #   end
-  # end
+  ## Set the environment from an environment variable.
+  set :environment, ENV['RACK_ENV'].to_s
 
 
   ## to force particular logging levels
@@ -114,22 +112,23 @@ END
   #   set :logging, Logger::INFO
   # end
 
-  ### configuration
+  ### set configurations
+  ### Set configuration values based on the environment.
 
-  # configure :test do
+  # configure :test, :development do
   #   puts "in debug configure"
-  #   exit 1
+  # end
+  #
+  # configure :development do
+  #   puts 'in development'
+  #   p settings.inspect
   # end
 
-  ## make sure logging is available
-  configure :production, :development do
 
-    ## load requested or default yml file
+  ## Utility methods.  The "self." in the method name means that this is
+  ## a class method.
 
-    #enable :logging
-
-    set :logging, Logger::DEBUG
-
+  def self.configureLogging
     ## In Tomcat commenting these three will make output show up in localhost log.
     log = File.new(@@log_file, "a+")
     $stdout.reopen(log)
@@ -137,9 +136,9 @@ END
 
     $stderr.sync = true
     $stdout.sync = true
+  end
 
-    ## look for the UI files in a parallel directory.
-    ## this may not be necessary.
+  def self.configureYml
     f = File.dirname(__FILE__)+"/../UI"
     logger.debug("UI files: "+f)
     set :public_folder, f
@@ -166,20 +165,59 @@ END
       logger.debug "authn wait range is: #{@@authn_wait_min} to #{@@authn_wait_max}"
     end
 
+    @@admin = @@ls['admin'] || []
+    #puts "admin list: "
+    #p @@admin
+
+
   end
+
+  ## make sure logging is available
+  configure :test do
+
+    set :logging, Logger::DEBUG
+
+    #configureLogging
+
+    ## look for the UI files in a parallel directory.
+    ## this may not be necessary.
+    configureYml
+
+  end
+
+  ## make sure logging is available
+  configure :production, :development do
+
+    set :logging, Logger::DEBUG
+
+    configureLogging
+
+    configureYml
+
+  end
+
+  #### Authorization
+  # StudentDashboard requires that the user be authenticated.  It verifies this by using the name set in the
+  # REMOTE_USER environment variable.  If that variable has no value it will be set to the anonymous user name
+  # from the studentdashboard.yml file.  This is convenient for testing.
+
+  # The Student Dashboard UI makes REST calls to the application to get data.  These calls are checked to ensure
+  # that the call only requests data for the authenticated user.  A list of users that can override this restriction
+  # can be added to the yml configuration file.
+
+  # To ease load testing there are a couple of authentication options that can be configured.  See the
+  # studentdashboard.yml file for information on using those.
 
   ### Add helper to deal with stubbing the authentication for testing purposes.
   helpers do
     def uniqnameOverride
-
-      #pass unless @@authn_uniqname_override == true
-
-      # don't reset user if one has already been supplied
-      #pass unless request.env['REMOTE_USER'].nil? || request.env['REMOTE_USER'].length == 0
+      # If permitted ignore authentication checks and read the name to be used as the authenticated user
+      # from the URL.  This can only be invoked in a test setting.
 
       # See if there is a candidate to use as authenticated user name.
       uniqname = params['UNIQNAME']
       logger.debug "found uniqname: #{uniqname}"
+
       # don't reset user if don't have a name to reset it to.
       pass if uniqname.nil? || uniqname.length == 0
 
@@ -187,45 +225,120 @@ END
       logger.debug "switching REMOTE_USER to #{uniqname}."
       request.env['REMOTE_USER']=uniqname
 
-      ## If desired wait for a variable amount of time before returning
-      ## to simulate authentication time waits
+      ## Since container authentication may have been skipped entirely allow a configurable wait time
+      ## before returning to simulate the delay that could occur with external authentication.
       if !@@authn_prng.nil?
         wait_sec = @@authn_prng.rand(@@authn_wait_min..@@authn_wait_max)
         @@authn_total_wait_time += wait_sec
         @@authn_total_stub_calls += 1
-        #sleep wait_sec
+        sleep wait_sec
         logger.debug "wait_sec: #{wait_sec} auth total_wait: #{@@authn_total_wait_time} total_calls: #{@@authn_total_stub_calls}"
       end
     end
   end
 
+
+  ## add helper to deal with checking that someone only asks about themselves.
+  helpers do
+
+    # This method checks to see if the request is being made only for data for the stated user.
+    # It returns true if the request is NOT permitted.  It is phrased as a veto
+    # because this method isn't responsible for checking all conditions that might forbid the request.
+
+    def self.vetoRequest(user, request_url)
+
+      logger.debug "vetoRequest: user: [#{user}] request_url: [#{request_url}]"
+
+      # Make sure that someone explicit is making the request.
+      return true if user.nil?
+
+      # admin users can request for everybody.
+      if @@admin.include? user
+        logger.debug "vetoRequest: found admin user: #{user}"
+        return nil
+      end
+
+      ## We are only interested in URLS that look like this.
+      areg = (/courses\/(.*).json$/)
+
+      # get the user for which the data is requested.
+      url_user = areg.match(request_url)
+
+      # Don't veto if don't recognise the URL.
+      return nil if url_user.nil?
+
+      # Make sure the request is for the authenticated user.
+      should_veto = url_user[1] != user
+
+      logger.debug "vR: should_veto: #{should_veto}"
+      return should_veto
+
+    end
+  end
+
   #### Process requests
 
-  ###### Filter ######
-  ## Allow resetting the user considered authenticated from URL.  Only used
-  ## in test settings.  It only applies to requests for the Dashboard page.
+  ## Requests are matched and processed in the order matchers appear in the code.  Multiple matches may happen
+  ## for a single request if the processing for one match uses pass to let matching code later in the chain process.
+
+  ##### Before clauses are filters that apply before the verb based processing happens.
+  ## These before clauses deal with authentication.
+
+  ## Make sure we have a remote "authenticated" user.  This is useful for testing when
+  ## not running in a container.
+  before "*" do
+    logger.debug "#{__LINE__}:before * : request.env" + request.env.inspect
+    ru = request.env['REMOTE_USER']
+    logger.debug "before *: #{ru}"
+    if ru.nil? || ru.length == 0
+      logger.debug "before * A: "
+      request.env['REMOTE_USER'] = @@anonymous_user
+    end
+    #logger.debug "before * first: request.env" + request.env.inspect
+  end
+
+  ## For testing allow specifying the user identity to be used on the URL.
+  ## This is particularly useful for load testing.  The switch in user name
+  ## only applies to requests for the top level Dashboard page.  This processing
+  ## is off by default.
   before '/' do
 
+    ## Allow overriding the uniqname during testing
+    logger.debug "#{__LINE__}:authn_uniqname_override: "+@@authn_uniqname_override.to_s
     uniqnameOverride if @@authn_uniqname_override == true
 
   end
 
+  ## Check that any request for user data is either for data for the authenticated user
+  ## or the authenticated user is listed as a special admin user.
+  before "*" do
+    ## Make sure people only ask about themselves (or are privileged)
+    logger.debug "#{__LINE__}:before *: check veto"
+    vetoResult = CourseList.vetoRequest request.env['REMOTE_USER'], request.env['REQUEST_URI']
+    logger.debug "vetoResult: "+vetoResult.to_s
+    halt 401 if vetoResult == true
+  end
+
   ########### URL ROUTERS ##############
-  # Note that the first clause matching the url will win.
+  ## Process the requests based on the URL
 
   ## If the request isn't for anything specific then return the UI page.
-
   get '/' do
+    logger.debug "#{__LINE__}:in top page"
+   # logger.debug "top page: request.env" + request.env.inspect
     ### Currently pull the erb file from the UI directory.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
 
+
     # get some value for remote_user even if it isn't in the request.
+    # the value of @remote_user will be available in the erb UI template.
+    logger.debug "#{__LINE__}:top page: required now after making sure there is a user?"
     @remote_user = request.env['REMOTE_USER']
     @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
     @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
 
-    logger.info "REMOTE_USER: #{@remote_user}"
-
+    logger.info "#{__LINE__}:REMOTE_USER: [#{@remote_user}]"
+    #logger.debug "top page: idx: #{idx}"
     erb idx
   end
 
@@ -247,7 +360,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
       courseDataForX = CourseDataProvider(user)
-      logger.info "courseData from provider #{courseDataForX}"
+      #logger.info "courseData from provider #{courseDataForX}"
       if "404".casecmp(courseDataForX).zero?
         logger.debug("returning 404 for missing file")
         response.status = 404
@@ -257,7 +370,7 @@ END
       # parse return value as json so it is converted from string
       # format.
       courseDataForXJson = JSON.parse courseDataForX
-      logger.info "courseData as json #{courseDataForXJson}"
+      #logger.info "courseData as json #{courseDataForXJson}"
 
       # return data as json
       courseDataForXJson.to_json
@@ -326,10 +439,10 @@ END
     logger.debug("@@w: "+@@w.to_s)
 
     classes = @@w.get_request(url)
-    logger.debug("CL: ESB returns: "+classes)
+ #   logger.debug("CL: ESB returns: "+classes)
     r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
     r2 = JSON.generate r
-    logger.debug "Course data provider returns: "+r2
+   # logger.debug "Course data provider returns: "+r2
     return r2
   end
 
@@ -340,9 +453,6 @@ END
     requested_file = @@security_file
 
     default_security_file = './server/local/security.yml'
-
-    #@@yml = get_local_config_yml(requested_file, default_security_file)
-
 
     if File.exist? requested_file
       file_name = requested_file
