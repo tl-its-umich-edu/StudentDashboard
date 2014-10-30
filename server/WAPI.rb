@@ -80,7 +80,7 @@ class WAPI
 
     begin
       response = do_request(request)
-      logger.debug("WAPI: response: "+response.inspect)
+ #     logger.debug("WAPI: response: "+response.inspect)
         ## check out error conditions
     rescue RestClient::Unauthorized => una
       # Try fixing up the token since authorization failed.
@@ -96,7 +96,7 @@ class WAPI
       logger.debug "WAPI: StandardError: "+se.inspect
       raise se
     end
-    logger.debug 'WAPI: response'+response.inspect
+#    logger.debug 'WAPI: response'+response.inspect
     response
   end
 
