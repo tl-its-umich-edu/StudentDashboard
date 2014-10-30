@@ -30,7 +30,9 @@ $.ajaxSetup({
 
 $(document).on('click', '.showMoreInstructors', function(e){
     e.preventDefault();
-    $(this).closest('div.instructorsInfo').find('.moreInstructors').fadeIn()
+    var txt = $(this).closest('div.instructorsInfo').find('.moreInstructors').is(':visible') ? '(more)' : '(less)';
+    $(this).text(txt);
+    $(this).closest('div.instructorsInfo').find('.moreInstructors').fadeToggle();
     return null;
 });
 

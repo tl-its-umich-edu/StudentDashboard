@@ -68,7 +68,7 @@
 	                                        <div ng-if="item.Instructor.length">
 	                                            <div ng-repeat="instructor in item.Instructor | orderBy:'Role' | limitTo:1">
                                                     <small>
-                                                       {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span> <a href="#" class="showMoreInstructors">(More)</a>
+                                                       {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span> <a href="#" class="showMoreInstructors">(more)</a>
                                                     </small> 
                                                 </div>
                                                 <div class="moreInstructors" style="display:none">
