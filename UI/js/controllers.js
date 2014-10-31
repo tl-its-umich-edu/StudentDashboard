@@ -11,9 +11,10 @@ dashboardApp.controller('scheduleController', ['$scope', '$http', function($scop
 ]);
 
 dashboardApp.controller('coursesController', ['$scope', '$http', function($scope, $http, errorHttpInterceptor){
-    //var url = 'courses/' + userId + '.json';
+    var url = 'courses/' + userId + '.json';
     $scope.courses = [];
-    var url = 'data/courses/no-courses.json';
+    //for testing
+    //var url = 'data/courses/no-courses.json';
     $http.get(url).success(function(data){
         $scope.courses = data;
         if (!data.length){
@@ -31,7 +32,7 @@ dashboardApp.controller('coursesController', ['$scope', '$http', function($scope
             $scope.courses.canvas = true;
         }
     }).error(function(data, status, headers, config) {
-        $scope.courses.errors = errorHandler(url, data, status, headers, config); //"Malformed json"
+        $scope.courses.errors = errorHandler(url, data, status, headers, config);
   });
 }
 ]);
