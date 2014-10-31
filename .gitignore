@@ -6,3 +6,4 @@
 tmp_.*
 .idea
 security.yml
+artifacts
