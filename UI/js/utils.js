@@ -21,6 +21,24 @@ $.ajaxSetup({
     cache: false
 });
 
+var errorHandler = function(url, data, status, headers, config) {
+    var errorResponse = {};
+    if(!data){
+        errorResponse.message = 'Something happened!';
+        errorResponse.requestUrl = url;
+        errorResponse.details = data;
+
+    } else {
+        errorResponse.message = 'Something happened with a service we depend on!';
+        errorResponse.requestUrl = url;
+        errorResponse.details = status;
+    }
+
+    return errorResponse
+}
+
+
+
 /**
  *
  * event watchers

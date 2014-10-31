@@ -50,6 +50,10 @@
                     </div>
                     <h2 class="colHeader">Courses</h2>
                     <div id="courses" class="itemPanel" ng-controller = "coursesController" ng-cloak>
+                        <div>{{courses.message}}</div>
+                        <div>{{courses.errors.message}}</div>
+                        <div ng-show="courses.errors.requestUrl">We asked for <code>{{courses.errors.requestUrl}}</code></div>
+                        <div ng-show="courses.errors.details">It returned this: <code>{{courses.errors.details}}</code></div>
                         <ul>
                             <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
                                 <div class="row">
