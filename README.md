@@ -61,12 +61,14 @@ The file
 configured for each installation.  Copy the file *security.yaml.TEMPLATE* and
 fill in values appropriate for your installation.  Note that the *security.yml* file must have restricted read permissions.
 
-The file *studentdashboard.yml* contains values that may change from instanceo
+The file *studentdashboard.yml* contains values that may change from instance
 to instance but don't contain sensitive information.  The values in it 
-that are most likely to change change are: the ESB application id and the
-authn settings.  The first identifies the information in the security file that
-will be used to connect to the ESB.  The other values are for load testing
-and allow using a stub authentication service. See the sample file for details.
+that are most likely to change change are the ESB application id and the
+auth settings.  The first identifies the information in the security file that
+will be used to connect to the ESB.  The auth values are for load testing
+and allow using a stub authentication service. See the sample file for details.  Suggested configuration files for QA, Load testing and Production deployments are included.
+
+
 
 #License#
 

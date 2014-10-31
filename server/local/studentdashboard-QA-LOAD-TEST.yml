@@ -32,9 +32,9 @@ anonymous_user: anonymous
 # that would be caused by using an external authentication system can be
 # modeled during load testing.
 
-authn_uniqname_override: false
+authn_uniqname_override: true
 authn_wait_min: 0.01
-authn_wait_max: 0.02
+authn_wait_max: 0.03
 
 ## The 'admin' entry specifies a list of user names of authenticated users
 ## who may act as administrators and so bypass some built-in restrictions.
