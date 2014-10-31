@@ -10,10 +10,16 @@ dashboardApp.controller('scheduleController', ['$scope', '$http', function($scop
 }
 ]);
 
-dashboardApp.controller('coursesController', ['$scope', '$http', function($scope, $http){
-    var url = 'courses/' + userId + '.json';
+dashboardApp.controller('coursesController', ['$scope', '$http', function($scope, $http, errorHttpInterceptor){
+    //var url = 'courses/' + userId + '.json';
+    $scope.courses = [];
+    var url = 'data/courses/no-courses.json';
     $http.get(url).success(function(data){
-        $scope.courses = data;		
+        $scope.courses = data;
+        if (!data.length){
+            $scope.courses.message ="You seem to have no courses this term.";
+        }       
+
 		if (_.where(data, {
             Source: "CTools"
         }).length > 0 ) {
@@ -24,7 +30,9 @@ dashboardApp.controller('coursesController', ['$scope', '$http', function($scope
         }).length > 0) {
             $scope.courses.canvas = true;
         }
-    });
+    }).error(function(data, status, headers, config) {
+        $scope.courses.errors = errorHandler(url, data, status, headers, config); //"Malformed json"
+  });
 }
 ]);
 
