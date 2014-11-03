@@ -28,7 +28,7 @@ class TestNew < Minitest::Test
 
   def setup_logger
     log = Logger.new(STDOUT)
-    log.level = Logger::DEBUG
+    log.level = Logger::ERROR
     RestClient.log = log
   end
 
@@ -48,7 +48,10 @@ class TestNew < Minitest::Test
   end
 
    def setup
-     #   setup_logger
+     # by default assume that the tests will run well and don't
+     # need detailed log messages.
+     logger.level=Logger::ERROR
+     
      load_yml
      load_application 'SD-QA'
 

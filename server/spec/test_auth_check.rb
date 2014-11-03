@@ -11,7 +11,7 @@ require 'logger'
 require 'yaml'
 
 ## set the environment for testing
-ENV['RACK_ENV'] = 'test'
+#ENV['RACK_ENV'] = 'test'
 
 require '../courselist'
 
@@ -48,7 +48,10 @@ class AuthCheck < MiniTest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    # Do nothing
+    # by default assume the tests will run well and don't need
+    # to have detailed log messages.
+    logger.level = Logger::ERROR
+
     @x = CourseList.new
     @coursesUrlststvii = "http://localhost:3000/courses/ststvii.json"
     @topUrl = "http://localhost:3000/"
