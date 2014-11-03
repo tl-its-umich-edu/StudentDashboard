@@ -7,47 +7,68 @@ RUBY_VERSION=ruby-1.9.3-p484
 
 ## Setup RVM
 source ~/.rvm/scripts/rvm
-# verify that it is setup
+
+# Print verification that RVm is setup
 type rvm | head -n 1
 
 # select and setup a particular ruby version.
-
 rvm use $RUBY_VERSION
 
 ########### utilities ############
-## make a clean directory to hold any build artifacts
-function makeArtifactsDir {
 
-    if [ -e ./artifacts ]; then
-        rm -rf ./artifacts;
+# return a sortable timestamp as a string without a newline on the end.
+function niceTimestamp {
+    echo $(date --iso-8601=min)
+}
+
+## make a clean directory to hold any build ARTIFACTS
+function makeARTIFACTSDir {
+
+    if [ -e ./ARTIFACTS ]; then
+        rm -rf ./ARTIFACTS;
     fi
 
-    mkdir ./artifacts
+    mkdir ./ARTIFACTS
 }
 
 ## Make a tar from the configuration files.
 function makeConfigTar {
     set +x
-    ( cd server; tar -c -f ../artifacts/configuration-files.tar ./local/studentdash*yml )
+    ( cd server;
+        ts=$(niceTimestamp)
+        tar -c -f ../ARTIFACTS/configuration-files.$ts.tar ./local/studentdash*yml;
+        echo "++++++ list config files"
+        tar -xvf ../ARTIFACTS/configuration-files.$ts.tar;
+    )
+}
+
+## create the war file
+function makeWarFile {
+    warble
+    ts=$(niceTimestamp)
+    mv StudentDashboard.war StudentDashboard.$ts.war
+    mv *.war ./ARTIFACTS
 }
 
 ###################
 
+makeARTIFACTSDir
+
 # make sure the ruby bundle is correct.
-bundle install
+ts=$(niceTimestamp)
+bundle install >| ./ARTIFACTS/ruby.$ts.bundle
 
 ## should test return code
 ./runTests.sh
 
-makeArtifactsDir
+# Make and name war file.  Put in ARTIFACTS directory.
+makeWarFile
 
-### make the war file
-warble
-mv *.war ./artifacts
-
-## make the configuration tar file and put in artifacts directory
+## make and name the configuration file tar and put in ARTIFACTS directory.
 makeConfigTar
 
-# display the artifacts created
-ls -l ./artifacts
+# display the ARTIFACTS created
+echo "++++++++++ ARTIFACTS created"
+ls -l ./ARTIFACTS
+
 #end
