@@ -16,6 +16,10 @@ require 'base64'
 class TestNew < Minitest::Test
 
   def setup
+    # by default assume the tests will run well and don't
+    # need detailed log messages.
+    logger.level=Logger::ERROR
+
     @token_server="http://tokenserver.micky.edu"
     @api_prefix = "PREFIX"
 

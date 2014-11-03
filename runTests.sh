@@ -4,7 +4,8 @@
 
 function runTest {
     local file=$1
-    echo "running test file: $file"
+    echo "+++++"
+    echo "+++++ running test file: $file"
     (
         cd server/spec;
         ruby ./$file
@@ -14,6 +15,7 @@ function runTest {
 runTest test_WAPI.rb
 runTest test_integration_WAPI.rb
 runTest test_auth_check.rb
+runTest test_courselist.rb
 
 
 #end
