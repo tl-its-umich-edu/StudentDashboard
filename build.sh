@@ -18,7 +18,8 @@ rvm use $RUBY_VERSION
 
 # return a sortable timestamp as a string without a newline on the end.
 function niceTimestamp {
-    echo $(date --iso-8601=min)
+#    echo $(date --iso-8601=min)
+    echo $(date +"%F-%H-%M")
 }
 
 ## make a clean directory to hold any build ARTIFACTS
@@ -36,6 +37,7 @@ function makeConfigTar {
     set +x
     ( cd server;
         ts=$(niceTimestamp)
+        # may need to add --format=gnu to standard tar command when extracting to avoid some extra header info
         tar -c -f ../ARTIFACTS/configuration-files.$ts.tar ./local/studentdash*yml;
         echo "++++++ list config files"
         tar -xvf ../ARTIFACTS/configuration-files.$ts.tar;
