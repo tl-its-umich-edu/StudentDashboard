@@ -15,7 +15,7 @@ function runTest {
 runTest test_WAPI.rb
 runTest test_integration_WAPI.rb
 runTest test_auth_check.rb
-runTest test_courselist.rb
+#runTest test_courselist.rb
 
 
 #end

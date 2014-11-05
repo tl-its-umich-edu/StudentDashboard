@@ -6,6 +6,7 @@ require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
+require 'webmock/minitest'
 require 'rest-client'
 require 'logger'
 require 'yaml'
@@ -26,7 +27,8 @@ class AuthCheck < MiniTest::Test
     logger.level = Logger::ERROR
 
     ## create a Latte application
-    @x = CourseList.new
+    ## The ! should get rid of the middle ware.
+    @x = CourseList.new!
 
   end
 
@@ -41,6 +43,12 @@ class AuthCheck < MiniTest::Test
     assert @x, "did not create Latte object"
   end
 
+  def test_getTerm
+    stub_request(:get, "https://api.edu/WSO2/Students/BitterDancer/Terms").
+        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!'}).
+        to_return(:status => 200, :body => '{"mystuff":"yourstuff"}')
+    @x.get("/")
+  end
   #def test_create
 #    assert @x, "did not create Latte object"
 #  end
