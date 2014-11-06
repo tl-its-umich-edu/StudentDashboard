@@ -11,7 +11,9 @@
         <div class="contaner-fluid mastHead">
             <div class="row">
                 <div class="col-md-10 col-xs-10 col-xs-10 logo" id="showAllPanels">
-                    <h1><span class="visible-xs-block">Pilot</span><span class="visible-sm-inline">Pilot</span><span class="visible-md-inline">Pilot</span><span class="visible-lg-inline">Pilot</span> <small id="userId"><%= @remote_user %></small></h1>
+                    <h1 id="getServerInfo" data-toggle="modal" data-target="#serverInfoModal">
+                        <span class="visible-xs-block">Pilot</span><span class="visible-sm-inline">Pilot</span><span class="visible-md-inline">Pilot</span><span class="visible-lg-inline">Pilot</span> <small id="userId"><%= @remote_user %></small>
+                    </h1>
                 </div>
                 <div class="col-md-2 col-xs-2 col-xs-2">
                 </div>
@@ -277,6 +279,29 @@
                         </button>
                         <button type="button" class="btn btn-primary" id="saveToDo">
                             Save To Do
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="serverInfoModal" tabindex="-1" role="dialog" aria-labelledby="serverInfoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h3 class="modal-title" id="serverInfoLabel">Sorry! Copy the info below</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control" id="toDoMessage" style="height:50px">server: excellentServer; version:notSoGoodVersion</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">
+                            Close
                         </button>
                     </div>
                 </div>
