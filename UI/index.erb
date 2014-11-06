@@ -48,61 +48,7 @@
                             </li>
                         </ul>
                     </div>
-                    <h2 class="colHeader">Courses</h2>
-                    <div id="courses" class="itemPanel" ng-controller = "coursesController" ng-cloak>
-                        <div>{{courses.message}}</div>
-                        <div>{{courses.errors.message}}</div>
-                        <div ng-show="courses.errors.requestUrl">We asked for <code>{{courses.errors.requestUrl}}</code></div>
-                        <div ng-show="courses.errors.details">It returned this: <code>{{courses.errors.details}}</code></div>
-                        <ul>
-                            <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
-                                <div class="row">
-                                    <div class ="col-lg-1 col-md-1 col-xs-1 visible-md visible-lg {{item.Source | lowercase}} iconContainer">
-                                    </div>
-                                    <div class ="col-lg-11 col-md-11 col-xs-12">
-                                    	<strong>
-	                                        <span ng-if="item.Link"><a class="courseLink" href="{{item.Link}}"><span class="sr-only">Go to site for </span>{{item.Title}}</a></span>
-	                                        <span ng-if ="!item.Link">{{item.Title}}</span>
-										</strong>
-                                        <br>
-                                        <small>
-                                            {{item.Subtitle}}
-                                        </small>
-                                        <div ng-show="item.Instructor" class="instructorsInfo">
-	                                        <div ng-if="item.Instructor.length">
-	                                            <div ng-repeat="instructor in item.Instructor | orderBy:'Role' | limitTo:1">
-                                                    <small>
-                                                       {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span> <a href="#" class="showMoreInstructors">(more)</a>
-                                                    </small> 
-                                                </div>
-                                                <div class="moreInstructors" style="display:none">
-                                                    <div ng-repeat="instructor in item.Instructor | orderBy:'Role'" ng-show="!$first">
-                                                        <small>
-                                                           {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>) <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
-                                                        </small>
-    	                                            </div>
-                                                </div>
-	                                        </div>
-	                                        <div ng-hide="item.Instructor.length">
-		                                        <small>
-		                                            {{item.Instructor.Name | fixInstructorName}} (<a class="mailTolink" href="mailto:{{item.Instructor.Email  | lowercase}}">{{item.Instructor.Email  | lowercase}}</a>)
-		                                        </small>
-	                                        </div>
-										</div>
-										<div ng-hide="item.Instructor">
-	                                        <small>
-	                                            Staff
-	                                        </small>
-										</div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-						<p ng-show="courses.canvas || courses.ctools">Looking for upcoming assignments, events and activity across your courses?
-						 Checkout <span ng-show="courses.ctools"> the <a href="https://ctools.umich.edu/portal">Ctools Dashboard</a></span> <span ng-show="courses.canvas"> <span ng-show="courses.canvas && courses.ctools">or</span> <a href="https://umich.instructure.com/">Canvas home.</a></span></p>
-                        <p ng-show="!courses.canvas && !courses.ctools">It looks like none of your classes are using web sites we know of. Do you want to check out the <a href="https://ctools.umich.edu/portal">Ctools Dashboard</a> or <a href="https://umich.instructure.com/">Canvas home?</a></span></p>
-
-                    </div>
+                    <div ng-include src="'views/courses.html'"></div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col2 phasePlusOne">
                     <div class="row">
@@ -226,6 +172,7 @@
             </div>
         </div>
         </div>
+        <div id="info">server: something, version: something else</div>
         <div id="spinner" style="display:none">
         </div>
         <script src="//code.jquery.com/jquery-1.11.0.min.js">
@@ -282,5 +229,6 @@
                 </div>
             </div>
         </div>
+
     </body>
 </html>

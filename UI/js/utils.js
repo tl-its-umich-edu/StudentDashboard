@@ -21,9 +21,9 @@ $.ajaxSetup({
     cache: false
 });
 
-var errorHandler = function(url, data, status, headers, config) {
+var errorHandler = function(url, result) {
     var errorResponse = {};
-    if(!data){
+    if(!result){
         errorResponse.message = 'Something happened!';
         errorResponse.requestUrl = url;
         errorResponse.details = data;
@@ -31,10 +31,10 @@ var errorHandler = function(url, data, status, headers, config) {
     } else {
         errorResponse.message = 'Something happened with a service we depend on!';
         errorResponse.requestUrl = url;
-        errorResponse.details = status;
+        errorResponse.details = result.status;
     }
+    return errorResponse;
 
-    return errorResponse
 }
 
 
