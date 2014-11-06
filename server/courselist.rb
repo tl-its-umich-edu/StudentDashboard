@@ -307,7 +307,7 @@ END
     #logger.debug "#{__LINE__}: authn filter: request.env" + request.env.inspect
     logger.debug "#{__LINE__}: host: "+request.host
 
-    ## try setting user from request remote_user
+    ## try setting from request remote_user
     user = request.env['REMOTE_USER']
     logger.debug "before *: #{user}"
 
