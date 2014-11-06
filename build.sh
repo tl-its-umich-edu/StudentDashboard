@@ -69,8 +69,13 @@ makeWarFile
 ## make and name the configuration file tar and put in ARTIFACTS directory.
 makeConfigTar
 
+chmod a+r ./ARTIFACTS/*
+
 # display the ARTIFACTS created
 echo "++++++++++ ARTIFACTS created"
 ls -l ./ARTIFACTS
+
+echo "sample scp command to make build available is:"
+echo "# scp -rp ./ARTIFACTS durango.dsc.umich.edu:~"
 
 #end
