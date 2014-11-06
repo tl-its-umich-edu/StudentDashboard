@@ -99,6 +99,11 @@ END
   set :environment, ENV['RACK_ENV'].to_s
 
 
+  ## need session for authn testing
+  configure do
+    enable :sessions
+  end
+
   ## to force particular logging levels
   # configure :test do
   #   set :logging, Logger::ERROR
@@ -216,13 +221,18 @@ END
 
       # See if there is a candidate to use as authenticated user name.
       uniqname = params['UNIQNAME']
-      logger.debug "found uniqname: #{uniqname}"
+      logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
 
       # don't reset user if don't have a name to reset it to.
       pass if uniqname.nil? || uniqname.length == 0
 
+      # don't reset if not necessary.  This prevents infinite loops.
+      pass if request.env['REMOTE_USER'].eql? uniqname
+
       # now reset the name
-      logger.debug "switching REMOTE_USER to #{uniqname}."
+      logger.debug "#{__LINE__}:now switching REMOTE_USER to #{uniqname}."
+      # put in session to survive calls to REST api
+      session[:remote_user]=uniqname
       request.env['REMOTE_USER']=uniqname
 
       ## Since container authentication may have been skipped entirely allow a configurable wait time
@@ -232,8 +242,11 @@ END
         @@authn_total_wait_time += wait_sec
         @@authn_total_stub_calls += 1
         sleep wait_sec
-        logger.debug "wait_sec: #{wait_sec} auth total_wait: #{@@authn_total_wait_time} total_calls: #{@@authn_total_stub_calls}"
+        logger.debug "#{__LINE__}: wait_sec: #{wait_sec} auth total_wait: #{@@authn_total_wait_time} total_calls: #{@@authn_total_stub_calls}"
       end
+      # things changed so redirect with the new information.
+      redirect request.env['REQUEST_URI']
+      return
     end
   end
 
@@ -247,14 +260,15 @@ END
 
     def self.vetoRequest(user, request_url)
 
-      logger.debug "vetoRequest: user: [#{user}] request_url: [#{request_url}]"
+      logger.debug "#{__LINE__}:vetoRequest: user: [#{user}] request_url: [#{request_url}]"
+      #logger.debug "#{__LINE__}: vetoRequest: "+caller.join("\n")
 
       # Make sure that someone explicit is making the request.
       return true if user.nil?
 
       # admin users can request for everybody.
       if @@admin.include? user
-        logger.debug "vetoRequest: found admin user: #{user}"
+        logger.debug "#{__LINE__}:vetoRequest: found admin user: #{user}"
         return nil
       end
 
@@ -270,7 +284,7 @@ END
       # Make sure the request is for the authenticated user.
       should_veto = url_user[1] != user
 
-      logger.debug "vR: should_veto: #{should_veto}"
+      logger.debug "#{__LINE__}: vetoRequest: should_veto: #{should_veto}"
       return should_veto
 
     end
@@ -286,12 +300,27 @@ END
 
   ## Make sure we have a remote "authenticated" user.  This is useful for testing when
   ## not running in a container.
+  ## Take the user from the REMOTE_USER variable
+  ## If not there check session.
+  ## if not there default to anonymous user
   before "*" do
-    logger.debug "#{__LINE__}:before * : request.env" + request.env.inspect
-    ru = request.env['REMOTE_USER']
-    logger.debug "before *: #{ru}"
-    if ru.nil? || ru.length == 0
-      logger.debug "before * A: "
+    #logger.debug "#{__LINE__}: authn filter: request.env" + request.env.inspect
+    logger.debug "#{__LINE__}: host: "+request.host
+
+    ## try setting user from request remote_user
+    user = request.env['REMOTE_USER']
+    logger.debug "before *: #{user}"
+
+    ## if not there try setting from session remote user
+    if user.nil? || user.length == 0
+      logger.debug "#{__LINE__}: authn filter: no REMOTE_USER try session"
+      user = session[:remote_user]
+      request.env['REMOTE_USER'] = user
+    end
+
+    ## If still not set use the anonymous user
+    logger.debug "#{__LINE__}: authn filter: user after check session: #{user}"
+    if user.nil? || user.length == 0
       request.env['REMOTE_USER'] = @@anonymous_user
     end
     #logger.debug "before * first: request.env" + request.env.inspect
@@ -325,7 +354,7 @@ END
   ## If the request isn't for anything specific then return the UI page.
   get '/' do
     logger.debug "#{__LINE__}:in top page"
-   # logger.debug "top page: request.env" + request.env.inspect
+    # logger.debug "top page: request.env" + request.env.inspect
     ### Currently pull the erb file from the UI directory.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
 
@@ -340,6 +369,7 @@ END
     logger.info "#{__LINE__}:REMOTE_USER: [#{@remote_user}]"
     #logger.debug "top page: idx: #{idx}"
     erb idx
+    ## might have put in a remote use from uniqname.  Do not keep that around.
   end
 
   ### send the documentation
@@ -356,13 +386,14 @@ END
   ### Return json array of the course objects for this user.  Currently if you don't 
   ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |user, format|
-    logger.info "courses/:userid: #{user} format: #{format}"
+    logger.info "#{__LINE__}:courses/:userid: #{user} format: #{format}"
+    logger.info "#{__LINE__}:params:"+params.inspect
     if format && "json".casecmp(format).zero?
       content_type :json
       courseDataForX = CourseDataProvider(user)
       #logger.info "courseData from provider #{courseDataForX}"
       if "404".casecmp(courseDataForX).zero?
-        logger.debug("returning 404 for missing file")
+        logger.debug "#{__LINE__}: returning 404 for missing file"
         response.status = 404
         return ""
       end
@@ -439,10 +470,10 @@ END
     logger.debug("@@w: "+@@w.to_s)
 
     classes = @@w.get_request(url)
- #   logger.debug("CL: ESB returns: "+classes)
+    #   logger.debug("CL: ESB returns: "+classes)
     r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
     r2 = JSON.generate r
-   # logger.debug "Course data provider returns: "+r2
+    # logger.debug "Course data provider returns: "+r2
     return r2
   end
 
