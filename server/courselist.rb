@@ -68,11 +68,13 @@ HOST://api - this documentation.
  <p/>
 HOST://courses/{uniqname}.json - An array of (fake) course data for this person.  The
 query parameter of TERMID=<termid> is required.
- <p/> 
+ <p/>
+HOST://terms - returns a list of terms in format described below.
+<p/>
 HOST://settings - dump data to the log.
 <p/>
-HOST://terms - Return a list of terms.  This is not specific to the user.
-<p/> Please update this section with any API changes.
+It could use improvement so feel free to help!  Please update this section with any 
+API changes.
 
 END
 
@@ -207,7 +209,7 @@ END
   # from the studentdashboard.yml file.  This is convenient for testing.
 
   # The Student Dashboard UI makes REST calls to the application to get data.  These calls are checked to ensure
-  # that the call only requests data for the authenticated user.  A list of users that can override this restriction
+  # that the call only requests data for the authenticated userid.  A list of users that can override this restriction
   # can be added to the yml configuration file.
 
   # To ease load testing there are a couple of authentication options that can be configured.  See the
@@ -219,11 +221,11 @@ END
       # If permitted ignore authentication checks and read the name to be used as the authenticated user
       # from the URL.  This can only be invoked in a test setting.
 
-      # See if there is a candidate to use as authenticated user name.
+      # See if there is a candidate to use as authenticated userid name.
       uniqname = params['UNIQNAME']
       logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
 
-      # don't reset user if don't have a name to reset it to.
+      # don't reset userid if don't have a name to reset it to.
       pass if uniqname.nil? || uniqname.length == 0
 
       # don't reset if not necessary.  This prevents infinite loops.
@@ -231,7 +233,8 @@ END
 
       # now reset the name
       logger.debug "#{__LINE__}:now switching REMOTE_USER to #{uniqname}."
-      # put in session to survive calls to REST api
+
+      # put in session to be available for internal calls to REST api
       session[:remote_user]=uniqname
       request.env['REMOTE_USER']=uniqname
 
@@ -244,6 +247,7 @@ END
         sleep wait_sec
         logger.debug "#{__LINE__}: wait_sec: #{wait_sec} auth total_wait: #{@@authn_total_wait_time} total_calls: #{@@authn_total_stub_calls}"
       end
+
       # things changed so redirect with the new information.
       redirect request.env['REQUEST_URI']
       return
@@ -254,13 +258,13 @@ END
   ## add helper to deal with checking that someone only asks about themselves.
   helpers do
 
-    # This method checks to see if the request is being made only for data for the stated user.
+    # This method checks to see if the request is being made only for data for the stated userid.
     # It returns true if the request is NOT permitted.  It is phrased as a veto
     # because this method isn't responsible for checking all conditions that might forbid the request.
 
     def self.vetoRequest(user, request_url)
 
-      logger.debug "#{__LINE__}:vetoRequest: user: [#{user}] request_url: [#{request_url}]"
+      logger.debug "#{__LINE__}:vetoRequest: userid: [#{user}] request_url: [#{request_url}]"
       #logger.debug "#{__LINE__}: vetoRequest: "+caller.join("\n")
 
       # Make sure that someone explicit is making the request.
@@ -268,20 +272,20 @@ END
 
       # admin users can request for everybody.
       if @@admin.include? user
-        logger.debug "#{__LINE__}:vetoRequest: found admin user: #{user}"
+        logger.debug "#{__LINE__}:vetoRequest: found admin userid: #{user}"
         return nil
       end
 
       ## We are only interested in URLS that look like this.
       areg = (/courses\/(.*).json$/)
 
-      # get the user for which the data is requested.
+      # get the userid for which the data is requested.
       url_user = areg.match(request_url)
 
       # Don't veto if don't recognise the URL.
       return nil if url_user.nil?
 
-      # Make sure the request is for the authenticated user.
+      # Make sure the request is for the authenticated userid.
       should_veto = url_user[1] != user
 
       logger.debug "#{__LINE__}: vetoRequest: should_veto: #{should_veto}"
@@ -298,36 +302,36 @@ END
   ##### Before clauses are filters that apply before the verb based processing happens.
   ## These before clauses deal with authentication.
 
-  ## Make sure we have a remote "authenticated" user.  This is useful for testing when
+  ## Make sure we have a remote "authenticated" userid.  This is useful for testing when
   ## not running in a container.
-  ## Take the user from the REMOTE_USER variable
+  ## Take the userid from the REMOTE_USER variable
   ## If not there check session.
-  ## if not there default to anonymous user
+  ## if not there default to anonymous userid
   before "*" do
     #logger.debug "#{__LINE__}: authn filter: request.env" + request.env.inspect
     logger.debug "#{__LINE__}: host: "+request.host
 
-    ## try setting from request remote_user
+    ## try setting userid from request remote_user
     user = request.env['REMOTE_USER']
     logger.debug "before *: #{user}"
 
-    ## if not there try setting from session remote user
+    ## if not there try setting from session remote userid
     if user.nil? || user.length == 0
       logger.debug "#{__LINE__}: authn filter: no REMOTE_USER try session"
       user = session[:remote_user]
       request.env['REMOTE_USER'] = user
     end
 
-    ## If still not set use the anonymous user
-    logger.debug "#{__LINE__}: authn filter: user after check session: #{user}"
+    ## If still not set use the anonymous userid
+    logger.debug "#{__LINE__}: authn filter: userid after check session: #{user}"
     if user.nil? || user.length == 0
       request.env['REMOTE_USER'] = @@anonymous_user
     end
     #logger.debug "before * first: request.env" + request.env.inspect
   end
 
-  ## For testing allow specifying the user identity to be used on the URL.
-  ## This is particularly useful for load testing.  The switch in user name
+  ## For testing allow specifying the userid identity to be used on the URL.
+  ## This is particularly useful for load testing.  The switch in userid name
   ## only applies to requests for the top level Dashboard page.  This processing
   ## is off by default.
   before '/' do
@@ -338,8 +342,8 @@ END
 
   end
 
-  ## Check that any request for user data is either for data for the authenticated user
-  ## or the authenticated user is listed as a special admin user.
+  ## Check that any request for userid data is either for data for the authenticated userid
+  ## or the authenticated userid is listed as a special admin userid.
   before "*" do
     ## Make sure people only ask about themselves (or are privileged)
     logger.debug "#{__LINE__}:before *: check veto"
@@ -361,7 +365,7 @@ END
 
     # get some value for remote_user even if it isn't in the request.
     # the value of @remote_user will be available in the erb UI template.
-    logger.debug "#{__LINE__}:top page: required now after making sure there is a user?"
+    logger.debug "#{__LINE__}:top page: required now after making sure there is a userid?"
     @remote_user = request.env['REMOTE_USER']
     @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
     @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
@@ -369,9 +373,7 @@ END
     logger.info "#{__LINE__}:REMOTE_USER: [#{@remote_user}]"
     #logger.debug "top page: idx: #{idx}"
     erb idx
-    ## might have put in a remote use from uniqname.  Do not keep that around.
   end
-
 
   ### send the documentation
   get '/api' do
@@ -384,25 +386,25 @@ END
     "settings dumped to log file"
   end
 
-  ### Return json array of the course objects for this user.  Currently if you don't 
+  ### Return json array of the course objects for this user.  Currently if you don't
   ### specify the json suffix it is an error.
-  get '/courses/:userid.?:format?' do |user, format|
-    logger.info "#{__LINE__}:courses/:userid: #{user} format: #{format}"
-    logger.info "#{__LINE__}:params:"+params.inspect
+  get '/courses/:userid.?:format?' do |userid, format|
+    logger.info "#{__LINE__}: userid: #{:userid} format: #{:format}"
+    logger.info "#{__LINE__}:courses: params: "+params.inspect
+    termid = params[:TERMID]
+
+    logger.info "#{__LINE__}:termid:: #{termid}"
+
     if format && "json".casecmp(format).zero?
       content_type :json
-      courseDataForX = CourseDataProvider(user)
-      #logger.info "courseData from provider #{courseDataForX}"
+      courseDataForX = CourseDataProvider(userid,termid)
       if "404".casecmp(courseDataForX).zero?
         logger.debug "#{__LINE__}: returning 404 for missing file"
         response.status = 404
         return ""
       end
 
-      # parse return value as json so it is converted from string
-      # format.
       courseDataForXJson = JSON.parse courseDataForX
-      #logger.info "courseData as json #{courseDataForXJson}"
 
       # return data as json
       courseDataForXJson.to_json
@@ -413,19 +415,37 @@ END
     end
   end
 
-  ## provide a static set of terms
-  #{"getMyRegTermsResponse":{"@schemaLocation":"http:\/\/mais.he.umich.edu\/schemas\/getMyRegTermsResponse.v1 http:\/\/csqa9ib.dsc.umich.edu\/PSIGW\/PeopleSoftServiceListeningConnector\/getMyRegTermsResponse.v1.xsd","Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}}
-  #terms = "{Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}
+  # get '/courses/:userid.?:format?' do |userid, format|
+  #   logger.info "#{__LINE__}:courses/:userid: #{userid} format: #{format}"
+  #   logger.info "#{__LINE__}:params:"+params.inspect
+  #   if format && "json".casecmp(format).zero?
+  #     content_type :json
+  #     courseDataForX = CourseDataProvider(userid)
+  #     #logger.info "courseData from provider #{courseDataForX}"
+  #     if "404".casecmp(courseDataForX).zero?
+  #       logger.debug "#{__LINE__}: returning 404 for missing file"
+  #       response.status = 404
+  #       return ""
+  #     end
   #
-  # def termProviderStatic
-  #   termList = Array.new
-  #   termList << Hash[:TermCode => "2010", :TermDesc => "Fall 2014", :TermShortDesc => "FA 2014"]
-  #   termList << Hash[:TermCode => "2020", :TermDesc => "Mine 2014", :TermShortDesc => "NaNa 2014"]
+  #     # parse return value as json so it is converted from string
+  #     # format.
+  #     courseDataForXJson = JSON.parse courseDataForX
+  #     #logger.info "courseData as json #{courseDataForXJson}"
+  #
+  #     # return data as json
+  #     courseDataForXJson.to_json
+  #
+  #   else
+  #     response.status = 400
+  #     return "format missing or not supported: [#{format}]"
+  #   end
   # end
 
   ### Return json array of the current objects.
   get '/terms' do
     logger.info "terms"
+    content_type :json
     termList = termProviderStatic
     termList.to_json
   end
@@ -479,13 +499,17 @@ END
     termList << Hash[:term => "Winterish", :year => "2014", :term_id => "2020", current_term: false]
   end
 
+
+
+
+
   ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
-  def CourseDataProvider(a)
-    #return CourseDataProviderStatic(a)
-    logger.debug "CourseDataProvider a: #{a}"
-    #return CourseDataProviderFile(a)
-    return CourseDataProviderESB(a)
+  def CourseDataProvider(a,termid)
+    #return CourseDataProviderStatic(a,termid)
+    logger.debug "CourseDataProvider a: #{a} termid: #{termid}"
+    #return CourseDataProviderFile(a,termid)
+    return CourseDataProviderESB(a,termid)
   end
 
   ###### File provider ################
@@ -496,7 +520,7 @@ END
   ### E.g. localhost:3000/courses/abba.json would map to a file named abba.json in the 
   ### courses sub-directory under, in this case, the test-files directory.
 
-  def CourseDataProviderFile(a)
+  def CourseDataProviderFile(a,termid)
     logger.debug "data provider is CourseDataProviderFile.\n"
 
     dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
@@ -514,7 +538,7 @@ END
     return classes
   end
 
-  def CourseDataProviderESB(uniqname)
+  def CourseDataProviderESB(uniqname,termid)
     logger.info "data provider is CourseDataProviderESB.\n"
     ## if necessary initialize the ESB connection.
     if @@w.nil?
@@ -522,7 +546,14 @@ END
       @@w = initESB
     end
 
-    url = "/Students/#{uniqname}/Terms/2010/Schedule"
+    default_term = 2010
+
+    if termid.nil? || termid.length == 0
+      logger.debug "defaulting term to #{default_term}"
+      termid = default_term
+    end
+
+    url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
 
     logger.debug("ESB: url: "+url)
     logger.debug("@@w: "+@@w.to_s)
@@ -602,5 +633,5 @@ __END__
 @@ apidocA
    h1 This is the API documentation
    h2 '/api' will return api documentation.
-   h2 '/courses/{userid}.json' will return course objects for this user.
+   h2 '/courses/{userid}.json' will return course objects for this userid.
 
