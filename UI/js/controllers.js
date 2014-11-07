@@ -78,7 +78,7 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
     $scope.$parent.courses = [];
     $scope.$parent.term = term;
     $scope.$parent.year = year;
-    var url = 'courses/' + $rootScope.user + '.json&term=' + '?TERMID=' + termId;
+    var url = 'courses/' + $rootScope.user + '.json'+ "?TERMID="+termId;
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {

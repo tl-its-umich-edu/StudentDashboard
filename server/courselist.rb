@@ -52,6 +52,8 @@ class CourseList < Sinatra::Base
 
   @@log_file = "server/log/sinatra.log"
 
+  @@default_term = 2010
+
   # Hold data required if need to wait to simulate authn
   # processing time.
   @@authn_prng = nil
@@ -173,6 +175,8 @@ END
     end
 
     @@admin = @@ls['admin'] || []
+
+    @@default_term = @@ls['default_term'] || @@default_term
     #puts "admin list: "
     #p @@admin
 
@@ -546,11 +550,11 @@ END
       @@w = initESB
     end
 
-    default_term = 2010
+
 
     if termid.nil? || termid.length == 0
-      logger.debug "defaulting term to #{default_term}"
-      termid = default_term
+      logger.debug "defaulting term to #{@@default_term}"
+      termid = @@default_term
     end
 
     url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
