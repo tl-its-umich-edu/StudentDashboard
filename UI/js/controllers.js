@@ -25,6 +25,12 @@ dashboardApp.factory('Courses', function ($http) {
           }).length > 0) {
           result.data.canvas = true;
         }
+        $.each( result.data, function( i, l ){
+           l.Instructor = _.filter(l.Instructor, function(instructor) {
+            return instructor.Role !=='Dummy'
+          })
+        });
+        
         return result.data;
       },
         function error(result) {
