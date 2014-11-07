@@ -58,8 +58,8 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
 dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '$http', function (Courses, $rootScope, $scope, $http) {
   $scope.selectedTerm = null;
   $scope.terms = [];
-  $scope.courses = [];
-  var termsUrl = 'data/terms.json';
+  //var termsUrl = 'data/terms.json';
+    var termsUrl = 'terms';
 
   $http.get(termsUrl).success(function (data) {
     $scope.terms = data;
@@ -69,10 +69,10 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
   });
 
   $scope.getTerm = function (termId, term, year) {
+    $scope.$parent.courses = [];
     $scope.$parent.term = term;
     $scope.$parent.year = year;
-    //var url = 'courses/' + $rootScope.user + '.json&term=' + termId;
-    var url = 'data/courses/csev.json';
+    var url = 'courses/' + $rootScope.user + '.json&term=' + "?TERMID="+termId;
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
