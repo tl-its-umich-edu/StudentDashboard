@@ -66,13 +66,13 @@ class CourseList < Sinatra::Base
 <p/>
 HOST://api - this documentation.
  <p/>
-HOST://courses/{uniqname}.json - An array of (fake) course data for this person.
+HOST://courses/{uniqname}.json - An array of (fake) course data for this person.  The
+query parameter of TERMID=<termid> is required.
  <p/> 
 HOST://settings - dump data to the log.
-
 <p/>
-It could use improvement so feel free to help!  Please update this section with any 
-API changes.
+HOST://terms - Return a list of terms.  This is not specific to the user.
+<p/> Please update this section with any API changes.
 
 END
 
@@ -372,6 +372,7 @@ END
     ## might have put in a remote use from uniqname.  Do not keep that around.
   end
 
+
   ### send the documentation
   get '/api' do
     @@apidoc
@@ -412,6 +413,23 @@ END
     end
   end
 
+  ## provide a static set of terms
+  #{"getMyRegTermsResponse":{"@schemaLocation":"http:\/\/mais.he.umich.edu\/schemas\/getMyRegTermsResponse.v1 http:\/\/csqa9ib.dsc.umich.edu\/PSIGW\/PeopleSoftServiceListeningConnector\/getMyRegTermsResponse.v1.xsd","Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}}
+  #terms = "{Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}
+  #
+  # def termProviderStatic
+  #   termList = Array.new
+  #   termList << Hash[:TermCode => "2010", :TermDesc => "Fall 2014", :TermShortDesc => "FA 2014"]
+  #   termList << Hash[:TermCode => "2020", :TermDesc => "Mine 2014", :TermShortDesc => "NaNa 2014"]
+  # end
+
+  ### Return json array of the current objects.
+  get '/terms' do
+    logger.info "terms"
+    termList = termProviderStatic
+    termList.to_json
+  end
+
   ## catch any request not matched and give an error.
   get '*' do
     response.status = 400
@@ -420,6 +438,46 @@ END
 
 
   #################### Data provider functions #################
+
+  ##### Term providers
+  ## provide a static set of terms
+  #{"getMyRegTermsResponse":{"@schemaLocation":"http:\/\/mais.he.umich.edu\/schemas\/getMyRegTermsResponse.v1 http:\/\/csqa9ib.dsc.umich.edu\/PSIGW\/PeopleSoftServiceListeningConnector\/getMyRegTermsResponse.v1.xsd","Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}}
+  #terms = "{Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}
+  #Format from TLPORTAL-106
+  #- term(str)
+  #- year(str)
+  #- term-id(str)
+  #- current-term(bool)
+  # [
+  #     {
+  #         "term": "Fall",
+  #     "year": "2014",
+  #     "term_id": "2010",
+  #     "current_term": true
+  # },
+  #     {
+  #         "term": "Winter",
+  #     "year": "2015",
+  #     "term_id": "2030",
+  #     "current_term": false
+  # }
+  # ]
+
+  # value returned from ESB
+  #Hash[:TermCode => "2020", :TermDescr => "Mine 2014", :TermShortDesc => "NaNa 2014"]
+  # desired format
+  #  {"term": "Fall", "year": "2014", "term_id": "2010", "current_term": true}
+  ### mapping from ESB value
+  # term from first part of TermDescr (without year and trimming spaces)
+  # year from last part of TermDescr (4 integers at end of string)
+  # term_id from TermCode
+  # current_term is set as the first term in the list for the time being.
+
+  def termProviderStatic
+    termList = Array.new
+    termList << Hash[:term => "Fall", :year => "2014", :term_id => "2010", current_term: true]
+    termList << Hash[:term => "Winter", :year => "2014", :term_id => "2020", current_term: false]
+  end
 
   ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
