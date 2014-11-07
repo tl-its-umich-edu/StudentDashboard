@@ -1,6 +1,6 @@
-/*jslint browser: true*/
-/*global $, moment, errorHandler*/
-
+'use strict';
+/* jshint  strict: true*/
+/* global $, _, moment, errorHandler, angular */
 
 var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
 
@@ -12,33 +12,33 @@ dashboardApp.factory('Courses', function ($http) {
   return {
     getCourses: function (url) {
       return $http.get(url).then(function success(result) {
-        if (!result.data.length) {
-          result.data.message = "You seem to have no courses this term.";
-        }
-        if (_.where(result.data, {
-            Source: "CTools"
-          }).length > 0) {
-          result.data.ctools = true;
-        }
-        if (_.where(result.data, {
-            Source: "Canvas"
-          }).length > 0) {
-          result.data.canvas = true;
-        }
-        $.each( result.data, function( i, l ){
-           l.Instructor = _.filter(l.Instructor, function(instructor) {
-            return instructor.Role !=='Dummy'
-          })
-        });
-        
-        return result.data;
-      },
+          if (!result.data.length) {
+            result.data.message = 'You seem to have no courses this term.';
+          }
+          if (_.where(result.data, {
+              Source: 'CTools'
+            }).length > 0) {
+            result.data.ctools = true;
+          }
+          if (_.where(result.data, {
+              Source: 'Canvas'
+            }).length > 0) {
+            result.data.canvas = true;
+          }
+          $.each(result.data, function (i, l) {
+            l.Instructor = _.filter(l.Instructor, function (instructor) {
+              return instructor.Role !== 'Dummy';
+            });
+          });
+
+          return result.data;
+        },
         function error(result) {
           result.errors = errorHandler(url, result);
           result.errors.failure = true;
           return result.errors;
         }
-        );
+      );
     }
   };
 });
@@ -65,12 +65,12 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
   $scope.selectedTerm = null;
   $scope.terms = [];
   //var termsUrl = 'data/terms.json';
-    var termsUrl = 'terms';
+  var termsUrl = 'terms';
 
   $http.get(termsUrl).success(function (data) {
     $scope.terms = data;
     $scope.$parent.term = data[0].term;
-    $scope.$parent.year = data[0].year
+    $scope.$parent.year = data[0].year;
 
   });
 
@@ -78,7 +78,7 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
     $scope.$parent.courses = [];
     $scope.$parent.term = term;
     $scope.$parent.year = year;
-    var url = 'courses/' + $rootScope.user + '.json&term=' + "?TERMID="+termId;
+    var url = 'courses/' + $rootScope.user + '.json&term=' + '?TERMID=' + termId;
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
