@@ -7,13 +7,13 @@
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 
-application_name: SD-PROD
+application_name: SD-QA
 
 ##### Values below here are unlikely to change except when
 ##### testing.
 # Text to use when the server gets a non-standard request.
 
-invalid_query_text: Sorry, I don't understand this request.
+invalid_query_text: Come on, ask something reasonable
 
 # The name to use when no user name is available.  This is primarily useful
 # in test installations.
@@ -35,7 +35,7 @@ default_term: 2010
 # that would be caused by using an external authentication system can be
 # modeled during load testing.
 
-authn_uniqname_override: false
+authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 
@@ -45,9 +45,10 @@ authn_wait_max: 0.03
 ## Any number of users can be specified.
 # The anonymous_user name specified above should NEVER appear here.
 
-#admin:
-#  - ABBA_IS_GREAT
-#  - DYLAN_IS_BETTER
+admin:
+  - ckretler
+  - dlhaines
+  - gsilver
 
 ############## #########
 # These values are used for the local development

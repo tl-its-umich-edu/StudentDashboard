@@ -20,6 +20,9 @@ invalid_query_text: Come on, ask something reasonable
 
 anonymous_user: anonymous
 
+#### Default term to use for course lookups if no other information is available.
+default_term: 2010
+
 # These values allow implementation of a stub authentication service (to be used
 # primarily for load testing).
 # The authn_uniqname_override, when set to 'true' will allow the uniqname of the user
