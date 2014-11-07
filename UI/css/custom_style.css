@@ -10,7 +10,7 @@ ul {
     list-style: none;
 }
 
-.itemPanel li {
+.itemPanel .itemList li {
     position:relative;
     margin: 5px 0;
     padding: 10px;

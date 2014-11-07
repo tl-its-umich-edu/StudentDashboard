@@ -476,7 +476,7 @@ END
   def termProviderStatic
     termList = Array.new
     termList << Hash[:term => "Fall", :year => "2014", :term_id => "2010", current_term: true]
-    termList << Hash[:term => "Winter", :year => "2014", :term_id => "2020", current_term: false]
+    termList << Hash[:term => "Winterish", :year => "2014", :term_id => "2020", current_term: false]
   end
 
   ### Grab the desired data provider.
