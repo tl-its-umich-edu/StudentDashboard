@@ -29,6 +29,7 @@ class TestNew < Minitest::Test
   def setup_logger
     log = Logger.new(STDOUT)
     log.level = Logger::ERROR
+    #log.level = Logger::DEBUG
     RestClient.log = log
   end
 
@@ -64,7 +65,6 @@ class TestNew < Minitest::Test
 
      @w = WAPI.new(a)
    end
-
 
   # check that bad host gets caught.
   def test_outside_exception_passed_on
@@ -122,7 +122,10 @@ class TestNew < Minitest::Test
 
   def test_course_request
     #skip("can not test without working ESB")
-    r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
+    default_term = 2010
+    #r = @w.get_request("/Students/#{@uniqname}/Terms/2010/Schedule")
+    r = @w.get_request("/Students/#{@uniqname}/Terms/#{default_term}/Schedule")
+    #p r
     assert_equal 200, r.code
 #    r = JSON.parse(r)['getMyRegClassesResponse']['RegisteredClasses']
     r = JSON.parse(r)['getMyClsScheduleResponse']['RegisteredClasses']
