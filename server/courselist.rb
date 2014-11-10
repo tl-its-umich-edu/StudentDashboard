@@ -46,6 +46,10 @@ class CourseList < Sinatra::Base
   #@@studentdashboard = './server/local/studentdashboard.yml'
   @@studentdashboard = "#{@@config_base}/studentdashboard.yml"
 
+  @@build_file = "#{@@config_base}/build.yml"
+
+  # location for yml file describing the build.
+
   # default location for the security information
   #@@security_file = './server/spec/security.yml'
   @@security_file = "#{@@config_base}/security.yml"
@@ -180,6 +184,11 @@ END
     #puts "admin list: "
     #p @@admin
 
+    # read in yml configuration into a class variable
+
+    @@build = self.get_local_config_yml(@@build_file, "./server/local/build.yml")
+    @@build_time = @@build['time']
+    @@build_id = @@build['tag'] || @@build['last_commit']
 
   end
 
@@ -314,6 +323,7 @@ END
   before "*" do
     #logger.debug "#{__LINE__}: authn filter: request.env" + request.env.inspect
     logger.debug "#{__LINE__}: host: "+request.host
+    @server = request.host
 
     ## try setting userid from request remote_user
     user = request.env['REMOTE_USER']
@@ -376,6 +386,8 @@ END
 
     logger.info "#{__LINE__}:REMOTE_USER: [#{@remote_user}]"
     #logger.debug "top page: idx: #{idx}"
+    @build_time = @@build_time
+    @build_id = @@build_id
     erb idx
   end
 
@@ -387,6 +399,7 @@ END
   ## dump settings to log upon request`
   get '/settings' do
     logger.info "@@ls: (json) #{@@ls}"
+    logger.info "@@build: #{@@build}"
     "settings dumped to log file"
   end
 

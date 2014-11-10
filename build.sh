@@ -52,6 +52,18 @@ function makeWarFile {
     mv *.war ./ARTIFACTS
 }
 
+## make a file with some version information
+function makeVersion {
+    FILE="./server/local/build.yml"
+    echo  "build: TLPORTAL" >| $FILE
+    echo  "time: $ts " >> $FILE
+    last_commit=$(git rev-parse HEAD);
+    echo "last_commit: $last_commit" >> $FILE
+    echo -n "tag: " >> $FILE
+    echo $(git describe --tags) >> $FILE
+    echo >> $FILEy
+}
+
 ###################
 
 makeARTIFACTSDir
@@ -68,6 +80,8 @@ makeWarFile
 
 ## make and name the configuration file tar and put in ARTIFACTS directory.
 makeConfigTar
+
+makeVersion
 
 chmod a+r ./ARTIFACTS/*
 
