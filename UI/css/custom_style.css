@@ -51,13 +51,11 @@ ul li:last-child {
     padding: 1px 2px 3px 4px;
 }
 
-#spinner {
-    background: transparent url(../images/ajax_loader_blue_256.gif) 0 0 no-repeat;
-    height: 256px;
-    width: 256px;
-    position:absolute;
-    top:10%;
-    left: 40%
+.spinner{
+    background: transparent url(../images/spinner-sm.png) 0 0 no-repeat;
+    height: 30px;
+    width: 30px;
+    margin-right:10px;
 }
 
 .itemPanel {
