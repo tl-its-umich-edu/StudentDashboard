@@ -1,6 +1,6 @@
 
 <div id="courses" class="itemPanel" ng-controller="coursesController" ng-cloak>
-  <h2 class="colHeader">Courses {{term}} {{year}}
+  <h2 class="colHeader">Courses {{term}} {{year}} 
     <div class="btn-group pull-right">
       <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
         Terms <span class="caret"></span>
@@ -9,7 +9,9 @@
         <li ng-repeat="term in terms"><a href='' ng-click="getTerm(term.term_id, term.term, term.year)" data-term-id="{{term.term_id}}">{{term.term}} {{term.year}}</a></li>
       </ul>
     </div>
+    <div class="spinner pull-right" ng-show="loading"></div>
   </h2>
+
 
   <div>{{courses.message}}</div>
   <div>{{courses.errors.message}}</div>

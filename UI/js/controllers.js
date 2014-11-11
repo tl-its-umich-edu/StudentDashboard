@@ -11,6 +11,7 @@ dashboardApp.run(function ($rootScope) {
 dashboardApp.factory('Courses', function ($http) {
   return {
     getCourses: function (url) {
+
       return $http.get(url).then(function success(result) {
           if (!result.data.length) {
             result.data.message = 'You seem to have no courses this term.';
@@ -30,7 +31,6 @@ dashboardApp.factory('Courses', function ($http) {
               return instructor.Role !== 'Dummy';
             });
           });
-
           return result.data;
         },
         function error(result) {
@@ -45,6 +45,7 @@ dashboardApp.factory('Courses', function ($http) {
 
 dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope', function (Courses, $rootScope, $scope) {
   $scope.courses = [];
+  $scope.loading = true;
 
   var url = 'courses/' + $rootScope.user + '.json';
   // below for testing
@@ -53,8 +54,10 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
   Courses.getCourses(url).then(function (data) {
     if (data.failure) {
       $scope.courses.errors = data;
+      $scope.loading = false;
     } else {
       $scope.courses = data;
+      $scope.loading = false;
     }
 
   });
@@ -64,6 +67,7 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
 dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '$http', function (Courses, $rootScope, $scope, $http) {
   $scope.selectedTerm = null;
   $scope.terms = [];
+ 
   //var termsUrl = 'data/terms.json';
   var termsUrl = 'terms';
 
@@ -71,10 +75,10 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
     $scope.terms = data;
     $scope.$parent.term = data[0].term;
     $scope.$parent.year = data[0].year;
-
   });
 
   $scope.getTerm = function (termId, term, year) {
+    $scope.$parent.loading = true;
     $scope.$parent.courses = [];
     $scope.$parent.term = term;
     $scope.$parent.year = year;
@@ -83,10 +87,10 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
         $scope.$parent.courses.errors = data;
+        $scope.$parent.loading = false;
       } else {
-        $scope.$watch('courses', function () {
           $scope.$parent.courses = data;
-        });
+          $scope.$parent.loading = false;
       }
     });
 
