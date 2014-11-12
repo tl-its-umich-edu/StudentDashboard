@@ -75,13 +75,14 @@ bundle install >| ./ARTIFACTS/ruby.$ts.bundle
 ## should test return code
 ./runTests.sh
 
+# make version before war as build.yml is included in the war file.
+makeVersion
+
 # Make and name war file.  Put in ARTIFACTS directory.
 makeWarFile
 
 ## make and name the configuration file tar and put in ARTIFACTS directory.
 makeConfigTar
-
-makeVersion
 
 chmod a+r ./ARTIFACTS/*
 
