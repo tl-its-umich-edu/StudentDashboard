@@ -315,33 +315,35 @@ END
   ##### Before clauses are filters that apply before the verb based processing happens.
   ## These before clauses deal with authentication.
 
-  ## Make sure we have a remote "authenticated" userid.  This is useful for testing when
-  ## not running in a container.
-  ## Take the userid from the REMOTE_USER variable
-  ## If not there check session.
-  ## if not there default to anonymous userid
+  # If permitted take the remote user from the session.  This
+  # allows overrides to work for calls from the UI to the REST API.
+
   before "*" do
-    #logger.debug "#{__LINE__}: authn filter: request.env" + request.env.inspect
-    logger.debug "#{__LINE__}: host: "+request.host
-    @server = request.host
 
-    ## try setting userid from request remote_user
+    ## if there is no remote_user then set it to anonymous.
     user = request.env['REMOTE_USER']
-    logger.debug "before *: #{user}"
+    logger.debug "#{__LINE__}: authn filter: starting userid: #{user}"
 
-    ## if not there try setting from session remote userid
+    # If not set then use the anonymous user
     if user.nil? || user.length == 0
-      logger.debug "#{__LINE__}: authn filter: no REMOTE_USER try session"
-      user = session[:remote_user]
-      request.env['REMOTE_USER'] = user
+      user = @@anonymous_user
     end
 
-    ## If still not set use the anonymous userid
-    logger.debug "#{__LINE__}: authn filter: userid after check session: #{user}"
-    if user.nil? || user.length == 0
-      request.env['REMOTE_USER'] = @@anonymous_user
+
+    ## Now check to see if allowed to override the user.
+    if @@authn_uniqname_override == true
+
+      ## If allowed and there is an user in the session then use that.
+      session_user = session[:remote_user]
+      if  !session_user.nil? && session_user.length > 0
+        user = session_user
+        logger.debug "#{__LINE__}: authn filter: take user from session: #{user}"
+      end
     end
-    #logger.debug "before * first: request.env" + request.env.inspect
+
+    ## Set that remote user.
+    request.env['REMOTE_USER'] = user
+    logger.debug "#{__LINE__}: authn filter: final user: #{user}"
   end
 
   ## For testing allow specifying the userid identity to be used on the URL.
@@ -350,7 +352,7 @@ END
   ## is off by default.
   before '/' do
 
-    ## Allow overriding the uniqname during testing
+    ## Check and possibly override the user id
     logger.debug "#{__LINE__}:authn_uniqname_override: "+@@authn_uniqname_override.to_s
     uniqnameOverride if @@authn_uniqname_override == true
 
@@ -379,15 +381,24 @@ END
 
     # get some value for remote_user even if it isn't in the request.
     # the value of @remote_user will be available in the erb UI template.
-    logger.debug "#{__LINE__}:top page: required now after making sure there is a userid?"
-    @remote_user = request.env['REMOTE_USER']
-    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
-    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
+#    logger.debug "#{__LINE__}:top page: required now after making sure there is a userid?"
+#    @remote_user = request.env['REMOTE_USER']
+#    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
+#    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
 
-    logger.info "#{__LINE__}:REMOTE_USER: [#{@remote_user}]"
-    #logger.debug "top page: idx: #{idx}"
+    # make remote user available to the UI along with build information.
+    # The server name was set earlier
+
+    #logger.debug "#{__LINE__}: top page: request.env" + request.env.inspect
+
+    @server = request.host
+    @remote_user = request.env['REMOTE_USER']
     @build_time = @@build_time
     @build_id = @@build_id
+
+    logger.debug "#{__LINE__}: server: #{@server}"
+    logger.info "#{__LINE__}: REMOTE_USER: [#{@remote_user}]"
+
     erb idx
   end
 
@@ -414,7 +425,7 @@ END
 
     if format && "json".casecmp(format).zero?
       content_type :json
-      courseDataForX = CourseDataProvider(userid,termid)
+      courseDataForX = CourseDataProvider(userid, termid)
       if "404".casecmp(courseDataForX).zero?
         logger.debug "#{__LINE__}: returning 404 for missing file"
         response.status = 404
@@ -517,16 +528,13 @@ END
   end
 
 
-
-
-
   ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
-  def CourseDataProvider(a,termid)
+  def CourseDataProvider(a, termid)
     #return CourseDataProviderStatic(a,termid)
     logger.debug "CourseDataProvider a: #{a} termid: #{termid}"
     #return CourseDataProviderFile(a,termid)
-    return CourseDataProviderESB(a,termid)
+    return CourseDataProviderESB(a, termid)
   end
 
   ###### File provider ################
@@ -537,7 +545,7 @@ END
   ### E.g. localhost:3000/courses/abba.json would map to a file named abba.json in the 
   ### courses sub-directory under, in this case, the test-files directory.
 
-  def CourseDataProviderFile(a,termid)
+  def CourseDataProviderFile(a, termid)
     logger.debug "data provider is CourseDataProviderFile.\n"
 
     dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
@@ -555,14 +563,13 @@ END
     return classes
   end
 
-  def CourseDataProviderESB(uniqname,termid)
+  def CourseDataProviderESB(uniqname, termid)
     logger.info "data provider is CourseDataProviderESB.\n"
     ## if necessary initialize the ESB connection.
     if @@w.nil?
       logger.debug "@@w is nil"
       @@w = initESB
     end
-
 
 
     if termid.nil? || termid.length == 0
