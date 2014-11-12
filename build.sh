@@ -61,7 +61,7 @@ function makeVersion {
     echo "last_commit: $last_commit" >> $FILE
     echo -n "tag: " >> $FILE
     echo $(git describe --tags) >> $FILE
-    echo >> $FILEy
+    echo >> $FILE
 }
 
 ###################
