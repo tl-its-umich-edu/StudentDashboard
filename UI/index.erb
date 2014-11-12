@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-10 col-xs-10 col-xs-10 logo" id="showAllPanels">
                     <h1 id="getServerInfo" data-toggle="modal" data-target="#serverInfoModal">
-                        <span class="visible-xs-block">Pilot</span><span class="visible-sm-inline">Pilot</span><span class="visible-md-inline">Pilot</span><span class="visible-lg-inline">Pilot</span> <small id="userId"><%= @remote_user %></small>
+                        <span class="visible-xs-block">Pilot</span><span class="visible-sm-inline">Pilot</span><span class="visible-md-inline">Pilot</span><span class="visible-lg-inline">Pilot</span>
                     </h1>
                 </div>
                 <div class="col-md-2 col-xs-2 col-xs-2">
@@ -178,7 +178,7 @@
         <div id="spinner" style="display:none">
         </div>
 
-        <div id="info">server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</div>
+        <p class="footerInfo text-muted"><small style="font-size:75%"> User: [<span id="userId"><%= @remote_user %></span>] server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</small></p>
 
         <script src="//code.jquery.com/jquery-1.11.0.min.js">
         </script>
@@ -242,11 +242,11 @@
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
                         </button>
-                        <h3 class="modal-title" id="serverInfoLabel">Sorry! Copy the info below</h3>
+                        <h3 class="modal-title" id="serverInfoLabel">Please copy the info below</h3>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <textarea class="form-control" id="toDoMessage" style="height:80px">server: [<%= @server %>]&#10;build time: [<%= @build_time %>]&#10; build_id: [<%= @build_id %>]</textarea>
+                            <textarea class="form-control" id="toDoMessage" style="height:80px">server: [<%= @server %>]&#10;build time: [<%= @build_time %>]&#10;build_id: [<%= @build_id %>]</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

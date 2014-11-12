@@ -1,6 +1,6 @@
 
 <div id="courses" class="itemPanel" ng-controller="coursesController" ng-cloak>
-  <h2 class="colHeader">Courses {{term}} {{year}} 
+  <h3 class="colHeader">Courses <small>{{term}} {{year}}</small>
     <div class="btn-group pull-right">
       <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
         Terms <span class="caret"></span>
@@ -10,7 +10,7 @@
       </ul>
     </div>
     <div class="spinner pull-right" ng-show="loading"></div>
-  </h2>
+  </h3>
 
 
   <div>{{courses.message}}</div>

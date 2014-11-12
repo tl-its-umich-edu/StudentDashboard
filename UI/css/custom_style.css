@@ -199,11 +199,15 @@ i[class*="Games"]:before {
   display:none;
 }
 
+.footerInfo {
+    padding:10px;
+}
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
         padding:0
     }
     .colHeader {
         padding:0 10px;
+        font-size:150%;
     }
 }
