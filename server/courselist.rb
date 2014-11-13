@@ -151,10 +151,13 @@ END
     $stdout.sync = true
   end
 
-  def self.configureYml
+  def self.configureStatic
     f = File.dirname(__FILE__)+"/../UI"
     logger.debug("UI files: "+f)
     set :public_folder, f
+
+    ## Set early because it will not change.
+    @@server = Socket.gethostname
 
     # read in yml configuration into a class variable
     @@ls = self.get_local_config_yml(@@studentdashboard, "./server/local/studentdashboard.yml")
@@ -201,7 +204,7 @@ END
 
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
-    configureYml
+    configureStatic
 
   end
 
@@ -212,7 +215,7 @@ END
 
     configureLogging
 
-    configureYml
+    configureStatic
 
   end
 
@@ -386,18 +389,19 @@ END
 #    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
 #    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
 
-    # make remote user available to the UI along with build information.
+    # Make remote user available to the UI along with build information.
     # The server name was set earlier
+    # Put the global into the instance variable so that it will get down into
+    # the render html.
+    @server = @@server
+    #@server = request.host
+    #@hostname = Socket.gethostname
 
-    #logger.debug "#{__LINE__}: top page: request.env" + request.env.inspect
-
-    @server = request.host
     @remote_user = request.env['REMOTE_USER']
     @build_time = @@build_time
     @build_id = @@build_id
 
-    logger.debug "#{__LINE__}: server: #{@server}"
-    logger.info "#{__LINE__}: REMOTE_USER: [#{@remote_user}]"
+    logger.debug "#{__LINE__}: REMOTE_USER: [#{@remote_user}] server: [#{@server}]"
 
     erb idx
   end
