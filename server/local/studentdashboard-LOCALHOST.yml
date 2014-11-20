@@ -1,0 +1,57 @@
+### This yaml format file specifies configuration values that may change from
+### instance to instance.  E.g. the values may need to be different between the
+### developer, qa, and production instances.
+### NOTE: White space indentation matters for yaml.
+
+# This is the name of the ESB "application" that identifies the credentials to be used
+# for ESB oauth authentication.  It must match up with a corresponding application name
+# in the security.yml file.  See that file for details on the authentication information.
+
+application_name: SD-QA
+
+##### Values below here are unlikely to change except when
+##### testing.
+# Text to use when the server gets a non-standard request.
+
+invalid_query_text: Come on, ask something reasonable
+
+# The name to use when no user name is available.  This is primarily useful
+# in test installations.
+
+anonymous_user: anonymous
+
+#### Default term to use for course lookups if no other information is available.
+default_term: 2010
+
+# These values allow implementation of a stub authentication service (to be used
+# primarily for load testing).
+# The authn_uniqname_override, when set to 'true' will allow the uniqname of the user
+# may be taken from the URL UNIQNAME parameter rather than
+# using the authenticated user.  E.g. localhost:3000/?UNIQNAME=bono with run StudentDashboard
+# as if the user is bono.
+
+# The two "authn_wait_..." values give the range of time to wait between changing
+# the user name and returning.  They are included so that the effect of a delay
+# that would be caused by using an external authentication system can be
+# modeled during load testing.
+
+authn_uniqname_override: false
+authn_wait_min: 0.01
+authn_wait_max: 0.02
+
+## The 'admin' entry specifies a list of user names of authenticated users
+## who may act as administrators and so bypass some built-in restrictions.
+## To include users remove the leading '#' sign from these lines and put in reasonable uniqnames.
+## Any number of users can be specified.
+# The anonymous_user name specified above should NEVER appear here.
+
+#admin:
+#  - ABBA_IS_GREAT
+#  - DYLAN_IS_BETTER
+
+############## #########
+# These values are used for the local development
+# course data provider.
+#data_file_dir: server/test-files
+#data_file_type: courses
+########## end #########
