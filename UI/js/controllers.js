@@ -12,7 +12,7 @@ dashboardApp.factory('Courses', function ($http) {
   return {
     getCourses: function (url) {
 
-      return $http.get(url).then(function success(result) {
+      return $http.get(url, {cache: true}).then(function success(result) {
           if (!result.data.length) {
             result.data.message = 'You seem to have no courses this term.';
           }
