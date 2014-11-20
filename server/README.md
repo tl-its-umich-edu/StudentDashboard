@@ -43,6 +43,20 @@ If no matching file is found then a 404 / empty string is returned.
 While the server currently only implements the courses data type it could easily be extended to
 support other types, e.g. todo, or events.
 
+----
+## Error handling
+
+The WAPI module handles calls to the ESB.  It always returns a wrapper response as JSON in the format:
+{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool to say>}
+  Result: <result>
+  }
+
+The meta httpStatus will reflect the httpstatus of the underlying request if appropriate.  If the value is
+666 there has been an error doing the call.  The Message and Result section may have more information.
+
+Note that the value in the result is what was returned from the API call.  It is not assured to be valid JSON
+when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
+
 -----
 
 ### COMMANDS:
@@ -93,13 +107,10 @@ It also has a good syntax summary on the right hand side.
 
 ACTIVE:
 
-- document file based provider
+
 
 TTD: (roughly in order)
 
-- add procedure for supplying remote_user via url for testing.
-- implement ESB / API provider
-- implement UMIAC / Canvas provider.
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - make it detect json preference from header too
 - clean up route expressions (regex? trailing /?.....)
@@ -113,6 +124,9 @@ MAYBE:
 
 DONE:
 
+- add procedure for supplying remote_user via url for testing.
+- implement ESB / API provider
+- document file based provider
 - pass in the uniqname to the index.html file.
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
