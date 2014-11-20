@@ -1,0 +1,20 @@
+[
+    {
+        "Title": "AMCULT 217",
+        "Subtitle": "One course",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    }
+]
