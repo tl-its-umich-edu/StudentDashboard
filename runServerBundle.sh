@@ -18,5 +18,8 @@ if [ $LINES != 0 ]; then
     exit 1;
 fi
 
+echo "TTD: unify with guard and startup switch?"
+echo "TTD: detect guard instances?"
+
 bundle exec rackup -p $PORT
 #end

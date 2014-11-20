@@ -18,7 +18,6 @@ require '../courselist'
 #email_regex: !ruby/regexp '/^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i'
 
 
-
 ##<Sinatra::Request:0x007fd822df6bf8
 # @env={"GATEWAY_INTERFACE"=>"CGI/1.1", "PATH_INFO"=>"/courses/ststviixxx.json", "QUERY_STRING"=>"",
 # "REMOTE_ADDR"=>"127.0.0.1", "REMOTE_HOST"=>"localhost", "REQUEST_METHOD"=>"GET",
@@ -86,7 +85,7 @@ class AuthCheck < MiniTest::Test
 
   ### check to make sure unauthorized user can not request courses but
   ### and anothorized user can
-    def test_mismatched_user
+  def test_mismatched_user
     r = CourseList.vetoRequest "abba", @coursesUrlststvii
     assert r, "allowed wrong user."
   end
@@ -99,9 +98,9 @@ class AuthCheck < MiniTest::Test
 
   ### Check that administrative users can do anything
 
-  def test_admin_user_works
-    skip("user from admin list should not be vetoed")
-  end
+  #def test_admin_user_works
+  #  skip("user from admin list should not be vetoed")
+  #end
 
   ####### check that don't affect irrelevant URLS
 
