@@ -15,7 +15,6 @@ require '../courselist'
 #ENV['RACK_ENV'] = 'unit'
 
 
-
 class AuthCheck < MiniTest::Test
 
   # Called before every test method runs. Can be used
@@ -50,9 +49,8 @@ class AuthCheck < MiniTest::Test
     @x.get("/")
   end
   #def test_create
-#    assert @x, "did not create Latte object"
-#  end
-
+  #    assert @x, "did not create Latte object"
+  #  end
 
 
 end
