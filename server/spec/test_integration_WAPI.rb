@@ -1,5 +1,6 @@
 ## Test WAPI module using real WSO2 API.
 
+require_relative 'test_helper'
 
 require 'rubygems'
 require 'minitest'
