@@ -188,10 +188,16 @@ END
     #p @@admin
 
     # read in yml configuration into a class variable
-
-    @@build = self.get_local_config_yml(@@build_file, "./server/local/build.yml")
-    @@build_time = @@build['time']
-    @@build_id = @@build['tag'] || @@build['last_commit']
+    begin
+      @@build = self.get_local_config_yml(@@build_file, "./server/local/build.yml")
+      @@build_time = @@build['time']
+      @@build_id = @@build['tag'] || @@build['last_commit']
+    rescue
+      # The file only needs to be there when a build has been done.  If it isn't there
+      # then just use default values.
+      @@build_time = Time.now
+      @@build_id = 'development'
+    end
 
   end
 
@@ -384,10 +390,10 @@ END
 
     # get some value for remote_user even if it isn't in the request.
     # the value of @remote_user will be available in the erb UI template.
-#    logger.debug "#{__LINE__}:top page: required now after making sure there is a userid?"
-#    @remote_user = request.env['REMOTE_USER']
-#    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
-#    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
+    #    logger.debug "#{__LINE__}:top page: required now after making sure there is a userid?"
+    #    @remote_user = request.env['REMOTE_USER']
+    #    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
+    #    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
 
     # Make remote user available to the UI along with build information.
     # The server name was set earlier
