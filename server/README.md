@@ -24,7 +24,7 @@ for details.
 ## File based Data provider
 The File based data provider will retrieve user data from
 files on disk.  The specific directory to use is specified in the
-studentdashboard.yml file by the *data_file_provider_directory*  entry.
+studentdashboard.yml file by the *data_provider_file_directory*  entry.
 This is documented further in each studentdashboard yml file.
 
 The provider will expect to find a file named *user name.json* in that
@@ -56,17 +56,21 @@ Note that the value in the result is what was returned from the API call. It is 
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
 
 ----
-## Error handling
+## API Format
 
-The WAPI module handles calls to the ESB.  It always returns a wrapper response as JSON in the format:
-{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool to say>}
+The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
+
+{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool with words>}
   Result: <result>
   }
 
-The meta httpStatus will reflect the httpstatus of the underlying request if appropriate.  If the value is
-666 there has been an error doing the call.  The Message and Result section may have more information.
+The Meta httpStatus reflects the result of the call.  If the API call was successful it will match the httpStatus
+from the remote API.  "Successful" here means that the remote API handled the call.  It does not mean that the call
+worked.  It means that the Student Dashboard code didn't need to intrude on the call.
+If there is a problem that required the Latte code to respond then the Meta httpStatus will be 666
+The Meta Message and the Result section likely have more information but this is not assured.
 
-Note that the value in the result is what was returned from the API call.  It is not assured to be valid JSON
+Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
 
 -----
