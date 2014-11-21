@@ -1,7 +1,7 @@
 # Unit test checks that can veto in appropriate users
 # from get information on other people.
 
-
+require_relative 'test_helper'
 require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'

@@ -1,9 +1,8 @@
 ## Unit tests for WAPI module
 
-require 'rubygems'
+require_relative 'test_helper'
 
-require 'simplecov'
-SimpleCov.start
+require 'rubygems'
 
 require 'minitest'
 require 'minitest/autorun'
