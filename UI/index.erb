@@ -8,17 +8,32 @@
         <title>Dashboard</title>
     </head>
     <body>
-        <div class="contaner-fluid mastHead">
-            <div class="row">
-                <div class="col-md-10 col-xs-10 col-xs-10 logo" id="showAllPanels">
-                    <h1 id="getServerInfo" data-toggle="modal" data-target="#serverInfoModal">
-                        <span class="visible-xs-block">Pilot</span><span class="visible-sm-inline">Pilot</span><span class="visible-md-inline">Pilot</span><span class="visible-lg-inline">Pilot</span>
-                    </h1>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header mastHead">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <h1 class="navbar-brand collapse-nav">Pilot</h1>
                 </div>
-                <div class="col-md-2 col-xs-2 col-xs-2">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="print">
+                            <a href="#" class="collapse-nav" data-toggle="modal" data-target="#serverInfoModal"></i>About</a>
+                        </li>
+                    </ul>
                 </div>
+                <!-- /.navbar-collapse -->
             </div>
-        </div>
+            <!-- /.container-fluid -->
+        </nav>
+
         <div class="container-fluid contentWrapper">
             <div class="row row-eq-heigh" id="content">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
@@ -245,7 +260,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <textarea class="form-control" id="toDoMessage" style="height:80px">server: [<%= @server %>]&#10;build time: [<%= @build_time %>]&#10;build_id: [<%= @build_id %>]</textarea>
+                            <textarea class="form-control" id="toDoMessage" style="height:90px">User: [<%= @remote_user %>]&#10;server: [<%= @server %>]&#10;build time: [<%= @build_time %>]&#10;build_id: [<%= @build_id %>]</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

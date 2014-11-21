@@ -145,14 +145,16 @@ i[class*="Games"]:before {
     content: "\e118";
 }
 .mastHead {
-    background: #00274c;
     color:#fff;
 }
 .mastHead h1{
-    background: transparent url("../images/block-m.png") 0 0 no-repeat;
-    color:#fff;
-    padding-left:90px;
-    margin-top:10px
+    background: transparent url("../images/block-m.png") 10px 5px no-repeat;
+    color:#aaa;
+    margin-top:10px;
+    margin:0;
+    padding:15px 5px 15px 90px;
+    font-size:24px;
+
 }
 
 .contentWrapper {
