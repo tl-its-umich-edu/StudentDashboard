@@ -24,7 +24,7 @@ for details.
 ## File based Data provider
 The File based data provider will retrieve user data from
 files on disk.  The specific directory to use is specified in the
-studentdashboard.yml file by the *data_file_provider_directory*  entry.
+studentdashboard.yml file by the *data_provider_file_directory*  entry.
 This is documented further in each studentdashboard yml file.
 
 The provider will expect to find a file named *user name.json* in that
