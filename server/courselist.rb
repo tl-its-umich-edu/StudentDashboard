@@ -66,6 +66,9 @@ class CourseList < Sinatra::Base
 
   @@admin = []
 
+  @@data_provider_file_directory = nil
+
+
   ## api docs
   @@apidoc = <<END
 
@@ -172,7 +175,20 @@ END
     @@authn_wait_min = @@ls['authn_wait_min'] || 0
     @@authn_wait_max = @@ls['authn_wait_max'] || 0
 
+    #### setup information for providers
+    ## configuration information for the file data provider. If not provided then a different
+    ## provider will be used.
+    @@data_provider_file_directory = @@ls['data_provider_file_directory'] || nil
 
+    ## If the full path to the provider directory was specified then use it.
+    ## Otherwise append what was provided to the local base directory
+    if ! ( @@data_provider_file_directory.nil? || @@data_provider_file_directory.start_with?('/') )
+      @@data_provider_file_directory = "#{@@BASE_DIR}/#{@@data_provider_file_directory}"
+    end
+
+    #dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
+
+    ##### setup information for authn override
     logger.debug "authn_uniqname_override: "+@@authn_uniqname_override.to_s
     ## If there is an authn wait specified then setup a random number generator.
     ## create a variable with a random number generator
@@ -195,6 +211,7 @@ END
     rescue
       # The file only needs to be there when a build has been done.  If it isn't there
       # then just use default values.
+      @@build = "no build file specified"
       @@build_time = Time.now
       @@build_id = 'development'
     end
@@ -419,6 +436,7 @@ END
 
   ## dump settings to log upon request`
   get '/settings' do
+    puts "settings: "+@@ls.inspect
     logger.info "@@ls: (json) #{@@ls}"
     logger.info "@@build: #{@@build}"
     "settings dumped to log file"
@@ -543,8 +561,15 @@ END
   def CourseDataProvider(a, termid)
     #return CourseDataProviderStatic(a,termid)
     logger.debug "CourseDataProvider a: #{a} termid: #{termid}"
+    #logger.debug "data_provider_file: #{@@data_provider_file}"
+    if !@@data_provider_file_directory.nil?
+      return CourseDataProviderFile(a,termid)
+    else
+      return CourseDataProviderESB(a, termid)
+    end
+
     #return CourseDataProviderFile(a,termid)
-    return CourseDataProviderESB(a, termid)
+    #return CourseDataProviderESB(a, termid)
   end
 
   ###### File provider ################
@@ -558,14 +583,17 @@ END
   def CourseDataProviderFile(a, termid)
     logger.debug "data provider is CourseDataProviderFile.\n"
 
-    dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
-    logger.debug "data file string: "+dataFile
+    #redo.  see emacs studentdashboard.yml
 
-    if File.exists?(dataFile)
-      logger.debug("file exists: #{dataFile}")
-      classes = File.read(dataFile)
+    #dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
+    data_file = "#{@@data_provider_file_directory}/#{a}.json"
+    logger.debug "data file string: "+data_file
+
+    if File.exists?(data_file)
+      logger.debug("file exists: #{data_file}")
+      classes = File.read(data_file)
     else
-      logger.debug("file does not exist: #{dataFile}")
+      logger.debug("file does not exist: #{data_file}")
       classes = "404"
     end
 
