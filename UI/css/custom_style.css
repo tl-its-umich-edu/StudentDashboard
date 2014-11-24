@@ -52,10 +52,11 @@ ul li:last-child {
 }
 
 .spinner{
-    background: transparent url(../images/spinner-sm.png) 0 0 no-repeat;
-    height: 30px;
-    width: 30px;
+    background: transparent url(../images/spinner-xs.png) 0 0 no-repeat;
+    height: 20px;
+    width: 20px;
     margin-right:10px;
+    margin-top:5px;
 }
 
 .itemPanel {
