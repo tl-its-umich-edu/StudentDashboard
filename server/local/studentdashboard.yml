@@ -54,4 +54,10 @@ authn_wait_max: 0.02
 # course data provider.
 #data_file_dir: server/test-files
 #data_file_type: courses
+data_file_provider: server/test-files/courses
+# This is the directory path to the noun/resource/request based directories.
+# If the path start with a '/' it is fully qualified.  If it doesn't start
+# with a '/' the base application directory will be prepended to it.
+data_provider_file_directory: server/test-files/courses
+#data_provider_file_directory: /usr/local/SILLYWALKS/server/test-files/courses
 ########## end #########
