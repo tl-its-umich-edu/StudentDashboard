@@ -1,3 +1,7 @@
+## Making required modules source available
+require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
+require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
+
 ### Simple rest server for SD data
 ### This version will also server up the HTML page if no
 ### specific page is requested.
@@ -16,7 +20,8 @@ require_relative 'WAPI'
 include Logging
 
 class CourseList < Sinatra::Base
-
+  include DataProviderESB
+  include DataProviderFile
   ### Class variables
 
   @@l = Hash.new
@@ -32,10 +37,6 @@ class CourseList < Sinatra::Base
   ## base directory to ease referencing files in the war
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
 
-  @@yml = "HOWDY"
-
-  @@w = nil
-
   # name of application to use for security information
   @@application_name = "SD-QA"
 
@@ -43,7 +44,6 @@ class CourseList < Sinatra::Base
   @@anonymous_user = "anonymous"
 
   # default location for student dashboard configuration
-  #@@studentdashboard = './server/local/studentdashboard.yml'
   @@studentdashboard = "#{@@config_base}/studentdashboard.yml"
 
   @@build_file = "#{@@config_base}/build.yml"
@@ -51,7 +51,6 @@ class CourseList < Sinatra::Base
   # location for yml file describing the build.
 
   # default location for the security information
-  #@@security_file = './server/spec/security.yml'
   @@security_file = "#{@@config_base}/security.yml"
 
   @@log_file = "server/log/sinatra.log"
@@ -109,37 +108,10 @@ END
   ## Set the environment from an environment variable.
   set :environment, ENV['RACK_ENV'].to_s
 
-
   ## need session for authn testing
   configure do
     enable :sessions
   end
-
-  ## to force particular logging levels
-  # configure :test do
-  #   set :logging, Logger::ERROR
-  # end
-  #
-  # configure :development do
-  #   set :logging, Logger::DEBUG
-  # end
-  #
-  # configure :production do
-  #   set :logging, Logger::INFO
-  # end
-
-  ### set configurations
-  ### Set configuration values based on the environment.
-
-  # configure :test, :development do
-  #   puts "in debug configure"
-  # end
-  #
-  # configure :development do
-  #   puts 'in development'
-  #   p settings.inspect
-  # end
-
 
   ## Utility methods.  The "self." in the method name means that this is
   ## a class method.
@@ -186,8 +158,6 @@ END
       @@data_provider_file_directory = "#{@@BASE_DIR}/#{@@data_provider_file_directory}"
     end
 
-    #dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
-
     ##### setup information for authn override
     logger.debug "authn_uniqname_override: "+@@authn_uniqname_override.to_s
     ## If there is an authn wait specified then setup a random number generator.
@@ -200,8 +170,6 @@ END
     @@admin = @@ls['admin'] || []
 
     @@default_term = @@ls['default_term'] || @@default_term
-    #puts "admin list: "
-    #p @@admin
 
     # read in yml configuration into a class variable
     begin
@@ -404,21 +372,11 @@ END
     ### Currently pull the erb file from the UI directory.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
 
-
-    # get some value for remote_user even if it isn't in the request.
-    # the value of @remote_user will be available in the erb UI template.
-    #    logger.debug "#{__LINE__}:top page: required now after making sure there is a userid?"
-    #    @remote_user = request.env['REMOTE_USER']
-    #    @remote_user = @@anonymous_user if @remote_user.nil? || @remote_user.empty?
-    #    @remote_user = request.env['REMOTE_USER'] || @@anonymous_user
-
     # Make remote user available to the UI along with build information.
     # The server name was set earlier
     # Put the global into the instance variable so that it will get down into
     # the render html.
     @server = @@server
-    #@server = request.host
-    #@hostname = Socket.gethostname
 
     @remote_user = request.env['REMOTE_USER']
     @build_time = @@build_time
@@ -453,7 +411,7 @@ END
 
     if format && "json".casecmp(format).zero?
       content_type :json
-      courseDataForX = CourseDataProvider(userid, termid)
+      courseDataForX = DataProviderCourse(userid, termid)
       if "404".casecmp(courseDataForX).zero?
         logger.debug "#{__LINE__}: returning 404 for missing file"
         response.status = 404
@@ -470,33 +428,6 @@ END
       return "format missing or not supported: [#{format}]"
     end
   end
-
-  # get '/courses/:userid.?:format?' do |userid, format|
-  #   logger.info "#{__LINE__}:courses/:userid: #{userid} format: #{format}"
-  #   logger.info "#{__LINE__}:params:"+params.inspect
-  #   if format && "json".casecmp(format).zero?
-  #     content_type :json
-  #     courseDataForX = CourseDataProvider(userid)
-  #     #logger.info "courseData from provider #{courseDataForX}"
-  #     if "404".casecmp(courseDataForX).zero?
-  #       logger.debug "#{__LINE__}: returning 404 for missing file"
-  #       response.status = 404
-  #       return ""
-  #     end
-  #
-  #     # parse return value as json so it is converted from string
-  #     # format.
-  #     courseDataForXJson = JSON.parse courseDataForX
-  #     #logger.info "courseData as json #{courseDataForXJson}"
-  #
-  #     # return data as json
-  #     courseDataForXJson.to_json
-  #
-  #   else
-  #     response.status = 400
-  #     return "format missing or not supported: [#{format}]"
-  #   end
-  # end
 
   ### Return json array of the current objects.
   get '/terms' do
@@ -558,142 +489,17 @@ END
 
   ### Grab the desired data provider.
   ### Need to make the provider selection settable via properties.
-  def CourseDataProvider(a, termid)
-    #return CourseDataProviderStatic(a,termid)
-    logger.debug "CourseDataProvider a: #{a} termid: #{termid}"
-    #logger.debug "data_provider_file: #{@@data_provider_file}"
+  def DataProviderCourse(a, termid)
+
+    logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
+
     if !@@data_provider_file_directory.nil?
-      return CourseDataProviderFile(a,termid)
+      return DataProviderFileCourse(a,termid, @@data_provider_file_directory)
     else
-      return CourseDataProviderESB(a, termid)
+      return DataProviderESBCourse(a, termid, @@security_file,@@application_name,@@default_term)
     end
 
-    #return CourseDataProviderFile(a,termid)
-    #return CourseDataProviderESB(a, termid)
-  end
-
-  ###### File provider ################
-  ### Return the data from a matching file.  The file must be in a sub-directory
-  ### under the directory specified by the property data_file_dir.
-  ### The sub-directory will be the name of the type of data requested (e.g. courses)
-  ### The name of the file must match the rest of the URL.
-  ### E.g. localhost:3000/courses/abba.json would map to a file named abba.json in the 
-  ### courses sub-directory under, in this case, the test-files directory.
-
-  def CourseDataProviderFile(a, termid)
-    logger.debug "data provider is CourseDataProviderFile.\n"
-
-    #redo.  see emacs studentdashboard.yml
-
-    #dataFile = "#{@@BASE_DIR}/"+@@ls['data_file_dir']+"/"+@@ls['data_file_type']+"/#{a}.json"
-    data_file = "#{@@data_provider_file_directory}/#{a}.json"
-    logger.debug "data file string: "+data_file
-
-    if File.exists?(data_file)
-      logger.debug("file exists: #{data_file}")
-      classes = File.read(data_file)
-    else
-      logger.debug("file does not exist: #{data_file}")
-      classes = "404"
-    end
-
-    logger.debug("returning: "+classes)
-    return classes
-  end
-
-  def CourseDataProviderESB(uniqname, termid)
-    logger.info "data provider is CourseDataProviderESB.\n"
-    ## if necessary initialize the ESB connection.
-    if @@w.nil?
-      logger.debug "@@w is nil"
-      @@w = initESB
-    end
-
-
-    if termid.nil? || termid.length == 0
-      logger.debug "defaulting term to #{@@default_term}"
-      termid = @@default_term
-    end
-
-    url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
-
-    logger.debug("ESB: url: "+url)
-    logger.debug("@@w: "+@@w.to_s)
-
-    classes = @@w.get_request(url)
-    #   logger.debug("CL: ESB returns: "+classes)
-    r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
-    r2 = JSON.generate r
-    # logger.debug "Course data provider returns: "+r2
-    return r2
-  end
-
-  def initESB
-    logger.info "initESB"
-
-    logger.info("security_file: "+@@security_file.to_s)
-    requested_file = @@security_file
-
-    default_security_file = './server/local/security.yml'
-
-    if File.exist? requested_file
-      file_name = requested_file
-    else
-      file_name = default_security_file
-    end
-    logger.debug "security file_name: #{file_name}"
-    @@yml = YAML.load_file(file_name)
-
-    app_name=@@application_name
-    setup_WAPI(app_name)
-  end
-
-  def setup_WAPI(app_name)
-    logger.info "use ESB application: #{app_name}"
-    application = @@yml[app_name]
-    @@w = WAPI.new application
-  end
-
-  ##### Trivial static data provider
-  def CourseDataProviderStatic(a)
-    logger.debug("data provider is CourseDataProviderStatic")
-    classJson =
-        [
-            {:title => "English 323",
-             :subtitle => "Austen and her contemporaries and #{a}",
-             :location => "canvas",
-             :link => "google.com",
-             :instructor => "me: #{a}",
-             :instructor_email => "howdy ho"
-            },
-            {:title => "German 323",
-             :subtitle => "Beeoven and her contemporaries and #{a}",
-             :location => "ctools",
-             :link => "google.com",
-             :instructor => "you: Mozarty",
-             :instructor_email => "howdy haw"
-            },
-            {:title => "Philosophy 323",
-             :subtitle => "Everybody and nobody at all along with you: #{a}",
-             :location => "none",
-             :link => "google.com",
-             :instructor => "Life",
-             :instructor_email => "google@google.goo"
-            }
-        ]
-    return classJson
   end
 
 
 end
-
-__END__
-
-###### inline templates are here.
-
-### API documentation as slim template.
-@@ apidocA
-   h1 This is the API documentation
-   h2 '/api' will return api documentation.
-   h2 '/courses/{userid}.json' will return course objects for this userid.
-
