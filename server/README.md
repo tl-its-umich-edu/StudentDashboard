@@ -1,53 +1,47 @@
-# SD server
-This implements a simple REST ruby web server based on sinatra.
+# Student Dashboard data server
+This implements a simple REST ruby web server based on Ruby Sinatra DSL.
 It expects to return data in json format.
 
-For development purposes it also supports running the main dashboard
-page.
+The server also supports running the main dashboard UI page.
 
 To get the UI page simply visit the base URL for 
 the application.  E.g. https://<host>/StudentDashboard/
 The root element of the URL can be configured.
 
-The url format for the courses data is:
-http://localhost:3000/StudentDashboard/courses/jabba.json
-
 The API is documented at : http://localhost:3000/StudentDashboard/api
 
-See Tips section at the end for information on:
-
-* useful scripts included
-* useful links
-
 # Data providers
-There are three major data providers:
+There are data providers supplied:
 
- * file based
- * ESB / API based (not implemented)
- * Umiac / Canvas based (not implemented
+* ESB / API based
+* FB file based
 
-## File based data provider
+## ESB Data provider
+This provider used the UMich WSO2 based ESB to get user data.  Configuration
+of this provider is entirely within the security.yml file.  See that file
+for details.
 
-By default the system will return matching json files from the
-server/test-files/courses directory.  Whatever json is provided in
-that file will be returned as the response to a courses
-query. E.g.the query _https:myserver.edu//courses/csev.json_
-will return the contents of the csev.json file.
-The contents of the file will be parsed as json so syntax errors may
-result in no response.
+## File based Data provider
+The File based data provider will retrieve user data from
+files on disk.  The specific directory to use is specified in the
+studentdashboard.yml file by the *data_file_provider_directory*  entry.
+This is documented further in each studentdashboard yml file.
 
-To add more users files create <user>.json files in the courses directory.
+The provider will expect to find a file named *user name.json* in that
+directory. If no matching file is found then a 404 / empty string is returned.
+No checking is done on the user so that the user name specified need not be a real
+user. One advantage of this is that files can be constructed to contain
+data with specific constructions or errors and can be used for testing.  E.g. the file *test-long-long-strings.json*
+could be used to test data with particularly long strings.
 
-If no matching file is found then a 404 / empty string is returned.
-
-While the server currently only implements the courses data type it could easily be extended to
-support other types, e.g. todo, or events.
+The file based server currently only implements requests for the course
+data. It could easily be extended to support other types such as term or todo data.
 
 -----
 
-### COMMANDS:
+### Ruby COMMANDS:
 
-Note that the scripts package the commands to make things easier.
+Note that some of the scripts below package the commands to make things easier.
 
 * guard - (run in a separate terminal window to bring up a running version
 that reloads on changes.
@@ -63,56 +57,53 @@ port 3000.  This can be useful if you need to kill an existing Ruby server.
 
 handy scripts:
 
-* runServerGuard.sh - run server via guard.  Will spawn xterms for
+* *runTests.sh* - run the standard set of unit and integration tests.
+
+* *setup-rvm.sh* - setup the rvm environment.  This must be sourced into
+the current shell rather than simply executed.
+
+* *build.sh* - Run tests and build a war file for deployment to a Tomcat
+server.  The war file depends on using jruby to run the code.
+
+* *runServerGuard.sh* - run server via guard.  Will spawn xterms for
 messages and the log if xterm is available.
 
-* runServerBundle.sh - run server directly using bundle and rackup
+* *runServerBundle.sh* - run server directly using bundle and rackup
 better visibility for startup errors.
 
-These scripts are both in the StudentDashboard directory and in the
-server directory since it is convient to run them from either spot.
+---------
 
 GitHub readme files are formated in Markdown:
 
-https://help.github.com/articles/markdown-basics
+[Markdown Basics (Github)](https://help.github.com/articles/markdown-basics)
 
-This script started out with:
-http://proquest.safaribooksonline.com.proxy.lib.umich.edu/book/web-development/ruby/9781782168218
+Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
+)
 
-markdown perl script (for textwranger)
-http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-
-There is a markdown viewer/editor  on the web at:
-http://daringfireball.net/projects/markdown/dingus
-It also has a good syntax summary on the right hand side.
-
+There is a web based markdown viewer/editor [here](http://daringfireball.net/projects/markdown/dingus).
+It has a good syntax summary on the right hand side.
 
 ----------------------
 
 ### TASKS
 
-ACTIVE:
+These are tracked by Jira currently.
 
-- document file based provider
+ACTIVE:
 
 TTD: (roughly in order)
 
-- add procedure for supplying remote_user via url for testing.
-- implement ESB / API provider
-- implement UMIAC / Canvas provider.
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - make it detect json preference from header too
 - clean up route expressions (regex? trailing /?.....)
 
-
 MAYBE:
-
-- integrator level to design (ui, integrator, providers)
-- add fake todo, schedule
-- implement html version using template for looping
 
 DONE:
 
+- implement ESB / API provider
+- implement file based provider
+- add procedure for supplying remote_user via url for testing.
 - pass in the uniqname to the index.html file.
 - CLEANUP comments, extra logging etc. (keep in TTD)
 - add properties file [see http://stackoverflow.com/questions/98376/java-properties-file-equivalent-for-ruby]
@@ -135,4 +126,4 @@ DONE:
 - add UI files
 - put in github
 - add api/doc element to get documentation.
-
+- document file based provider
