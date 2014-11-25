@@ -24,17 +24,20 @@ class CourseList < Sinatra::Base
   include DataProviderFile
   ### Class variables
 
+  ## Hash to hold the configuration values read in.
   @@l = Hash.new
 
+  ## Location to get the configuration information
   @@config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
-  # forbid/allow specifying a specific user on request url
+  # forbid/allow specifying a different user on request url
   @@authn_uniqname_override = false
 
   ### response to query that is not understood.
   @@invalid_query_text = "invalid query. what U want?"
 
-  ## base directory to ease referencing files in the war
+  ## base directory to ease referencing files in the
+  ## build.
   @@BASE_DIR = File.dirname(File.dirname(__FILE__))
 
   # name of application to use for security information
@@ -46,9 +49,8 @@ class CourseList < Sinatra::Base
   # default location for student dashboard configuration
   @@studentdashboard = "#{@@config_base}/studentdashboard.yml"
 
-  @@build_file = "#{@@config_base}/build.yml"
-
   # location for yml file describing the build.
+  @@build_file = "#{@@config_base}/build.yml"
 
   # default location for the security information
   @@security_file = "#{@@config_base}/security.yml"
@@ -57,14 +59,16 @@ class CourseList < Sinatra::Base
 
   @@default_term = 2010
 
-  # Hold data required if need to wait to simulate authn
+  # Hold data required if need to put in a wait to simulate authn
   # processing time.
   @@authn_prng = nil
   @@authn_total_wait_time = 0
   @@authn_total_stub_calls = 0
 
+  ## potential list of user with admin priviliges.
   @@admin = []
 
+  ## location of the data files.
   @@data_provider_file_directory = nil
 
 
@@ -488,7 +492,7 @@ END
 
 
   ### Grab the desired data provider.
-  ### Need to make the provider selection settable via properties.
+  ### Would be good to hide the extra parameters
   def DataProviderCourse(a, termid)
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
