@@ -1,3 +1,5 @@
+###### ESB provider ################
+# Use ESB to gather data for a request.
 module DataProviderESB
 
   @@w = nil

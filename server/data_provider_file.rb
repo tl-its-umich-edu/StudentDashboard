@@ -1,11 +1,11 @@
 module DataProviderFile
 ###### File provider ################
-### Return the data from a matching file.  The file must be in a sub-directory
+### Return the data for a request from a matching file.  The file must be in a sub-directory
 ### under the directory specified by the property data_file_dir.
-### The sub-directory will be the name of the type of data requested (e.g. courses)
+### The name of the sub-directory will be the name of the type of data requested (e.g. courses)
 ### The name of the file must match the rest of the URL.
-### E.g. localhost:3000/courses/abba.json would map to a file named abba.json in the 
-### courses sub-directory under, in this case, the test-files directory.
+### The url localhost:3000/courses/abba.json would map to a file named abba.json in the
+### courses sub-directory under the default test-files directory.
   def DataProviderFileCourse(a, termid, data_provider_file_directory)
     logger.debug "data provider is DataProviderFileCourse.\n"
 
