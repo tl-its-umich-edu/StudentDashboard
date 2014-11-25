@@ -1,4 +1,4 @@
-## Making required modules source available
+## Making required modules available
 require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
 require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
 
@@ -20,9 +20,20 @@ require_relative 'WAPI'
 include Logging
 
 class CourseList < Sinatra::Base
+  ## mixin the providers functionality.
   include DataProviderESB
   include DataProviderFile
-  ### Class variables
+
+  #### NOTE on variables in classes:
+  ### @@var is a Class variable: same copy shared by the class and subclasses. Available to class and instance methods.
+  ### << Seldom useful as hard to control who can change it.  Not the same as a Java class variable.
+  ### @var (in class definition before methods) is a class instance variable and is shared only over the
+  ### that class (not children).  Available only to class methods and is private to the class.
+  ### << Similar to Java class variable
+  ### @var referenced in an instance method. Is an instance variable and is only available to instance methods.
+  ### << Similar to Java instance variable.
+
+  ### TODO: change from class variables to class instance variables.
 
   ## Hash to hold the configuration values read in.
   @@l = Hash.new
