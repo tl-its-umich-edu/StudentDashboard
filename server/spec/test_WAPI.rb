@@ -22,7 +22,9 @@ class TestNew < Minitest::Test
     # by default assume the tests will run well and don't
     # need detailed log messages.
     logger.level=Logger::ERROR
+
     #logger.level=Logger::DEBUG
+
 
     @token_server="http://tokenserver.micky.edu"
     @api_prefix = "PREFIX"
@@ -69,13 +71,16 @@ class TestNew < Minitest::Test
 
   ## Check the result wrapping method
   def test_wrapResultSimple
+
     r = WAPIResultWrapper.new(200, "OK", "good cheese")
     assert_equal(200, r.meta_status,"incorrect meta status")
     assert_equal("OK", r.meta_message, "incorrect message")
     assert_equal("good cheese", r.result, "incorrect result")
+
   end
 
   #####################################
+
 
   def test_get_request_successful_query
 
@@ -93,11 +98,11 @@ class TestNew < Minitest::Test
     h = WAPI.new(a)
     wr = h.get_request("/hey")
     logger.info "#{__LINE__}: r "+wr.inspect
-
     ## get status of sucessful in wrapper
     assert_equal 200, wr.meta_status,"successful request"
 
     r = wr.result
+
     logger.info "#{__LINE__}: r "+r.inspect
     ## get status of successful in actual response
     assert_equal 200, r.code
@@ -130,6 +135,7 @@ class TestNew < Minitest::Test
     assert_equal(r.meta_status, 666, "didn't get wrapped exception")
 
     exp = r.result
+
     assert_equal(exp.http_code, 401, "didn't catch unauthorized in do_request")
 
   end
@@ -175,11 +181,11 @@ class TestNew < Minitest::Test
 
     wr = h.do_request("/hey")
     logger.info "#{__LINE__}: wr "+wr.inspect
-
     ## get status of successful in wrapper
     assert_equal 200, wr.meta_status
 
     r = wr.result
+
     logger.info "#{__LINE__}: r "+r.inspect
     ## get status of successful in actual response
     assert_equal 200, r.code
@@ -209,6 +215,7 @@ class TestNew < Minitest::Test
 
     assert_equal(r.meta_status, 666, "didn't get wrapped exception")
     exp = r.result
+
     assert_equal(exp.http_code, 417, "got incorrect wrapped exception")
 
   end
@@ -236,8 +243,10 @@ class TestNew < Minitest::Test
     #assert(s, "should have unauthorized wrapped result")
     #assert_equals("GROOVY", s, "lskd")
 
+
   end
 
+  def test_renew_token_fail
 
   def test_get_request_uses_do_request_successful
 
@@ -302,11 +311,13 @@ class TestNew < Minitest::Test
              'token' => 'sweet!'
     ]
 
+
     h = WAPI.new(a);
 
     r = h.renew_token
     logger.info "#{__LINE__}: r: "+r.inspect
     assert_equal(401, r.meta_status, "token should not renew")
+
 
   end
 

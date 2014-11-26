@@ -29,8 +29,8 @@ class TestNew < Minitest::Test
 
   def setup_logger
     log = Logger.new(STDOUT)
-    log.level = Logger::ERROR
-    #log.level = Logger::DEBUG
+#    log.level = Logger::ERROR
+#log.level = Logger::DEBUG
     RestClient.log = log
   end
 
@@ -88,6 +88,7 @@ class TestNew < Minitest::Test
     r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
     logger.debug "#{__LINE__}: toepo: r "+r.inspect
     assert_equal 666, r.meta_status, "missed capturing exception"
+
   end
 
   # check that try to renew token if get a not-authorized response
@@ -116,6 +117,7 @@ class TestNew < Minitest::Test
     r = @w.get_request("/Students/#{@uniqname}/Terms")
     logger.info "#{__LINE__}: ttr: r "+r.inspect
     res = r.result
+
     ## note result is returned verbatim so likely needs to be parsed.
     res = JSON.parse(res)
     j = res['getMyRegTermsResponse']['Term']
@@ -147,6 +149,7 @@ class TestNew < Minitest::Test
     ## note result is returned verbatim so likely needs to be parsed.
     res = JSON.parse(res)
     cls = res['getMyClsScheduleResponse']['RegisteredClasses']
+
 
     refute_nil(cls[0], "There should be at least one class")
     refute_nil(cls[0]['Title'], "That class should have a title")

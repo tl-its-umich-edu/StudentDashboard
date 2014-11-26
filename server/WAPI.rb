@@ -53,13 +53,14 @@ class WAPI
   end
 
 
-  # ### Consider making this a separate class with helpful methods
-  # ### to access portions of the result and to convert types.
-  # def self.wrap_result(status, msg, result)
-  #   Hash["Meta" => Hash["httpStatus" => status,
-  #                       "Message" => msg],
-  #        "Result" => result]
-  # end
+
+  ### Consider making this a separate class with helpful methods
+  ### to access portions of the result and to convert types.
+  def self.wrap_result(status, msg, result)
+    Hash["Meta" => Hash["httpStatus" => status,
+                        "Message" => msg],
+         "Result" => result]
+  end
 
 
   def self.build_renewal(key, secret)
@@ -77,8 +78,10 @@ class WAPI
     "#{@api_prefix}#{request}"
   end
 
-  ## Internal method to actually make the request
-  ## Whatever happens it will be wrapped into a standard object.
+
+## Internal method to actually make the request
+## Whatever happens it will be wrapped into a standard object.
+
   def do_request(request)
     url=format_url(request)
     logger.debug "WAPI: do_request: url: #{url}"
@@ -100,6 +103,7 @@ class WAPI
   ## Run the request.  If the result is unauthorized then renew the token and try again.
   ## In any case will return a wrapped result.
 
+
   def get_request(request)
     wrapped_response = do_request(request)
     logger.debug("WAPI: #{__LINE__}: response: A "+wrapped_response.inspect)
@@ -110,6 +114,7 @@ class WAPI
     ## If appropriate try to renew the token.
     ###### Note that need end multi-line conditional tests with operator to let it know
     ###### there is more to come.
+
     #    if wrapped_response['Meta']['httpStatus'] == 666 &&
     #        wrapped_response['Result'].respond_to?('http_code') &&
     #        wrapped_response['Result'].http_code == 401
@@ -151,6 +156,7 @@ class WAPI
       # If got an exception for the renewal wrap that up to be returned.
       logger.debug("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
+
       return wr
     end
 
@@ -167,6 +173,7 @@ class WAPI
       print_token = sprintf "%5s", @token
       logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
       wr = WAPIResultWrapper.new(200, "token renewed", response)
+
     end
     wr
   end
