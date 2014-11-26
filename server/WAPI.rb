@@ -78,7 +78,6 @@ class WAPI
                                       :accept => :json,
                                       :verify_ssl => true}
 
-
       logger.debug "WAPI: #{__LINE__}: do_request: successful response: "+response.inspect
       wrapped_response = WAPIResultWrapper.new(response.code, "COMPLETED", response)
     rescue Exception => exp
