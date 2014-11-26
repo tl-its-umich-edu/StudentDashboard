@@ -436,21 +436,27 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
       courseDataForX = CourseDataProvider(userid, termid)
-      if "404".casecmp(courseDataForX).zero?
+      logger.debug "#{__LINE__}: courseDataForX: "+courseDataForX.inspect
+      #if "404".casecmp(courseDataForX).zero?
+      if "404".casecmp(courseDataForX.meta_status.to_s).zero?
         logger.debug "#{__LINE__}: returning 404 for missing file"
         response.status = 404
         return ""
       end
 
-      courseDataForXJson = JSON.parse courseDataForX
+
+      #courseDataForXJson = JSON.parse courseDataForX
 
       # return data as json
-      courseDataForXJson.to_json
-
+      #courseDataForXJson.to_json
+      #courseDataForX
     else
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
+    #courseDataForX.value_as_json
+    logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
+    courseDataForX.value_as_json
   end
 
   # get '/courses/:userid.?:format?' do |userid, format|
@@ -594,10 +600,15 @@ END
 
     classes = @@w.get_request(url)
     #   logger.debug("CL: ESB returns: "+classes)
-    r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
-    r2 = JSON.generate r
+    #logger.debug "#{__LINE__}: courseDataProviderESB: classes: "+classes.inspect
+    #r = JSON.parse(classes['Result'])
+    #logger.debug "#{__LINE__}: courseDataProviderESB: r: "+classes.inspect
+    #r = r['getMyClsScheduleResponse']['RegisteredClasses']
+    #puts "CDPESB: r: "+r.inspect
+    #r2 = JSON.generate r
+    #puts "CDPESB: r2: "+r2.inspect
     # logger.debug "Course data provider returns: "+r2
-    return r2
+    #return r2
   end
 
   def initESB
