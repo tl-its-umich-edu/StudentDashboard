@@ -29,8 +29,8 @@ class TestNew < Minitest::Test
 
   def setup_logger
     log = Logger.new(STDOUT)
-#    log.level = Logger::ERROR
-#log.level = Logger::DEBUG
+    log.level = Logger::ERROR
+    #log.level = Logger::DEBUG
     RestClient.log = log
   end
 
@@ -85,10 +85,9 @@ class TestNew < Minitest::Test
     w = WAPI.new(a)
 
     # check that unknown errors are passed on.
-    #assert_raises(URI::InvalidURIError) { r = w.get_request("/Students/#{@uniqname}/Terms")
     r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
     logger.debug "#{__LINE__}: toepo: r "+r.inspect
-    assert_equal 666, r['Meta']['httpStatus'], "missed capturing exception"
+    assert_equal 666, r.meta_status, "missed capturing exception"
   end
 
   # check that try to renew token if get a not-authorized response
@@ -109,15 +108,14 @@ class TestNew < Minitest::Test
     ## use a request that will work but know token is bad
     r = w.get_request("/Students/#{@uniqname}/Terms")
     logger.info "#{__LINE__}: ttiair: r "+r.inspect
-    httpStatus = r['Meta']['httpStatus']
+    httpStatus = r.meta_status
     assert_equal 200, httpStatus
   end
 
   def test_term_request
     r = @w.get_request("/Students/#{@uniqname}/Terms")
     logger.info "#{__LINE__}: ttr: r "+r.inspect
-    res = r['Result']
-    #logger.debug "#{__LINE__}: tcr: res: "+res.inspect
+    res = r.result
     ## note result is returned verbatim so likely needs to be parsed.
     res = JSON.parse(res)
     j = res['getMyRegTermsResponse']['Term']
@@ -141,18 +139,14 @@ class TestNew < Minitest::Test
     logger.info "#{__LINE__}: tcr: r "+r.inspect
 
     # check status
-    httpStatus = r['Meta']['httpStatus']
-    #    logger.info "#{__LINE__}: tcr: httpStatus #{httpStatus}"
+    httpStatus = r.meta_status
     assert_equal 200, httpStatus, "unexpected response code"
 
     # check value
-    res = r['Result']
-    #logger.debug "#{__LINE__}: tcr: res: "+res.inspect
+    res = r.result
     ## note result is returned verbatim so likely needs to be parsed.
     res = JSON.parse(res)
-    #logger.debug "#{__LINE__}: tcr: parse res: "+res.inspect
     cls = res['getMyClsScheduleResponse']['RegisteredClasses']
-    #logger.debug "#{__LINE__}: tcr: cls: "+cls.inspect
 
     refute_nil(cls[0], "There should be at least one class")
     refute_nil(cls[0]['Title'], "That class should have a title")
