@@ -55,6 +55,20 @@ The Meta Message and the Result section likely have more information but this is
 Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
 
+----
+## Error handling
+
+The WAPI module handles calls to the ESB.  It always returns a wrapper response as JSON in the format:
+{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool to say>}
+  Result: <result>
+  }
+
+The meta httpStatus will reflect the httpstatus of the underlying request if appropriate.  If the value is
+666 there has been an error doing the call.  The Message and Result section may have more information.
+
+Note that the value in the result is what was returned from the API call.  It is not assured to be valid JSON
+when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
+
 -----
 
 ### Ruby COMMANDS:
