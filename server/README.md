@@ -11,10 +11,10 @@ The root element of the URL can be configured.
 The API is documented at : http://localhost:3000/StudentDashboard/api
 
 # Data providers
-There are data providers supplied:
+There are 2 data providers supplied:
 
-* ESB / API based
-* FB file based
+* ESB - API based
+* FB - file based
 
 ## ESB Data provider
 This provider used the UMich WSO2 based ESB to get user data.  Configuration
@@ -38,17 +38,21 @@ The file based server currently only implements requests for the course
 data. It could easily be extended to support other types such as term or todo data.
 
 ----
-## Error handling
+## API Format
 
-The WAPI module handles calls to the ESB.  It always returns a wrapper response as JSON in the format:
-{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool to say>}
+The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
+
+{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool with words>}
   Result: <result>
   }
 
-The meta httpStatus will reflect the httpstatus of the underlying request if appropriate.  If the value is
-666 there has been an error doing the call.  The Message and Result section may have more information.
+The Meta httpStatus reflects the result of the call.  If the API call was successful it will match the httpStatus
+from the remote API.  "Successful" here means that the remote API handled the call.  It does not mean that the call
+worked.  It means that the Student Dashboard code didn't need to intrude on the call.
+If there is a problem that required the Latte code to respond then the Meta httpStatus will be 666
+The Meta Message and the Result section likely have more information but this is not assured.
 
-Note that the value in the result is what was returned from the API call.  It is not assured to be valid JSON
+Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
 
 -----
