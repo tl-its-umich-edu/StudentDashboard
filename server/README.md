@@ -11,10 +11,10 @@ The root element of the URL can be configured.
 The API is documented at : http://localhost:3000/StudentDashboard/api
 
 # Data providers
-There are data providers supplied:
+There are 2 data providers supplied:
 
-* ESB / API based
-* FB file based
+* ESB - API based
+* FB - file based
 
 ## ESB Data provider
 This provider used the UMich WSO2 based ESB to get user data.  Configuration
@@ -55,9 +55,6 @@ The Meta Message and the Result section likely have more information but this is
 
 Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
-
-----
-## API Format
 
 The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
 
