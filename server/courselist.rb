@@ -16,6 +16,7 @@ require 'json'
 require 'slim'
 require 'yaml'
 require_relative 'WAPI'
+require_relative 'WAPI_result_wrapper'
 
 include Logging
 
@@ -169,7 +170,7 @@ END
 
     ## If the full path to the provider directory was specified then use it.
     ## Otherwise append what was provided to the local base directory
-    if ! ( @@data_provider_file_directory.nil? || @@data_provider_file_directory.start_with?('/') )
+    if !(@@data_provider_file_directory.nil? || @@data_provider_file_directory.start_with?('/'))
       @@data_provider_file_directory = "#{@@BASE_DIR}/#{@@data_provider_file_directory}"
     end
 
@@ -338,7 +339,6 @@ END
       user = @@anonymous_user
     end
 
-
     ## Now check to see if allowed to override the user.
     if @@authn_uniqname_override == true
 
@@ -426,26 +426,17 @@ END
 
     if format && "json".casecmp(format).zero?
       content_type :json
-      courseDataForX = CourseDataProvider(userid, termid)
+      courseDataForX = DataProviderCourse(userid, termid)
       logger.debug "#{__LINE__}: courseDataForX: "+courseDataForX.inspect
-      #if "404".casecmp(courseDataForX).zero?
       if "404".casecmp(courseDataForX.meta_status.to_s).zero?
         logger.debug "#{__LINE__}: returning 404 for missing file"
         response.status = 404
         return ""
       end
-
-
-      #courseDataForXJson = JSON.parse courseDataForX
-
-      # return data as json
-      #courseDataForXJson.to_json
-      #courseDataForX
     else
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
-    #courseDataForX.value_as_json
     logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
     courseDataForX.value_as_json
   end
@@ -508,54 +499,19 @@ END
   end
 
 
-  ### Grab the desired data provider.
-  ### Would be good to hide the extra parameters
+  ## Grab the desired data provider.
+  ## Would be good to hide the extra parameters
+
   def DataProviderCourse(a, termid)
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
 
     if !@@data_provider_file_directory.nil?
-      return DataProviderFileCourse(a,termid, @@data_provider_file_directory)
-
-    if termid.nil? || termid.length == 0
-      logger.debug "defaulting term to #{@@default_term}"
-      termid = @@default_term
-    end
-
-    url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
-
-    logger.debug("ESB: url: "+url)
-    logger.debug("@@w: "+@@w.to_s)
-
-    classes = @@w.get_request(url)
-    #   logger.debug("CL: ESB returns: "+classes)
-    #logger.debug "#{__LINE__}: courseDataProviderESB: classes: "+classes.inspect
-    #r = JSON.parse(classes['Result'])
-    #logger.debug "#{__LINE__}: courseDataProviderESB: r: "+classes.inspect
-    #r = r['getMyClsScheduleResponse']['RegisteredClasses']
-    #puts "CDPESB: r: "+r.inspect
-    #r2 = JSON.generate r
-    #puts "CDPESB: r2: "+r2.inspect
-    # logger.debug "Course data provider returns: "+r2
-    #return r2
-  end
-
-  def initESB
-    logger.info "initESB"
-
-    logger.info("security_file: "+@@security_file.to_s)
-    requested_file = @@security_file
-
-    default_security_file = './server/local/security.yml'
-
-    if File.exist? requested_file
-      file_name = requested_file
-# return wrapped result from backend for courses. convert 'Result' element to json if that is possible.  Make wrapped response a separate object.
+      return DataProviderFileCourse(a, termid, @@data_provider_file_directory)
     else
-      return DataProviderESBCourse(a, termid, @@security_file,@@application_name,@@default_term)
+      return DataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
     end
 
   end
-
 
 end
