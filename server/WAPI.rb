@@ -15,7 +15,7 @@
 require 'base64'
 require 'rest-client'
 require_relative './Logging'
-require_relative '../server/WAPI_result_wrapper'
+require_relative './WAPI_result_wrapper'
 
 include Logging
 
@@ -32,7 +32,6 @@ class WAPI
   # to use it.
 
   def initialize(application)
-    #puts "in WAPI initialize"
     if application.nil?
       msg = "No ESB Application values provided to WAPI initialize"
       logger.warn msg
@@ -51,7 +50,6 @@ class WAPI
     @renewal = WAPI.build_renewal(@key, @secret)
     logger.debug("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
-
 
   def self.build_renewal(key, secret)
     b64 = base64_key_secret(key, secret)
@@ -81,7 +79,6 @@ class WAPI
       logger.debug "WAPI: #{__LINE__}: do_request: successful response: "+response.inspect
       wrapped_response = WAPIResultWrapper.new(response.code, "COMPLETED", response)
     rescue Exception => exp
-#      logger.debug "WAPI: #{__LINE__}: do_request: http_code: "+exp.http_code.to_s
       wrapped_response = WAPIResultWrapper.new(666, "EXCEPTION", exp)
     end
     logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
@@ -93,14 +90,11 @@ class WAPI
 
   def get_request(request)
     wrapped_response = do_request(request)
-    logger.debug("WAPI: #{__LINE__}: response: A "+wrapped_response.inspect)
 
-    #logger.debug "WAPI: #{__LINE__}: wrapped_response result: "+wrapped_response['Result'].inspect
+    logger.debug("WAPI: #{__LINE__}: response: A "+wrapped_response.inspect)
     logger.debug "WAPI: #{__LINE__}: wrapped_response result: "+wrapped_response.result.inspect
 
     ## If appropriate try to renew the token.
-    ###### Note that need end multi-line conditional tests with operator to let it know
-    ###### there is more to come.
     if wrapped_response.meta_status == 666 &&
         wrapped_response.result.respond_to?('http_code') &&
         wrapped_response.result.http_code == 401
@@ -113,14 +107,12 @@ class WAPI
         wrapped_response = do_request(request)
       end
     end
-    #logger.debug "WAPI: #{__LINE__}: wrapped_response: "+wrapped_response.inspect
     wrapped_response
   end
 
   # Renew the current token.  Will set the current @token value in the object
   def renew_token
 
-    #puts "WAPI: renewing token: #{@token}"
     logger.debug "WAPI: renew_token"
     begin
       response = RestClient.post @token_server,
@@ -158,17 +150,5 @@ class WAPI
     end
     wr
   end
-
-  # Make the result be wrapped in valid json object
-  #  {
-  #      Meta: { httpStatus: 200, Message: "everything was cool"},
-  #      Result: ["Feeling", "Groovy"]
-  #  }
-
-  #  def self.wrap_result(status,msg,result)
-  #    Hash["Meta" => Hash["httpStatus" => status,
-  #                        "Message" => msg],
-  #         "Result" => result]
-  #  end
 
 end
