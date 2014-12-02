@@ -29,8 +29,8 @@ class TestNew < Minitest::Test
 
   def setup_logger
     log = Logger.new(STDOUT)
-    log.level = Logger::ERROR
-    #log.level = Logger::DEBUG
+#    log.level = Logger::ERROR
+#log.level = Logger::DEBUG
     RestClient.log = log
   end
 
@@ -88,6 +88,7 @@ class TestNew < Minitest::Test
     r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
     logger.debug "#{__LINE__}: toepo: r "+r.inspect
     assert_equal 666, r.meta_status, "missed capturing exception"
+
   end
 
   # check that try to renew token if get a not-authorized response

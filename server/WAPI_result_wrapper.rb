@@ -44,6 +44,7 @@ class WAPIResultWrapper
   end
 
   # Turn the value of result into json if it is json
+
   def value_as_json
     c = @value.dup
     new_result = c['Result'].dup

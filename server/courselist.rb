@@ -426,6 +426,7 @@ END
 
     if format && "json".casecmp(format).zero?
       content_type :json
+
       courseDataForX = DataProviderCourse(userid, termid)
       logger.debug "#{__LINE__}: courseDataForX: "+courseDataForX.inspect
       if "404".casecmp(courseDataForX.meta_status.to_s).zero?
@@ -433,10 +434,12 @@ END
         response.status = 404
         return ""
       end
+
     else
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
+
     logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
     courseDataForX.value_as_json
   end

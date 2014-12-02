@@ -24,6 +24,9 @@ class TestNew < Minitest::Test
     logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
 
+    #logger.level=Logger::DEBUG
+
+
     @token_server="http://tokenserver.micky.edu"
     @api_prefix = "PREFIX"
 
@@ -69,10 +72,12 @@ class TestNew < Minitest::Test
 
   ## Check the result wrapping method
   def test_wrapResultSimple
+
     r = WAPIResultWrapper.new(200, "OK", "good cheese")
-    assert_equal(200, r.meta_status,"incorrect meta status")
+    assert_equal(200, r.meta_status, "incorrect meta status")
     assert_equal("OK", r.meta_message, "incorrect message")
     assert_equal("good cheese", r.result, "incorrect result")
+
   end
 
   #####################################
@@ -95,9 +100,10 @@ class TestNew < Minitest::Test
     logger.info "#{__LINE__}: r "+wr.inspect
 
     ## get status of sucessful in wrapper
-    assert_equal 200, wr.meta_status,"successful request"
+    assert_equal 200, wr.meta_status, "successful request"
 
     r = wr.result
+
     logger.info "#{__LINE__}: r "+r.inspect
     ## get status of successful in actual response
     assert_equal 200, r.code
@@ -130,6 +136,7 @@ class TestNew < Minitest::Test
     assert_equal(r.meta_status, 666, "didn't get wrapped exception")
 
     exp = r.result
+
     assert_equal(exp.http_code, 401, "didn't catch unauthorized in do_request")
 
   end
@@ -180,6 +187,7 @@ class TestNew < Minitest::Test
     assert_equal 200, wr.meta_status
 
     r = wr.result
+
     logger.info "#{__LINE__}: r "+r.inspect
     ## get status of successful in actual response
     assert_equal 200, r.code
@@ -209,6 +217,7 @@ class TestNew < Minitest::Test
 
     assert_equal(r.meta_status, 666, "didn't get wrapped exception")
     exp = r.result
+
     assert_equal(exp.http_code, 417, "got incorrect wrapped exception")
 
   end
@@ -237,7 +246,6 @@ class TestNew < Minitest::Test
     #assert_equals("GROOVY", s, "lskd")
 
   end
-
 
   def test_get_request_uses_do_request_successful
 

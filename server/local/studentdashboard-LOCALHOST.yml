@@ -65,4 +65,5 @@ authn_wait_max: 0.03
 # a '/' it is taken as an absolute path.  Otherwise the base directory for
 # application is prepended to the path.  For example it may look within
 # the directory /usr/latte/really/good/directory or within the expanded war file.
+
 ########## end #########

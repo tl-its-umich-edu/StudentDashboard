@@ -6,6 +6,7 @@ require 'minitest/autorun'
 require 'minitest/unit'
 # require 'webmock/minitest'
 require_relative '../data_provider_file'
+require_relative '../WAPI_result_wrapper'
 require_relative '../Logging'
 
 
@@ -38,7 +39,7 @@ class TestModule < Minitest::Test
     refute_nil(m,"create provider object")
     classes = m.DataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
     puts classes
-    assert_equal(404.to_s,classes,'404 for missing class')
+    assert_equal(404,classes.meta_status,'404 for missing class')
 
   end
 

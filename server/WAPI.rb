@@ -15,7 +15,9 @@
 require 'base64'
 require 'rest-client'
 require_relative './Logging'
+
 require_relative './WAPI_result_wrapper'
+
 
 include Logging
 
@@ -51,6 +53,17 @@ class WAPI
     logger.debug("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
 
+
+
+  ### Consider making this a separate class with helpful methods
+  ### to access portions of the result and to convert types.
+  def self.wrap_result(status, msg, result)
+    Hash["Meta" => Hash["httpStatus" => status,
+                        "Message" => msg],
+         "Result" => result]
+  end
+
+
   def self.build_renewal(key, secret)
     b64 = base64_key_secret(key, secret)
     "Basic #{b64}"
@@ -66,8 +79,6 @@ class WAPI
     "#{@api_prefix}#{request}"
   end
 
-  ## Internal method to actually make the request
-  ## Whatever happens it will be wrapped into a standard object.
   def do_request(request)
     url=format_url(request)
     logger.debug "WAPI: do_request: url: #{url}"
@@ -95,6 +106,7 @@ class WAPI
     logger.debug "WAPI: #{__LINE__}: wrapped_response result: "+wrapped_response.result.inspect
 
     ## If appropriate try to renew the token.
+
     if wrapped_response.meta_status == 666 &&
         wrapped_response.result.respond_to?('http_code') &&
         wrapped_response.result.http_code == 401
@@ -107,6 +119,7 @@ class WAPI
         wrapped_response = do_request(request)
       end
     end
+
     wrapped_response
   end
 
@@ -131,6 +144,7 @@ class WAPI
       # If got an exception for the renewal wrap that up to be returned.
       logger.debug("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
+
       return wr
     end
 
@@ -147,8 +161,21 @@ class WAPI
       print_token = sprintf "%5s", @token
       logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
       wr = WAPIResultWrapper.new(200, "token renewed", response)
+
     end
     wr
   end
+
+  # Make the result be wrapped in valid json object
+  #  {
+  #      Meta: { httpStatus: 200, Message: "everything was cool"},
+  #      Result: ["Feeling", "Groovy"]
+  #  }
+
+  #  def self.wrap_result(status,msg,result)
+  #    Hash["Meta" => Hash["httpStatus" => status,
+  #                        "Message" => msg],
+  #         "Result" => result]
+  #  end
 
 end

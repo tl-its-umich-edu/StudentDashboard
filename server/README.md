@@ -55,24 +55,6 @@ The Meta Message and the Result section likely have more information but this is
 Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
 
-----
-## API Format
-
-The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
-
-{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool with words>}
-  Result: <result>
-  }
-
-The Meta httpStatus reflects the result of the call.  If the API call was successful it will match the httpStatus
-from the remote API.  "Successful" here means that the remote API handled the call.  It does not mean that the call
-worked.  It means that the Student Dashboard code didn't need to intrude on the call.
-If there is a problem that required the Latte code to respond then the Meta httpStatus will be 666
-The Meta Message and the Result section likely have more information but this is not assured.
-
-Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
-when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
-
 -----
 
 ### Ruby COMMANDS:
@@ -113,8 +95,7 @@ GitHub readme files are formated in Markdown:
 
 [Markdown Basics (Github)](https://help.github.com/articles/markdown-basics)
 
-Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-)
+Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip)
 
 There is a web based markdown viewer/editor [here](http://daringfireball.net/projects/markdown/dingus).
 It has a good syntax summary on the right hand side.
@@ -126,6 +107,8 @@ It has a good syntax summary on the right hand side.
 These are tracked by Jira currently.
 
 ACTIVE:
+=======
+
 
 TTD: (roughly in order)
 
