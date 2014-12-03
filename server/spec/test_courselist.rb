@@ -48,7 +48,7 @@ class AuthCheck < MiniTest::Test
         to_return(:status => 200, :body => '{"mystuff":"yourstuff"}')
     fail("not implemented")
     r = @x.get("/")
-    puts "r: "+r.inspect
+    #puts "r: "+r.inspect
   end
   #def test_create
   #    assert @x, "did not create Latte object"

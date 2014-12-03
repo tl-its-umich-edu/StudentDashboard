@@ -47,11 +47,19 @@ module DataProviderESB
     url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
 
     logger.debug("ESB: url: "+url)
-    logger.debug("@@w: "+@@w.to_s)
 
     classes = @@w.get_request(url)
-    r = JSON.parse(classes)['getMyClsScheduleResponse']['RegisteredClasses']
-    r2 = JSON.generate r
+    logger.debug("dataProviderESBCourse: classes: "+classes.inspect)
+    result = classes.result
+    logger.debug("dataProviderESBCourse: result: "+result.inspect)
+    r = JSON.parse(result)
+
+    if r.has_key?('getMyClsScheduleResponse')
+      r = r['getMyClsScheduleResponse']['RegisteredClasses']
+      classes.setValue(JSON.parse(r))
+    end
+
+    r2 = JSON.generate classes.value
 
     return r2
   end
