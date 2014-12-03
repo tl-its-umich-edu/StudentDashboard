@@ -17,6 +17,9 @@ require 'rest-client'
 require_relative './Logging'
 require_relative './WAPI_result_wrapper'
 
+require_relative './WAPI_result_wrapper'
+
+
 include Logging
 
 class WAPI
@@ -51,6 +54,17 @@ class WAPI
     logger.debug("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
 
+
+
+  ### Consider making this a separate class with helpful methods
+  ### to access portions of the result and to convert types.
+  def self.wrap_result(status, msg, result)
+    Hash["Meta" => Hash["httpStatus" => e,
+                        "Message" => msg],
+         "Result" => result]
+  end
+
+
   def self.build_renewal(key, secret)
     b64 = base64_key_secret(key, secret)
     "Basic #{b64}"
@@ -66,8 +80,6 @@ class WAPI
     "#{@api_prefix}#{request}"
   end
 
-  ## Internal method to actually make the request
-  ## Whatever happens it will be wrapped into a standard object.
   def do_request(request)
     url=format_url(request)
     logger.debug "WAPI: do_request: url: #{url}"

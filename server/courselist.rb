@@ -426,6 +426,7 @@ END
 
     if format && "json".casecmp(format).zero?
       content_type :json
+
       courseDataForX = DataProviderCourse(userid, termid)
       logger.debug "#{__LINE__}: courseDataForX: "+courseDataForX.inspect
       if "404".casecmp(courseDataForX.meta_status.to_s).zero?

@@ -19,6 +19,4 @@ runTest test_auth_check.rb
 runTest test_data_provider_file.rb
 runTest test_data_provider_esb.rb
 
-#runTest test_courselist.rb
-
 #end

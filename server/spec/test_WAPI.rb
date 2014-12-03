@@ -3,6 +3,7 @@
 require_relative 'test_helper'
 
 require 'rubygems'
+
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
@@ -99,8 +100,11 @@ class TestNew < Minitest::Test
 
     # check that body got through
     r = wr.result
-    logger.info "#{__LINE__}: r "+r.inspect
+
+    logger.info "#{__LINE__}: pre-parse r "+r.inspect
     r = JSON.parse(r)
+    logger.info "#{__LINE__}: post-parser "+r.inspect
+
     assert_equal "yourstuff", r["mystuff"]
 
   end
@@ -235,7 +239,6 @@ class TestNew < Minitest::Test
     #assert_equals("GROOVY", s, "lskd")
 
   end
-
 
   def test_get_request_uses_do_request_successful
 

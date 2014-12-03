@@ -38,7 +38,6 @@ The file based server currently only implements requests for the course
 data. It could easily be extended to support other types such as term or todo data.
 
 ----
-
 ## API Format
 
 The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
@@ -71,7 +70,6 @@ The Meta Message and the Result section likely have more information but this is
 Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
 when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
 
------
 
 ### Ruby COMMANDS:
 
@@ -111,8 +109,7 @@ GitHub readme files are formated in Markdown:
 
 [Markdown Basics (Github)](https://help.github.com/articles/markdown-basics)
 
-Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-)
+Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip)
 
 There is a web based markdown viewer/editor [here](http://daringfireball.net/projects/markdown/dingus).
 It has a good syntax summary on the right hand side.
@@ -124,6 +121,8 @@ It has a good syntax summary on the right hand side.
 These are tracked by Jira currently.
 
 ACTIVE:
+=======
+
 
 TTD: (roughly in order)
 

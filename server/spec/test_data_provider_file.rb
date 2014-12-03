@@ -6,6 +6,7 @@ require 'minitest/autorun'
 require 'minitest/unit'
 # require 'webmock/minitest'
 require_relative '../data_provider_file'
+require_relative '../WAPI_result_wrapper'
 require_relative '../Logging'
 
 
