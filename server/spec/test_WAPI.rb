@@ -4,6 +4,7 @@ require_relative 'test_helper'
 
 require 'rubygems'
 
+
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
@@ -69,6 +70,7 @@ class TestNew < Minitest::Test
 
   ## Check the result wrapping method
   def test_wrapResultSimple
+
     r = WAPIResultWrapper.new(200, "OK", "good cheese")
     assert_equal(200, r.meta_status,"incorrect meta status")
     assert_equal("OK", r.meta_message, "incorrect message")
@@ -176,6 +178,7 @@ class TestNew < Minitest::Test
     wr = h.do_request("/hey")
     logger.info "#{__LINE__}: wr "+wr.inspect
 
+
     ## get status of successful in wrapper
     assert_equal 200, wr.meta_status
 
@@ -222,11 +225,13 @@ class TestNew < Minitest::Test
     ###### mock methods that get_request will call
     ## make sure we get required exception
     def @w.do_request(a)
+
       WAPIResultWrapper.new(666, "MADEMEDOIT_request", nil)
     end
 
     # intercept the call to renew the token
     def @w.renew_token
+
       WAPIResultWrapper.new(666, "MADEMEDOIT_renew", nil)
     end
 

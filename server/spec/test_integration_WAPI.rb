@@ -29,8 +29,8 @@ class TestNew < Minitest::Test
 
   def setup_logger
     log = Logger.new(STDOUT)
-    log.level = Logger::ERROR
-    #log.level = Logger::DEBUG
+#    log.level = Logger::ERROR
+#log.level = Logger::DEBUG
     RestClient.log = log
   end
 
@@ -139,6 +139,7 @@ class TestNew < Minitest::Test
     logger.info "#{__LINE__}: tcr: r "+r.inspect
 
     # check status
+
     httpStatus = r.meta_status
     assert_equal 200, httpStatus, "unexpected response code"
 

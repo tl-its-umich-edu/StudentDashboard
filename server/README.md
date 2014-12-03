@@ -38,6 +38,7 @@ The file based server currently only implements requests for the course
 data. It could easily be extended to support other types such as term or todo data.
 
 ----
+
 ## API Format
 
 The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
