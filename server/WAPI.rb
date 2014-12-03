@@ -76,9 +76,23 @@ class WAPI
                                       :accept => :json,
                                       :verify_ssl => true}
 
-      logger.debug "WAPI: #{__LINE__}: do_request: successful response: "+response.inspect
-      wrapped_response = WAPIResultWrapper.new(response.code, "COMPLETED", response)
+      ## try to parse as json or send back a wrapped error
+      j = JSON.parse(response)
+
+      ## convert response code to integer if comes as a string
+      begin
+        # convert the response code to an integer
+        if j.has_key?('responseCode')
+          j['responseCode'] = j['responseCode'].to_i
+        end
+        j = JSON.generate(j)
+      rescue
+        j = response
+      end
+
+      wrapped_response = WAPIResultWrapper.new(response.code, "COMPLETED", j)
     rescue Exception => exp
+      logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
       wrapped_response = WAPIResultWrapper.new(666, "EXCEPTION", exp)
     end
     logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
@@ -101,7 +115,6 @@ class WAPI
       logger.debug("WAPI: #{__LINE__}: unauthorized on initial request: "+wrapped_response.inspect)
       wrapped_response = renew_token()
       ## if the token renewed ok then try the request again.
-      #if wrapped_response['Meta']['httpStatus'] == 200
       if wrapped_response.meta_status == 200
         logger.debug("WAPI: #{__LINE__}: retrying request after token renewal")
         wrapped_response = do_request(request)

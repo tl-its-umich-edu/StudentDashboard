@@ -5,6 +5,7 @@ include Logging
 class WAPIResultWrapper
 
   def initialize(status, msg, result)
+    logger.debug("WAPI_r_w: #{__LINE__}: input result: "+result.inspect)
     @value = Hash['Meta' => Hash['httpStatus' => status,
                                  'Message' => msg],
                   'Result' => result]

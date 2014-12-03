@@ -7,7 +7,8 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
 require 'webmock/minitest'
-require '../WAPI'
+require_relative '../WAPI'
+require_relative '../WAPI_result_wrapper'
 require 'rest-client'
 require 'logger'
 require 'base64'
@@ -91,19 +92,16 @@ class TestNew < Minitest::Test
 
     h = WAPI.new(a)
     wr = h.get_request("/hey")
-    logger.info "#{__LINE__}: r "+wr.inspect
+    logger.info "#{__LINE__}: wr "+wr.inspect
 
-    ## get status of sucessful in wrapper
-    assert_equal 200, wr.meta_status,"successful request"
+    ## get status of successful in wrapper
+    assert_equal 200, wr.meta_status, "successful request"
 
+    # check that body got through
     r = wr.result
     logger.info "#{__LINE__}: r "+r.inspect
-    ## get status of successful in actual response
-    assert_equal 200, r.code
-
-    ## verify that body came through
-    body = JSON.parse(r.body)
-    assert_equal "yourstuff", body["mystuff"]
+    r = JSON.parse(r)
+    assert_equal "yourstuff", r["mystuff"]
 
   end
 
@@ -160,9 +158,11 @@ class TestNew < Minitest::Test
   # Make sure error result from query is wrapped and returned.
   def test_WAPI_do_request_successful
 
+    z='{"mystuff":"yourstuff"}'
+
     stub_request(:get, "https://start/hey").
         with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!', 'User-Agent' => 'Ruby'}).
-        to_return(:status => 200, :body => '{"mystuff":"yourstuff"}', :headers => {})
+        to_return(:status => 200, :body => z, :headers => {})
 
     a = Hash['api_prefix' => "https://start",
              'key' => 'key',
@@ -180,11 +180,10 @@ class TestNew < Minitest::Test
 
     r = wr.result
     logger.info "#{__LINE__}: r "+r.inspect
-    ## get status of successful in actual response
-    assert_equal 200, r.code
 
     ## verify that body came through
-    body = JSON.parse(r.body)
+    body = JSON.parse(r)
+    logger.info "#{__LINE__}: body "+body.inspect
     assert_equal "yourstuff", body["mystuff"]
   end
 

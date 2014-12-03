@@ -55,7 +55,7 @@ class TestNew < Minitest::Test
     # by default assume that the tests will run well and don't
     # need detailed log messages.
     logger.level=Logger::ERROR
-#    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
     load_yml
     load_application 'SD-QA'

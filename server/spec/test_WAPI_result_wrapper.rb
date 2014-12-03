@@ -16,7 +16,6 @@ class TestNew < Minitest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    # Do nothing
     logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
   end
