@@ -45,10 +45,8 @@ class TestModule < Minitest::Test
 
     refute_nil(m,"create provider object")
     classes = m.DataProviderESBCourse("nobody.XXX", "2010", "./security.yml","SD-QA","2010")
- #   puts classes
-    classes = WAPIResultWrapper.value_from_json(classes)
+   # classes = WAPIResultWrapper.value_from_json(classes)
     assert_equal(200,classes.meta_status,'response not completed')
-#    puts "wrapped classes: "+classes.inspect
     assert_equal(404,JSON.parse(classes.result)['responseCode'],'should not find (missing) user.')
 
   end

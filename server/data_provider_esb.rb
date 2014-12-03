@@ -5,6 +5,8 @@ module DataProviderESB
   @@w = nil
   @@yml = nil
 
+  require_relative 'WAPI_result_wrapper'
+
   def setup_WAPI(app_name)
     logger.info "use ESB application: #{app_name}"
     application = @@yml[app_name]
@@ -56,11 +58,11 @@ module DataProviderESB
 
     if r.has_key?('getMyClsScheduleResponse')
       r = r['getMyClsScheduleResponse']['RegisteredClasses']
-      classes.setValue(JSON.parse(r))
+      logger.debug("dataProviderESBCourse: with classes r: "+r.inspect)
+      # return newly wrapped result after extracting the course data
+      classes = WAPIResultWrapper.new(200, "found courses from ESB", r)
     end
 
-    r2 = JSON.generate classes.value
-
-    return r2
+    return classes
   end
 end
