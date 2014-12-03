@@ -46,7 +46,9 @@ class AuthCheck < MiniTest::Test
     stub_request(:get, "https://api.edu/WSO2/Students/BitterDancer/Terms").
         with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!'}).
         to_return(:status => 200, :body => '{"mystuff":"yourstuff"}')
-    @x.get("/")
+    fail("not implemented")
+    r = @x.get("/")
+    puts "r: "+r.inspect
   end
   #def test_create
   #    assert @x, "did not create Latte object"

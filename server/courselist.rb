@@ -433,15 +433,19 @@ END
         return ""
       end
 
-      courseDataForXJson = JSON.parse courseDataForX
+
+      #courseDataForXJson = JSON.parse courseDataForX
 
       # return data as json
-      courseDataForXJson.to_json
-
+      #courseDataForXJson.to_json
+      #courseDataForX
     else
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
+    #courseDataForX.value_as_json
+    logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
+    courseDataForX.value_as_json
   end
 
   ### Return json array of the current objects.
@@ -508,9 +512,10 @@ END
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
 
+
     if !@@data_provider_file_directory.nil?
       return DataProviderFileCourse(a,termid, @@data_provider_file_directory)
-    else
+   else
       return DataProviderESBCourse(a, termid, @@security_file,@@application_name,@@default_term)
     end
 

@@ -12,6 +12,7 @@ function runTest {
     )
 }
 
+runTest test_WAPI_result_wrapper.rb
 runTest test_WAPI.rb
 runTest test_integration_WAPI.rb
 runTest test_auth_check.rb

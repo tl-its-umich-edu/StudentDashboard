@@ -22,7 +22,7 @@ class TestNew < Minitest::Test
     # by default assume the tests will run well and don't
     # need detailed log messages.
     logger.level=Logger::ERROR
-#    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
     @token_server="http://tokenserver.micky.edu"
     @api_prefix = "PREFIX"
@@ -69,34 +69,13 @@ class TestNew < Minitest::Test
 
   ## Check the result wrapping method
   def test_wrapResultSimple
-    r = WAPI.wrap_result(200, "OK", "good cheese")
-    assert_equal(200, r["Meta"]["httpStatus"], "incorrect status")
-    assert_equal("OK", r["Meta"]["Message"], "incorrect message")
-    assert_equal("good cheese", r["Result"], "incorrect result")
+    r = WAPIResultWrapper.new(200, "OK", "good cheese")
+    assert_equal(200, r.meta_status,"incorrect meta status")
+    assert_equal("OK", r.meta_message, "incorrect message")
+    assert_equal("good cheese", r.result, "incorrect result")
   end
 
   #####################################
-
-
-  # def test_get_request_successful
-  #
-  #   stub_request(:get, "https://api.edu/WSO2/Students/BitterDancer/Terms").
-  #       with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!'}).
-  #       to_return(:status => 200, :body => '{"mystuff":"yourstuff"}')
-  #
-  #   a = Hash['api_prefix' => "https://api.edu/WSO2",
-  #            'key' => 'key',
-  #            'secret' => 'secret',
-  #            'token_server' => 'notoken',
-  #            'token' => 'sweet!'
-  #   ]
-  #
-  #   h = WAPI.new(a)
-  #
-  #   wr = h.get_request("/Students/BitterDancer/Terms")
-  #   r = wr['Result']
-  #   assert_equal 200, r.code
-  # end
 
   def test_get_request_successful_query
 
@@ -116,9 +95,9 @@ class TestNew < Minitest::Test
     logger.info "#{__LINE__}: r "+wr.inspect
 
     ## get status of sucessful in wrapper
-    assert_equal 200, wr['Meta']['httpStatus']
+    assert_equal 200, wr.meta_status,"successful request"
 
-    r = wr['Result']
+    r = wr.result
     logger.info "#{__LINE__}: r "+r.inspect
     ## get status of successful in actual response
     assert_equal 200, r.code
@@ -129,34 +108,6 @@ class TestNew < Minitest::Test
 
   end
 
-  #  Want to test token renewal on invalid token, but getting inconsistent webmock results.
-
-  # check that try to renew token if get a not-authorized response
-  # def test_token_invalid_and_is_renewed
-  #
-  #   stub_request(:get, "https://start/hey").
-  #       with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 'Authorization' => 'Bearer sweet!'}).
-  #       to_return(:status => 200, :body => "", :headers => {})
-  #
-  #   stub_request(:post, "http://key:secret@nowhere.edu/").
-  #       with(:body => {"grant_type" => "client_credentials", "scope" => "PRODUCTION"},
-  #            :headers => {'Accept' => '*/*; q=0.5, application/xml', 'Content-Length' => '46', 'Content-Type' => 'application/x-www-form-urlencoded'}).
-  #       to_return(:status => 200, :body => "{}", :headers => {})
-  #
-  #   a = Hash['api_prefix' => "https://start",
-  #            'key' => 'key',
-  #            'secret' => 'secret',
-  #            'token_server' => 'nowhere.edu',
-  #            'token' => 'sweet!'
-  #   ]
-  #   h = WAPI.new(a);
-  #   wr = h.get_request("/hey")
-  #   logger.info "#{__LINE__}: wr: "+wr.inspect
-  #   r = wr['Result']
-  #   logger.info "#{__LINE__}: r: "+r.inspect
-  #   assert_equal 200, r.code
-  #
-  # end
 
   # Make sure error result from query is wrapped and returned.
   def test_WAPI_do_request_unauthorized
@@ -176,9 +127,9 @@ class TestNew < Minitest::Test
     r = h.do_request("/hey")
     logger.info "tWdou: #{__LINE__}: r: "+r.inspect
 
-    assert_equal(r['Meta']['httpStatus'], 666, "didn't get wrapped exception")
+    assert_equal(r.meta_status, 666, "didn't get wrapped exception")
 
-    exp = r['Result']
+    exp = r.result
     assert_equal(exp.http_code, 401, "didn't catch unauthorized in do_request")
 
   end
@@ -201,7 +152,7 @@ class TestNew < Minitest::Test
 
     r = h.do_request("/hey")
 
-    assert_equal(r['Meta']['httpStatus'], 666, "didn't get wrapped exception")
+    assert_equal(r.meta_status, 666, "didn't get wrapped exception")
 
   end
 
@@ -224,12 +175,11 @@ class TestNew < Minitest::Test
 
     wr = h.do_request("/hey")
     logger.info "#{__LINE__}: wr "+wr.inspect
-    #assert_equal(r['Meta']['httpStatus'], 200, "didn't get wrapped exception")
 
     ## get status of successful in wrapper
-    assert_equal 200, wr['Meta']['httpStatus']
+    assert_equal 200, wr.meta_status
 
-    r = wr['Result']
+    r = wr.result
     logger.info "#{__LINE__}: r "+r.inspect
     ## get status of successful in actual response
     assert_equal 200, r.code
@@ -257,8 +207,8 @@ class TestNew < Minitest::Test
 
     r = h.get_request("/hey")
 
-    assert_equal(r['Meta']['httpStatus'], 666, "didn't get wrapped exception")
-    exp = r['Result']
+    assert_equal(r.meta_status, 666, "didn't get wrapped exception")
+    exp = r.result
     assert_equal(exp.http_code, 417, "got incorrect wrapped exception")
 
   end
@@ -272,12 +222,12 @@ class TestNew < Minitest::Test
     ###### mock methods that get_request will call
     ## make sure we get required exception
     def @w.do_request(a)
-      WAPI.wrap_result(666, "MADEMEDOIT_request", nil)
+      WAPIResultWrapper.new(666, "MADEMEDOIT_request", nil)
     end
 
     # intercept the call to renew the token
     def @w.renew_token
-      WAPI.wrap_result(666, "MADEMEDOIT_renew", nil)
+      WAPIResultWrapper.new(666, "MADEMEDOIT_renew", nil)
     end
 
     wr = @w.get_request("howdy")
@@ -299,14 +249,14 @@ class TestNew < Minitest::Test
       mock = MiniTest::Mock.new()
       mock.expect(:code, 999)
       mock.expect(:code, 999)
-      WAPI.wrap_result(999, "MADEMEDOIT", mock)
 
-      #return WAPI.wrap_result("200","wrapped mock return value",mock)
+      WAPIResultWrapper.new(999, "MADEMEDOIT", mock)
+
     end
 
     wr = @w.get_request("howdy")
     logger.info "#{__LINE__}: wr: "+wr.inspect
-    r = wr['Result']
+    r = wr.result
     logger.info "#{__LINE__}: r: "+r.inspect
     assert_equal(999, r.code, "did not get response mock back")
     r.verify
@@ -330,8 +280,8 @@ class TestNew < Minitest::Test
 
     r = h.renew_token
     logger.info "#{__LINE__}: r: "+r.inspect
-    assert_equal(r['Meta']['httpStatus'], 200, "didn't get token renewal")
-    exp = JSON.parse(r['Result'])
+    assert_equal(r.meta_status, 200, "didn't get token renewal")
+    exp = JSON.parse(r.result)
     logger.info "#{__LINE__}: exp: "+exp.inspect
 
     assert_equal(exp['access_token'], "HAPPY_FEET", "got incorrect wrapped body")
@@ -356,7 +306,7 @@ class TestNew < Minitest::Test
 
     r = h.renew_token
     logger.info "#{__LINE__}: r: "+r.inspect
-    assert_equal(401, r['Meta']['httpStatus'], "token should not renew")
+    assert_equal(401, r.meta_status, "token should not renew")
 
   end
 
