@@ -1,0 +1,205 @@
+{
+    "Meta": {
+        "httpStatus": 404,
+        "Message": "Something really bad happened"
+    },
+    "Result": [
+        {
+            "Title": "EECS 215",
+            "Subtitle": "Intro to Elect Circ",
+            "SectionNumber": "001",
+            "Source": "CTools",
+            "Link": "https://ctools.umich.edu/portal/site/b595ee75-cef8-42f1-984e-933434f54065",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dick,Robert",
+                    "Role": "Primary Instructor",
+                    "Email": "DICKRP@umich.edu"
+                },
+                {
+                    "Name": "Wentzloff,David D",
+                    "Role": "Secondary Instructor",
+                    "Email": "WENTZLOF@umich.edu"
+                }
+            ]
+        },
+        {
+            "Title": "EECS 215",
+            "Subtitle": "Intro to Elect Circ",
+            "SectionNumber": "012",
+            "Source": "",
+            "Link": "",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Hyman,Cody",
+                    "Role": "Primary Instructor",
+                    "Email": "HYMANC@umich.edu"
+                }
+            ]
+        },
+        {
+            "Title": "EECS 215",
+            "Subtitle": "Intro to Elect Circ",
+            "SectionNumber": "024",
+            "Source": "",
+            "Link": "",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Zhou,Tong",
+                    "Role": "Primary Instructor",
+                    "Email": "TONGZHOU@umich.edu"
+                }
+            ]
+        },
+        {
+            "Title": "ENGLISH 225",
+            "Subtitle": "Acad Argumentation",
+            "SectionNumber": "001",
+            "Source": "CTools",
+            "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Groce,Marian Renee",
+                    "Role": "Secondary Instructor",
+                    "Email": "MARIANGR@umich.edu"
+                },
+                {
+                    "Name": "Karageorgos,Konstantina Mary",
+                    "Role": "Primary Instructor",
+                    "Email": "KKARAGEO@umich.edu"
+                }
+            ]
+        },
+        {
+            "Title": "MKT 897",
+            "Subtitle": "Quant Res Mkt",
+            "SectionNumber": "001",
+            "Source": "",
+            "Link": "",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                }
+            ]
+        },
+        {
+            "Title": "POLSCI 101",
+            "Subtitle": "Intro Pol Theory",
+            "SectionNumber": "001",
+            "Source": "Canvas",
+            "Link": "https://umich.test.instructure.com/courses/164",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "LaVaque-Manty,Mika",
+                    "Role": "Primary Instructor",
+                    "Email": "MMANTY@umich.edu"
+                }
+            ]
+        },
+        {
+            "Title": "POLSCI 101",
+            "Subtitle": "Intro Pol Theory",
+            "SectionNumber": "003",
+            "Source": "Canvas",
+            "Link": "https://umich.test.instructure.com/courses/164",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Levesque,Marc",
+                    "Role": "Primary Instructor",
+                    "Email": "MARCLEVE@umich.edu"
+                }
+            ]
+        },
+        {
+            "Title": "POLSCI 381",
+            "Subtitle": "Pol Science Research",
+            "SectionNumber": "001",
+            "Source": "CTools",
+            "Link": "https://ctools.umich.edu/portal/site/8f09e516-cce4-4018-88dd-7b05f6c91a11",
+            "Instructor": [
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "Dummy",
+                    "Role": "Dummy",
+                    "Email": "Dummy"
+                },
+                {
+                    "Name": "LaVaque-Manty,Mika",
+                    "Role": "Primary Instructor",
+                    "Email": "MMANTY@umich.edu"
+                }
+            ]
+        }
+    ]
+}

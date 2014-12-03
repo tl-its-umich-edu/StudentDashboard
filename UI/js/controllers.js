@@ -12,26 +12,34 @@ dashboardApp.factory('Courses', function ($http) {
   return {
     getCourses: function (url) {
 
-      return $http.get(url, {cache: true}).then(function success(result) {
-          if (!result.data.length) {
-            result.data.message = 'You seem to have no courses this term.';
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          if(result.data.Meta.httpStatus !==200){
+            result.errors = errorHandler(url, result);
+            result.errors.failure = true;
+            return result.errors;
           }
-          if (_.where(result.data, {
-              Source: 'CTools'
-            }).length > 0) {
-            result.data.ctools = true;
-          }
-          if (_.where(result.data, {
-              Source: 'Canvas'
-            }).length > 0) {
-            result.data.canvas = true;
-          }
-          $.each(result.data, function (i, l) {
-            l.Instructor = _.filter(l.Instructor, function (instructor) {
-              return instructor.Role !== 'Dummy';
+          else {
+            if (!result.data.Result.length) {
+              result.data.Result.message = 'You seem to have no courses this term.';
+            }
+            if (_.where(result.data.Result, {
+                Source: 'CTools'
+              }).length > 0) {
+              result.data.Result.ctools = true;
+            }
+            if (_.where(result.data.Result, {
+                Source: 'Canvas'
+              }).length > 0) {
+              result.data.Result.canvas = true;
+            }
+            $.each(result.data.Result, function (i, l) {
+              l.Instructor = _.filter(l.Instructor, function (instructor) {
+                return instructor.Role !== 'Dummy';
+              });
             });
-          });
-          return result.data;
+            return result.data.Result;
+          }  
         },
         function error(result) {
           result.errors = errorHandler(url, result);
@@ -48,8 +56,6 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
   $scope.loading = true;
 
   var url = 'courses/' + $rootScope.user + '.json';
-  // below for testing
-  //var url = 'data/courses/anonymous.json';
 
   Courses.getCourses(url).then(function (data) {
     if (data.failure) {
@@ -57,6 +63,7 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
       $scope.loading = false;
     } else {
       $scope.courses = data;
+
       $scope.loading = false;
     }
 
@@ -68,7 +75,6 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
   $scope.selectedTerm = null;
   $scope.terms = [];
  
-  //var termsUrl = 'data/terms.json';
   var termsUrl = 'terms';
 
   $http.get(termsUrl).success(function (data) {
