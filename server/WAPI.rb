@@ -90,6 +90,7 @@ class WAPI
 
       ## try to parse as json or send back a wrapped error
       j = JSON.parse(response)
+      logger.debug "WAPI: #{__LINE__}: do_request: esb response "+j.inspect
 
       ## convert response code to integer if comes as a string
       begin
@@ -97,12 +98,15 @@ class WAPI
         if j.has_key?('responseCode')
           j['responseCode'] = j['responseCode'].to_i
         end
-        j = JSON.generate(j)
-      rescue
-        j = response
+      rescue => err
+        logger.info "WAPI: #{__LINE__}: do_request: conversion error "+j.inspect
+        ## because of the error reset back to the original response.
+        j = JSON.parse(response)
       end
-
-      wrapped_response = WAPIResultWrapper.new(response.code, "COMPLETED", j)
+      ## get response code from nested response or from the original response
+      rc = j['responseCode'] || response.code
+      j = JSON.generate(j)
+      wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", j)
     rescue Exception => exp
       logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
       wrapped_response = WAPIResultWrapper.new(666, "EXCEPTION", exp)
