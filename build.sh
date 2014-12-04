@@ -18,8 +18,18 @@ rvm use $RUBY_VERSION
 
 # return a sortable timestamp as a string without a newline on the end.
 function niceTimestamp {
-#    echo $(date --iso-8601=min)
     echo $(date +"%F-%H-%M")
+}
+
+# verify that rvm set up
+function checkRvm {
+
+    t=$(type rvm | head -1)
+#    echo $t
+    if [[ ! $t =~ 'rvm is a function' ]]; then
+        echo "rvm is not set up correctly.  Try sourcing setup-rvm.sh"
+        exit 1;
+    fi
 }
 
 ## make a clean directory to hold any build ARTIFACTS

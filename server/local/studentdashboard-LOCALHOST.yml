@@ -7,13 +7,13 @@
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 
-application_name: SD-PROD
+application_name: SD-QA
 
 ##### Values below here are unlikely to change except when
 ##### testing.
 # Text to use when the server gets a non-standard request.
 
-invalid_query_text: Sorry, I don't understand this request.
+invalid_query_text: Come on, ask something reasonable
 
 # The name to use when no user name is available.  This is primarily useful
 # in test installations.

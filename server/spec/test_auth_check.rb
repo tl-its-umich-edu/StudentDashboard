@@ -1,7 +1,7 @@
 # Unit test checks that can veto in appropriate users
 # from get information on other people.
 
-
+require_relative 'test_helper'
 require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'
@@ -16,7 +16,6 @@ require 'yaml'
 require '../courselist'
 
 #email_regex: !ruby/regexp '/^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i'
-
 
 
 ##<Sinatra::Request:0x007fd822df6bf8
@@ -86,7 +85,7 @@ class AuthCheck < MiniTest::Test
 
   ### check to make sure unauthorized user can not request courses but
   ### and anothorized user can
-    def test_mismatched_user
+  def test_mismatched_user
     r = CourseList.vetoRequest "abba", @coursesUrlststvii
     assert r, "allowed wrong user."
   end
@@ -99,9 +98,9 @@ class AuthCheck < MiniTest::Test
 
   ### Check that administrative users can do anything
 
-  def test_admin_user_works
-    skip("user from admin list should not be vetoed")
-  end
+  #def test_admin_user_works
+  #  skip("user from admin list should not be vetoed")
+  #end
 
   ####### check that don't affect irrelevant URLS
 

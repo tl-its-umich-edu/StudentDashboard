@@ -27,7 +27,7 @@ class TestModule < Minitest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    # Do nothing
+    logger.level = Logger::ERROR
   end
 
   # Called after every test method runs. Can be used to tear

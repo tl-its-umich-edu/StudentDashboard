@@ -15,6 +15,10 @@
 require 'base64'
 require 'rest-client'
 require_relative './Logging'
+require_relative './WAPI_result_wrapper'
+
+require_relative './WAPI_result_wrapper'
+
 
 include Logging
 
@@ -31,7 +35,6 @@ class WAPI
   # to use it.
 
   def initialize(application)
-    #puts "in WAPI initialize"
     if application.nil?
       msg = "No ESB Application values provided to WAPI initialize"
       logger.warn msg
@@ -48,8 +51,19 @@ class WAPI
     @uniqname = application['uniqname']
 
     @renewal = WAPI.build_renewal(@key, @secret)
-    logger.info("initialize WAPI with #{@api_prefix}")
+    logger.debug("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
+
+
+
+  ### Consider making this a separate class with helpful methods
+  ### to access portions of the result and to convert types.
+  def self.wrap_result(status, msg, result)
+    Hash["Meta" => Hash["httpStatus" => e,
+                        "Message" => msg],
+         "Result" => result]
+  end
+
 
   def self.build_renewal(key, secret)
     b64 = base64_key_secret(key, secret)
@@ -61,64 +75,109 @@ class WAPI
     Base64.strict_encode64(ks)
   end
 
-# use instance information to generate the proper url
+  # use instance information to generate the proper url
   def format_url(request)
     "#{@api_prefix}#{request}"
   end
 
-  ## internal method to actually make the request
   def do_request(request)
     url=format_url(request)
     logger.debug "WAPI: do_request: url: #{url}"
-    response = RestClient.get url, {:Authorization => "Bearer #{@token}",
-                                    :accept => :json,
-                                    :verify_ssl => true}
-  end
-
-  ## run the request and try to renew token if it has expired.
-  def get_request(request)
-
     begin
-      response = do_request(request)
- #     logger.debug("WAPI: response: "+response.inspect)
-        ## check out error conditions
-    rescue RestClient::Unauthorized => una
-      # Try fixing up the token since authorization failed.
-      renew_token
+      response = RestClient.get url, {:Authorization => "Bearer #{@token}",
+                                      :accept => :json,
+                                      :verify_ssl => true}
+
+      ## try to parse as json or send back a wrapped error
+      j = JSON.parse(response)
+      logger.debug "WAPI: #{__LINE__}: do_request: esb response "+j.inspect
+
+      ## convert response code to integer if comes as a string
       begin
-        response = do_request(request)
-      rescue StandardError => nested_se
-        logger.debug "rescue nested request" + nested_se.inspect
-        raise nested_se
+        # convert the response code to an integer
+        if j.has_key?('responseCode')
+          j['responseCode'] = j['responseCode'].to_i
+        end
+      rescue => err
+        logger.info "WAPI: #{__LINE__}: do_request: conversion error "+j.inspect
+        ## because of the error reset back to the original response.
+        j = JSON.parse(response)
       end
-    rescue StandardError => se
-      # reraise other exceptions
-      logger.debug "WAPI: StandardError: "+se.inspect
-      raise se
+      ## get response code from nested response or from the original response
+      rc = j['responseCode'] || response.code
+      j = JSON.generate(j)
+      wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", j)
+    rescue Exception => exp
+      logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
+      wrapped_response = WAPIResultWrapper.new(666, "EXCEPTION", exp)
     end
-#    logger.debug 'WAPI: response'+response.inspect
-    response
+    logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
+    wrapped_response
   end
 
-# Renew the current token.  Will set the current @token value in the object
+  ## Run the request.  If the result is unauthorized then renew the token and try again.
+  ## In any case will return a wrapped result.
+
+  def get_request(request)
+    wrapped_response = do_request(request)
+
+    logger.debug("WAPI: #{__LINE__}: response: A "+wrapped_response.inspect)
+    logger.debug "WAPI: #{__LINE__}: wrapped_response result: "+wrapped_response.result.inspect
+
+    ## If appropriate try to renew the token.
+    if wrapped_response.meta_status == 666 &&
+        wrapped_response.result.respond_to?('http_code') &&
+        wrapped_response.result.http_code == 401
+      logger.debug("WAPI: #{__LINE__}: unauthorized on initial request: "+wrapped_response.inspect)
+      wrapped_response = renew_token()
+      ## if the token renewed ok then try the request again.
+      if wrapped_response.meta_status == 200
+        logger.debug("WAPI: #{__LINE__}: retrying request after token renewal")
+        wrapped_response = do_request(request)
+      end
+    end
+    wrapped_response
+  end
+
+  # Renew the current token.  Will set the current @token value in the object
   def renew_token
 
-    #puts "WAPI: renewing token: #{@token}"
     logger.debug "WAPI: renew_token"
-    response = RestClient.post @token_server,
-                               "grant_type=client_credentials&scope=PRODUCTION",
-                               {
-                                   :Authorization => @renewal,
-                                   :content_type => "application/x-www-form-urlencoded"
-                               }
-    s = JSON.parse(response)
-
-    if response.code != 200
-      logger.warn("error renewing token"+response.inspect)
-    else
-      @token = s['access_token']
-      logger.debug("renewed token #{@token}")
+    begin
+      response = RestClient.post @token_server,
+                                 "grant_type=client_credentials&scope=PRODUCTION",
+                                 {
+                                     :Authorization => @renewal,
+                                     :content_type => "application/x-www-form-urlencoded"
+                                 }
+      ## If it worked then parse the result.  This is here to capture any JSON parsing exceptions.
+      if response.code == 200
+        ## will need to get the access_token below.  If it is not JSON that is an error.
+        s = JSON.parse(response)
+        @token = s['access_token']
+      end
+    rescue Exception => exp
+      # If got an exception for the renewal wrap that up to be returned.
+      logger.debug("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
+      wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
+      return wr
     end
+
+    logger.warn("WAPI: #{__LINE__}: got response: "+response.inspect)
+
+    ## got no response or an error, wrap that up.
+    if response.nil?
+      logger.warn("WAPI: #{__LINE__}: error renewing token: nil response ")
+      wr = WAPIResultWrapper.new(666, "error renewing token: nil response", response)
+    elsif response.code != 200
+      logger.warn("WAPI: #{__LINE__}: error renewing token: response code: "+response.code)
+      wr = WAPIResultWrapper.new(666, "error renewing token: response code", response)
+    else
+      print_token = sprintf "%5s", @token
+      logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
+      wr = WAPIResultWrapper.new(200, "token renewed", response)
+    end
+    wr
   end
 
 end

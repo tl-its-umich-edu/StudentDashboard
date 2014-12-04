@@ -11,10 +11,10 @@ The root element of the URL can be configured.
 The API is documented at : http://localhost:3000/StudentDashboard/api
 
 # Data providers
-There are data providers supplied:
+There are 2 data providers supplied:
 
-* ESB / API based
-* FB file based
+* ESB - API based
+* FB - file based
 
 ## ESB Data provider
 This provider used the UMich WSO2 based ESB to get user data.  Configuration
@@ -24,7 +24,7 @@ for details.
 ## File based Data provider
 The File based data provider will retrieve user data from
 files on disk.  The specific directory to use is specified in the
-studentdashboard.yml file by the *data_file_provider_directory*  entry.
+studentdashboard.yml file by the *data_provider_file_directory*  entry.
 This is documented further in each studentdashboard yml file.
 
 The provider will expect to find a file named *user name.json* in that
@@ -37,7 +37,39 @@ could be used to test data with particularly long strings.
 The file based server currently only implements requests for the course
 data. It could easily be extended to support other types such as term or todo data.
 
------
+----
+## API Format
+
+The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
+
+{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool with words>}
+  Result: <result>
+  }
+
+The Meta httpStatus reflects the result of the call.  If the API call was successful it will match the httpStatus
+from the remote API.  "Successful" here means that the remote API handled the call.  It does not mean that the call
+worked.  It means that the Student Dashboard code didn't need to intrude on the call.
+If there is a problem that required the Latte code to respond then the Meta httpStatus will be 666
+The Meta Message and the Result section likely have more information but this is not assured.
+
+Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
+when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
+
+The calls to the internal API bypass the UI and will always return a wrapped value in the JSON format below.
+
+{ Meta: {httpStatus: <somethingcool>,"Message" : <something cool with words>}
+  Result: <result>
+  }
+
+The Meta httpStatus reflects the result of the call.  If the API call was successful it will match the httpStatus
+from the remote API.  "Successful" here means that the remote API handled the call.  It does not mean that the call
+worked.  It means that the Student Dashboard code didn't need to intrude on the call.
+If there is a problem that required the Latte code to respond then the Meta httpStatus will be 666
+The Meta Message and the Result section likely have more information but this is not assured.
+
+Note that the value in the result is what was returned from the API call. It is not assured to be valid JSON
+when evaluated. If you expect a JSON result it will be returned as a string and that string will need to be parsed.
+
 
 ### Ruby COMMANDS:
 
@@ -77,8 +109,7 @@ GitHub readme files are formated in Markdown:
 
 [Markdown Basics (Github)](https://help.github.com/articles/markdown-basics)
 
-Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip
-)
+Markdown is supported directly in RubyMine.  A perl script for textwrangler is available at this [link](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip)
 
 There is a web based markdown viewer/editor [here](http://daringfireball.net/projects/markdown/dingus).
 It has a good syntax summary on the right hand side.
@@ -90,6 +121,8 @@ It has a good syntax summary on the right hand side.
 These are tracked by Jira currently.
 
 ACTIVE:
+=======
+
 
 TTD: (roughly in order)
 
@@ -100,6 +133,7 @@ TTD: (roughly in order)
 MAYBE:
 
 DONE:
+
 
 - implement ESB / API provider
 - implement file based provider
