@@ -45,9 +45,11 @@ authn_wait_max: 0.03
 ## Any number of users can be specified.
 # The anonymous_user name specified above should NEVER appear here.
 
-#admin:
-#  - ABBA_IS_GREAT
-#  - DYLAN_IS_BETTER
+admin:
+  - ckretler
+  - dlhaines
+  - gsilver
+
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:
 ## ESB - this is the default and the configuration is in the security.yml file.
