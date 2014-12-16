@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/custom_style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Dashboard</title>
+    </head>
+    <body>
+
+      <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header mastHead">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <h1 class="navbar-brand collapse-nav">Pilot</h1>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container-fluid contentWrapper" style="margin-top:-20px">
+            <div class="row row-eq-heigh" id="content"  style="">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
+									<div class="itemPanel"><br>
+											<div class="alert alert-danger">
+												Sorry - this is just not working out....
+											</div>
+									    <p>Looking for upcoming assignments, events and activity across your courses? Checkout
+									      the <a href="https://ctools.umich.edu/portal">Ctools Dashboard</a> or  <a href="https://umich.instructure.com/">Canvas home.</a>
+									    </p>
+
+									</div>
+                </div>
+	        	</div>
+        </div>
+        <script src="https://code.jquery.com/jquery-1.11.0.min.js">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js">
+        </script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+        </script>
+        <div class="modal fade" id="serverInfoModal" tabindex="-1" role="dialog" aria-labelledby="serverInfoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h3 class="modal-title" id="serverInfoLabel">Please copy the info below</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control" id="toDoMessage" style="height:90px">User: [<%= @remote_user %>]&#10;server: [<%= @server %>]&#10;build time: [<%= @build_time %>]&#10;build_id: [<%= @build_id %>]</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
