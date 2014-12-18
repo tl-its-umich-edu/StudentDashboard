@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Dashboard</title>
+        <style type="text/css">
+            #content {
+                background: #fff;
+                border-width:0 1px;
+                border-style: solid;
+                border-color: #ccc;
+             }
+
+            .row {
+                margin: 0 0 5px 0;
+            }
+
+            .itemPanel {
+                padding: 0 5px;
+            }
+
+
+            .mastHead {
+                color:#fff;
+            }
+            .mastHead h1{
+                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAoCAYAAACiu5n/AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIE1hY2ludG9zaCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBRUU1RkNEMDE0MTYxMUU0QTU2MjlDMkNGN0ZDRUI2MSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBRUU1RkNEMTE0MTYxMUU0QTU2MjlDMkNGN0ZDRUI2MSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkFFRTVGQ0NFMTQxNjExRTRBNTYyOUMyQ0Y3RkNFQjYxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkFFRTVGQ0NGMTQxNjExRTRBNTYyOUMyQ0Y3RkNFQjYxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+LYktSgAAA45JREFUeNrsmUloFEEUhmumJzEZdz2qKAgeXDAq3iQuhyh4EERUUBBE3CAgATXgbkREiIIXRYUc3FEUUS9G3ECUXARPcTkkblGCaIyGTGZp/8K/taadyfRSPUvig4+he6aq63W9etuEzOfl9UKIGSAp3EsYvAOHQbfQKxPAVjAZ9Loca/CzHbwWVbEm64sIWArm+VxcN5XWJWVgC6j3Oc8b8AQ0qTv0Q8MCd/LF6ZLloNbnHEnq9tNukmENCxwBGmiGfmUa2A2G+ZwnpJCmsC6ZBQ6CIT5f3B4wXQQkYc3zrQSbfKxlI1glAhTdCkdBHZjvYWwNTVmUksJSJoJ9YLzLEHQEjCxFhaUs5E5XOHQu0uHNFHmQMGNeELKZZzqXbHP4Oy+6ldv1kzdNxqwYSWp6YCU97ux+frOIllCp6Zly7X0gAeK8NtPMCanlMp67GO/J6yX2+OVD7oC14Jvt/jhwEVRr3NXr4J6yq52gA6nlQzW1vGkbNIoe09C0CJmBbQe7lHsRZmfVms1YKnvSrdOq0Li7ltQyXbRkHVgfwLnNmfREMnjMcAAKD2eoagGjwQ4wtBBRJyLyJ1PBWTqVKaJAEsnzsxbbvWa+RUfiIRsAPS6rGCfyFXzUGCa1KSy9/AnNG9EFGsGtYtxhuQPHQLPGdd0Gxzm3UWwKRxngZaXzQcN8reAQs6UxxVo8GAw5+5WMzYt8F797Y61MN81iVdia5xJDjxdJgTPgXCmVh7JhdhQ89pgWNpRiPfwW7OWnU2lnvt2Vb4VDmtLKRwwrTuJzkoXFi0IkHqlMNaSDs5fKcP80uOJgvAxp1zLcN7PMm2strk3arZfty3K/l6bd0s/Yu7SETM9M9DN3Nsm5dpnfrgCTuMAQuxBuzHouuxZxlpbSjG8w5XxPc70MxtrGtYED4DOvZdNvtdJ9kfG9yqXCNSwRDerQyfS0We14PGAhnlRiqhtnZnI3BDsNn8AacF/5TR13Ut39WlsIW8AxCcWfGC5fvnUkrdbVS/BMVMU2qCZtir/NvDIPnjukjM1WIJwCF5Rrqej5HHNFPDhQSw9DGZ+ym3RcsyNMZahwepguzmE21Sj+/QvUDGAdccVi8l4Pv2Jbp5Lnd8A3AOQbfyoKLGExyOS/woNB4dQA1c1USFNYd3/YEN7+oAsFsI4oSfPSMp/t0LTTMuR88djqkSnmVa7D1HRU2xkO/8gvAQYAVtrCtkux7KsAAAAASUVORK5CYII=') 10px 5px no-repeat;
+                color:#aaa;
+                margin-top:10px;
+                margin:0;
+                padding:15px 5px 15px 90px;
+                font-size:24px;
+
+            }
+
+            .contentWrapper {
+                margin-top: 45px;
+                padding:0;
+            }
+            .fail {
+                font-size: 65px;
+                padding:10px;
+                text-align: center;
+
+            }
+
+            @media (max-width: 480px) {
+                .col1, .col2, .col3 {
+                    padding:0
+                }
+                .colHeader {
+                    padding:0 10px;
+                    font-size:150%;
+                }
+            }
+
+        </style>
+    </head>
+    <body>
+
+      <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header mastHead">
+                    <h1 class="navbar-brand collapse-nav">Pilot</h1>
+                    
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container-fluid contentWrapper" style="margin-top:-20px">
+            <div id="content">
+				<div class="itemPanel row"><br>
+                    <div class="fail col-md-4 col-md-4">
+                        (－‸ლ) sorry!
+                    </div>
+					<div class="alert alert-danger col-md-8 col-md-8">
+						Message TBD goes here.
+                        <br><br>
+                        <p>Looking for upcoming assignments, events and activity across your courses? Checkout
+                      the <a href="https://ctools.umich.edu/portal">Ctools Dashboard</a> or  <a href="https://umich.instructure.com/">Canvas home.</a>
+                    </p>
+
+					</div>
+
+				</div>
+
+
+        	</div>
+        </div>
+        <script src="https://code.jquery.com/jquery-1.11.0.min.js">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js">
+        </script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+        </script>
+    </body>
+</html>
