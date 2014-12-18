@@ -145,6 +145,7 @@ class WAPI
     #logger.info "WAPI: renew_token"
     begin
       renew = Stopwatch.new("renew token")
+      renew.start;
       response = RestClient.post @token_server,
                                  "grant_type=client_credentials&scope=PRODUCTION",
                                  {
@@ -161,6 +162,7 @@ class WAPI
       # If got an exception for the renewal then wrap that up to be returned.
       logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
+      renew.stop
       logger.info("WAPI: #{__LINE__}: failed to renew token: "+renew.pretty_summary)
       return wr
     end
@@ -179,7 +181,8 @@ class WAPI
       #logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
       wr = WAPIResultWrapper.new(200, "token renewed", response)
     end
-    logger.info("WAPI: #{__LINE__}: renewed token: "+renew.pretty_summary)
+    renew.stop
+    logger.info("WAPI: #{__LINE__}: renewed token: stopwatch: "+renew.pretty_summary)
     wr
   end
 
