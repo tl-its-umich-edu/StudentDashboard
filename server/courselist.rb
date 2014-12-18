@@ -205,23 +205,25 @@ END
   ## make sure logging is available
   configure :test do
 
-    set :logging, Logger::DEBUG
+    #set :logging, Logger::DEBUG
+    set :logging, Logger::INFO
 
     #configureLogging
 
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
     configureStatic
-
+    set :logging, Logger::INFO
   end
 
   ## make sure logging is available
   configure :production, :development do
 
-    set :logging, Logger::DEBUG
+    #set :logging, Logger::DEBUG
+
 
     configureLogging
-
+    set :logging, Logger::INFO
     configureStatic
 
   end
@@ -287,7 +289,7 @@ END
 
     def self.vetoRequest(user, request_url)
 
-      logger.debug "#{__LINE__}:vetoRequest: userid: [#{user}] request_url: [#{request_url}]"
+      #logger.debug "#{__LINE__}:vetoRequest: userid: [#{user}] request_url: [#{request_url}]"
       #logger.debug "#{__LINE__}: vetoRequest: "+caller.join("\n")
 
       # Make sure that someone explicit is making the request.
@@ -295,7 +297,7 @@ END
 
       # admin users can request for everybody.
       if @@admin.include? user
-        logger.debug "#{__LINE__}:vetoRequest: found admin userid: #{user}"
+       # logger.debug "#{__LINE__}:vetoRequest: found admin userid: #{user}"
         return nil
       end
 
@@ -311,7 +313,7 @@ END
       # Make sure the request is for the authenticated userid.
       should_veto = url_user[1] != user
 
-      logger.debug "#{__LINE__}: vetoRequest: should_veto: #{should_veto}"
+      logger.info "#{__LINE__}: vetoRequest: should_veto: #{should_veto}"
       return should_veto
 
     end
@@ -332,7 +334,7 @@ END
 
     ## if there is no remote_user then set it to anonymous.
     user = request.env['REMOTE_USER']
-    logger.debug "#{__LINE__}: authn filter: starting userid: #{user}"
+    #logger.debug "#{__LINE__}: authn filter: starting userid: #{user}"
 
     # If not set then use the anonymous user
     if user.nil? || user.length == 0
@@ -346,13 +348,13 @@ END
       session_user = session[:remote_user]
       if  !session_user.nil? && session_user.length > 0
         user = session_user
-        logger.debug "#{__LINE__}: authn filter: take user from session: #{user}"
+    #    logger.debug "#{__LINE__}: authn filter: take user from session: #{user}"
       end
     end
 
     ## Set that remote user.
     request.env['REMOTE_USER'] = user
-    logger.debug "#{__LINE__}: authn filter: final user: #{user}"
+ #   logger.debug "#{__LINE__}: authn filter: final user: #{user}"
   end
 
   ## For testing allow specifying the userid identity to be used on the URL.
@@ -371,7 +373,6 @@ END
   ## or the authenticated userid is listed as a special admin userid.
   before "*" do
     ## Make sure people only ask about themselves (or are privileged)
-    logger.debug "#{__LINE__}:before *: check veto"
     vetoResult = CourseList.vetoRequest request.env['REMOTE_USER'], request.env['REQUEST_URI']
     logger.debug "vetoResult: "+vetoResult.to_s
     halt 401 if vetoResult == true
@@ -382,7 +383,6 @@ END
 
   ## If the request isn't for anything specific then return the UI page.
   get '/' do
-    logger.debug "#{__LINE__}:in top page"
     # logger.debug "top page: request.env" + request.env.inspect
     ### Currently pull the erb file from the UI directory.
     idx = File.read("#{@@BASE_DIR}/UI/index.erb")
@@ -396,8 +396,6 @@ END
     @remote_user = request.env['REMOTE_USER']
     @build_time = @@build_time
     @build_id = @@build_id
-
-    logger.debug "#{__LINE__}: REMOTE_USER: [#{@remote_user}] server: [#{@server}]"
 
     erb idx
   end
@@ -418,19 +416,16 @@ END
   ### Return json array of the course objects for this user.  Currently if you don't
   ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |userid, format|
-    logger.info "#{__LINE__}: userid: #{:userid} format: #{:format}"
-    logger.info "#{__LINE__}:courses: params: "+params.inspect
     termid = params[:TERMID]
 
-    logger.info "#{__LINE__}:termid:: #{termid}"
+#    logger.debug "#{__LINE__}:termid:: #{termid}"
 
     if format && "json".casecmp(format).zero?
       content_type :json
 
       courseDataForX = DataProviderCourse(userid, termid)
-      logger.debug "#{__LINE__}: courseDataForX: "+courseDataForX.inspect
       if "404".casecmp(courseDataForX.meta_status.to_s).zero?
-        logger.debug "#{__LINE__}: returning 404 for missing file"
+        logger.info "#{__LINE__}: returning 404 for missing file"
         response.status = 404
         return ""
       end
@@ -438,7 +433,7 @@ END
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
-    logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
+    #logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
     courseDataForX.value_as_json
   end
 
