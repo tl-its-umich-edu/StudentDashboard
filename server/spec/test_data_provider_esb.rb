@@ -22,7 +22,7 @@ class TestModule < Minitest::Test
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
-    #logger.level = Logger::DEBUG
+    logger.level = Logger::DEBUG
   end
 
   # Called after every test method runs. Can be used to tear
@@ -45,9 +45,38 @@ class TestModule < Minitest::Test
 
     refute_nil(m,"create provider object")
     classes = m.DataProviderESBCourse("nobody.XXX", "2010", "./security.yml","SD-QA","2010")
-   # classes = WAPIResultWrapper.value_from_json(classes)
-    assert_equal(404,classes.meta_status,'response not completed')
+    assert_equal(404,classes.meta_status,'response not completed (will fail when stubbed)')
     assert_equal(404,JSON.parse(classes.result)['responseCode'],'should not find (missing) user.')
+
+  end
+
+  def test_esb_terms
+
+    # current sub response 2014/12/08
+    # {
+    #     "getMyRegTermsResponse": {
+    #     "Term": {
+    #     "TermCode": "1960",
+    #     "TermDescr": "Fall 2014",
+    #     "TermShortDescr": "FA 2014"
+    # }
+    # }
+    # }
+
+    skip("not yet testable")
+    ### create inline class and include the module under test.
+    m = Class.new do
+      include DataProviderESB
+      include Logging
+      require_relative '../WAPI'
+      @@w = nil
+      @@yml = nil
+    end.new
+
+    refute_nil(m,"create provider object")
+    terms = m.DataProviderESBTerms("ststvii", "2010", "./security.yml","SD-QA","2010")
+    assert_equal(404,terms.meta_status,'response not completed (will fail when stubbed)')
+    assert_equal(404,JSON.parse(terms.result)['responseCode'],'should not find (missing) user.')
 
   end
 

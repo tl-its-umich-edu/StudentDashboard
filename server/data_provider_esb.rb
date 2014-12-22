@@ -5,7 +5,6 @@ module DataProviderESB
   @@w = nil
   @@yml = nil
 
-  require_relative 'WAPI_result_wrapper'
 
   def setup_WAPI(app_name)
     logger.info "use ESB application: #{app_name}"
@@ -13,7 +12,7 @@ module DataProviderESB
     @@w = WAPI.new application
   end
 
-  def init_ESB(security_file,app_name)
+  def init_ESB(security_file, app_name)
 
     logger.info "init_ESB"
     logger.info("security_file: "+security_file.to_s)
@@ -33,12 +32,12 @@ module DataProviderESB
     setup_WAPI(app_name)
   end
 
-  def DataProviderESBCourse(uniqname, termid, security_file,app_name,default_term)
-    logger.info "data provider is DataProviderESBCourse.\n"
+  def DataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
+    logger.info "data provider is DataProviderESBCourse."
     ## if necessary initialize the ESB connection.
     if @@w.nil?
       logger.debug "@@w is nil"
-      @@w = init_ESB(security_file,app_name)
+      @@w = init_ESB(security_file, app_name)
     end
 
     if termid.nil? || termid.length == 0
@@ -52,8 +51,10 @@ module DataProviderESB
 
     classes = @@w.get_request(url)
     logger.debug("dataProviderESBCourse: classes: "+classes.inspect)
+    #puts "#{__LINE__}: dataProviderESBCourse: classes: "+classes.inspect
     result = classes.result
     logger.debug("dataProviderESBCourse: result: "+result.inspect)
+
     r = JSON.parse(result)
 
     if r.has_key?('getMyClsScheduleResponse')
@@ -65,4 +66,35 @@ module DataProviderESB
 
     return classes
   end
+
+  def DataProviderESBTerms(uniqname, termid, security_file, app_name, default_term)
+    logger.info "data provider is DataProviderESBCourse."
+    ## if necessary initialize the ESB connection.
+    if @@w.nil?
+      logger.debug "@@w is nil"
+      @@w = init_ESB(security_file, app_name)
+    end
+
+    if termid.nil? || termid.length == 0
+      logger.debug "defaulting term to #{default_term}"
+      termid = default_term
+    end
+
+    url = "/Students/#{uniqname}/Terms/#{termid}"
+
+    logger.debug("ESB: url: "+url)
+
+    terms = @@w.get_request(url)
+    logger.debug("#{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect)
+    puts "#{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect
+    result = terms.result
+    puts "#{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect
+
+    r = JSON.parse(result)
+
+    terms = WAPIResultWrapper.new(200, "found terms from ESB", r)
+
+    return terms
+  end
+
 end

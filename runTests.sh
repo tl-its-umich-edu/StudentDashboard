@@ -4,8 +4,7 @@
 
 function runTest {
     local file=$1
-    echo "+++++"
-    echo "+++++ running test file: $file"
+    echo "=================== running test file: $file"
     (
         cd server/spec;
         ruby ./$file

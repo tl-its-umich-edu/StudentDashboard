@@ -30,8 +30,8 @@ class TestNew < Minitest::Test
   def setup_logger
     log = Logger.new(STDOUT)
     #log.level = Logger::ERROR
-    logger.level = Logger::DEBUG
-    log.level = Logger::DEBUG
+    #logger.level = Logger::DEBUG
+    #log.level = Logger::DEBUG
     RestClient.log = log
   end
 
