@@ -16,8 +16,7 @@ require 'base64'
 require 'rest-client'
 require_relative './Logging'
 require_relative './WAPI_result_wrapper'
-
-require_relative './WAPI_result_wrapper'
+require_relative './stopwatch'
 
 
 include Logging
@@ -51,7 +50,7 @@ class WAPI
     @uniqname = application['uniqname']
 
     @renewal = WAPI.build_renewal(@key, @secret)
-    logger.debug("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
+    logger.info("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
 
 
@@ -82,7 +81,9 @@ class WAPI
 
   def do_request(request)
     url=format_url(request)
-    logger.debug "WAPI: do_request: url: #{url}"
+    #logger.debug "WAPI: do_request: url: #{url}"
+    r = Stopwatch.new(url)
+    r.start
     begin
       response = RestClient.get url, {:Authorization => "Bearer #{@token}",
                                       :accept => :json,
@@ -90,7 +91,7 @@ class WAPI
 
       ## try to parse as json or send back a wrapped error
       j = JSON.parse(response)
-      logger.debug "WAPI: #{__LINE__}: do_request: esb response "+j.inspect
+      #logger.debug "WAPI: #{__LINE__}: do_request: esb response "+j.inspect
 
       ## convert response code to integer if comes as a string
       begin
@@ -111,7 +112,9 @@ class WAPI
       logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
       wrapped_response = WAPIResultWrapper.new(666, "EXCEPTION", exp)
     end
-    logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
+    #logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
+    r.stop
+    logger.info "WAPI: #{__LINE__}: do_request: stopwatch: "+ r.pretty_summary
     wrapped_response
   end
 
@@ -121,18 +124,15 @@ class WAPI
   def get_request(request)
     wrapped_response = do_request(request)
 
-    logger.debug("WAPI: #{__LINE__}: response: A "+wrapped_response.inspect)
-    logger.debug "WAPI: #{__LINE__}: wrapped_response result: "+wrapped_response.result.inspect
-
     ## If appropriate try to renew the token.
     if wrapped_response.meta_status == 666 &&
         wrapped_response.result.respond_to?('http_code') &&
         wrapped_response.result.http_code == 401
-      logger.debug("WAPI: #{__LINE__}: unauthorized on initial request: "+wrapped_response.inspect)
+      #logger.debug("WAPI: #{__LINE__}: unauthorized on initial request: "+wrapped_response.inspect)
       wrapped_response = renew_token()
       ## if the token renewed ok then try the request again.
       if wrapped_response.meta_status == 200
-        logger.debug("WAPI: #{__LINE__}: retrying request after token renewal")
+#        logger.debug("WAPI: #{__LINE__}: retrying request after token renewal")
         wrapped_response = do_request(request)
       end
     end
@@ -142,8 +142,10 @@ class WAPI
   # Renew the current token.  Will set the current @token value in the object
   def renew_token
 
-    logger.debug "WAPI: renew_token"
+    #logger.info "WAPI: renew_token"
     begin
+      renew = Stopwatch.new("renew token")
+      renew.start;
       response = RestClient.post @token_server,
                                  "grant_type=client_credentials&scope=PRODUCTION",
                                  {
@@ -157,13 +159,15 @@ class WAPI
         @token = s['access_token']
       end
     rescue Exception => exp
-      # If got an exception for the renewal wrap that up to be returned.
-      logger.debug("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
+      # If got an exception for the renewal then wrap that up to be returned.
+      logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
+      renew.stop
+      logger.info("WAPI: #{__LINE__}: failed to renew token: "+renew.pretty_summary)
       return wr
     end
 
-    logger.warn("WAPI: #{__LINE__}: got response: "+response.inspect)
+#    logger.debug("WAPI: #{__LINE__}: got response: "+response.inspect)
 
     ## got no response or an error, wrap that up.
     if response.nil?
@@ -174,9 +178,11 @@ class WAPI
       wr = WAPIResultWrapper.new(666, "error renewing token: response code", response)
     else
       print_token = sprintf "%5s", @token
-      logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
+      #logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
       wr = WAPIResultWrapper.new(200, "token renewed", response)
     end
+    renew.stop
+    logger.info("WAPI: #{__LINE__}: renewed token: stopwatch: "+renew.pretty_summary)
     wr
   end
 

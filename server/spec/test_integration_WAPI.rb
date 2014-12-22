@@ -27,13 +27,13 @@ class TestNew < Minitest::Test
   @@yml = nil
   @@config = nil
 
-  def setup_logger
-    log = Logger.new(STDOUT)
-    #log.level = Logger::ERROR
-    #logger.level = Logger::DEBUG
-    #log.level = Logger::DEBUG
-    RestClient.log = log
-  end
+  # def setup_logger
+  #   log = Logger.new(STDOUT)
+  #   #log.level = Logger::ERROR
+  #   #logger.level = Logger::DEBUG
+  #   #log.level = Logger::DEBUG
+  #   RestClient.log = log
+  # end
 
   def load_yml
     @@yml = YAML::load_file(File.open(@@yml_file))
