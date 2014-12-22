@@ -22,7 +22,7 @@ class TestModule < Minitest::Test
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
-    logger.level = Logger::DEBUG
+#    logger.level = Logger::DEBUG
   end
 
   # Called after every test method runs. Can be used to tear

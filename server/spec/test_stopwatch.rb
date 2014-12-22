@@ -17,7 +17,7 @@ class TestModule < Minitest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    @s = Stopwatch.new
+    @s = Stopwatch.new("setup")
   end
 
   # Called after every test method runs. Can be used to tear
@@ -60,7 +60,15 @@ class TestModule < Minitest::Test
     summary = @s.summary
     assert_equal(2,summary[1])
 
+  end
 
+  def test_summary
+    s = Stopwatch.new("test_me")
+    puts "ts: summary:" + s.summary.to_s
+    sum = s.summary
+    assert_equal(0,sum[0])
+    assert_equal(0,sum[1])
+    assert_equal("test_me",sum[2])
   end
 
 end

@@ -19,6 +19,7 @@ that will provide authentication.  The container must be configured to
 supply the REMOTE_USER environment variable value in the request.  An
 example server.xml file for Tomcat is included.
 
+
 # Building the project
 
 The application runs under Ruby 1.9.3.  After checking out the source
@@ -27,9 +28,12 @@ bundle command to update dependencies.
 
     bundle install
 
+## Running via Ruby
 The server can then be run locally using common Ruby web servers.
-There are some script files included that make it easy to run a Ruby
-server directly on port 3000. 
+StudentDashboard can be run locally using the included script
+"./runServerBundle.sh"  This will run on port 3000 at the URL: http://localhost:3000/
+
+## Running via Tomcat
 
 To build the war file for installation under Tomcat use the command
 
@@ -39,6 +43,8 @@ The
 top level directory contains the Ruby configuration files required to build the
 war file.  Delivery of the application configuration files is handled separately.
 
+Depending on your setup the application will be available at a URL similar to: 
+http://localhost:8080/StudentDashboard
 
 Note that the urls for a server run locally with a default Ruby server
 will not require a context name but when running the war package in a container the
