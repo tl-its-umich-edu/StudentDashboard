@@ -6,7 +6,7 @@ require 'minitest/autorun'
 require 'minitest/unit'
 # require 'webmock/minitest'
 
-require '../yaml'
+require 'yaml'
 require_relative '../data_provider_esb'
 require_relative '../WAPI_result_wrapper'
 #require_relative '../WAPI'
