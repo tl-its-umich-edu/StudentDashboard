@@ -4,6 +4,7 @@ gem 'slim'
 gem 'rack'
 gem 'rack-protection'
 gem 'rest-client'
+#gem 'selenium-webdriver'
 group :development do
   gem 'unicorn'
   gem 'guard'
@@ -19,4 +20,5 @@ group :test do
   gem 'rspec'
   gem 'minitest'
   gem 'webmock'
+  gem 'selenium-webdriver'
 end
