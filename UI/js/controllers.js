@@ -65,7 +65,7 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
       $scope.courses = data;
       $scope.loading = false;
     }
-    $('.colHeader small').append($('<span id="#done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+    $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
 
   });
 }]);
