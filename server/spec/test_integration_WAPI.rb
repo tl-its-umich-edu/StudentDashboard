@@ -123,13 +123,14 @@ class TestNew < Minitest::Test
     assert j.length > 0, "need at least 1 term"
   end
 
-  def test_term_request_bad_user
-    logger.info 'test_term_request_bad_user'
-#    skip("can not test without working ESB get 500 for unknown user")
-## code below "works" for 500 / server error currently returned, but that response isn't appropriate
-#    assert_raises(RestClient::InternalServerError) { r = @w.get_request("/Students/FeelingGroovy/Terms")}
+  def test_term_request_unknown_user
+    logger.info 'test_term_request_unknown_user'
 
     r = @w.get_request("/Students/FeelingGroovy/Terms")
+
+# check status
+    httpStatus = r.meta_status
+    assert_equal 404, httpStatus, "unexpected response code"
 
   end
 
