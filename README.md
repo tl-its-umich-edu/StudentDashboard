@@ -28,10 +28,13 @@ bundle command to update dependencies.
 
     bundle install
 
-## Running via Ruby
+## Running via Ruby / JRuby
 The server can then be run locally using common Ruby web servers.
 StudentDashboard can be run locally using the included script
 "./runServerBundle.sh"  This will run on port 3000 at the URL: http://localhost:3000/
+
+Use RVM to select the version of ruby to use.  Using JRuby may require getting rid of
+the unicorn and/or guard gems.
 
 ## Running via Tomcat
 

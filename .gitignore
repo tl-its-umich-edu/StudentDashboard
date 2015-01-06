@@ -8,3 +8,4 @@ tmp_.*
 **/security.yml
 **/build.yml
 ARTIFACTS
+**stderr

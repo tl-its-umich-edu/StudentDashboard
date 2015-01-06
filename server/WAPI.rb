@@ -82,7 +82,8 @@ class WAPI
   def do_request(request)
     url=format_url(request)
     #logger.debug "WAPI: do_request: url: #{url}"
-    r = Stopwatch.new(url)
+    msg = Thread.current.to_s+": "+url
+    r = Stopwatch.new(msg)
     r.start
     begin
       response = RestClient.get url, {:Authorization => "Bearer #{@token}",
@@ -114,7 +115,7 @@ class WAPI
     end
     #logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
     r.stop
-    logger.info "WAPI: #{__LINE__}: do_request: stopwatch: "+ r.pretty_summary
+    logger.info "WAPI: do_request: stopwatch: "+ r.pretty_summary
     wrapped_response
   end
 
@@ -144,7 +145,8 @@ class WAPI
 
     #logger.info "WAPI: renew_token"
     begin
-      renew = Stopwatch.new("renew token")
+      msg = Thread.current.to_s
+      renew = Stopwatch.new(msg)
       renew.start;
       response = RestClient.post @token_server,
                                  "grant_type=client_credentials&scope=PRODUCTION",
@@ -182,7 +184,7 @@ class WAPI
       wr = WAPIResultWrapper.new(200, "token renewed", response)
     end
     renew.stop
-    logger.info("WAPI: #{__LINE__}: renewed token: stopwatch: "+renew.pretty_summary)
+    logger.info("WAPI: renewed token: stopwatch: "+renew.pretty_summary)
     wr
   end
 

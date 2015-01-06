@@ -15,6 +15,7 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
+require_relative 'stopwatch'
 require_relative 'WAPI'
 require_relative 'WAPI_result_wrapper'
 
@@ -202,6 +203,7 @@ END
 
   end
 
+  #set :threaded true
   ## make sure logging is available
   configure :test do
 
@@ -297,7 +299,7 @@ END
 
       # admin users can request for everybody.
       if @@admin.include? user
-       # logger.debug "#{__LINE__}:vetoRequest: found admin userid: #{user}"
+        # logger.debug "#{__LINE__}:vetoRequest: found admin userid: #{user}"
         return nil
       end
 
@@ -346,15 +348,22 @@ END
 
       ## If allowed and there is an user in the session then use that.
       session_user = session[:remote_user]
-      if  !session_user.nil? && session_user.length > 0
+      if !session_user.nil? && session_user.length > 0
         user = session_user
-    #    logger.debug "#{__LINE__}: authn filter: take user from session: #{user}"
+        #    logger.debug "#{__LINE__}: authn filter: take user from session: #{user}"
       end
     end
 
     ## Set that remote user.
     request.env['REMOTE_USER'] = user
- #   logger.debug "#{__LINE__}: authn filter: final user: #{user}"
+
+    # store a stopwatch in the session with the current thread id
+    msg = Thread.current.to_s
+    sd = Stopwatch.new(msg)
+    sd.start
+    session[:thread] = sd
+
+    ## add the stopwatch to a session and print
   end
 
   ## For testing allow specifying the userid identity to be used on the URL.
@@ -433,7 +442,7 @@ END
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
-    #logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
+#logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
     courseDataForX.value_as_json
   end
 
@@ -451,6 +460,11 @@ END
     return "#{@@invalid_query_text}"
   end
 
+  after do
+  request_sd = session[:thread]
+  request_sd.stop
+  logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
+end
 
   #################### Data provider functions #################
 
@@ -504,9 +518,9 @@ END
 
 
     if !@@data_provider_file_directory.nil?
-      return DataProviderFileCourse(a,termid, @@data_provider_file_directory)
-   else
-      return DataProviderESBCourse(a, termid, @@security_file,@@application_name,@@default_term)
+      return DataProviderFileCourse(a, termid, @@data_provider_file_directory)
+    else
+      return DataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
     end
 
   end
