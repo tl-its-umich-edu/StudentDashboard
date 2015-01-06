@@ -20,7 +20,7 @@ function runPoll {
             runPoll
             i=$(($i+1))
         done
-    ) 2>runMany.$$.stderr >>runMany.$$.txt
+    ) 2>runMany.$$.stderr >>runMany.$$.stdout
 )
 
 #end
