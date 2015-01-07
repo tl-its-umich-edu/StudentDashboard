@@ -134,6 +134,7 @@ END
   ## a class method.
 
   def self.configureLogging
+
     ## In Tomcat commenting these three will make output show up in localhost log.
     log = File.new(@@log_file, "a+")
     $stdout.reopen(log)
@@ -218,17 +219,24 @@ END
     set :logging, Logger::INFO
   end
 
-  ## make sure logging is available
+  ## make sure logging is available in localhost
   configure :production, :development do
 
-    #set :logging, Logger::DEBUG
+    set :logging, Logger::INFO
+    configureStatic
 
+  end
+
+  ## make sure logging is available to sinatra.log
+  configure :development do
 
     configureLogging
     set :logging, Logger::INFO
     configureStatic
 
   end
+
+
 
   #### Authorization
   # StudentDashboard requires that the user be authenticated.  It verifies this by using the name set in the
@@ -315,7 +323,7 @@ END
       # Make sure the request is for the authenticated userid.
       should_veto = url_user[1] != user
 
-      logger.info "#{__LINE__}: vetoRequest: should_veto: #{should_veto}"
+      logger.debug "#{__LINE__}: vetoRequest: should_veto: #{should_veto}"
       return should_veto
 
     end
@@ -358,7 +366,7 @@ END
     request.env['REMOTE_USER'] = user
 
     # store a stopwatch in the session with the current thread id
-    msg = Thread.current.to_s
+    msg = Thread.current.to_s + "\t"+request.url.to_s
     sd = Stopwatch.new(msg)
     sd.start
     session[:thread] = sd
