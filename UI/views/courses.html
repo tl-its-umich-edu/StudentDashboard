@@ -1,6 +1,6 @@
 
-<div id="courses" class="itemPanel" ng-controller="coursesController" ng-cloak>
-  <h3 class="colHeader">Courses <small>{{term}} {{year}}</small>
+<div id="courses" class="itemPanel" ng-controller="coursesController">
+  <h3 class="colHeader">{{lang.panelTitle}} <small>{{term}} {{year}}</small>
     <div class="btn-group pull-right">
       <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
         Terms <span class="caret"></span>
@@ -15,12 +15,13 @@
 
   <div>{{courses.message}}</div>
   <div>{{courses.errors.message}}</div>
-  <div ng-show="courses.errors.requestUrl">We asked for
+  <div ng-show="courses.errors.requestUrl">{{lang.errorWeAsked}}
     <code>{{courses.errors.requestUrl}}</code>
   </div>
-  <div ng-show="courses.errors.details">It returned this:
+  <div ng-show="courses.errors.details">{{lang.errorWeGot}}
     <code>{{courses.errors.details}}</code>
   </div>
+
   <ul class="itemList">
     <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
       <div class="row">
@@ -71,15 +72,15 @@
     </li>
   </ul>
   <div ng-hide="loading">
-    <p ng-show="courses.canvas || courses.ctools">Looking for upcoming assignments, events and activity across your courses? Checkout
-      <span ng-show="courses.ctools">the <a href="https://ctools.umich.edu/portal">Ctools Dashboard</a>
+    <p ng-show="courses.canvas || courses.ctools"> {{lang.lookAtOtherDashes}} 
+      <span ng-show="courses.ctools">the <a href="{{lang.ctoolsUrl}}">Ctools Dashboard</a>
       </span>
       <span ng-show="courses.canvas">
-        <span ng-show="courses.canvas && courses.ctools">or</span> <a href="https://umich.instructure.com/">Canvas home.</a>
+        <span ng-show="courses.canvas && courses.ctools">or</span> <a href="{{lang.canvasUrl}}">Canvas home.</a>
       </span>
     </p>
 
-    <p ng-show="!courses.canvas && !courses.ctools">It looks like none of your classes are using web sites we know of. Do you want to check out the <a href="https://ctools.umich.edu/portal">Ctools Dashboard</a> or <a href="https://umich.instructure.com/">Canvas home?</a>
+    <p ng-show="!courses.canvas && !courses.ctools">{{lang.lookAtOtherDashesNoCourses}}<a href="{{lang.ctoolsUrl}}">Ctools Dashboard</a> or <a href="{{lang.canvasUrl}}">Canvas home?</a>
       </span>
     </p>
   </div>
