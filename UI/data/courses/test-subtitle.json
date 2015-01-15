@@ -1,3 +1,9 @@
+{
+    "Meta": {
+        "httpStatus": 200,
+        "Message": "found courses from ESB"
+    },
+    "Result": 
 [
     {
         "Title": "AMCULT 217",
@@ -36,3 +42,4 @@
         ]
     }
 ]
+}

@@ -8,6 +8,17 @@ dashboardApp.run(function ($rootScope) {
   $rootScope.user = $('#userId').text();
 });
 
+dashboardApp.factory('Lang', function ($http) {
+ return {
+    getLang: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          return result.data;
+        }
+      );
+    }
+  };
+});
 dashboardApp.factory('Courses', function ($http) {
   return {
     getCourses: function (url) {
@@ -51,9 +62,15 @@ dashboardApp.factory('Courses', function ($http) {
   };
 });
 
-dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope', function (Courses, $rootScope, $scope) {
+dashboardApp.controller('coursesController', ['Courses', 'Lang', '$rootScope', '$scope', function (Courses, Lang, $rootScope, $scope) {
+
   $scope.courses = [];
   $scope.loading = true;
+
+  var langUrl = 'data/lang/courses.lang.json';
+  Lang.getLang(langUrl).then(function (data) {
+      $scope.lang = data;
+  });
 
   var url = 'courses/' + $rootScope.user + '.json';
 
@@ -68,6 +85,7 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
     $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
 
   });
+
 }]);
 
 
