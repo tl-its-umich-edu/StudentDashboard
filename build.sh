@@ -99,6 +99,7 @@ makeARTIFACTSDir
 # make sure the ruby bundle is correct.
 ts=$(niceTimestamp)
 
+
 setupRVM
 updateRuby
 
