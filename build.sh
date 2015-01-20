@@ -5,16 +5,33 @@ set +x
 
 RUBY_VERSION=ruby-1.9.3-p484
 
-## Setup RVM
-source ~/.rvm/scripts/rvm
 
-# Print verification that RVm is setup
-type rvm | head -n 1
+function atStep {
+    local msg=$1
+    echo "+++ $1"
+}
 
-# select and setup a particular ruby version.
-rvm use $RUBY_VERSION
+function setupRVM  {
+    #   echo "setup rvm"
+    atStep "setup rvm"
+    ## Setup RVM
+    source ~/.rvm/scripts/rvm
 
-gem install warbler
+    # Print verification that rvm is setup
+    type rvm | head -n 1
+}
+
+
+function updateRuby {
+    # select and setup a particular ruby version.
+    #    echo "updating ruby and dependencies"
+    atStep "updating ruby and dependencies"
+    
+    rvm use $RUBY_VERSION
+    
+    gem install warbler
+    bundle install >| ./ARTIFACTS/ruby.$ts.bundle
+}
 
 ########### utilities ############
 
@@ -82,10 +99,14 @@ makeARTIFACTSDir
 
 # make sure the ruby bundle is correct.
 ts=$(niceTimestamp)
-bundle install >| ./ARTIFACTS/ruby.$ts.bundle
 
-## should test return code
-./runTests.sh
+setupRVM
+updateRuby
+
+#bundle install >| ./ARTIFACTS/ruby.$ts.bundle
+
+#Don't run tests by default. Should check the return code if do.
+#./runTests.sh
 
 # make version before war as build.yml is included in the war file.
 makeVersion

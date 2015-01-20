@@ -4,15 +4,12 @@ gem 'slim'
 gem 'rack'
 gem 'rack-protection'
 gem 'rest-client'
-#gem 'selenium-webdriver'
 group :development do
- # gem 'unicorn'
+  gem 'unicorn'
   gem 'guard'
   gem 'listen'
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
-#  gem 'guard-unicorn'
-#  gem 'simplecov', :require => false, :group => :test
 end
 group :test do
   gem 'simplecov', :require => false, :group => :test
