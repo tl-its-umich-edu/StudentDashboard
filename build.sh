@@ -32,7 +32,6 @@ function updateRuby {
     bundle install >| ./ARTIFACTS/ruby.$ts.bundle
 }
 
-env
 ########### utilities ############
 
 # return a sortable timestamp as a string without a newline on the end.
@@ -94,7 +93,7 @@ function makeVersion {
 }
 
 ###################
-
+set -e
 makeARTIFACTSDir
 
 # make sure the ruby bundle is correct.
