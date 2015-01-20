@@ -6,6 +6,7 @@ set +x
 RUBY_VERSION=ruby-1.9.3-p484
 
 ## Setup RVM
+set -x
 source ~/.rvm/scripts/rvm
 
 # Print verification that rvm is setup
@@ -14,6 +15,7 @@ type rvm | head -n 1
 # select and setup a particular ruby version.
 rvm use $RUBY_VERSION
 
+env
 ########### utilities ############
 
 # return a sortable timestamp as a string without a newline on the end.
