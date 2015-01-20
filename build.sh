@@ -15,7 +15,6 @@ type rvm | head -n 1
 # select and setup a particular ruby version.
 rvm use $RUBY_VERSION
 
-env
 ########### utilities ############
 
 # return a sortable timestamp as a string without a newline on the end.
@@ -77,7 +76,7 @@ function makeVersion {
 }
 
 ###################
-
+set -e
 makeARTIFACTSDir
 
 # make sure the ruby bundle is correct.
