@@ -3,10 +3,9 @@
 
 set +x
 
-RUBY_VERSION=ruby-1.9.3-p484
+RUBY_VERSION=ruby-1.9.3
 
 ## Setup RVM
-set -x
 source ~/.rvm/scripts/rvm
 
 # Print verification that rvm is setup
@@ -92,6 +91,7 @@ makeVersion
 set -x
 
 # Make and name war file.  Put in ARTIFACTS directory.
+env
 makeWarFile
 
 ## make and name the configuration file tar and put in ARTIFACTS directory.
