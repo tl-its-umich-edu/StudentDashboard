@@ -15,7 +15,7 @@ source 'https://rubygems.org'
 # #end
 # #group :test do
 #   # gem 'simplecov', :require => false, :group => :test
-    gem 'simplecov' :require => false
+    gem 'simplecov', :require => false
    gem 'rack-test'
    gem 'rspec'
    gem 'minitest'
