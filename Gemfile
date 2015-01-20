@@ -10,9 +10,17 @@ group :development do
   gem 'listen'
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
+
 end
 group :test do
   gem 'simplecov', :require => false, :group => :test
+
+#   gem 'guard-unicorn'
+# #  gem 'simplecov', :require => false, :group => :test
+# #end
+# #group :test do
+#   # gem 'simplecov', :require => false, :group => :test
+#    gem 'simplecov'
   gem 'rack-test'
   gem 'rspec'
   gem 'minitest'
