@@ -4,7 +4,7 @@ gem 'slim'
 gem 'rack'
 gem 'rack-protection'
 gem 'rest-client'
-group :development do
+#group :development do
   gem 'unicorn'
   gem 'guard'
   gem 'listen'
@@ -12,11 +12,11 @@ group :development do
   gem 'rb-fsevent', :require => false
   gem 'guard-unicorn'
 #  gem 'simplecov', :require => false, :group => :test
-end
-group :test do
+#end
+#group :test do
   gem 'simplecov', :require => false, :group => :test
   gem 'rack-test'
   gem 'rspec'
   gem 'minitest'
   gem 'webmock'
-end
+#end

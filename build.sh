@@ -8,7 +8,7 @@ RUBY_VERSION=ruby-1.9.3-p484
 ## Setup RVM
 source ~/.rvm/scripts/rvm
 
-# Print verification that RVm is setup
+# Print verification that rvm is setup
 type rvm | head -n 1
 
 # select and setup a particular ruby version.
