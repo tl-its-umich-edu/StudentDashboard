@@ -111,6 +111,8 @@ updateRuby
 # make version before war as build.yml is included in the war file.
 makeVersion
 
+set -x
+
 # Make and name war file.  Put in ARTIFACTS directory.
 makeWarFile
 
