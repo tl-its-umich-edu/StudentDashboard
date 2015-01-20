@@ -14,7 +14,8 @@ gem 'rest-client'
 #  gem 'simplecov', :require => false, :group => :test
 #end
 #group :test do
-  gem 'simplecov', :require => false, :group => :test
+  # gem 'simplecov', :require => false, :group => :test
+   gem 'simplecov'
   gem 'rack-test'
   gem 'rspec'
   gem 'minitest'
