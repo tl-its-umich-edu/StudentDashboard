@@ -14,6 +14,8 @@ type rvm | head -n 1
 # select and setup a particular ruby version.
 rvm use $RUBY_VERSION
 
+gem install warbler
+
 ########### utilities ############
 
 # return a sortable timestamp as a string without a newline on the end.
