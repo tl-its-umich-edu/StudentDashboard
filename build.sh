@@ -5,7 +5,6 @@ set +x
 
 RUBY_VERSION=ruby-1.9.3-p484
 
-
 function atStep {
     local msg=$1
     echo "+++ $1"
@@ -33,6 +32,7 @@ function updateRuby {
     bundle install >| ./ARTIFACTS/ruby.$ts.bundle
 }
 
+env
 ########### utilities ############
 
 # return a sortable timestamp as a string without a newline on the end.
