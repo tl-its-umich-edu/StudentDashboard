@@ -3,7 +3,7 @@
 
 set +x
 
-RUBY_VERSION=ruby-1.9.3-p484
+RUBY_VERSION=ruby-1.9.3
 
 function atStep {
     local msg=$1
@@ -114,6 +114,7 @@ makeVersion
 set -x
 
 # Make and name war file.  Put in ARTIFACTS directory.
+env
 makeWarFile
 
 ## make and name the configuration file tar and put in ARTIFACTS directory.
