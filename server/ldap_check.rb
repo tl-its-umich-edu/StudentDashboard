@@ -1,4 +1,7 @@
-# Operations with LDAP.
+# Operations with LDAP.  Currently only supports getting default configuration values
+# and checking if a user is in a particular mcommunity group.
+# A configuration file name can be passed in when creating the object.  The default
+# value is ./server/local/ldap.yml.
 
 require 'net-ldap'
 require 'yaml'
@@ -7,57 +10,137 @@ require_relative '../server/Logging'
 class LdapCheck
   include Logging
 
-  ## setup ldap connection object
+  ## Setup the ldap connection object.  We create a new connection for each request so the
+  ## object creation doesn't need to do much.
   def initialize(args={})
 
-    @default_conf_file = "./server/spec/ldap.yml"
-    conf_file_name = args[:conf_file] || @default_conf_file
+    # This file will be provided in the build with values
+    # suitable for the MCommunity groups.
+    @default_conf_file = "./server/local/ldap.yml"
+    p args
+    conf_file_name = args["config_file"] || @default_conf_file
 
-    # if file is missing trap the "no such file" exception
+    # if file is missing then trap the "no such file" exception
     begin
-      conf_values = YAML.load_file(conf_file_name)
-      rescue => exp
+      @conf_values = YAML.load_file(conf_file_name)
+    rescue => exp
+      logger.info("can not find ldap config file: #{conf_file_name}")
     end
 
-    #h.each_key {|key| puts key }
-    puts "yml"
-    p conf_values
+    # Note that the hash returned for yaml uses strings for keys
+    # so we adopt that approach throughout except for the call
+    # to net-ldap where the keys are expected to be symbols.
 
-    conf_values.each_key {| k | puts "key: [#{k}] value: [#{conf_values[k]}]"}
+    # If yml didn't create a hash make sure there is one now.
+    @conf_values = Hash.new unless @conf_values
 
-    # make an empty configuration if the file is empty
-    # conf_values = Hash.new unless conf_values
-    #
-    # @host = args["host"] || conf_values["host"]
-    # @port = args["port"] || conf_values["port"]
-    # @encryption = args["encryption"] || conf_values["encryption"]
-    # @base = args["base"] || conf_values["base"]
-    #
-    # @ldap_dc = args["ldap_dc"] || conf_values["ldap_cd"]
-    # @search_base = args["search_base"] || conf_values["search_base"]
-    # @filter_prefix = args["filter_prefix"] || conf_values["filter_prefix"]
-    # @filter_suffix = args["filter_suffix"] || conf_values["filter_suffix"]
-    #
-    # ## auth should contain credentials hash of :method, :username, :password
-    # @auth = args["auth"] || conf_values["auth"]
+    # overwrite the default config values with ones from the arguments if there
+    # are any.
+    args.each_key { |k|
+      @conf_values[k] = args[k]
+    }
+
+    if logger.debug?
+      logger.debug "final conf values"
+      @conf_values.each_key { |k| logger.debug "key: [#{k}] value: [#{@conf_values[k]}]" }
+    end
+
+    ## save members in this group if one is specified.
+    save_group_members args['group'] if args['group']
+
+  end
+
+
+  # this provides access to verify / debug configuration.
+  def configuration
+    @conf_values
+  end
+
+  # See if the specified user is in the list of members which was provided by
+  # the LDAP call to MCommunity.
+  # def find_user_in_ldap_members user, members
+  #   # Use the trailing comma to so that will not be
+  #   # mislead by names that are prefixes of other names.
+  #   members.any? { |e| e.start_with? "uid=#{user}," }
+  #
+  # end
+
+  def is_user_in_admin_hash user
+    logger.debug "admin user check: user: #{user} key: " + @admin_hash.has_key?(user).to_s
+
+    @admin_hash.has_key? user
+  end
+
+  def add_to_members_hash members
+    regex_user = /uid=([^,]+),/;
+
+    @admin_hash = Hash.new() if @admin_hash.nil?
+
+    members.each do |m|
+      u = regex_user.match(m)[1].to_s
+      # do not want to provide a default value since most queries
+      # will be about entries that aren't there.
+      @admin_hash[u] = 0 unless @admin_hash.has_key? u
+      @admin_hash[u] = @admin_hash[u] + 1
+    end
+
+    #puts "admin hash"
+    #p @admin_hash
+  end
+
+  # Check if the specified user is a member of this MCommunity group.
+  # The user is a uniqname, the group is any public Mcommunity group.
+  # Attempts to use a filter query specific to this user didn't work
+  # so the query used gets the full list of users in the group.
+  # def checkMemberInGroup(user, group)
+  #
+  #   # Note that the hash returned for yaml uses strings for keys
+  #   # so we adopt that approach throughout except for the call
+  #   # to net-ldap where the keys are expected to be symbols.
+  #
+  #   conf = configuration
+  #   host = conf["host"]
+  #   port = conf["port"]
+  #   search_base = conf["search_base"]
+  #
+  #   Net::LDAP.open(:host => host,
+  #                  :port => port,
+  #                  :base => search_base) do |ldap|
+  #
+  #     # Get the members of the group
+  #     filterString = "(&(cn=#{group})(objectclass=rfc822MailGroup))"
+  #     groupFilter = Net::LDAP::Filter.construct(filterString)
+  #     groupData = ldap.search(:filter => groupFilter)
+  #
+  #     logger.info "#{__LINE__}: checking ldap group for: #{user}"
+  #
+  #     find_user_in_ldap_members user, groupData[0].member
+  #   end
+
+  def save_group_members(group)
+
+    # Note that the hash returned for yaml uses strings for keys
+    # so we adopt that approach throughout except for the call
+    # to net-ldap where the keys are expected to be symbols.
+
+    conf = configuration
+    host = conf["host"]
+    port = conf["port"]
+    search_base = conf["search_base"]
+
+    Net::LDAP.open(:host => host,
+                   :port => port,
+                   :base => search_base) do |ldap|
+
+      # Get the members of the group
+      filterString = "(&(cn=#{group})(objectclass=rfc822MailGroup))"
+      groupFilter = Net::LDAP::Filter.construct(filterString)
+      groupData = ldap.search(:filter => groupFilter)
+
+      add_to_members_hash groupData[0].member
+      #find_user_in_ldap_members user, groupData[0].member
+    end
 
   end
 
-  # setup a filter to get members
-  ## these from jsp
-  ## attrIDs = "member"
-  ## filter = "(&(cn="+grp+") (objectclass=rfc822MailGroup))"
-  ## subtree scope
-  ## returningAttr attrIDs
-  ## searchBase "ou=Groups"
-  ## search on searchbase, filter, ctls) (ctls is search controls)
-  def memberFilter(grp)
-    "#{@filter_prefix}#{grp}#{@filter_suffix}"
-  end
-
-  # check if this user is a member
-  def memberCheck(user)
-    # pass the search and filter and get back
-
-  end
 end

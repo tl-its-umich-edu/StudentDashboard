@@ -4,6 +4,7 @@ gem 'slim'
 gem 'rack'
 gem 'rack-protection'
 gem 'rest-client'
+gem 'net-ldap'
 #gem 'selenium-webdriver'
 group :development do
  # gem 'unicorn'
