@@ -78,21 +78,21 @@ class AuthCheck < MiniTest::Test
   end
 
   def test_empty_user_fails
-    r = CourseList.vetoRequest "", @coursesUrlststvii
+    r = CourseList.vetoRequest("", @coursesUrlststvii) {false}
     assert r, "veto if no authenticated user (empty string)"
   end
 
 
   ### check to make sure unauthorized user can not request courses but
-  ### and anothorized user can
+  ### and authorized user can.
   def test_mismatched_user
-    r = CourseList.vetoRequest "abba", @coursesUrlststvii
+    r = CourseList.vetoRequest("abba", @coursesUrlststvii) {false}
     assert r, "allowed wrong user."
   end
 
   ## make sure that the user matches
   def test_matched_user
-    r = CourseList.vetoRequest "ststvii", @coursesUrlststvii
+    r = CourseList.vetoRequest("ststvii", @coursesUrlststvii) {false}
     refute r, "refused correct user"
   end
 
@@ -114,13 +114,13 @@ class AuthCheck < MiniTest::Test
     refute r, "refused correct url"
   end
 
-  def test_topSDUrlUNIQNAME_different
-    r = CourseList.vetoRequest "ststvii", @topSDUrlUNIQNAME_different
-    refute r, "refused correct url (url does not have /courses/)"
-  end
+  # def test_topSDUrlUNIQNAME_different
+  #   r = CourseList.vetoRequest("ststvii", @topSDUrlUNIQNAME_different) {false}
+  #   refute r, "refused correct url (url does not have /courses/)"
+  # end
 
   def test_topSDUrlUNIQNAME_same
-    r = CourseList.vetoRequest "ststvii", @topSDUrlUNIQNAME_same
+    r = CourseList.vetoRequest("ststvii", @topSDUrlUNIQNAME_same) {false}
     refute r, "refused correct url"
   end
 

@@ -53,3 +53,8 @@ ldapsearch -H ldap://ldap.itd.umich.edu:389 -D"ou=Groups,dc=umich,dc=edu" -L $F 
 #Enter LDAP Password:
 #dn: uid=xpaul,ou=People,dc=umich,dc=edu
 #mailForwardingAddress: xpaul@da.dir.3456
+
+F='(&(cn=TL-Latte-admin-test)(objectclass=rfc822MailGroup))'
+#F='(cn=TL-Latte-admin-test)'
+#ldapsearch -H ldap://ldap.itd.umich.edu:389 -D"ou=Groups,dc=umich,dc=edu" -L $F member
+ldapsearch -H ldap://ldap.itd.umich.edu:389 -D"ou=Groups,dc=umich,dc=edu" -L $F member
