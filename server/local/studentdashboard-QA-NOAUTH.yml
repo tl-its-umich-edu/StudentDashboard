@@ -39,16 +39,12 @@ authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 
-## The 'admin' entry specifies a list of user names of authenticated users
-## who may act as administrators and so bypass some built-in restrictions.
-## To include users remove the leading '#' sign from these lines and put in reasonable uniqnames.
-## Any number of users can be specified.
-# The anonymous_user name specified above should NEVER appear here.
+## The latte_admin_group specifies the name of a MCommunity group.  Members
+## of that group will have administrative tools for Latte.  In particular they will
+## be able to request information for people besides themselves.
 
-admin:
-  - ckretler
-  - dlhaines
-  - gsilver
+latte_admin_group: TL-Latte-admin-test
+
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:
