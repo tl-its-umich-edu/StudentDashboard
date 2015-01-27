@@ -12,6 +12,8 @@ require_relative '../server/Logging'
 class LdapCheck
   include Logging
 
+  ## Setup the ldap connection object and save the members of the group.
+
   def initialize(args={})
 
     # This file will be provided in the build with values
