@@ -65,7 +65,7 @@ class LdapTest < MiniTest::Test
   def test_GODZILLA_XXX_ctsupport
     assert @x, "have ldap check object"
     #found = @x.checkMemberInGroup("GODZILLA_XXX","ctsupportstaff")
-    puts "@group: #{@group}"
+    #puts "@group: #{@group}"
     #found = @x.checkMemberInGroup("GODZILLA_XXX",@group)
     found = @x.is_user_in_admin_hash "GODZILLA_XXX"
     refute found,"checking GOZILLA_XXX in group"
