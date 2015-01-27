@@ -10,8 +10,7 @@ require_relative '../server/Logging'
 class LdapCheck
   include Logging
 
-  ## Setup the ldap connection object.  We create a new connection for each request so the
-  ## object creation doesn't need to do much.
+  ## Setup the ldap connection object and save the members of the group.
   def initialize(args={})
 
     # This file will be provided in the build with values
@@ -58,12 +57,6 @@ class LdapCheck
 
   # See if the specified user is in the list of members which was provided by
   # the LDAP call to MCommunity.
-  # def find_user_in_ldap_members user, members
-  #   # Use the trailing comma to so that will not be
-  #   # mislead by names that are prefixes of other names.
-  #   members.any? { |e| e.start_with? "uid=#{user}," }
-  #
-  # end
 
   def is_user_in_admin_hash user
     logger.debug "admin user check: user: #{user} key: " + @admin_hash.has_key?(user).to_s
@@ -84,38 +77,8 @@ class LdapCheck
       @admin_hash[u] = @admin_hash[u] + 1
     end
 
-    #puts "admin hash"
-    #p @admin_hash
   end
 
-  # Check if the specified user is a member of this MCommunity group.
-  # The user is a uniqname, the group is any public Mcommunity group.
-  # Attempts to use a filter query specific to this user didn't work
-  # so the query used gets the full list of users in the group.
-  # def checkMemberInGroup(user, group)
-  #
-  #   # Note that the hash returned for yaml uses strings for keys
-  #   # so we adopt that approach throughout except for the call
-  #   # to net-ldap where the keys are expected to be symbols.
-  #
-  #   conf = configuration
-  #   host = conf["host"]
-  #   port = conf["port"]
-  #   search_base = conf["search_base"]
-  #
-  #   Net::LDAP.open(:host => host,
-  #                  :port => port,
-  #                  :base => search_base) do |ldap|
-  #
-  #     # Get the members of the group
-  #     filterString = "(&(cn=#{group})(objectclass=rfc822MailGroup))"
-  #     groupFilter = Net::LDAP::Filter.construct(filterString)
-  #     groupData = ldap.search(:filter => groupFilter)
-  #
-  #     logger.info "#{__LINE__}: checking ldap group for: #{user}"
-  #
-  #     find_user_in_ldap_members user, groupData[0].member
-  #   end
 
   def save_group_members(group)
 
@@ -138,7 +101,6 @@ class LdapCheck
       groupData = ldap.search(:filter => groupFilter)
 
       add_to_members_hash groupData[0].member
-      #find_user_in_ldap_members user, groupData[0].member
     end
 
   end
