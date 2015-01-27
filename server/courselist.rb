@@ -359,6 +359,7 @@ END
       # This could be shorter but putting the yield in first clause of ternary operator didn't work.
       is_admin = yield user
       veto = is_admin ? nil : true
+      logger.warn "vetoed request by #{user} for information url: #{request_url}" unless veto.nil?
       logger.debug "#{__LINE__}: vR: user: #{user} is_admin: #{is_admin} veto: #{veto}"
 
       veto
