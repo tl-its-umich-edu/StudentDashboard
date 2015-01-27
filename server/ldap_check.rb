@@ -16,7 +16,6 @@ class LdapCheck
     # This file will be provided in the build with values
     # suitable for the MCommunity groups.
     @default_conf_file = "./server/local/ldap.yml"
-    p args
     conf_file_name = args["config_file"] || @default_conf_file
 
     # if file is missing then trap the "no such file" exception
