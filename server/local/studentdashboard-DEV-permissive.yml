@@ -31,7 +31,7 @@ default_term: 2010
 # that would be caused by using an external authentication system can be
 # modeled during load testing.
 
-authn_uniqname_override: false
+authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 

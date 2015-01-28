@@ -31,7 +31,7 @@ default_term: 2010
 # that would be caused by using an external authentication system can be
 # modeled during load testing.
 
-authn_uniqname_override: false
+authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 
@@ -51,10 +51,10 @@ latte_admin_group: TL-Latte-admin-test
 # This is the name of the ESB "application" that identifies the credentials to be used
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
-application_name: SD-QA
+#application_name: SD-QA
 
 ###### FB (file based) data provider
-#data_provider_file_directory: server/test-files/courses
+data_provider_file_directory: server/test-files/courses
 ## This value is used for the optional file based data provider.
 ## If the value is not set then the ESB based provider is used.
 ## If data_file_provider_directory does have a value then Latte will treat
