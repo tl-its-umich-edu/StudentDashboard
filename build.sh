@@ -96,6 +96,7 @@ function makeWarFile {
 ## make a file with some version information to
 ## to make it available in the build.
 function makeVersion {
+    atStep "makeVersion"
     FILE="./server/local/build.yml"
     echo  "build: TLPORTAL" >| $FILE
     echo  "time: $ts " >> $FILE
@@ -123,8 +124,10 @@ updateRuby
 
 checkRvm
 
-#Don't run tests by default. Should check the return code if do.
-#./runTests.sh
+#Run unit tests, don't run integration tests by default.
+atStep "run unit tests"
+./runTests.sh
+# ./runIntegrationTests.sh
 
 # Create version information file before making the war so that the build.yml
 # can be included in the war file.
