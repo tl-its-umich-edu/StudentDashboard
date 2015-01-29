@@ -20,7 +20,6 @@ function setupRVM  {
     atStep "setup rvm"
     ## Setup RVM
     source ~/.rvm/scripts/rvm
-
     # Print verification that rvm is setup
     type rvm | head -n 1
 }
@@ -35,6 +34,16 @@ function updateRuby {
     gem install warbler
     bundle install >| ./ARTIFACTS/ruby.$ts.bundle
 }
+# Print verification that rvm is setup
+type rvm | head -n 1
+
+# specify the proper ruby version and set it up.
+# will try to install it if necessary.
+rvm use $RUBY_VERSION
+
+
+# make sure war packaging gem is installed.
+gem install warbler
 
 ########### utilities ############
 
@@ -114,7 +123,6 @@ makeARTIFACTSDir
 # there is a problem with the build later.
 ts=$(niceTimestamp)
 
-<<<<<<< HEAD
 
 setupRVM
 updateRuby
@@ -123,10 +131,8 @@ updateRuby
 
 #Don't run tests by default. Should check the return code if do.
 #./runTests.sh
-=======
 ## Tests are not run by default.
 ##./runTests.sh
->>>>>>> TLPORTAL-151: address issues with building configuration tar file.
 
 # make version before making the war so that the build.yml
 # can be included in the war file.
