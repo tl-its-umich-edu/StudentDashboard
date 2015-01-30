@@ -68,6 +68,9 @@ class CourseList < Sinatra::Base
   # default location for the security information
   @@security_file = "#{@@config_base}/security.yml"
 
+  # default location for file containing display strings.
+  @@strings_file = "#{@@config_base}/strings.yml"
+
   @@log_file = "server/log/sinatra.log"
 
   @@default_term = 2010
@@ -189,7 +192,7 @@ END
 
     @@default_term = @@ls['default_term'] || @@default_term
 
-    # read in yml configuration into a class variable
+    # read in yml for the build configuration into a class variable
     begin
       @@build = self.get_local_config_yml(@@build_file, "./server/local/build.yml")
       @@build_time = @@build['time']
@@ -200,6 +203,14 @@ END
       @@build = "no build file specified"
       @@build_time = Time.now
       @@build_id = 'development'
+    end
+
+    ## read in yml for the strings into a class variable.
+    begin
+      @@strings = self.get_local_config_yml(@@strings_file, "./server/local/strings.yml")
+    rescue
+      logger.warn "No strings yml configuration file found"
+      @@strings = Hash.new()
     end
 
   end
@@ -413,6 +424,12 @@ END
     @remote_user = request.env['REMOTE_USER']
     @build_time = @@build_time
     @build_id = @@build_id
+
+    # Make the strings hash available.  If there is ever a need to
+    # select different sets of strings at different times, perhaps by language,
+    # it would be trivial to expand the yml file and modify this
+    # line to pick amongst different sets of keys.
+    @strings = @@strings["strings"]
 
     erb idx
   end

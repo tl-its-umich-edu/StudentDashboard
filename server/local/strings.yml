@@ -1,0 +1,12 @@
+# Map tags to strings.  If necessary it would be
+# easy to supply multiple sets of different strings with the
+# same keys for, say, internationalization.
+
+# Note the trailing ',' !
+# No tabs allowed!
+strings: {
+  invalid_query: I am here for the cheese.,
+  valid_query: Howdy Duty,
+  quoted: I''m here for even more cheese
+}
+
