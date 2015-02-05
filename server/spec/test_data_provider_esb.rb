@@ -22,7 +22,7 @@ class TestModule < Minitest::Test
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
-#    logger.level = Logger::DEBUG
+    #logger.level = Logger::DEBUG
   end
 
   # Called after every test method runs. Can be used to tear
@@ -34,6 +34,7 @@ class TestModule < Minitest::Test
 
   def test_esb_with_bad_uniqname
 
+    skip("can not test with stubs")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -44,7 +45,7 @@ class TestModule < Minitest::Test
     end.new
 
     refute_nil(m,"create provider object")
-    classes = m.DataProviderESBCourse("nobody.XXX", "2010", "./security.yml","SD-QA","2010")
+    classes = m.DataProviderESBCourse("nobody.XXX", "2010", "./security.yml","ESB-QA","2010")
     assert_equal(404,classes.meta_status,'response not completed (will fail when stubbed)')
     assert_equal(404,JSON.parse(classes.result)['responseCode'],'should not find (missing) user.')
 

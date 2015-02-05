@@ -53,9 +53,14 @@ module DataProviderESB
     logger.debug("dataProviderESBCourse: classes: "+classes.inspect)
     #puts "#{__LINE__}: dataProviderESBCourse: classes: "+classes.inspect
     result = classes.result
-    logger.debug("dataProviderESBCourse: result: "+result.inspect)
+    logger.error("dataProviderESBCourse: result: "+result.inspect)
 
+    begin
     r = JSON.parse(result)
+    rescue => exp
+      logger.warn("EXCEPTION: dataProviderESBCourse: course request returned: "+r.inspect)
+      return WAPIResultWrapper.new(666, "EXCEPTION: course request found", r)
+    end
 
     if r.has_key?('getMyClsScheduleResponse')
       r = r['getMyClsScheduleResponse']['RegisteredClasses']
