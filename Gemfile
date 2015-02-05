@@ -22,3 +22,5 @@ group :test do
   gem 'webmock'
   gem 'selenium-webdriver'
 end
+
+#gem 'newrelic_rpm'

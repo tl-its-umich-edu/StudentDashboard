@@ -9,3 +9,5 @@ tmp_.*
 **/build.yml
 ARTIFACTS
 **stderr
+server/spec/coverage/
+
