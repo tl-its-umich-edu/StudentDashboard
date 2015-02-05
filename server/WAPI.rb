@@ -81,7 +81,7 @@ class WAPI
 
   def do_request(request)
     url=format_url(request)
-    #logger.debug "WAPI: do_request: url: #{url}"
+    logger.debug "WAPI: do_request: url: #{url}"
     msg = Thread.current.to_s+": "+url
     r = Stopwatch.new(msg)
     r.start
@@ -148,6 +148,7 @@ class WAPI
       msg = Thread.current.to_s
       renew = Stopwatch.new(msg)
       renew.start;
+      logger.info("WAPI: #{__LINE__}: token_server: #{@token_server}")
       response = RestClient.post @token_server,
                                  "grant_type=client_credentials&scope=PRODUCTION",
                                  {
@@ -162,6 +163,7 @@ class WAPI
       end
     rescue Exception => exp
       # If got an exception for the renewal then wrap that up to be returned.
+      logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json)
       logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
       renew.stop
