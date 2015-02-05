@@ -5,6 +5,10 @@
         <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" href="css/custom_style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <script>
+            var lang = <%= @strings.to_json %> 
+        </script>
         <title>Dashboard</title>
     </head>
     <body>
@@ -33,6 +37,8 @@
             </div>
             <!-- /.container-fluid -->
         </nav>
+
+  
 
         <div class="container-fluid contentWrapper">
             <div class="row row-eq-heigh" id="content">
@@ -192,7 +198,9 @@
         <div id="spinner" style="display:none">
         </div>
 
-        <p class="footerInfo text-muted"><small style="font-size:75%"> User: [<span id="userId"><%= @remote_user %></span>] server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</small></p>
+        <p class="footerInfo text-muted"><small style="font-size:75%"> User: [<span id="userId"><%= @remote_user %></span>] server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</small>
+         </p>
+         <div id="lang" style="display:none"><%= @strings.to_json %></div>
 
         <script src="lib/jquery/jquery-1.11.0.min.js">
         </script>

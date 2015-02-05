@@ -6,6 +6,7 @@ var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
 
 dashboardApp.run(function ($rootScope) {
   $rootScope.user = $('#userId').text();
+  $rootScope.lang = JSON.parse($('#lang').text());
 });
 
 dashboardApp.factory('Lang', function ($http) {
@@ -66,11 +67,6 @@ dashboardApp.controller('coursesController', ['Courses', 'Lang', '$rootScope', '
 
   $scope.courses = [];
   $scope.loading = true;
-
-  var langUrl = 'data/lang/courses.lang.json';
-  Lang.getLang(langUrl).then(function (data) {
-      $scope.lang = data;
-  });
 
   var url = 'courses/' + $rootScope.user + '.json';
 
