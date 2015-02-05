@@ -1,5 +1,6 @@
 $: << File.dirname(__FILE__)
 require './courselist'
+#require 'newrelic_rpm'
 
 set :environment, :development
 
