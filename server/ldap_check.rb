@@ -2,6 +2,8 @@
 # and checking if a user is in a particular mcommunity group.
 # A configuration file name can be passed in when creating the object.  The default
 # value is ./server/local/ldap.yml.
+# The members of the MCommunity group will be read on startup.  Changes in membership will
+# not be recognized until the application is restarted.
 
 require 'net-ldap'
 require 'yaml'
