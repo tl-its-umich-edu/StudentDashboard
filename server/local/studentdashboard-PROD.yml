@@ -42,11 +42,14 @@ authn_wait_max: 0.03
 ## The latte_admin_group specifies the name of a MCommunity group.  Members
 ## of that group will have administrative tools for Latte.  In particular they will
 ## be able to request information for people besides themselves.
+## The members of the group are read on startup and it will require a restart to
+## make changes effective.
 
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 
 latte_admin_group: TL-Latte-admin-test
+#latte_admin_group: ctsupportstaff
 
 
 ######### Data provider selection ###########
