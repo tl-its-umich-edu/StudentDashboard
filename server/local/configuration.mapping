@@ -1,0 +1,35 @@
+# An application will need to run in several different environments.  E.g. development,
+# load testing, and production. This file specifies mappings between the file names that
+# the application relies on being available and the actual physical location of those files.
+# Typically the mapping between files will be implemented with a symbolic link.
+#
+# This configuration mapping file is delivered in the build artifacts.
+#
+# The line format is:
+#[configuration_name] symbolic_name physical_name
+#
+# The configuration_name groups related file mappings.  E.g. there may be a group of related
+# files appropriate for DEV which are different from those for QA-LOADTESTING.  The
+# configuration_name value is used during installation to determine which mappings
+# are appropriate for the chosen environment. The symbolic_name is the name that
+# the application itself will use to access the file. The physical_name is the
+# name of a physical file that actually contains information.
+#
+# These names may be specified as absolute file path names or relative path names.
+# If the name is an absolute path it will be used as it is given.
+# If the name is a relative name then if the environment variable SYMBOLIC_PREFIX has a value
+# that value will be prepended to the symbolic_name.  Similarly if the environment
+# variable PHYSICAL_PREFIX has a value it will be prepended to the physical_name.
+# These environment variables will be set during the the installation. For PREFIX
+# variable that does not have a defined value the corresponding files will be considered
+# to be located relative to the directory that contains this mapping file.
+#
+[SD-DEV]          studentdashboard.yml studentdashboard-DEV.yml
+[SD-LOCALHOST]    studentdashboard.yml studentdashboard-LOCALHOST.yml
+[SD-PROD]         studentdashboard.yml studentdashboard-PROD.yml
+# Note that a single physical instance might have multiple sets of configuration files for
+# different purposes.
+[SD-QA]           studentdashboard.yml studentdashboard-QA.yml
+[SD-QA-LOAD-TEST] studentdashboard.yml studentdashboard-QA-LOAD_TEST.yml
+[SD-QA-NOAUTH]    studentdashboard.yml studentdashboard-QA-NOAUTH.yml
+# end
