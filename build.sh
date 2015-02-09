@@ -69,6 +69,7 @@ function makeARTIFACTSDir {
 
 ## Make a tar from the configuration files.
 function makeConfigTar {
+    atStep "make config tar"
     (
         ## Go to sub directory so that the tar file doesn't have an extra level of
         ## useless directory.
@@ -77,10 +78,9 @@ function makeConfigTar {
         ## mucks with cd and that kills the script in bash.
         
         command cd server;
-#        ts=$(niceTimestamp)
         # may need to add --format=gnu to
         # standard tar command when extracting to avoid some extra header info
-        tar -c -f ../ARTIFACTS/configuration-files.$ts.tar ./local/studentdash*yml;
+        tar -c -f ../ARTIFACTS/configuration-files.$ts.tar ./local/studentdash*yml ./local/configuration.mapping;
     )
 }
 
@@ -88,7 +88,6 @@ function makeConfigTar {
 function makeWarFile {
     atStep "make war file"
     warble
-#    ts=$(niceTimestamp)
     mv StudentDashboard.war StudentDashboard.$ts.war
     mv *.war ./ARTIFACTS
 }
