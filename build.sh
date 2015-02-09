@@ -81,6 +81,8 @@ function makeConfigTar {
         # may need to add --format=gnu to
         # standard tar command when extracting to avoid some extra header info
         tar -c -f ../ARTIFACTS/configuration-files.$ts.tar ./local/studentdash*yml ./local/configuration.mapping;
+        echo "++++++ list config files"
+        tar -xvf ../ARTIFACTS/configuration-files.$ts.tar;
     )
 }
 
