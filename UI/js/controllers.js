@@ -9,17 +9,6 @@ dashboardApp.run(function ($rootScope) {
   $rootScope.lang = JSON.parse($('#lang').text());
 });
 
-dashboardApp.factory('Lang', function ($http) {
- return {
-    getLang: function (url) {
-      return $http.get(url, {cache: true}).then(
-        function success(result) {
-          return result.data;
-        }
-      );
-    }
-  };
-});
 dashboardApp.factory('Courses', function ($http) {
   return {
     getCourses: function (url) {
@@ -63,7 +52,7 @@ dashboardApp.factory('Courses', function ($http) {
   };
 });
 
-dashboardApp.controller('coursesController', ['Courses', 'Lang', '$rootScope', '$scope', function (Courses, Lang, $rootScope, $scope) {
+dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope', function (Courses, $rootScope, $scope) {
 
   $scope.courses = [];
   $scope.loading = true;
