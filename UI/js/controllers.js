@@ -6,6 +6,7 @@ var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
 
 dashboardApp.run(function ($rootScope) {
   $rootScope.user = $('#userId').text();
+  $rootScope.lang = JSON.parse($('#lang').text());
 });
 
 dashboardApp.factory('Courses', function ($http) {
@@ -52,6 +53,7 @@ dashboardApp.factory('Courses', function ($http) {
 });
 
 dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope', function (Courses, $rootScope, $scope) {
+
   $scope.courses = [];
   $scope.loading = true;
 
@@ -68,6 +70,7 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
     $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
 
   });
+
 }]);
 
 
