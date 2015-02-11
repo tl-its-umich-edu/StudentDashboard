@@ -403,7 +403,7 @@ END
     ## Make sure people only ask about themselves (or are privileged)
     vetoResult = CourseList.vetoRequest request.env['REMOTE_USER'], request.env['REQUEST_URI']
     logger.debug "vetoResult: "+vetoResult.to_s
-    halt 401 if vetoResult == true
+    halt 403 if vetoResult == true
   end
 
   ########### URL ROUTERS ##############
