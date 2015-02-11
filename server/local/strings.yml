@@ -6,6 +6,7 @@
 # No tabs allowed!
 
 strings: {
+  applicationTitle: "Student Dashboard",
   panelTitle: "Courses",
   errorPreamble: "Something happened with a service we depend on. ",
   errorWeAsked: "We asked for",
