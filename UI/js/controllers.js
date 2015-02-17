@@ -57,7 +57,7 @@ dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope',
   $scope.courses = [];
   $scope.loading = true;
 
-  var url = 'xcourses/' + $rootScope.user + '.json';
+  var url = 'courses/' + $rootScope.user + '.json';
 
   Courses.getCourses(url).then(function (data) {
     if (data.failure) {
