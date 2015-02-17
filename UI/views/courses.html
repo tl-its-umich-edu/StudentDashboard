@@ -14,13 +14,8 @@
 
 
   <div>{{courses.message}}</div>
+  <img class="errorImg" ng-show="courses.errors.message" src="images/error-small.png">
   <div>{{courses.errors.message}}</div>
-  <div ng-show="courses.errors.requestUrl">{{lang.errorWeAsked}}
-    <code>{{courses.errors.requestUrl}}</code>
-  </div>
-  <div ng-show="courses.errors.details">{{lang.errorWeGot}}
-    <code>{{courses.errors.details}}</code>
-  </div>
 
   <ul class="itemList">
     <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">

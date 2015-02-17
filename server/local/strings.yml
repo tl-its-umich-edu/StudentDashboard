@@ -7,9 +7,7 @@
 
 strings: {
   panelTitle: "Courses",
-  errorPreamble: "Something happened with a service we depend on. ",
-  errorWeAsked: "We asked for",
-  errorWeGot: "It returned this:",
+  errorCourses: "Sorry! We were unable to get information on your courses.",
   lookAtOtherDashes: "Looking for upcoming assignments, events and activity across your courses? Checkout",
   lookAtOtherDashesNoCourses: "It looks like none of your classes are using web sites we know of.  Checkout the ",
   canvasUrl: "https://umich.instructure.com/",
