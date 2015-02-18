@@ -31,7 +31,7 @@ default_term: 2010
 # that would be caused by using an external authentication system can be
 # modeled during load testing.
 
-authn_uniqname_override: false
+authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 
@@ -40,6 +40,10 @@ authn_wait_max: 0.03
 ## be able to request information for people besides themselves.
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
+
+## The members of the group are read on startup and it will require a restart to
+## make changes effective.
+
 
 latte_admin_group: TL-Latte-admin-test
 
