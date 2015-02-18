@@ -41,10 +41,10 @@ authn_wait_max: 0.03
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 
+
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 
-latte_admin_group: TL-Latte-admin-test
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:

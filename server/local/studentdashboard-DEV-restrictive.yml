@@ -41,6 +41,7 @@ authn_wait_max: 0.03
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 
+
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 

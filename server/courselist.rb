@@ -315,7 +315,6 @@ END
     # See if this user is an admin user.  If necessary
     # get the information from the admin users MCommunity group.
     def admin_user(user)
-
       ## If no information to check nobody is an admin.
       return nil if @@latte_admin_group.nil?
 
@@ -384,6 +383,7 @@ END
 
       r = regex_UNIQUNAME.match(url)
       return r[1] unless r.nil?
+
 
       # if didn't match anything then nothing to return.
       nil
