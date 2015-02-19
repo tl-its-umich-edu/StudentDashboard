@@ -6,7 +6,7 @@ require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
-require '../WAPI'
+require_relative '../WAPI'
 require 'rest-client'
 require 'logger'
 require 'yaml'
@@ -15,14 +15,16 @@ require 'base64'
 
 ### Test WAPI with real server
 
-class TestNew < Minitest::Test
+class TestIntegrationWAPI < Minitest::Test
 
   ## security.yml holds security configuration information for testing.
   ## See security.yml.TEMPLATE for details.
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-  @@yml_file = "./security.yml"
+  #@@yml_file = "./security.yml"
+  # security file location depends on the method for running the test (rake vs shell script)
+  @@yml_file = File.exists?("server/spec/security.yml") ? "server/spec/security.yml" : "./security.yml"
   @@application = "test"
   @@yml = nil
   @@config = nil

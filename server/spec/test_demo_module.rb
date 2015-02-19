@@ -22,7 +22,7 @@ end
 #######################################
 ## Create the test class
 #######################################
-class TestModule < Minitest::Test
+class TestDemoModule < Minitest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
