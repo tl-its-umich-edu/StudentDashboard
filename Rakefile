@@ -2,9 +2,13 @@
 
 require 'rake/testtask'
 
+desc "run all tests"
+task :default => [:tests]
+
 ## setup tasks to run tests.  Separate out the
 ## unit and integration tests.
 
+desc "run unit and integration tests"
 task :tests => ['test_unit','test_integration']
 
 ## These TestTask defintions differ in which files are included.
