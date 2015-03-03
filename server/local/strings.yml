@@ -6,6 +6,7 @@
 # No tabs allowed!
 
 strings: {
+  applicationTitle: "Student Dashboard",
   panelTitle: "Courses",
   errorCourses: "Sorry! We were unable to get information on your courses.",
   lookAtOtherDashes: "Looking for upcoming assignments, events and activity across your courses? Checkout",
