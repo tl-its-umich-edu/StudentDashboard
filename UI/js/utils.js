@@ -3,6 +3,7 @@
 /* global $, alert*/
 
 
+var lang = JSON.parse($('#lang').text());
 
 /**
  * Show spinner whenever ajax activity starts
@@ -31,13 +32,9 @@ var errorHandler = function (url, result) {
   var errorResponse = {};
   if (!result) {
     errorResponse.message = 'Something happened!';
-    errorResponse.requestUrl = url;
-    errorResponse.details = result.status;
 
   } else {
-    errorResponse.message = 'Something happened with a service we depend on!';
-    errorResponse.requestUrl = url;
-    errorResponse.details = result.status;
+    errorResponse.message = lang.errorCourses;
   }
   return errorResponse;
 
