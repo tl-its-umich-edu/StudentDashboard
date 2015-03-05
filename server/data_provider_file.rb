@@ -17,14 +17,27 @@ module DataProviderFile
     if File.exists?(data_file)
       logger.debug "#{__LINE__}: DPFC: file exists: #{data_file}"
       classes = File.read(data_file)
-      classes = WAPIResultWrapper.new(200, "found file #{data_file}", classes).value_as_json
+
+      ## treat as prewrapped result
+
+     # puts "DPFC: classes as read: #{classes}"
+      wrapped = WAPIResultWrapper.value_from_json(classes);
+      puts "verify wrapping type"
+      p wrapped
+
+      # if it isn't valid then just wrap what did come back.
+      unless wrapped.valid?
+        wrapped = WAPIResultWrapper.new(200, "found file #{data_file}", classes)
+        puts "DPFC:"
+        p wrapped
+      end
+
     else
       logger.debug "#{__LINE__}: DPFC: file does not exist: #{data_file}"
-      classes = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}").value_as_json
+      wrapped = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}")
     end
 
-    logger.debug "#{__LINE__}: DPFC: returning: "+classes
-    classes_json = WAPIResultWrapper.value_from_json(classes)
-    return classes_json
+    logger.debug "#{__LINE__}: DPFC: returning: "+wrapped.to_s
+    return wrapped
   end
 end
