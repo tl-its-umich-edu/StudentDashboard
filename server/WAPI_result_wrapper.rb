@@ -27,22 +27,34 @@ class WAPIResultWrapper
     @value
   end
 
-  # allow reconstructing a wrapper when the result comes from
-  # a json string.
+  # Check if this is a valid wrapper.  Setting the contents
+  # directly would allow creating a wrapper with invalid contents.
+  def valid?
+    begin
+      return true if @value.has_key?("Meta")
+    rescue
+      logger.warn "invalid WAPI wrapper:  " +self.to_s
+    end
+    nil
+  end
+
+  # allow setting the internal hash value of the wrapper directly.
+  # This completely replaces the existing contents.
   def setValue(value)
     @value = value
   end
 
+  # Take the json version of wrapped data and return a
+  # reconstituted ruby object.
   def self.value_from_json(json_string)
-    ## Wrap the json in the file as the result of the query.
+    # create a new wrapper
     wr = WAPIResultWrapper.new(200, "dummy msg", "dummy result")
-    #w = JSON.parse(json_string)
-    #logger.debug("WAPI_vfj w: #{__LINE__}: value_from_json result: "+w.inspect)
+    # set the content of the wrapper to the parsed contents of the json string.
     wr.setValue(JSON.parse(json_string))
     wr
   end
 
-  # Turn the value of result into json if it is json
+  # Turn the value of the result field into json if it is parseable as json
   def value_as_json
     c = @value.dup
     new_result = c['Result'].dup
@@ -55,5 +67,12 @@ class WAPIResultWrapper
     c['Result'] = new_result
     c.to_json
   end
+
+  # Return the hash as a json string.
+  #def to_json
+#    puts "to_json"
+#    p @value
+#    @value.to_json
+#  end
 
 end

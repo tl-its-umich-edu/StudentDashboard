@@ -242,11 +242,11 @@ END
   configure :development do
 
     configureLogging
-    set :logging, Logger::INFO
+    #set :logging, Logger::INFO
+    set :logging, Logger::DEBUG
     configureStatic
 
   end
-
 
 
   #### Authorization
@@ -458,6 +458,8 @@ END
       content_type :json
 
       courseDataForX = DataProviderCourse(userid, termid)
+      #puts "coursedataforx"
+      #p courseDataForX
       if "404".casecmp(courseDataForX.meta_status.to_s).zero?
         logger.info "#{__LINE__}: returning 404 for missing file"
         response.status = 404
@@ -467,7 +469,7 @@ END
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
-#logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
+    logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
     courseDataForX.value_as_json
   end
 
@@ -486,10 +488,10 @@ END
   end
 
   after do
-  request_sd = session[:thread]
-  request_sd.stop
-  logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
-end
+    request_sd = session[:thread]
+    request_sd.stop
+    logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
+  end
 
   #################### Data provider functions #################
 
@@ -540,7 +542,7 @@ end
   def DataProviderCourse(a, termid)
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
-
+    logger.debug "data_provider_file_director: #{@@data_provider_file_directory}"
 
     if !@@data_provider_file_directory.nil?
       return DataProviderFileCourse(a, termid, @@data_provider_file_directory)

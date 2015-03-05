@@ -9,7 +9,7 @@ module DataProviderFile
 ### The url localhost:3000/courses/abba.json would map to a file named abba.json in the
 ### courses sub-directory under the default test-files directory.
   def DataProviderFileCourse(a, termid, data_provider_file_directory)
-    logger.debug "data provider is DataProviderFileCourse.\n"
+    logger.info "data provider is DataProviderFileCourse.\n"
 
     data_file = "#{data_provider_file_directory}/#{a}.json"
     logger.debug "#{__LINE__}: DPFC: data file string: "+data_file
@@ -17,14 +17,20 @@ module DataProviderFile
     if File.exists?(data_file)
       logger.debug "#{__LINE__}: DPFC: file exists: #{data_file}"
       classes = File.read(data_file)
-      classes = WAPIResultWrapper.new(200, "found file #{data_file}", classes).value_as_json
+
+      wrapped = WAPIResultWrapper.value_from_json(classes);
+
+      # if it isn't valid then just wrap what did come back.
+      unless wrapped.valid?
+        wrapped = WAPIResultWrapper.new(200, "found file #{data_file}", classes)
+      end
+
     else
       logger.debug "#{__LINE__}: DPFC: file does not exist: #{data_file}"
-      classes = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}").value_as_json
+      wrapped = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}")
     end
 
-    logger.debug "#{__LINE__}: DPFC: returning: "+classes
-    classes_json = WAPIResultWrapper.value_from_json(classes)
-    return classes_json
+    logger.debug "#{__LINE__}: DPFC: returning: "+wrapped.to_s
+    return wrapped
   end
 end

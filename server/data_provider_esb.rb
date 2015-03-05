@@ -1,10 +1,10 @@
 ###### ESB provider ################
 # Use ESB to gather data for a request.
+
 module DataProviderESB
 
   @@w = nil
   @@yml = nil
-
 
   def setup_WAPI(app_name)
     logger.info "use ESB application: #{app_name}"
