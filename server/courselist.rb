@@ -458,8 +458,6 @@ END
       content_type :json
 
       courseDataForX = DataProviderCourse(userid, termid)
-      #puts "coursedataforx"
-      #p courseDataForX
       if "404".casecmp(courseDataForX.meta_status.to_s).zero?
         logger.info "#{__LINE__}: returning 404 for missing file"
         response.status = 404
