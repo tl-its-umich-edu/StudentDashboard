@@ -17,7 +17,7 @@ require 'base64'
 # Standalone test for WAPI.  Uses webmock to allow running web requests without a real web server.
 # See end of file for a bit more on webmock.
 
-class TestNew < Minitest::Test
+class TestWAPI < Minitest::Test
 
   def setup
     # by default assume the tests will run well and don't

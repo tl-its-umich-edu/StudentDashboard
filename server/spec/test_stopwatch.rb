@@ -4,7 +4,6 @@
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
-# require 'webmock/minitest'
 require_relative '../stopwatch'
 require_relative '../Logging'
 
@@ -12,7 +11,7 @@ require_relative '../Logging'
 #######################################
 ## Create the test class
 #######################################
-class TestModule < Minitest::Test
+class TestStopwatch < Minitest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
@@ -33,7 +32,6 @@ class TestModule < Minitest::Test
     @s.start
     sleep 1
     e = @s.stop
-    puts "e: "+e.inspect
     assert_in_delta(1,e,0.05,"one second wait")
 
   end
@@ -44,7 +42,6 @@ class TestModule < Minitest::Test
     @s.start
     sleep 0.2
     e = @s.stop
-    #puts "e: "+e.inspect
     assert_in_delta(0.2,e,0.05,"0.2 second wait")
 
   end
@@ -54,7 +51,7 @@ class TestModule < Minitest::Test
 
     @s.newEvent
     summary = @s.summary
-    puts "summary:" +summary.inspect
+    #puts "summary:" +summary.inspect
     assert_equal(1,summary[1])
     @s.newEvent
     summary = @s.summary
@@ -63,12 +60,11 @@ class TestModule < Minitest::Test
   end
 
   def test_summary
-    s = Stopwatch.new("test_me")
-    puts "ts: summary:" + s.summary.to_s
+    s = Stopwatch.new("test_summary")
     sum = s.summary
     assert_equal(0,sum[0])
     assert_equal(0,sum[1])
-    assert_equal("test_me",sum[2])
+    assert_equal("test_summary",sum[2])
   end
 
 end
