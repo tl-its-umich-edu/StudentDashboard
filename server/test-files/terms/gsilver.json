@@ -1,0 +1,17 @@
+[
+  {
+    "TermCode": "2020 GS",
+    "TermDescr": "Winter 2015",
+    "TermShortDescr": "WN 2015"
+  },
+  {
+    "TermCode": "2030 GS",
+    "TermDescr": "Spring 2015",
+    "TermShortDescr": "SP 2015"
+  },
+  {
+    "TermCode": "2060 GS",
+    "TermDescr": "Fall 2015",
+    "TermShortDescr": "FA 2015"
+  }
+]
