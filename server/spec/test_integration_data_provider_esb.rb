@@ -19,8 +19,8 @@ class TestIntegrationDataProviderESB < Minitest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    #logger.level = Logger::ERROR
-    logger.level = Logger::DEBUG
+    logger.level = Logger::ERROR
+    #logger.level = Logger::DEBUG
 
     ## values for testing
 
@@ -37,7 +37,6 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def teardown
     # Do nothing
-
   end
 
   security_file = "./security.yml"
@@ -55,9 +54,8 @@ class TestIntegrationDataProviderESB < Minitest::Test
     end.new
 
     refute_nil(m,"create provider object")
-    classes = m.DataProviderESBCourse(@known_uniqname, @default_term, @security_file,@esb_application,@default_term)
+    classes = m.dataProviderESBCourse(@known_uniqname, @default_term, @security_file,@esb_application,@default_term)
     assert_equal(200,classes.meta_status,'find classes for good uniqname')
-    puts "uniqname: classes: "+classes.inspect
 
   end
 
@@ -75,9 +73,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
     skip("KNOWN TO FAIL: TLPORTAL-176")
     refute_nil(m,"create provider object")
-    #classes = m.DataProviderESBCourse("nobody.XXX", "2020", "./security.yml","ESB-QA","2020")
-    classes = m.DataProviderESBCourse(@known_uniqname+"XXX", @default_term, @security_file,@esb_application,@default_term)
-    puts "bad uniqname: "+classes.inspect
+    classes = m.dataProviderESBCourse(@known_uniqname+"XXX", @default_term, @security_file,@esb_application,@default_term)
 
     assert_equal(404,classes.meta_status,'response not completed (will fail when stubbed)')
     assert_equal(404,JSON.parse(classes.result)['responseCode'],'should not find (missing) user.')
@@ -99,8 +95,6 @@ class TestIntegrationDataProviderESB < Minitest::Test
     terms = m.dataProviderESBTerms(@known_uniqname, @security_file,@esb_application)
     assert_equal(200,terms.meta_status,'find terms json meta status')
     t = terms.result
-
-    puts "tet: terms: "+terms.inspect
 
     assert(t.length > 0,"found some terms")
 

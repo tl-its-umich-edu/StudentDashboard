@@ -52,22 +52,4 @@ module DataProviderFile
     return data_json
   end
 
-
-
-  # logger.debug "#{__LINE__}: DPFT: data file string: "+data_file
-  #
-  # if File.exists?(data_file)
-  #   logger.debug "#{__LINE__}: DPFT: file exists: #{data_file}"
-  #   data = File.read(data_file)
-  #   data = WAPIResultWrapper.new(200, "found file #{data_file}", data).value_as_json
-  # else
-  #   logger.debug "#{__LINE__}: DPFT: file does not exist: #{data_file}"
-  #   data = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}").value_as_json
-  # end
-  #
-  # logger.debug "#{__LINE__}: DPFT: returning: "+data
-  # data_json = WAPIResultWrapper.value_from_json(data)
-  # return data_json
-  #end
-
 end

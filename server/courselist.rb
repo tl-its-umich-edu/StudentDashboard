@@ -571,7 +571,7 @@ END
     if !@@data_provider_file_directory.nil?
       return dataProviderFileCourse(a, termid, "#{@@data_provider_file_directory}/courses")
     else
-      return DataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
+      return dataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
     end
 
   end

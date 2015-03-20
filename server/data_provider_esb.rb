@@ -33,7 +33,7 @@ module DataProviderESB
     setup_WAPI(app_name)
   end
 
-  def DataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
+  def dataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
     logger.info "data provider is DataProviderESB."
     ## if necessary initialize the ESB connection.
     if @@w.nil?
@@ -52,9 +52,8 @@ module DataProviderESB
 
     classes = @@w.get_request(url)
     logger.debug("dPESBC: classes: "+classes.inspect)
-    #puts "#{__LINE__}: dataProviderESBCourse: classes: "+classes.inspect
     result = classes.result
-    logger.error("dPESBC: result: "+result.inspect)
+    logger.debug("dPESBC: result: "+result.inspect)
 
     begin
     r = JSON.parse(result)
