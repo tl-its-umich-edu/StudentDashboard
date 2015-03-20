@@ -52,45 +52,64 @@ dashboardApp.factory('Courses', function ($http) {
   };
 });
 
-dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope', function (Courses, $rootScope, $scope) {
 
-  $scope.courses = [];
-  $scope.loading = true;
-
-  var url = 'courses/' + $rootScope.user + '.json';
-
-  Courses.getCourses(url).then(function (data) {
-    if (data.failure) {
-      $scope.courses.errors = data;
-      $scope.loading = false;
-    } else {
-      $scope.courses = data;
-      $scope.loading = false;
+dashboardApp.factory('Terms', function ($http) {
+  return {
+    getTerms: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+         if(result.data.Meta.httpStatus !==200){
+            result.errors = errorHandler(url, result);
+            result.errors.failure = true;
+            return result.errors;
+          }
+          else {
+            return result.data;
+          }
+        },
+        function error(result) {
+          result.errors = errorHandler(url, result);
+          result.errors.failure = true;
+          return result.errors;
+        }
+      );
     }
-    $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+  };
+});
 
-  });
-
-}]);
-
-
-dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '$http', function (Courses, $rootScope, $scope, $http) {
+dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$scope',  function (Courses, Terms, $rootScope, $scope) {
   $scope.selectedTerm = null;
   $scope.terms = [];
  
   var termsUrl = 'terms';
 
-  $http.get(termsUrl).success(function (data) {
-    $scope.terms = data;
-    $scope.$parent.term = data[0].term;
-    $scope.$parent.year = data[0].year;
-  });
 
-  $scope.getTerm = function (termId, term, year) {
+  Terms.getTerms(termsUrl).then(function (data) {
+    $scope.terms = data.Result;
+    $scope.$parent.term = data.Result[0].TermDescr;
+    $scope.$parent.termId = data.Result[0].TermCode;
+
+    $scope.courses = [];
+    $scope.loading = true;
+    var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
+
+    Courses.getCourses(url).then(function (data) {
+      if (data.failure) {
+        $scope.courses.errors = data;
+        $scope.loading = false;
+      } else {
+        $scope.courses = data;
+        $scope.loading = false;
+      }
+      $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+    });
+  });  
+
+  $scope.getTerm = function (termId, termName) {
     $scope.$parent.loading = true;
     $scope.$parent.courses = [];
-    $scope.$parent.term = term;
-    $scope.$parent.year = year;
+    $scope.$parent.term = termName;
+    
     var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 
     Courses.getCourses(url).then(function (data) {
@@ -106,7 +125,6 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
   };
 
 }]);
-
 
 dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
   var url = 'data/sched.json';
