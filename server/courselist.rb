@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
 require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
 
-### Simple rest server for SD datater
+### Simple rest server for SD data.
 ### This version will also server up the HTML page if no
 ### specific page is requested.
 
@@ -97,7 +97,9 @@ HOST://api - this documentation.
 HOST://courses/{uniqname}.json - An array of (fake) course data for this person.  The
 query parameter of TERMID=<termid> is required.
  <p/>
-HOST://terms - returns a list of terms in format described below.
+HOST://terms - returns a list of terms for the current user
+<p/>
+HOST://terms/{uniqname}.json - return a list of terms for the specified user.
 <p/>
 HOST://settings - dump data to the log.
 <p/>
@@ -459,8 +461,8 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
 
-      courseDataForX = dataProviderCourse(userid, termid)
-      if "404".casecmp(courseDataForX.meta_status.to_s).zero?
+      course_data= dataProviderCourse(userid, termid)
+      if "404".casecmp(course_data.meta_status.to_s).zero?
         logger.info "courselist.rb: #{__LINE__}: returning 404 for missing file: userid: #{userid} termid: #{termid}"
         response.status = 404
         return ""
@@ -469,8 +471,8 @@ END
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
-#logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
-    courseDataForX.value_as_json
+#logger.debug "#{__LINE__}: course_data.value_as_json: "+course_data.value_as_json.inspect
+    course_data.value_as_json
   end
 
   #### get the terms
