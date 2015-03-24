@@ -7,7 +7,7 @@
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 
-application_name: SD-PROD
+application_name: StudentDashboard-PROD
 
 ##### Values below here are unlikely to change except when
 ##### testing.
@@ -21,7 +21,7 @@ invalid_query_text: Sorry, I don't understand this request.
 anonymous_user: anonymous
 
 #### Default term to use for course lookups if no other information is available.
-default_term: 2010
+default_term: 2020
 
 # These values allow implementation of a stub authentication service (to be used
 # primarily for load testing).
