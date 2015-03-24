@@ -39,10 +39,10 @@
         <div class="container-fluid contentWrapper">
             <div class="row row-eq-heigh" id="content">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
-                    <h2 class="colHeader phasePlusOne">Schedule</h2>
                     <!--
+                    <h2 class="colHeader phasePlusOne">Schedule</h2>
                     <div id="schedule" class="itemPanel phasePlusOne" ng-controller = "scheduleController" ng-cloak>
-                    -->
+
                     <div id="schedule" class="itemPanel phasePlusOne">
                         <ul>
                             <li ng-repeat="item in schedule | orderBy:'tf'" class="container-fluid {{'ad' + item.tf}}">
@@ -67,8 +67,10 @@
                             </li>
                         </ul>
                     </div>
+                    -->
                     <div ng-include src="'views/courses.html'"></div>
                 </div>
+                <!--
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col2 phasePlusOne">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
@@ -102,9 +104,9 @@
                             </button>
                         </div>
                     </div>
-                    <!--
+                    
                     <div id="todo" class="itemPanel" ng-controller = "todoController" ng-cloak>
-                    -->
+                    
                     <div id="todo" class="itemPanel">
                         <ul>
                             <li ng-repeat="item in todos | orderBy:'due'" class="container-fluid" ng-class="isOverdue(item)">
@@ -135,9 +137,9 @@
                         </ul>
                     </div>
                     <h2 class="colHeader">UM Events</h2>
-                    <!--
+
                     <div id="uniEvents" class="itemPanel" ng-controller = "uniEventsController">
-                    -->
+
                     <div id="uniEvents" class="itemPanel">
                         <ul>
                             <li ng-repeat="item in unievents" class="container-fluid">
@@ -157,12 +159,11 @@
                         </ul>
                     </div>
                 </div>
+                
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col3 phasePlusOne">
                     <h2 class="colHeader">Recent Activity</h2>
-                    <!--
+
                     <div id="events" class="itemPanel" ng-controller = "eventsController" ng-cloak>
-                    -->
-                    <div id="events" class="itemPanel">
                         <ul>
                             <li ng-repeat="item in events  | orderBy:'-date'" class="container-fluid">
                                 <div class="row">
@@ -188,6 +189,7 @@
                         </ul>
                     </div>
                 </div>
+            -->
         </div>
         </div>
 
@@ -216,6 +218,7 @@
         <script src="js/filters.js">
         </script>
         <!-- Modal -->
+        <!--
         <div class="modal fade" id="newToDoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -252,6 +255,7 @@
                 </div>
             </div>
         </div>
+        -->
         <div class="modal fade" id="serverInfoModal" tabindex="-1" role="dialog" aria-labelledby="serverInfoLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

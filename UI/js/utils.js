@@ -65,7 +65,12 @@ $(document).on('click', '.showMoreInstructors', function (e) {
   return null;
 });
 
+/**
+ * Folowing handlers are for portions of the dashboard yet to be developed
+ * So commented out
+ */
 
+/*
 $(document).on('click', '.courseLink', function (e) {
   e.preventDefault();
   alert('This would take you to the course site for ' + $(this).text());
@@ -149,3 +154,4 @@ $(document).on('click', '#selectTodos a', function (e) {
 $(document).on('click', '#showAllPanels', function () {
   //$('.phasePlusOne').toggle();
 });
+*/
