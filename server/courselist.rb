@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
 require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
 
-### Simple rest server for SD data
+### Simple rest server for SD data.
 ### This version will also server up the HTML page if no
 ### specific page is requested.
 
@@ -95,14 +95,14 @@ class CourseList < Sinatra::Base
 HOST://api - this documentation.
  <p/>
 HOST://courses/{uniqname}.json - An array of (fake) course data for this person.  The
-query parameter of TERMID=<termid> is required.
+query parameter of TERMID=<termid> should be provided.
  <p/>
-HOST://terms - returns a list of terms in format described below.
+HOST://terms - returns a list of terms for the current user
+<p/>
+HOST://terms/{uniqname}.json - return a list of terms for the specified user.
 <p/>
 HOST://settings - dump data to the log.
 <p/>
-It could use improvement so feel free to help!  Please update this section with any 
-API changes.
 
 END
 
@@ -219,8 +219,8 @@ END
   ## make sure logging is available
   configure :test do
 
-    #set :logging, Logger::DEBUG
     set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
 
     #configureLogging
 
@@ -228,12 +228,14 @@ END
     ## this may not be necessary.
     configureStatic
     set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
   end
 
   ## make sure logging is available in localhost
   configure :production, :development do
 
     set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
     configureStatic
 
   end
@@ -243,10 +245,10 @@ END
 
     configureLogging
     set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
     configureStatic
 
   end
-
 
 
   #### Authorization
@@ -457,9 +459,9 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
 
-      courseDataForX = DataProviderCourse(userid, termid)
-      if "404".casecmp(courseDataForX.meta_status.to_s).zero?
-        logger.info "#{__LINE__}: returning 404 for missing file"
+      course_data= dataProviderCourse(userid, termid)
+      if "404".casecmp(course_data.meta_status.to_s).zero?
+        logger.info "courselist.rb: #{__LINE__}: returning 404 for missing file: userid: #{userid} termid: #{termid}"
         response.status = 404
         return ""
       end
@@ -467,16 +469,40 @@ END
       response.status = 400
       return "format missing or not supported: [#{format}]"
     end
-#logger.debug "#{__LINE__}: courseDataForX.value_as_json: "+courseDataForX.value_as_json.inspect
-    courseDataForX.value_as_json
+#logger.debug "#{__LINE__}: course_data.value_as_json: "+course_data.value_as_json.inspect
+    course_data.value_as_json
   end
 
-  ### Return json array of the current objects.
-  get '/terms' do
-    logger.info "terms"
+  #### get the terms
+
+  ## ask for terms from the current user.
+  get "/terms/?" do
+    logger.info "just default terms"
     content_type :json
-    termList = termProviderStatic
-    termList.to_json
+
+    termList = dataProviderTerms(request.env['REMOTE_USER'])
+    termList.value_as_json
+  end
+
+  ## ask for terms for a specific person.
+  get "/terms/:userid.?:format?" do |userid, format|
+
+    logger.info "terms"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    termList = dataProviderTerms(userid)
+    termList.value_as_json
   end
 
   ## catch any request not matched and give an error.
@@ -486,67 +512,44 @@ END
   end
 
   after do
-  request_sd = session[:thread]
-  request_sd.stop
-  logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
-end
+    request_sd = session[:thread]
+    request_sd.stop
+    logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
+  end
 
   #################### Data provider functions #################
 
-  ##### Term providers
-  ## provide a static set of terms
-  #{"getMyRegTermsResponse":{"@schemaLocation":"http:\/\/mais.he.umich.edu\/schemas\/getMyRegTermsResponse.v1 http:\/\/csqa9ib.dsc.umich.edu\/PSIGW\/PeopleSoftServiceListeningConnector\/getMyRegTermsResponse.v1.xsd","Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}}
-  #terms = "{Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}
-  #Format from TLPORTAL-106
-  #- term(str)
-  #- year(str)
-  #- term-id(str)
-  #- current-term(bool)
-  # [
-  #     {
-  #         "term": "Fall",
-  #     "year": "2014",
-  #     "term_id": "2010",
-  #     "current_term": true
-  # },
-  #     {
-  #         "term": "Winter",
-  #     "year": "2015",
-  #     "term_id": "2030",
-  #     "current_term": false
-  # }
-  # ]
+  ## Use the appropriate provider implementation.
+  ## This should be implemented to set the desired function upon configuration rather than
+  ## to look it up with each request.
 
-  # value returned from ESB
-  #Hash[:TermCode => "2020", :TermDescr => "Mine 2014", :TermShortDesc => "NaNa 2014"]
-  # desired format
-  #  {"term": "Fall", "year": "2014", "term_id": "2010", "current_term": true}
-  ### mapping from ESB value
-  # term from first part of TermDescr (without year and trimming spaces)
-  # year from last part of TermDescr (4 integers at end of string)
-  # term_id from TermCode
-  # current_term is set as the first term in the list for the time being.
-
-  def termProviderStatic
-    termList = Array.new
-    termList << Hash[:term => "Fall", :year => "2014", :term_id => "2010", current_term: true]
-    termList << Hash[:term => "Winterish", :year => "2014", :term_id => "2020", current_term: false]
-  end
-
-
-  ## Grab the desired data provider.
-  ## Would be good to hide the extra parameters
-
-  def DataProviderCourse(a, termid)
+  def dataProviderCourse(a, termid)
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
 
 
     if !@@data_provider_file_directory.nil?
-      return DataProviderFileCourse(a, termid, @@data_provider_file_directory)
+      return dataProviderFileCourse(a, termid, "#{@@data_provider_file_directory}/courses")
     else
-      return DataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
+      return dataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
     end
+
+  end
+
+  def dataProviderTerms(uniqname)
+
+    logger.debug "DataProviderTerms uniqname: #{uniqname}"
+
+
+    if !@@data_provider_file_directory.nil?
+      terms = dataProviderFileTerms(uniqname, "#{@@data_provider_file_directory}/terms")
+    else
+      terms = dataProviderESBTerms(uniqname, @@security_file, @@application_name)
+    end
+
+    logger.debug "Dpt: returns: "+terms.inspect
+
+    return terms
 
   end
 

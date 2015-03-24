@@ -56,7 +56,7 @@ authn_wait_max: 0.03
 ## from local files.  Configuration is documented below.
 
 ### file based data provider value:
-#data_provider_file_directory: server/test-files/courses
+#data_provider_file_directory: server/test-files
 # This value is used for the optional file based data provider.
 # If the value is not set then the ESB based provider is used.
 # If data_file_provider_directory does have a value then Latte will treat

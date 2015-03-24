@@ -1,6 +1,4 @@
-##### Demonstrate approach to testing methods in a module by constructing a tiny class
-##### to contain the module.  Two different methods are shown here.
-#require 'rubygems'
+
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
@@ -16,13 +14,22 @@ require_relative '../Logging'
 #######################################
 ## Create the test class
 #######################################
-class TestModule < Minitest::Test
+class TestIntegrationDataProviderESB < Minitest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
     #logger.level = Logger::DEBUG
+
+    ## values for testing
+
+    @esb_application = "SD-TEST-DLH"
+    @security_file = "./security.yml"
+
+    @known_uniqname = "ststvii"
+    @default_term = "2020"
+
   end
 
   # Called after every test method runs. Can be used to tear
@@ -32,9 +39,11 @@ class TestModule < Minitest::Test
     # Do nothing
   end
 
-  def test_esb_with_bad_uniqname
+  security_file = "./security.yml"
 
-    skip("can not test with stubs")
+  def test_esb_with_good_uniqname
+
+    #skip("can not test with stubs")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -45,7 +54,27 @@ class TestModule < Minitest::Test
     end.new
 
     refute_nil(m,"create provider object")
-    classes = m.DataProviderESBCourse("nobody.XXX", "2010", "./security.yml","ESB-QA","2010")
+    classes = m.dataProviderESBCourse(@known_uniqname, @default_term, @security_file,@esb_application,@default_term)
+    assert_equal(200,classes.meta_status,'find classes for good uniqname')
+
+  end
+
+  def test_esb_with_bad_uniqname
+
+    #skip("can not test with stubs")
+    ### create inline class and include the module under test.
+    m = Class.new do
+      include DataProviderESB
+      include Logging
+      require_relative '../WAPI'
+      @@w = nil
+      @@yml = nil
+    end.new
+
+    skip("KNOWN TO FAIL: TLPORTAL-176")
+    refute_nil(m,"create provider object")
+    classes = m.dataProviderESBCourse(@known_uniqname+"XXX", @default_term, @security_file,@esb_application,@default_term)
+
     assert_equal(404,classes.meta_status,'response not completed (will fail when stubbed)')
     assert_equal(404,JSON.parse(classes.result)['responseCode'],'should not find (missing) user.')
 
@@ -53,18 +82,6 @@ class TestModule < Minitest::Test
 
   def test_esb_terms
 
-    # current sub response 2014/12/08
-    # {
-    #     "getMyRegTermsResponse": {
-    #     "Term": {
-    #     "TermCode": "1960",
-    #     "TermDescr": "Fall 2014",
-    #     "TermShortDescr": "FA 2014"
-    # }
-    # }
-    # }
-
-    skip("not yet testable")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -75,9 +92,11 @@ class TestModule < Minitest::Test
     end.new
 
     refute_nil(m,"create provider object")
-    terms = m.DataProviderESBTerms("ststvii", "2010", "./security.yml","SD-QA","2010")
-    assert_equal(404,terms.meta_status,'response not completed (will fail when stubbed)')
-    assert_equal(404,JSON.parse(terms.result)['responseCode'],'should not find (missing) user.')
+    terms = m.dataProviderESBTerms(@known_uniqname, @security_file,@esb_application)
+    assert_equal(200,terms.meta_status,'find terms json meta status')
+    t = terms.result
+
+    assert(t.length > 0,"found some terms")
 
   end
 

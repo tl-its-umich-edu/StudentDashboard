@@ -2,7 +2,10 @@
 /* jshint  strict: true*/
 /* global $, alert*/
 
-
+/**
+ * get the strings from a hidden DOM element and
+ * evaluate so that it is available to the non-Angular js
+ */
 var lang = JSON.parse($('#lang').text());
 
 /**
@@ -28,6 +31,9 @@ $.ajaxSetup({
   cache: false
 });
 
+/**
+ * Generic error handler
+ */
 var errorHandler = function (url, result) {
   var errorResponse = {};
   if (!result) {
@@ -46,9 +52,11 @@ var errorHandler = function (url, result) {
  *
  * event watchers
  */
-//$(document).on('click', '#schedule a', function(){});
 
-
+/**
+ * All instructors are hidden save the first primary instructor (by alphanum), or the first alphanum.
+ * Handler below toggles the complete list
+ */
 $(document).on('click', '.showMoreInstructors', function (e) {
   e.preventDefault();
   var txt = $(this).closest('div.instructorsInfo').find('.moreInstructors').is(':visible') ? '(more)' : '(less)';
