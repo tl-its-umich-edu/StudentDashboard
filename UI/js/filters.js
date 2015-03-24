@@ -2,6 +2,10 @@
 /* jshint  strict: true*/
 /* global moment, angular */
 
+/**
+ * Collection of filters used to massage $scope elements
+ * for display
+ */
 
 angular.module('dashFilters', []).filter('dateAgo', function () {
   return function (input) {

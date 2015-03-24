@@ -4,10 +4,19 @@
 
 var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
 
+/**
+ * Initialize Angular app with the user id and the strings file
+ */
+
 dashboardApp.run(function ($rootScope) {
   $rootScope.user = $('#userId').text();
   $rootScope.lang = JSON.parse($('#lang').text());
 });
+
+/**
+ * Singleton that does the requests for the courses
+ * Inner function uses the URL passed to it
+ */
 
 dashboardApp.factory('Courses', function ($http) {
   return {
@@ -52,6 +61,10 @@ dashboardApp.factory('Courses', function ($http) {
   };
 });
 
+/**
+ * Singleton that does the requests for the terms
+ * Inner function uses the URL passed to it
+ */
 
 dashboardApp.factory('Terms', function ($http) {
   return {
@@ -77,12 +90,18 @@ dashboardApp.factory('Terms', function ($http) {
   };
 });
 
+/**
+ * Terms controller - Angular dependencies are injected.
+ * It adds the terms to the scope and binds them to the DOM
+ * 
+ */
 dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$scope',  function (Courses, Terms, $rootScope, $scope) {
   $scope.selectedTerm = null;
   $scope.terms = [];
  
   var termsUrl = 'terms';
 
+  //use the Terms factory as a promise. Add returned data to the scope
 
   Terms.getTerms(termsUrl).then(function (data) {
     $scope.terms = data.Result;
@@ -92,6 +111,8 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
     $scope.courses = [];
     $scope.loading = true;
     var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
+
+  //use the Courses factory as a promise. Add returned data to the scope.
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
@@ -104,6 +125,8 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
       $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
     });
   });  
+
+  //Handler to change the term and retrieve the term's courses, using Course factory as a promise
 
   $scope.getTerm = function (termId, termName) {
     $scope.$parent.loading = true;
