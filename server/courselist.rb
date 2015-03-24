@@ -95,7 +95,7 @@ class CourseList < Sinatra::Base
 HOST://api - this documentation.
  <p/>
 HOST://courses/{uniqname}.json - An array of (fake) course data for this person.  The
-query parameter of TERMID=<termid> is required.
+query parameter of TERMID=<termid> should be provided.
  <p/>
 HOST://terms - returns a list of terms for the current user
 <p/>
@@ -103,8 +103,6 @@ HOST://terms/{uniqname}.json - return a list of terms for the specified user.
 <p/>
 HOST://settings - dump data to the log.
 <p/>
-It could use improvement so feel free to help!  Please update this section with any 
-API changes.
 
 END
 
@@ -221,23 +219,23 @@ END
   ## make sure logging is available
   configure :test do
 
-    set :logging, Logger::DEBUG
-    #set :logging, Logger::INFO
+    set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
 
     #configureLogging
 
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
     configureStatic
-    #set :logging, Logger::INFO
-    set :logging, Logger::DEBUG
+    set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
   end
 
   ## make sure logging is available in localhost
   configure :production, :development do
 
-    #set :logging, Logger::INFO
-    set :logging, Logger::DEBUG
+    set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
     configureStatic
 
   end
@@ -246,8 +244,8 @@ END
   configure :development do
 
     configureLogging
-    #set :logging, Logger::INFO
-    set :logging, Logger::DEBUG
+    set :logging, Logger::INFO
+    #set :logging, Logger::DEBUG
     configureStatic
 
   end
@@ -521,49 +519,9 @@ END
 
   #################### Data provider functions #################
 
-  ##### Term providers
-  ## provide a static set of terms
-  #{"getMyRegTermsResponse":{"@schemaLocation":"http:\/\/mais.he.umich.edu\/schemas\/getMyRegTermsResponse.v1 http:\/\/csqa9ib.dsc.umich.edu\/PSIGW\/PeopleSoftServiceListeningConnector\/getMyRegTermsResponse.v1.xsd","Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}}
-  #terms = "{Term":{"TermCode":"2010","TermDescr":"Fall 2014","TermShortDescr":"FA 2014"}}
-  #Format from TLPORTAL-106
-  #- term(str)
-  #- year(str)
-  #- term-id(str)
-  #- current-term(bool)
-  # [
-  #     {
-  #         "term": "Fall",
-  #     "year": "2014",
-  #     "term_id": "2010",
-  #     "current_term": true
-  # },
-  #     {
-  #         "term": "Winter",
-  #     "year": "2015",
-  #     "term_id": "2030",
-  #     "current_term": false
-  # }
-  # ]
-
-  # value returned from ESB
-  #Hash[:TermCode => "2020", :TermDescr => "Mine 2014", :TermShortDesc => "NaNa 2014"]
-  # desired format
-  #  {"term": "Fall", "year": "2014", "term_id": "2010", "current_term": true}
-  ### mapping from ESB value
-  # term from first part of TermDescr (without year and trimming spaces)
-  # year from last part of TermDescr (4 integers at end of string)
-  # term_id from TermCode
-  # current_term is set as the first term in the list for the time being.
-
-  def termProviderStatic
-    termList = Array.new
-    termList << Hash[:term => "Fall", :year => "2014", :term_id => "2010", current_term: true]
-    termList << Hash[:term => "Winterish", :year => "2014", :term_id => "2020", current_term: false]
-  end
-
-
-  ## Grab the desired data provider.
-  ## Would be good to hide the extra parameters
+  ## Use the appropriate provider implementation.
+  ## This should be implemented to set the desired function upon configuration rather than
+  ## to look it up with each request.
 
   def dataProviderCourse(a, termid)
 
@@ -576,10 +534,6 @@ END
       return dataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
     end
 
-  end
-
-  def dataProviderTerms_XXX
-    return termProviderStatic
   end
 
   def dataProviderTerms(uniqname)
