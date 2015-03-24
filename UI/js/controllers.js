@@ -149,6 +149,12 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 }]);
 
+/**
+ * Following controllers are for the portions of the dashboard yet to be 
+ * developed.
+ */
+
+/*
 dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
   var url = 'data/sched.json';
   $http.get(url).success(function (data) {
@@ -187,3 +193,4 @@ dashboardApp.controller('uniEventsController', ['$scope', '$http', function ($sc
     $scope.unievents = data;
   });
 }]);
+*/
