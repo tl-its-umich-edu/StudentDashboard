@@ -27,7 +27,8 @@ class LdapTest < MiniTest::Test
     #logger.level = Logger::DEBUG
     #@group = "ctsupportstaff"
     @group = "TL-Latte-admin-test"
-    @x = LdapCheck.new('group' => @group)
+    @config_file = '../local/ldap.yml' if File.exists?('../local/ldap.yml')
+    @x = LdapCheck.new('group' => @group,'config_file'=>@config_file)
   end
 
   # Called after every test method runs. Can be used to tear
@@ -37,14 +38,20 @@ class LdapTest < MiniTest::Test
     # Do nothing
   end
 
+  def test_throw_error_missing_config_files
+    assert_raises(LdapCheckError) do
+    lc = LdapCheck.new({'config_file'=>'MamaAndPappasMakeDinner'})
+      end
+  end
+
   def test_constructor_config_value_access
-    lc = LdapCheck.new({})
+    lc = LdapCheck.new({'config_file'=>@config_file})
     conf = lc.configuration
     assert_equal(389,conf["port"], "can get value from config file")
   end
 
   def test_constructor_config_value_override
-    lc = LdapCheck.new({"port"=>"HOWDY"})
+    lc = LdapCheck.new({"port"=>"HOWDY",'config_file'=>@config_file})
     conf = lc.configuration
     assert_equal("HOWDY",conf["port"], "can override default config file value")
   end
@@ -52,8 +59,6 @@ class LdapTest < MiniTest::Test
   ## test to see if the membership query finds person that is in group
   def test_dlhaines_ctsupport
     assert @x, "have ldap check object"
-    #found = @x.checkMemberInGroup("dlhaines","ctsupportstaff")
-    #found = @x.checkMemberInGroup("dlhaines",@group)
     found = @x.is_user_in_admin_hash "dlhaines"
     assert found,"checking member in group"
   end
@@ -61,70 +66,15 @@ class LdapTest < MiniTest::Test
   ## test if it does not find person not in group
   def test_GODZILLA_XXX_ctsupport
     assert @x, "have ldap check object"
-    #found = @x.checkMemberInGroup("GODZILLA_XXX","ctsupportstaff")
-    #puts "@group: #{@group}"
-    #found = @x.checkMemberInGroup("GODZILLA_XXX",@group)
     found = @x.is_user_in_admin_hash "GODZILLA_XXX"
     refute found,"checking GOZILLA_XXX in group"
   end
-
-  # def test_memberFilter
-  #   m = LdapCheck.new({"filter_prefix" => "FIRST", "filter_suffix" => "LAST"})
-  #   f = @x.memberFilter("them")
-  #   assert_equal("(&(cn=them) (objectclass=rcf822MailGroup))",f,"build correct member filter")
-  # end
-
-  #def test_yml
-#
-#  end
-
-  # # GET THE DISPLAY NAME AND E-MAIL ADDRESS FOR A SINGLE USER
-  # search_param = "lstarr"
-  # result_attrs = ["sAMAccountName", "displayName", "mail"]
-  #
-  # # Build filter
-  # search_filter = Net::LDAP::Filter.eq("sAMAccountName", search_param)
-  #
-  # # Execute search
-  # ldap.search(:filter => search_filter, :attributes => result_attrs, :return_result => false) { |item|
-  #   puts "#{item.sAMAccountName.first}: #{item.displayName.first} (#{item.mail.first})"
-  # }
-  #
-
-  #F='(&(cn=ctsupportstaff)(objectclass=rfc822MailGroup))'
-  #ldapsearch -H ldap://ldap.itd.umich.edu:389 -D"ou=Groups,dc=umich,dc=edu" -L $F member
-  # filter: '(&(member=uid=dlhaines,ou=People,dc=umich,dc=edu)(cn=its tl staff))'
 
   def find_user_in_ldap_members user, members
     puts "user: #{user} members: #{members}"
     found = false
     members.each { |e| found = true if e.start_with? "uid=#{user}," }
     found
-  end
-
-  def test_constructor_config_value_override
-    lc = LdapCheck.new({"port"=>"HOWDY"})
-    conf = lc.configuration
-    assert_equal("HOWDY",conf["port"], "can override default config file value")
-  end
-
-  ## test to see if the membership query finds person that is in group
-  def test_dlhaines_ctsupport
-    assert @x, "have ldap check object"
-    #found = @x.checkMemberInGroup("dlhaines","ctsupportstaff")
-    #found = @x.checkMemberInGroup("dlhaines",@group)
-    found = @x.is_user_in_admin_hash "dlhaines"
-    assert found,"checking member in group"
-  end
-
-  ## test if it does not find person not in group
-  def test_GODZILLA_XXX_ctsupport
-    assert @x, "have ldap check object"
-    #found = @x.checkMemberInGroup("GODZILLA_XXX","ctsupportstaff")
-    puts "@group: #{@group}"
-    #found = @x.checkMemberInGroup("GODZILLA_XXX",@group)
-    found = @x.is_user_in_admin_hash "GODZILLA_XXX"
-    refute found,"checking GOZILLA_XXX in group"
   end
 
 end

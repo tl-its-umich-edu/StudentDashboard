@@ -26,7 +26,8 @@ class LdapCheck
     begin
       @conf_values = YAML.load_file(conf_file_name)
     rescue => exp
-      logger.info("can not find ldap config file: #{conf_file_name}")
+      logger.error("can not find ldap config file: #{conf_file_name}")
+      raise LdapCheckError, "missing configuration file: #{conf_file_name}"
     end
 
     # Note that the hash returned for yaml uses strings for keys
@@ -107,4 +108,7 @@ class LdapCheck
 
   end
 
+end
+
+class LdapCheckError < StandardError
 end
