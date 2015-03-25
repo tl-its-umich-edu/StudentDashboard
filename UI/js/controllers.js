@@ -30,6 +30,9 @@ dashboardApp.factory('Courses', function ($http) {
             return result.errors;
           }
           else {
+            if(result.data.Result.length === undefined) {
+              result.data.Result =  [].concat(result.data.Result);
+            }
             if (!result.data.Result.length) {
               result.data.Result.message = 'You seem to have no courses this term.';
             }
