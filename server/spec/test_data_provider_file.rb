@@ -13,12 +13,13 @@ require_relative '../Logging'
 #######################################
 ## Create the test class
 #######################################
-class TestModule < Minitest::Test
+class TestDataProviderFile < Minitest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
+    #logger.level = Logger::DEBUG
   end
 
   # Called after every test method runs. Can be used to tear
@@ -28,7 +29,7 @@ class TestModule < Minitest::Test
     # Do nothing
   end
 
-  def test_note_module_via_class_missing_file
+  def test_get_existing_course_file
 
     ### create inline class and include the module under test.
     m = Class.new do
@@ -37,32 +38,81 @@ class TestModule < Minitest::Test
     end.new
 
     refute_nil(m,"create provider object")
-    classes = m.DataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
- #   puts classes
+    classes = m.dataProviderFileCourse("unitTestA", 2010, '../test-files/courses')
+    assert_equal(200,classes.meta_status,'200 for existing class')
+
+  end
+
+  def test_get_missing_course_file
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m,"create provider object")
+    classes = m.dataProviderFileCourse("nofile at all", 2010, '../test-files/courses')
     assert_equal(404,classes.meta_status,'404 for missing class')
 
   end
 
+  def test_get_course_file_2020
 
-  def test_note_module_via_struct
-
-    # Create a struct class. Need to supply Struct constructor with some argument so
-    # we are providing a name for the class.  Struct makes it easy to create a class
-    # with attributes and that may be good for testing.
-
-    m = Struct.new("ModuleTester").new
-
-    # add the module to the class.
-    class<<m
+    m = Class.new do
       include DataProviderFile
       include Logging
-    end
+    end.new
 
-    # ## do something with the class.
-    # m.note("HI")
-    #
-    # assert_equal m.getNote, "HI", "did not find note"
-    # refute_equal m.getNote, "BUY", "did not find note"
+    refute_nil(m,"create provider object")
+    response = m.dataProviderFileCourse("gsilver", 2020, '../test-files/courses')
+    assert_equal(200,response.meta_status,'404 for missing class')
+    classes = response.result
+    title = classes[0]['Title']
+    assert_match /2020/, title, "find 2020 in course title"
+  end
+
+
+
+  def test_get_default_term_file_for_missing_term_file
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m,"create provider object")
+    terms = m.dataProviderFileTerms("nofilehere", '../test-files/terms')
+    assert_equal(200,terms.meta_status,'200 for missing default term file')
+
+  end
+
+  def test_get_default_term_file_explicitly
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m,"create provider object")
+    terms = m.dataProviderFileTerms("default", '../test-files/terms')
+    assert_equal(200,terms.meta_status,'200 for missing default term file')
+
+  end
+
+  def test_get_unittestA_term_file
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m,"create provider object")
+    terms = m.dataProviderFileTerms("unitTestA", '../test-files/terms')
+    assert_equal(200,terms.meta_status,'200 for missing unitTestA term file')
+
+    first_term = terms.result[0]["term"]
+    assert_equal("defallt",first_term,"get name of first term")
+
   end
 
 end

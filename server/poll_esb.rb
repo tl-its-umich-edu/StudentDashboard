@@ -48,9 +48,9 @@ class PollESB
     end
     @iterations = i+1
     begin
-      classes = DataProviderESBCourse("ststvii", "2010", @security_file, @application_name, 2010)
+      classes = dataProviderESBCourse("ststvii", "2010", @security_file, @application_name, 2010)
     rescue => exp
-      open(@error_file, 'a') { |f| f.puts Time.now.to_s+ "\tDataProviderESBCourse exception: "+exp.inspect}
+      open(@error_file, 'a') { |f| f.puts Time.now.to_s+ "\tdataProviderESBCourse exception: "+exp.inspect}
     end
     begin
       http_status = classes.meta_status

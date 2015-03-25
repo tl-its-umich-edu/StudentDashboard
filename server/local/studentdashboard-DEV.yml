@@ -49,14 +49,14 @@ latte_admin_group: TL-Latte-admin-test
 ## FB (file based) - This is primarily for testing and allows reading data
 ## from local files.  Configuration is documented below.
 
-###### ESB data provider 
+###### ESB data provider
 # This is the name of the ESB "application" that identifies the credentials to be used
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 application_name: SD-QA
 
 ###### FB (file based) data provider
-#data_provider_file_directory: server/test-files/courses
+#data_provider_file_directory: server/test-files
 ## This value is used for the optional file based data provider.
 ## If the value is not set then the ESB based provider is used.
 ## If data_file_provider_directory does have a value then Latte will treat
@@ -65,5 +65,6 @@ application_name: SD-QA
 ## a '/' it is taken as an absolute path.  Otherwise the base directory for
 ## application is prepended to the path.  For example it may look within
 ## the directory /usr/latte/really/good/directory or within the expanded war file.
+
 ########## end #########
 

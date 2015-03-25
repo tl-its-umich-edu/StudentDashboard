@@ -7,7 +7,7 @@ module DataProviderESB
 
 
   def setup_WAPI(app_name)
-    logger.info "use ESB application: #{app_name}"
+    logger.info "setup_WAPI: use ESB application: #{app_name}"
     application = @@yml[app_name]
     @@w = WAPI.new application
   end
@@ -26,14 +26,15 @@ module DataProviderESB
     else
       file_name = default_security_file
     end
-    logger.debug "security file_name: #{file_name}"
+
+    logger.debug "init_ESB: security file_name: #{file_name}"
     @@yml = YAML.load_file(file_name)
 
     setup_WAPI(app_name)
   end
 
-  def DataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
-    logger.info "data provider is DataProviderESBCourse."
+  def dataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
+    logger.info "data provider is DataProviderESB."
     ## if necessary initialize the ESB connection.
     if @@w.nil?
       logger.debug "@@w is nil"
@@ -41,30 +42,29 @@ module DataProviderESB
     end
 
     if termid.nil? || termid.length == 0
-      logger.debug "defaulting term to #{default_term}"
+      logger.debug "dPESBC: #{__LINE__}: defaulting term to #{default_term}"
       termid = default_term
     end
 
     url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
 
-    logger.debug("ESB: url: "+url)
+    logger.debug("dPESBC: #{__LINE__}: url: "+url)
 
     classes = @@w.get_request(url)
-    logger.debug("dataProviderESBCourse: classes: "+classes.inspect)
-    #puts "#{__LINE__}: dataProviderESBCourse: classes: "+classes.inspect
+    logger.debug("dPESBC: classes: "+classes.inspect)
     result = classes.result
-    logger.error("dataProviderESBCourse: result: "+result.inspect)
+    logger.debug("dPESBC: result: "+result.inspect)
 
     begin
     r = JSON.parse(result)
     rescue => exp
-      logger.warn("EXCEPTION: dataProviderESBCourse: course request returned: "+r.inspect)
-      return WAPIResultWrapper.new(666, "EXCEPTION: course request found", r)
+      logger.warn("EXCEPTION: dataProviderESBCourse: course request exp: "+exp+" result: "+r.inspect)
+      return WAPIResultWrapper.new(666, "EXCEPTION: course request returned: ", r)
     end
 
     if r.has_key?('getMyClsScheduleResponse')
       r = r['getMyClsScheduleResponse']['RegisteredClasses']
-      logger.debug("dataProviderESBCourse: with classes r: "+r.inspect)
+      logger.debug("dPESBC: with classes r: "+r.inspect)
       # return newly wrapped result after extracting the course data
       classes = WAPIResultWrapper.new(200, "found courses from ESB", r)
     end
@@ -72,32 +72,34 @@ module DataProviderESB
     return classes
   end
 
-  def DataProviderESBTerms(uniqname, termid, security_file, app_name, default_term)
-    logger.info "data provider is DataProviderESBCourse."
+  def dataProviderESBTerms(uniqname, security_file, app_name)
+    logger.info "data provider is DataProviderESB."
     ## if necessary initialize the ESB connection.
     if @@w.nil?
       logger.debug "@@w is nil"
       @@w = init_ESB(security_file, app_name)
     end
 
-    if termid.nil? || termid.length == 0
-      logger.debug "defaulting term to #{default_term}"
-      termid = default_term
-    end
+    url = "/Students/#{uniqname}/Terms"
 
-    url = "/Students/#{uniqname}/Terms/#{termid}"
-
-    logger.debug("ESB: url: "+url)
+    logger.debug("DPESBT: url: "+url)
 
     terms = @@w.get_request(url)
-    logger.debug("#{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect)
-    puts "#{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect
+    logger.debug("DPESBT: #{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect)
     result = terms.result
-    puts "#{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect
+    logger.debug("DPESBT: #{__LINE__}: dataProviderESBTerms: result: "+result.inspect)
 
-    r = JSON.parse(result)
+    begin
+      parsed = JSON.parse(result)
+    rescue => exp
+      logger.warn("EXCEPTION: dataProviderESBTerm: term request returned: exp: "+exp+" result: "+result.inspect)
+      return WAPIResultWrapper.new(666, "EXCEPTION: term request parsing", result)
+    end
 
-    terms = WAPIResultWrapper.new(200, "found terms from ESB", r)
+    if parsed.has_key?('getMyRegTermsResponse')
+      terms_value = parsed['getMyRegTermsResponse']['Term']
+      terms = WAPIResultWrapper.new(200, "found terms from ESB", terms_value)
+    end
 
     return terms
   end

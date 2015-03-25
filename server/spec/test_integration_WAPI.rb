@@ -15,7 +15,7 @@ require 'base64'
 
 ### Test WAPI with real server
 
-class TestNew < Minitest::Test
+class TestIntegrationWAPI < Minitest::Test
 
   ## security.yml holds security configuration information for testing.
   ## See security.yml.TEMPLATE for details.
@@ -26,14 +26,6 @@ class TestNew < Minitest::Test
   @@application = "test"
   @@yml = nil
   @@config = nil
-
-  # def setup_logger
-  #   log = Logger.new(STDOUT)
-  #   #log.level = Logger::ERROR
-  #   #logger.level = Logger::DEBUG
-  #   #log.level = Logger::DEBUG
-  #   RestClient.log = log
-  # end
 
   def load_yml
     @@yml = YAML::load_file(File.open(@@yml_file))
@@ -56,11 +48,15 @@ class TestNew < Minitest::Test
     # by default assume that the tests will run well and don't
     # need detailed log messages.
     logger.level=Logger::ERROR
-#    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
+    @default_application_name = 'SD-TEST-DLH'
     load_yml
     #load_application 'ESB-QA'
-    load_application 'SD-QA'
+    #load_application 'SD-TEST-DLH'
+    load_application @default_application_name
+
+    @default_term = '2020';
 
     a = Hash['api_prefix' => @api_prefix,
              'key' => @key,
@@ -77,7 +73,8 @@ class TestNew < Minitest::Test
 
     #load_application 'SD-QA-BAD-TOKEN'
     #load_application 'ESB-QA'
-    load_application 'SD-QA'
+    #load_application 'SD-QA'
+    load_application @default_application_name
 
     a = Hash['api_prefix' => "https://nowhere_nothing_nada.com",
              'key' => @key,
@@ -97,7 +94,7 @@ class TestNew < Minitest::Test
   # check that try to renew token if get a not-authorized response
   def test_token_invalid_and_is_renewed
 
-    #load_application 'SD-QA-BAD-TOKEN'
+    load_application 'SD-QA-BAD-TOKEN'
 
     a = Hash['api_prefix' => @api_prefix,
              'key' => @key,
@@ -139,8 +136,8 @@ class TestNew < Minitest::Test
 
   def test_course_request
 
-    default_term = 2010
-    r = @w.get_request("/Students/#{@uniqname}/Terms/#{default_term}/Schedule")
+    #default_term = 2010
+    r = @w.get_request("/Students/#{@uniqname}/Terms/#{@default_term}/Schedule")
     logger.info "#{__LINE__}: tcr: r "+r.inspect
 
     # check status

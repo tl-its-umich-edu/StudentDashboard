@@ -14,8 +14,7 @@ require_relative '../courselist'
 ## set the environment for testing
 #ENV['RACK_ENV'] = 'unit'
 
-
-class CourselistTest < MiniTest::Test
+class TestCourseList < MiniTest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
