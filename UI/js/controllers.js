@@ -30,6 +30,7 @@ dashboardApp.factory('Courses', function ($http) {
             return result.errors;
           }
           else {
+            // the ESB might return a single object if only one course - turn it into an array
             if(result.data.Result.length === undefined) {
               result.data.Result =  [].concat(result.data.Result);
             }
