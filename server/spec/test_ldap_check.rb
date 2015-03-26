@@ -27,8 +27,10 @@ class LdapTest < MiniTest::Test
     #logger.level = Logger::DEBUG
     #@group = "ctsupportstaff"
     @group = "TL-Latte-admin-test"
+    # config_file has a default.  Use this file path instead if the path leads
+    # to a file. This makes it possible to run the tests from different directories.
     @config_file = '../local/ldap.yml' if File.exists?('../local/ldap.yml')
-    @x = LdapCheck.new('group' => @group,'config_file'=>@config_file)
+    @x = LdapCheck.new('group' => @group, 'config_file' => @config_file)
   end
 
   # Called after every test method runs. Can be used to tear
@@ -40,34 +42,34 @@ class LdapTest < MiniTest::Test
 
   def test_throw_error_missing_config_files
     assert_raises(LdapCheckError) do
-    lc = LdapCheck.new({'config_file'=>'MamaAndPappasMakeDinner'})
-      end
+      lc = LdapCheck.new({'config_file' => 'MamaAndPappasMakeDinner'})
+    end
   end
 
   def test_constructor_config_value_access
-    lc = LdapCheck.new({'config_file'=>@config_file})
+    lc = LdapCheck.new({'config_file' => @config_file})
     conf = lc.configuration
-    assert_equal(389,conf["port"], "can get value from config file")
+    assert_equal(389, conf["port"], "can get value from config file")
   end
 
   def test_constructor_config_value_override
-    lc = LdapCheck.new({"port"=>"HOWDY",'config_file'=>@config_file})
+    lc = LdapCheck.new({"port" => "HOWDY", 'config_file' => @config_file})
     conf = lc.configuration
-    assert_equal("HOWDY",conf["port"], "can override default config file value")
+    assert_equal("HOWDY", conf["port"], "can override default config file value")
   end
 
   ## test to see if the membership query finds person that is in group
   def test_dlhaines_ctsupport
     assert @x, "have ldap check object"
     found = @x.is_user_in_admin_hash "dlhaines"
-    assert found,"checking member in group"
+    assert found, "checking member in group"
   end
 
   ## test if it does not find person not in group
   def test_GODZILLA_XXX_ctsupport
     assert @x, "have ldap check object"
     found = @x.is_user_in_admin_hash "GODZILLA_XXX"
-    refute found,"checking GOZILLA_XXX in group"
+    refute found, "checking GOZILLA_XXX in group"
   end
 
   def find_user_in_ldap_members user, members
