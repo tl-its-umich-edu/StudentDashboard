@@ -4,10 +4,19 @@
 
 var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
 
+/**
+ * Initialize Angular app with the user id and the strings file
+ */
+
 dashboardApp.run(function ($rootScope) {
   $rootScope.user = $('#userId').text();
   $rootScope.lang = JSON.parse($('#lang').text());
 });
+
+/**
+ * Singleton that does the requests for the courses
+ * Inner function uses the URL passed to it
+ */
 
 dashboardApp.factory('Courses', function ($http) {
   return {
@@ -52,45 +61,78 @@ dashboardApp.factory('Courses', function ($http) {
   };
 });
 
-dashboardApp.controller('coursesController', ['Courses', '$rootScope', '$scope', function (Courses, $rootScope, $scope) {
+/**
+ * Singleton that does the requests for the terms
+ * Inner function uses the URL passed to it
+ */
 
-  $scope.courses = [];
-  $scope.loading = true;
-
-  var url = 'courses/' + $rootScope.user + '.json';
-
-  Courses.getCourses(url).then(function (data) {
-    if (data.failure) {
-      $scope.courses.errors = data;
-      $scope.loading = false;
-    } else {
-      $scope.courses = data;
-      $scope.loading = false;
+dashboardApp.factory('Terms', function ($http) {
+  return {
+    getTerms: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+         if(result.data.Meta.httpStatus !==200){
+            result.errors = errorHandler(url, result);
+            result.errors.failure = true;
+            return result.errors;
+          }
+          else {
+            return result.data;
+          }
+        },
+        function error(result) {
+          result.errors = errorHandler(url, result);
+          result.errors.failure = true;
+          return result.errors;
+        }
+      );
     }
-    $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+  };
+});
 
-  });
-
-}]);
-
-
-dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '$http', function (Courses, $rootScope, $scope, $http) {
+/**
+ * Terms controller - Angular dependencies are injected.
+ * It adds the terms to the scope and binds them to the DOM
+ * 
+ */
+dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$scope',  function (Courses, Terms, $rootScope, $scope) {
   $scope.selectedTerm = null;
   $scope.terms = [];
  
   var termsUrl = 'terms';
 
-  $http.get(termsUrl).success(function (data) {
-    $scope.terms = data;
-    $scope.$parent.term = data[0].term;
-    $scope.$parent.year = data[0].year;
-  });
+  //use the Terms factory as a promise. Add returned data to the scope
 
-  $scope.getTerm = function (termId, term, year) {
+  Terms.getTerms(termsUrl).then(function (data) {
+    $scope.terms = data.Result;
+    $scope.$parent.term = data.Result[0].TermDescr;
+    $scope.$parent.termId = data.Result[0].TermCode;
+
+    $scope.courses = [];
+    $scope.loading = true;
+    var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
+
+  //use the Courses factory as a promise. Add returned data to the scope.
+
+    Courses.getCourses(url).then(function (data) {
+      if (data.failure) {
+        $scope.courses.errors = data;
+        $scope.loading = false;
+      } else {
+        $scope.courses = data;
+        $scope.loading = false;
+      }
+      $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+    });
+  });  
+
+  //Handler to change the term and retrieve the term's courses, using Course factory as a promise
+
+  $scope.getTerm = function (termId, termName) {
     $scope.$parent.loading = true;
     $scope.$parent.courses = [];
-    $scope.$parent.term = term;
-    $scope.$parent.year = year;
+    $scope.$parent.term = termName;
+    
     var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 
     Courses.getCourses(url).then(function (data) {
@@ -107,7 +149,12 @@ dashboardApp.controller('termsController', ['Courses', '$rootScope', '$scope', '
 
 }]);
 
+/**
+ * Following controllers are for the portions of the dashboard yet to be 
+ * developed.
+ */
 
+/*
 dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
   var url = 'data/sched.json';
   $http.get(url).success(function (data) {
@@ -146,3 +193,4 @@ dashboardApp.controller('uniEventsController', ['$scope', '$http', function ($sc
     $scope.unievents = data;
   });
 }]);
+*/

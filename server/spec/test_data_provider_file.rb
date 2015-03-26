@@ -13,13 +13,13 @@ require_relative '../Logging'
 #######################################
 ## Create the test class
 #######################################
-class DataProviderFileTest < Minitest::Test
+class TestDataProviderFile < Minitest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
-    logger.level = Logger::DEBUG
+    #logger.level = Logger::DEBUG
   end
 
   # Called after every test method runs. Can be used to tear
@@ -29,9 +29,8 @@ class DataProviderFileTest < Minitest::Test
     # Do nothing
   end
 
-  ############## sample
 
-  def test_missing_file_via_new_class
+  def test_get_existing_course_file
 
     ### create inline class and include the module under test.
     m = Class.new do
@@ -40,32 +39,82 @@ class DataProviderFileTest < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    classes = m.DataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
+    classes = m.dataProviderFileCourse("unitTestA", 2010, '../test-files/courses')
+    assert_equal(200, classes.meta_status, '200 for existing class')
+
+  end
+
+  def test_get_missing_course_file
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m, "create provider object")
+    classes = m.dataProviderFileCourse("nofile at all", 2010, '../test-files/courses')
     assert_equal(404, classes.meta_status, '404 for missing class')
 
   end
 
+  def test_get_course_file_2020
 
-  def test_via_struct
-
-    # Create a struct class. Need to supply Struct constructor with some argument so
-    # we are providing a name for the class.  Struct makes it easy to create a class
-    # with attributes and that may be good for testing.
-
-    m = Struct.new("ModuleTester").new
-
-    # add the module to the class.
-    class<<m
+    m = Class.new do
       include DataProviderFile
       include Logging
-    end
+    end.new
 
-    # ## do something with the class.
-    # m.note("HI")
-    #
-    # assert_equal m.getNote, "HI", "did not find note"
-    # refute_equal m.getNote, "BUY", "did not find note"
+    refute_nil(m, "create provider object")
+    response = m.dataProviderFileCourse("gsilver", 2020, '../test-files/courses')
+    assert_equal(200, response.meta_status, '404 for missing class')
+    result = response.result
+    classes = JSON.parse(result)
+    title = classes[0]['Title']
+    assert_match /2020/, title, "find 2020 in course title"
   end
+
+
+  def test_get_default_term_file_for_missing_term_file
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m, "create provider object")
+    terms = m.dataProviderFileTerms("nofilehere", '../test-files/terms')
+    assert_equal(200, terms.meta_status, '200 for missing default term file')
+
+  end
+
+  def test_get_default_term_file_explicitly
+
+    m = Class.new do
+      include DataProviderFile
+      include Logging
+    end.new
+
+    refute_nil(m, "create provider object")
+    terms = m.dataProviderFileTerms("default", '../test-files/terms')
+    assert_equal(200, terms.meta_status, '200 for missing default term file')
+
+  end
+
+  # def test_get_unittestA_term_file
+  #
+  #   m = Class.new do
+  #     include DataProviderFile
+  #     include Logging
+  #   end.new
+  #
+  #   refute_nil(m, "create provider object")
+  #   terms = m.dataProviderFileTerms("unitTestA", '../test-files/terms')
+  #   assert_equal(200, terms.meta_status, '200 for missing unitTestA term file')
+  #
+  #   first_term = terms.result[0]["term"]
+  #   assert_equal("defallt", first_term, "get name of first term")
+  #
+  # end
 
   def test_wrapping_regular_file
 
@@ -74,7 +123,7 @@ class DataProviderFileTest < Minitest::Test
       include Logging
     end.new
 
-    classes = m.DataProviderFileCourse("tiny", 2010, '../test-files/courses')
+    classes = m.dataProviderFileCourse("tiny", 2010, '../test-files/courses')
     assert_equal(200, classes.meta_status, '200 for finding class')
   end
 
@@ -94,13 +143,9 @@ class DataProviderFileTest < Minitest::Test
     ## the stub method will override calls in the block.
     File.stub :read, good_file do
       File.stub :exists?, true do
-        classes = m.DataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
-        puts "test_regular_wrapped_file_stubs classes:"
-        p classes
+        classes = m.dataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
         assert_equal(200, classes.meta_status, '200 for finding class')
         result = classes.result
-        puts "result in double wrapping"
-        p result
         refute_instance_of WAPIResultWrapper, result, "double wrapped class"
       end
     end
@@ -113,7 +158,7 @@ class DataProviderFileTest < Minitest::Test
     end.new
 
     File.stub :exists?, false do
-      classes = m.DataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
+      classes = m.dataProviderFileCourse("nobody", 2010, 'nowhere/at/all')
       assert_equal(404, classes.meta_status, '404 for missing class')
     end
     # end
@@ -131,7 +176,7 @@ class DataProviderFileTest < Minitest::Test
 
     File.stub :exists?, true do
       File.stub :read, pre_wrapped_file do
-        classes = m.DataProviderFileCourse("A", "B", "C")
+        classes = m.dataProviderFileCourse("A", "B", "C")
         assert_equal(777, classes.meta_status, '404 for prewrapped file')
       end
     end
@@ -144,10 +189,8 @@ class DataProviderFileTest < Minitest::Test
       include Logging
     end.new
 
-    classes = m.DataProviderFileCourse("meta", 2010, '../test-files/courses')
-    puts "pre_wrapped"
-    p classes
-    assert_equal(888, classes.meta_status, '200 for finding class')
+    classes = m.dataProviderFileCourse("meta200", 2010, '../test-files/courses')
+    assert_equal(200, classes.meta_status, '200 for finding class')
   end
 
-  end
+end

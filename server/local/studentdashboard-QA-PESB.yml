@@ -7,7 +7,7 @@
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 
-application_name: SD-QA
+application_name: StudentDashboard-PROD
 
 ##### Values below here are unlikely to change except when
 ##### testing.
@@ -39,17 +39,15 @@ authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 
-## The latte_admin_group specifies the name of a MCommunity group.  Members
-## of that group will have administrative tools for Latte.  In particular they will
-## be able to request information for people besides themselves.
-## The members of the group are read on startup and it will require a restart to
-## make changes effective.
+## The 'admin' entry specifies a list of user names of authenticated users
+## who may act as administrators and so bypass some built-in restrictions.
+## To include users remove the leading '#' sign from these lines and put in reasonable uniqnames.
+## Any number of users can be specified.
+# The anonymous_user name specified above should NEVER appear here.
 
-## The members of the group are read on startup and it will require a restart to
-## make changes effective.
-
-latte_admin_group: TL-Latte-admin-test
-
+#admin:
+#  - ABBA_IS_GREAT
+#  - DYLAN_IS_BETTER
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:

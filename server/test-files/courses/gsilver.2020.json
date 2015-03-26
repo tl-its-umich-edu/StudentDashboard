@@ -1,30 +1,32 @@
 [
     {
-        "Title": "AMCULT 217",
-        "Subtitle": "Two courses",
+        "Title": "AMCULT 217 2020 term",
+        "Subtitle": "No instructors",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": []
+    },
+    {
+        "Title": "AMCULT 218 2020 term",
+        "Subtitle": "One instructor",
         "Source": "CTools",
         "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
         "Instructor": [
             {
-                "Name": "rkcarter",
-                "Role": "Primary Lecturer",
-                "Email": "jsmith@umich.edu"
-            },
-            {
-                "Name": "Barbara Smith",
+                "Name": "Jane Smith",
                 "Role": "Primary Lecturer",
                 "Email": "jsmith@umich.edu"
             }
         ]
     },
     {
-        "Title": "AMCULT 218",
-        "Subtitle": "Two courses",
+        "Title": "AMCULT 218 2020 term",
+        "Subtitle": "Three instructors",
         "Source": "CTools",
         "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
         "Instructor": [
             {
-                "Name": "rkcarter",
+                "Name": "Jane Smith",
                 "Role": "Primary Lecturer",
                 "Email": "jsmith@umich.edu"
             },
@@ -32,7 +34,14 @@
                 "Name": "Barbara Smith",
                 "Role": "Primary Lecturer",
                 "Email": "jsmith@umich.edu"
+            },
+
+            {
+                "Name": "Bob Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
             }
         ]
     }
 ]
+

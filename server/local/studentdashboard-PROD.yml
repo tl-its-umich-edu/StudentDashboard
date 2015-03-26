@@ -7,7 +7,7 @@
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 
-application_name: SD-PROD
+application_name: StudentDashboard-PROD
 
 ##### Values below here are unlikely to change except when
 ##### testing.
@@ -21,7 +21,7 @@ invalid_query_text: Sorry, I don't understand this request.
 anonymous_user: anonymous
 
 #### Default term to use for course lookups if no other information is available.
-default_term: 2010
+default_term: 2020
 
 # These values allow implementation of a stub authentication service (to be used
 # primarily for load testing).
@@ -39,15 +39,20 @@ authn_uniqname_override: false
 authn_wait_min: 0.01
 authn_wait_max: 0.03
 
-## The 'admin' entry specifies a list of user names of authenticated users
-## who may act as administrators and so bypass some built-in restrictions.
-## To include users remove the leading '#' sign from these lines and put in reasonable uniqnames.
-## Any number of users can be specified.
-# The anonymous_user name specified above should NEVER appear here.
+## The latte_admin_group specifies the name of a MCommunity group.  Members
+## of that group will have administrative tools for Latte.  In particular they will
+## be able to request information for people besides themselves.
+## The members of the group are read on startup and it will require a restart to
+## make changes effective.
 
-#admin:
-#  - ABBA_IS_GREAT
-#  - DYLAN_IS_BETTER
+
+## The members of the group are read on startup and it will require a restart to
+## make changes effective.
+
+
+latte_admin_group: TL-Latte-admin-test
+#latte_admin_group: ctsupportstaff
+
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:
@@ -56,7 +61,7 @@ authn_wait_max: 0.03
 ## from local files.  Configuration is documented below.
 
 ### file based data provider value:
-#data_provider_file_directory: server/test-files/courses
+#data_provider_file_directory: server/test-files
 # This value is used for the optional file based data provider.
 # If the value is not set then the ESB based provider is used.
 # If data_file_provider_directory does have a value then Latte will treat

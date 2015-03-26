@@ -11,7 +11,7 @@ require_relative '../WAPI_result_wrapper'
 require 'logger'
 
 
-class TestNew < Minitest::Test
+class TestWAPIResultWrapper < Minitest::Test
 
   # Called before every test method runs. Can be used
   # to set up fixture information.

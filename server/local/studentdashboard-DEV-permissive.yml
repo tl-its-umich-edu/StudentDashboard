@@ -1,13 +1,8 @@
 ### This yaml format file specifies configuration values that may change from
 ### instance to instance.  E.g. the values may need to be different between the
 ### developer, qa, and production instances.
-### NOTE: White space indentation matters for yaml.
+### NOTE: White space indentation matters for yaml and tabs are not permitted.
 
-# This is the name of the ESB "application" that identifies the credentials to be used
-# for ESB oauth authentication.  It must match up with a corresponding application name
-# in the security.yml file.  See that file for details on the authentication information.
-
-application_name: SD-QA
 
 ##### Values below here are unlikely to change except when
 ##### testing.
@@ -23,6 +18,7 @@ anonymous_user: anonymous
 #### Default term to use for course lookups if no other information is available.
 default_term: 2010
 
+############ authentication ##############
 # These values allow implementation of a stub authentication service (to be used
 # primarily for load testing).
 # The authn_uniqname_override, when set to 'true' will allow the uniqname of the user
@@ -48,24 +44,30 @@ authn_wait_max: 0.03
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 
-latte_admin_group: TL-Latte-admin-test
 
+latte_admin_group: TL-Latte-admin-test
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:
-## ESB - this is the default and the configuration is in the security.yml file.
+## ESB - this is the default and the credentials are kept separately in the security.yml file.
 ## FB (file based) - This is primarily for testing and allows reading data
 ## from local files.  Configuration is documented below.
 
-### file based data provider value:
-#data_provider_file_directory: server/test-files
-# This value is used for the optional file based data provider.
-# If the value is not set then the ESB based provider is used.
-# If data_file_provider_directory does have a value then Latte will treat
-# the value as a directory name and will look there for files matching
-# the request.  If the directory starts with
-# a '/' it is taken as an absolute path.  Otherwise the base directory for
-# application is prepended to the path.  For example it may look within
-# the directory /usr/latte/really/good/directory or within the expanded war file.
+###### ESB data provider 
+# This is the name of the ESB "application" that identifies the credentials to be used
+# for ESB oauth authentication.  It must match up with a corresponding application name
+# in the security.yml file.  See that file for details on the authentication information.
+application_name: SD-QA
+
+###### FB (file based) data provider
+#data_provider_file_directory: server/test-files/courses
+## This value is used for the optional file based data provider.
+## If the value is not set then the ESB based provider is used.
+## If data_file_provider_directory does have a value then Latte will treat
+## the value as a directory name and will look there for files matching
+## the request.  If the directory starts with
+## a '/' it is taken as an absolute path.  Otherwise the base directory for
+## application is prepended to the path.  For example it may look within
+## the directory /usr/latte/really/good/directory or within the expanded war file.
 ########## end #########
 

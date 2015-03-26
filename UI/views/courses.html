@@ -1,85 +1,83 @@
+<div  ng-controller = "termsController" ng-cloak>
+  <div id="courses" class="itemPanel">
+    <h3 class="colHeader">{{lang.panelTitle}} <small>{{term}}</small>
+      <div class="btn-group pull-right">
+        <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
+          Terms <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="term in terms"><a href='' ng-click="getTerm(term.TermCode, term.TermDescr)" data-term-id="{{term.TermCode}}">{{term.TermDescr}}</a></li>
+        </ul>
+      </div>
+      <div class="spinner pull-right" ng-show="loading"></div>
+    </h3>
 
-<div id="courses" class="itemPanel" ng-controller="coursesController">
-  <h3 class="colHeader">{{lang.panelTitle}} <small>{{term}} {{year}}</small>
-    <div class="btn-group pull-right">
-      <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
-        Terms <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" ng-controller = "termsController" ng-cloak>
-        <li ng-repeat="term in terms"><a href='' ng-click="getTerm(term.term_id, term.term, term.year)" data-term-id="{{term.term_id}}">{{term.term}} {{term.year}}</a></li>
-      </ul>
-    </div>
-    <div class="spinner pull-right" ng-show="loading"></div>
-  </h3>
+    <div>{{courses.message}}</div>
+    <img class="errorImg" ng-show="courses.errors.message" src="images/error-small.png">
+    <div>{{courses.errors.message}}</div>
 
-
-  <div>{{courses.message}}</div>
-  <img class="errorImg" ng-show="courses.errors.message" src="images/error-small.png">
-  <div>{{courses.errors.message}}</div>
-
-  <ul class="itemList">
-    <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
-      <div class="row">
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 visible-md visible-lg visible-sm {{item.Source | lowercase}} iconContainer">
-        </div>
-        <div class="col-lg-11 col-md-11 col-xs-11">
-          <strong>
-            <span ng-if="item.Link">
-              <a target="_blank" href="{{item.Link}}">
-                <span class="sr-only">Go to site for</span>{{item.Title}}</a>
-            </span>
-            <span ng-if="!item.Link">{{item.Title}}</span>
-          </strong>
-          <br>
-          <small>
-            {{item.Subtitle}}
-          </small>
-          <div ng-show="item.Instructor" class="instructorsInfo">
-            <div ng-if="item.Instructor.length">
-              <div ng-repeat="instructor in item.Instructor | orderBy:'Role' | limitTo:1">
-                <small>
-                  {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>)
-                  <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span> <a ng-show="item.Instructor.length > 1" href="#" class="showMoreInstructors">(more)</a>
-                </small>
-              </div>
-              <div class="moreInstructors" style="display:none">
-                <div ng-repeat="instructor in item.Instructor | orderBy:'Role'" ng-show="!$first">
+    <ul class="itemList">
+      <li ng-repeat="item in courses | orderBy:'title'" class="container-fluid">
+        <div class="row">
+          <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 visible-md visible-lg visible-sm {{item.Source | lowercase}} iconContainer">
+          </div>
+          <div class="col-lg-11 col-md-11 col-xs-11">
+            <strong>
+              <span ng-if="item.Link">
+                <a target="_blank" href="{{item.Link}}">
+                  <span class="sr-only">Go to site for</span>{{item.Title}}</a>
+              </span>
+              <span ng-if="!item.Link">{{item.Title}}</span>
+            </strong>
+            <br>
+            <small>
+              {{item.Subtitle}}
+            </small>
+            <div ng-show="item.Instructor" class="instructorsInfo">
+              <div ng-if="item.Instructor.length">
+                <div ng-repeat="instructor in item.Instructor | orderBy:'Role' | limitTo:1">
                   <small>
                     {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>)
-                    <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
+                    <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span> <a ng-show="item.Instructor.length > 1" href="#" class="showMoreInstructors">(more)</a>
                   </small>
                 </div>
+                <div class="moreInstructors" style="display:none">
+                  <div ng-repeat="instructor in item.Instructor | orderBy:'Role'" ng-show="!$first">
+                    <small>
+                      {{instructor.Name | fixInstructorName }} (<a class="mailTolink" href="mailto:{{instructor.Email  | lowercase}}">{{instructor.Email  | lowercase}}</a>)
+                      <span class="visible-md-inline visible-lg-inline">{{instructor.Role}}</span>
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div ng-hide="item.Instructor.length">
+                <small>
+                  {{item.Instructor.Name | fixInstructorName}} (<a class="mailTolink" href="mailto:{{item.Instructor.Email  | lowercase}}">{{item.Instructor.Email  | lowercase}}</a>)
+                </small>
               </div>
             </div>
-            <div ng-hide="item.Instructor.length">
+            <div ng-hide="item.Instructor">
               <small>
-                {{item.Instructor.Name | fixInstructorName}} (<a class="mailTolink" href="mailto:{{item.Instructor.Email  | lowercase}}">{{item.Instructor.Email  | lowercase}}</a>)
+                Staff
               </small>
             </div>
           </div>
-          <div ng-hide="item.Instructor">
-            <small>
-              Staff
-            </small>
-          </div>
         </div>
-      </div>
-    </li>
-  </ul>
-  <div ng-hide="loading">
-    <p ng-show="courses.canvas || courses.ctools"> {{lang.lookAtOtherDashes}} 
-      <span ng-show="courses.ctools">the <a href="{{lang.ctoolsUrl}}">Ctools Dashboard</a>
-      </span>
-      <span ng-show="courses.canvas">
-        <span ng-show="courses.canvas && courses.ctools">or</span> <a href="{{lang.canvasUrl}}">Canvas home.</a>
-      </span>
-    </p>
+      </li>
+    </ul>
+    <div ng-hide="loading">
+      <p ng-show="courses.canvas || courses.ctools"> {{lang.lookAtOtherDashes}} 
+        <span ng-show="courses.ctools">the <a href="{{lang.ctoolsUrl}}">Ctools Dashboard</a>
+        </span>
+        <span ng-show="courses.canvas">
+          <span ng-show="courses.canvas && courses.ctools">or</span> <a href="{{lang.canvasUrl}}">Canvas home.</a>
+        </span>
+      </p>
 
-    <p ng-show="!courses.canvas && !courses.ctools">{{lang.lookAtOtherDashesNoCourses}}<a href="{{lang.ctoolsUrl}}">Ctools Dashboard</a> or <a href="{{lang.canvasUrl}}">Canvas home?</a>
-      </span>
-    </p>
+      <p ng-show="!courses.canvas && !courses.ctools">{{lang.lookAtOtherDashesNoCourses}}<a href="{{lang.ctoolsUrl}}">Ctools Dashboard</a> or <a href="{{lang.canvasUrl}}">Canvas home?</a>
+        </span>
+      </p>
+    </div>
+   
   </div>
-
-
-
 </div>
