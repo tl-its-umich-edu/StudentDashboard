@@ -30,6 +30,10 @@ dashboardApp.factory('Courses', function ($http) {
             return result.errors;
           }
           else {
+            // the ESB might return a single object if only one course - turn it into an array
+            if(result.data.Result.length === undefined) {
+              result.data.Result =  [].concat(result.data.Result);
+            }
             if (!result.data.Result.length) {
               result.data.Result.message = 'You seem to have no courses this term.';
             }
@@ -104,6 +108,10 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   //use the Terms factory as a promise. Add returned data to the scope
 
   Terms.getTerms(termsUrl).then(function (data) {
+    // the ESB might return a sinble object rather than an array, turn it into an array
+    if (data.Result.length === undefined ){
+      data.Result = [].concat(data.Result);
+    }
     $scope.terms = data.Result;
     $scope.$parent.term = data.Result[0].TermDescr;
     $scope.$parent.termId = data.Result[0].TermCode;
