@@ -14,7 +14,14 @@ The API is documented at : http://localhost:3000/StudentDashboard/api
 There are 2 data providers supplied:
 
 * ESB - API based
-* FB - file based
+* DFB - disk file based
+
+The data is returned wrapped in some additional status json.  This is used so
+that the user of the data can always count on a json return string even
+if there is an error during retrieval.  E.g. an error indicating that the
+remote service has timed out could be returned and the user of the provider doesn't
+need to worry about trapping errors, just about responding to the condition reported to it
+in the status.
 
 ## ESB Data provider
 This provider used the UMich WSO2 based ESB to get user data.  Configuration
@@ -36,6 +43,12 @@ could be used to test data with particularly long strings.
 
 The file based server currently only implements requests for the course
 data. It could easily be extended to support other types such as term or todo data.
+
+The json in the file can just be exactly the data that would be expected from a live service.  It will be wrapped
+in the  status json automatically.  In order to make testing easier the disk file can also can
+contain the status json explicitly.  In that case the file will be returned as is and will not be further wrapped.
+See the "meta" files in the test-files/courses directory for examples.
+
 
 ----
 ## API Format

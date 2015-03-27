@@ -252,6 +252,7 @@ END
   configure :development do
 
     configureLogging
+
     set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
@@ -524,7 +525,7 @@ END
       return "format missing or not supported: [#{format}]"
     end
 
-#logger.debug "#{__LINE__}: course_data.value_as_json: "+course_data.value_as_json.inspect
+     #logger.debug "#{__LINE__}: course_data.value_as_json: "+course_data.value_as_json.inspect
     course_data.value_as_json
   end
 
@@ -584,6 +585,8 @@ END
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
 
+    logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
+    logger.debug "data_provider_file_director: #{@@data_provider_file_directory}"
 
     if !@@data_provider_file_directory.nil?
       return dataProviderFileCourse(a, termid, "#{@@data_provider_file_directory}/courses")
@@ -596,7 +599,6 @@ END
   def dataProviderTerms(uniqname)
 
     logger.debug "DataProviderTerms uniqname: #{uniqname}"
-
 
     if !@@data_provider_file_directory.nil?
       terms = dataProviderFileTerms(uniqname, "#{@@data_provider_file_directory}/terms")

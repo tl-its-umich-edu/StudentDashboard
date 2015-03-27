@@ -54,7 +54,6 @@ class WAPI
   end
 
 
-
   ### Consider making this a separate class with helpful methods
   ### to access portions of the result and to convert types.
   def self.wrap_result(status, msg, result)
@@ -173,7 +172,7 @@ class WAPI
 
 #    logger.debug("WAPI: #{__LINE__}: got response: "+response.inspect)
 
-    ## got no response or an error, wrap that up.
+## got no response or an error, wrap that up.
     if response.nil?
       logger.warn("WAPI: #{__LINE__}: error renewing token: nil response ")
       wr = WAPIResultWrapper.new(666, "error renewing token: nil response", response)
