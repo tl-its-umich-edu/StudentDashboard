@@ -74,7 +74,18 @@ class TestWAPIResultWrapper < Minitest::Test
     x = w.value_as_json
     refute_nil(x)
     assert valid_json?(x), "wrapped result should be json"
+  end
 
+  def test_valid_wrapper
+    w = WAPIResultWrapper.new("status", "msg", "result")
+    refute_nil(w, "create wrapped object")
+    assert w.valid?, "check for valid wrapper object"
+  end
+
+  def test_invalid_wrapper
+    w = WAPIResultWrapper.new("status", "msg", "result")
+    w.setValue(Hash["micro","true"])
+    refute w.valid?, "check for valid wrapper object"
   end
 
 end

@@ -40,16 +40,22 @@ module DataProviderFile
     logger.debug "#{__LINE__}: DPFC: data file string: "+data_file
     if File.exists?(data_file)
       logger.debug "#{__LINE__}: DPFC: file exists: #{data_file}"
-      data = File.read(data_file)
-      data = WAPIResultWrapper.new(200, "found file #{data_file}", data).value_as_json
+      classes = File.read(data_file)
+
+      wrapped = WAPIResultWrapper.value_from_json(classes);
+
+      # if it isn't valid then just wrap what did come back.
+      unless wrapped.valid?
+        wrapped = WAPIResultWrapper.new(200, "found file #{data_file}", classes)
+      end
+
     else
       logger.debug "#{__LINE__}: DPFC: file does not exist: #{data_file}"
-      data = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}").value_as_json
+      wrapped = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}")
     end
 
-    logger.debug "#{__LINE__}: DPFC: returning: "+data
-    data_json = WAPIResultWrapper.value_from_json(data)
-    return data_json
+    logger.debug "#{__LINE__}: DPFC: returning: "+wrapped.to_s
+    return wrapped
   end
 
 end

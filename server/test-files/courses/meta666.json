@@ -1,0 +1,21 @@
+{
+  "Meta": {
+    "httpStatus": 666,
+    "Message": "test pre wrapped 666"
+  },
+  "Result": [
+    {
+      "Title": "AMCULT 217",
+      "Subtitle": "CV link",
+      "Source": "Canvas",
+      "Link": "https://umich.instructure.com/",
+      "Instructor": [
+        {
+          "Name": "Jane Smith",
+          "Role": "Primary Lecturer",
+          "Email": "jsmith@umich.edu"
+        }
+      ]
+    }
+  ]
+}
