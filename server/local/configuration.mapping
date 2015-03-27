@@ -30,6 +30,6 @@
 # Note that a single physical instance might have multiple sets of configuration files for
 # different purposes.
 [SD-QA]           studentdashboard.yml studentdashboard-QA.yml
-[SD-QA-LOAD-TEST] studentdashboard.yml studentdashboard-QA-LOAD_TEST.yml
+[SD-QA-LOAD-TEST] studentdashboard.yml studentdashboard-QA-LOAD-TEST.yml
 [SD-QA-NOAUTH]    studentdashboard.yml studentdashboard-QA-NOAUTH.yml
 # end
