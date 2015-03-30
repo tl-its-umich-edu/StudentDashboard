@@ -137,19 +137,19 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   //Handler to change the term and retrieve the term's courses, using Course factory as a promise
 
   $scope.getTerm = function (termId, termName) {
-    $scope.$parent.loading = true;
-    $scope.$parent.courses = [];
+    $scope.loading = true;
+    $scope.courses = [];
     $scope.$parent.term = termName;
     
     var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
-        $scope.$parent.courses.errors = data;
-        $scope.$parent.loading = false;
+        $scope.courses.errors = data;
+        $scope.loading = false;
       } else {
-          $scope.$parent.courses = data;
-          $scope.$parent.loading = false;
+          $scope.courses = data;
+          $scope.loading = false;
       }
     });
 
