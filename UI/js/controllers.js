@@ -51,6 +51,24 @@ dashboardApp.factory('Courses', function ($http) {
               l.Instructor = _.filter(l.Instructor, function (instructor) {
                 return instructor.Role !== 'Dummy';
               });
+              $.each(l.Instructor, function (i, l) {
+                switch (l.Role) {
+                case 'Primary Instructor':
+                  l.RoleCode = 1;
+                  break;
+                case 'Secondary Instructor':
+                  l.RoleCode = 2;
+                  break;
+                case 'Graduate Student Instructor':
+                  l.RoleCode = 3;
+                  break;
+                case 'Faculty Grader':
+                  l.RoleCode = 4;
+                  break;
+                default:
+                  l.RoleCode = 4;
+                }
+              });
             });
             return result.data.Result;
           }  
