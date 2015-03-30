@@ -48,6 +48,10 @@ authn_wait_max: 0.03
 latte_admin_group: TL-Latte-admin-test
 #latte_admin_group: ctsupportstaff
 
+## values for running the check query against ESB
+check_uniqname: ststvii
+check_termid: 2060
+
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:
 ## ESB - this is the default and the configuration is in the security.yml file.
@@ -55,7 +59,7 @@ latte_admin_group: TL-Latte-admin-test
 ## from local files.  Configuration is documented below.
 
 ### file based data provider value:
-data_provider_file_directory: server/test-files/courses
+data_provider_file_directory: server/test-files
 # This value is used for the optional file based data provider.
 # If the value is not set then the ESB based provider is used.
 # If data_file_provider_directory does have a value then Latte will treat
