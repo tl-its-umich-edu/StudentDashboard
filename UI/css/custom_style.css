@@ -158,6 +158,16 @@ i[class*="Games"]:before {
 
 }
 
+.navHead {
+    background-color: #09274c;
+}
+.navbar-default .navbar-nav > li > a { 
+    color:#ddd;
+}
+.navbar-default .navbar-nav > li > a:hover { 
+    color:#fff;
+}
+
 .contentWrapper {
     margin-top: 45px;
     padding:0;
