@@ -153,7 +153,6 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
         $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
       });
     } else {
-      //$('#termMenu').hide();
       $scope.$parent.term  = 'You do not seem to have courses in any terms we know of.'
     }  
   });  
