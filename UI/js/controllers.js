@@ -130,26 +130,32 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
     if (data.Result.length === undefined ){
       data.Result = [].concat(data.Result);
     }
-    $scope.terms = data.Result;
-    $scope.$parent.term = data.Result[0].TermDescr;
-    $scope.$parent.termId = data.Result[0].TermCode;
+    if (data.Result.length !==0)  {
 
-    $scope.courses = [];
-    $scope.loading = true;
-    var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
+      $scope.terms = data.Result;
+      $scope.$parent.term = data.Result[0].TermDescr;
+      $scope.$parent.termId = data.Result[0].TermCode;
 
-  //use the Courses factory as a promise. Add returned data to the scope.
+      $scope.courses = [];
+      $scope.loading = true;
+      var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
 
-    Courses.getCourses(url).then(function (data) {
-      if (data.failure) {
-        $scope.courses.errors = data;
-        $scope.loading = false;
-      } else {
-        $scope.courses = data;
-        $scope.loading = false;
-      }
-      $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
-    });
+    //use the Courses factory as a promise. Add returned data to the scope.
+
+      Courses.getCourses(url).then(function (data) {
+        if (data.failure) {
+          $scope.courses.errors = data;
+          $scope.loading = false;
+        } else {
+          $scope.courses = data;
+          $scope.loading = false;
+        }
+        $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+      });
+    } else {
+      //$('#termMenu').hide();
+      $scope.$parent.term  = 'You do not seem to have courses in any terms we know of.'
+    }  
   });  
 
   //Handler to change the term and retrieve the term's courses, using Course factory as a promise
