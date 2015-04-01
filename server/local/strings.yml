@@ -7,7 +7,7 @@
 
 strings: {
   applicationTitle: "Student Dashboard",
-  panelTitle: "Courses",
+  panelTitle: "My Courses",
   errorCourses: "Sorry! We were unable to get information on your courses.",
   lookAtOtherDashes: "Looking for upcoming assignments, events and activity across your courses? Checkout",
   lookAtOtherDashesNoCourses: "It looks like none of your classes are using web sites we know of.  Checkout the ",
