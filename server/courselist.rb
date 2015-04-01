@@ -533,7 +533,6 @@ END
       return "format missing or not supported: [#{format}]"
     end
 
-    #logger.debug "#{__LINE__}: course_data.value_as_json: "+course_data.value_as_json.inspect
     course_data.value_as_json
   end
 
