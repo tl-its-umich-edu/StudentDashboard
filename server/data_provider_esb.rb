@@ -96,11 +96,17 @@ module DataProviderESB
       return WAPIResultWrapper.new(666, "EXCEPTION: term request parsing", result)
     end
 
+    logger.info("dataProviderESBTerm: parsed:"+parsed.inspect)
     if parsed.has_key?('getMyRegTermsResponse')
       terms_value = parsed['getMyRegTermsResponse']['Term']
-      terms = WAPIResultWrapper.new(200, "found terms from ESB", terms_value)
+      msg = "found terms from ESB"
+      if terms_value.nil?
+        msg = "no terms returned from ESB"
+        terms_value = Array.new;
+      end
+      terms = WAPIResultWrapper.new(200, msg, terms_value)
     end
-
+    logger.info("dataProviderESBTerm: term request returned: terms:"+terms.inspect)
     return terms
   end
 
