@@ -14,5 +14,5 @@ strings: {
   canvasUrl: "https://umich.instructure.com/",
   ctoolsUrl: "https://ctools.umich.edu/portal",
   noCourses: "You seem to have no courses this term",
-  termFailure: "The service we depend on for term information is returning GARBAGE."
+  termFailure: "We are not able to access your term enrollment information at the moment. Please try again later."
 }
