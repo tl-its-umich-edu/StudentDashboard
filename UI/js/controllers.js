@@ -130,7 +130,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
       $scope.$parent.term  = $rootScope.lang.termFailure
     }
     else {
-      // the ESB might return a sinble object rather than an array, turn it into an array
+      // the ESB might return a single object rather than an array, turn it into an array
       if (data.Result.length === undefined ){
         data.Result = [].concat(data.Result);
       }
