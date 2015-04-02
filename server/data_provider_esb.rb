@@ -58,7 +58,7 @@ module DataProviderESB
     begin
     r = JSON.parse(result)
     rescue => exp
-      logger.warn("EXCEPTION: dataProviderESBCourse: course request exp: "+exp+" result: "+r.inspect)
+      logger.warn("EXCEPTION: dataProviderESBCourse: course request exp: "+exp.to_s+" result: "+r.inspect)
       return WAPIResultWrapper.new(666, "EXCEPTION: course request returned: ", r)
     end
 
@@ -92,7 +92,7 @@ module DataProviderESB
     begin
       parsed = JSON.parse(result)
     rescue => exp
-      logger.warn("EXCEPTION: dataProviderESBTerm: term request returned: exp: "+exp+" result: "+result.inspect)
+      logger.warn("EXCEPTION: dataProviderESBTerm: term request returned: exp: "+exp.to_s+" result: "+result.inspect)
       return WAPIResultWrapper.new(666, "EXCEPTION: term request parsing", result)
     end
 
