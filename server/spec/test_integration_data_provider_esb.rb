@@ -101,6 +101,27 @@ class TestIntegrationDataProviderESB < Minitest::Test
   end
 
 
+  def test_esb_no_terms
+
+    ### create inline class and include the module under test.
+    m = Class.new do
+      include DataProviderESB
+      include Logging
+      require_relative '../WAPI'
+      @@w = nil
+      @@yml = nil
+    end.new
+
+    refute_nil(m,"create provider object")
+    terms = m.dataProviderESBTerms("xxx", @security_file,@esb_application)
+    assert_equal(200,terms.meta_status,'find terms json meta status')
+    logger.debug "terms: "+terms.inspect
+    t = terms.result
+
+    assert(t.length == 0,"get empty array when no terms")
+
+  end
+
   # def test_note_module_via_struct
   #
   #   # Create a struct class. Need to supply Struct constructor with some argument so

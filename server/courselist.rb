@@ -39,10 +39,15 @@ class CourseList < Sinatra::Base
 
   ### TODO: change from class variables to use settings capability of Sinatra.
 
+  ## These configuration values are defined with default values but can, and
+  ## often are, overridden by values in the configuration yml files.  The default
+  ## values are designed to be useful for development.
+
   ## Hash to hold the configuration values read in.
   @@l = Hash.new
 
-  ## Location to get the configuration information
+  ## Location to find the configuration files.  This can't be overridden by values
+  ## in the configuration file because this allows finding the configuration files.
   @@config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
   # forbid/allow specifying a different user on request url
@@ -76,6 +81,9 @@ class CourseList < Sinatra::Base
   @@log_file = "server/log/sinatra.log"
 
   @@default_term = 2010
+
+  @@check_uniqname = "ststvii"
+  @@check_termid = 2020
 
   # Hold data required if need to put in a wait to simulate authn
   # processing time.
@@ -220,6 +228,11 @@ END
       logger.warn "No strings yml configuration file found"
       @@strings = Hash.new()
     end
+
+    @@check_uniqname = @@ls['check_uniqname'] unless @@ls['check_uniqname'].nil?
+    @@check_termid = @@ls['check_termid'] unless @@ls['check_termid'].nil?
+    logger.debug "check_uniqname: #{@@check_uniqname}"
+    logger.debug "check_termid: #{@@check_termid}"
 
   end
 
@@ -525,7 +538,6 @@ END
       return "format missing or not supported: [#{format}]"
     end
 
-     #logger.debug "#{__LINE__}: course_data.value_as_json: "+course_data.value_as_json.inspect
     course_data.value_as_json
   end
 
@@ -561,6 +573,31 @@ END
     termList.value_as_json
   end
 
+
+  ############ check out the esb course call and time the performance.
+  check_esb = lambda do
+    st = Stopwatch.new("timing of check url")
+    st.start
+
+    course_data = dataProviderCourse(@@check_uniqname, @@check_termid.to_s)
+
+    st.stop
+    logger.debug "status: "+course_data.inspect
+
+    if (course_data.meta_status == 200)
+      response.status = 200
+      maybe_ok = "OK"
+    else
+      response.status = 500
+      maybe_ok = "NOT OK"
+    end
+
+    return sprintf "status=%s elapsed=%.3f server=%s", maybe_ok, st.summary[0], @@server
+  end
+
+
+  get '/check', &check_esb
+
   ## catch any request not matched and give an error.
   get '*' do
     logger.debug "REQUEST: * bad query catch"
@@ -582,8 +619,6 @@ END
   ## to look it up with each request.
 
   def dataProviderCourse(a, termid)
-
-    logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
 
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
     logger.debug "data_provider_file_director: #{@@data_provider_file_directory}"
