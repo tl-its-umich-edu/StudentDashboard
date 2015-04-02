@@ -39,10 +39,15 @@ class CourseList < Sinatra::Base
 
   ### TODO: change from class variables to use settings capability of Sinatra.
 
+  ## These configuration values are defined with default values but can, and
+  ## often are, overridden by values in the configuration yml files.  The default
+  ## values are designed to be useful for development.
+
   ## Hash to hold the configuration values read in.
   @@l = Hash.new
 
-  ## Location to get the configuration information
+  ## Location to find the configuration files.  This can't be overridden by values
+  ## in the configuration file because this allows finding the configuration files.
   @@config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
   # forbid/allow specifying a different user on request url
