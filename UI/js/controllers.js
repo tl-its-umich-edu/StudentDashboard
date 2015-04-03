@@ -37,16 +37,6 @@ dashboardApp.factory('Courses', function ($http) {
             if (!result.data.Result.length) {
               result.data.Result.message = 'You seem to have no courses this term.';
             }
-            if (_.where(result.data.Result, {
-                Source: 'CTools'
-              }).length > 0) {
-              result.data.Result.ctools = true;
-            }
-            if (_.where(result.data.Result, {
-                Source: 'Canvas'
-              }).length > 0) {
-              result.data.Result.canvas = true;
-            }
             $.each(result.data.Result, function (i, l) {
               l.Instructor = _.filter(l.Instructor, function (instructor) {
                 return instructor.Role !== 'Dummy';
