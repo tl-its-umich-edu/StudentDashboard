@@ -23,6 +23,13 @@ include Logging
 
 class WAPI
 
+  # constants for the status value of the wrapper. Only a few
+  # need to be checked.
+
+  SUCCESS = 200
+  UNKNOWN_ERROR = 666
+  UNAUTHORIZED = 401
+
   # key and secret are oauth key and secret for generating tokens.
   # token_server is full url for request to generate / renew tokens.
   #
@@ -110,7 +117,7 @@ class WAPI
       wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", j)
     rescue Exception => exp
       logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
-      wrapped_response = WAPIResultWrapper.new(666, "EXCEPTION", exp)
+      wrapped_response = WAPIResultWrapper.new(UNKNOWN_ERROR, "EXCEPTION", exp)
     end
     #logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
     r.stop
@@ -125,13 +132,13 @@ class WAPI
     wrapped_response = do_request(request)
 
     ## If appropriate try to renew the token.
-    if wrapped_response.meta_status == 666 &&
+    if wrapped_response.meta_status == UNKNOWN_ERROR &&
         wrapped_response.result.respond_to?('http_code') &&
-        wrapped_response.result.http_code == 401
+        wrapped_response.result.http_code == UNAUTHORIZED
       #logger.debug("WAPI: #{__LINE__}: unauthorized on initial request: "+wrapped_response.inspect)
       wrapped_response = renew_token()
       ## if the token renewed ok then try the request again.
-      if wrapped_response.meta_status == 200
+      if wrapped_response.meta_status == SUCCESS
 #        logger.debug("WAPI: #{__LINE__}: retrying request after token renewal")
         wrapped_response = do_request(request)
       end
@@ -160,13 +167,13 @@ class WAPI
     ## got no response so say that.
     if response.nil?
       logger.warn("WAPI: #{__LINE__}: error renewing token: nil response ")
-      return WAPIResultWrapper.new(666, "error renewing token: nil response", response)
+      return WAPIResultWrapper.new(UNKNOWN_ERROR, "error renewing token: nil response", response)
     end
 
     # if got an error so say that.
     if response.code != 200
       logger.warn("WAPI: #{__LINE__}: error renewing token: response code: "+response.code)
-      return WAPIResultWrapper.new(666, "error renewing token: response code", response)
+      return WAPIResultWrapper.new(UNKNOWN_ERROR, "error renewing token: response code", response)
     end
 
     # all ok

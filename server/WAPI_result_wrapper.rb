@@ -47,7 +47,7 @@ class WAPIResultWrapper
   # reconstituted ruby object.
   def self.value_from_json(json_string)
     # create a new wrapper
-    wr = WAPIResultWrapper.new(200, "dummy msg", "dummy result")
+    wr = WAPIResultWrapper.new(WAPI::SUCCESS, "dummy msg", "dummy result")
     # set the content of the wrapper to the parsed contents of the json string.
     wr.setValue(JSON.parse(json_string))
     wr
