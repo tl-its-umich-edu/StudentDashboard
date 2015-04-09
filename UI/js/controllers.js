@@ -180,13 +180,70 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
  * developed.
  */
 
-/*
+
 dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
   var url = 'data/sched.json';
   $http.get(url).success(function (data) {
     $scope.schedule = data;
   });
 }]);
+
+
+dashboardApp.factory('ToDosCanvas', function ($http) {
+  return {
+    getToDos: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          return canvasToDoCleaner(result);
+        },
+        function error(result) {
+          console.log('errors');
+        }
+      );
+    }
+  };
+});
+
+dashboardApp.factory('ToDosCTools', function ($http) {
+  return {
+    getToDos: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+            return ctoolsToDoCleaner(result);
+        },
+        function error(result) {
+          console.log('errors');
+        }
+      );
+    }
+  };
+});
+
+
+dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$scope', '$http', function (ToDosCanvas, ToDosCTools, $scope, $http) {
+  var canvasData = [];
+  var ctoolsData = [];
+  var combinedData = [];
+  ToDosCanvas.getToDos('data/schedule/canvas.json').then(function (data) {
+    data = eval(data);
+    canvasData = data;
+    ToDosCTools.getToDos('data/schedule/ctools.json').then(function (data) {
+      ctoolsData = data;
+      combinedData = combinedData.concat(canvasData,ctoolsData);
+      
+      $scope.todos = combinedData;
+      $scope.isOverdue = function (item) {
+      //return item.due;
+      var when = moment.unix(item.due_date_sort);
+      var now = moment();
+      if (when < now) {
+        return 'overdue';
+      }
+    };
+    });
+  });  
+}]);
+
 
 dashboardApp.controller('todoController', ['$scope', '$http', function ($scope, $http) {
   var url = 'data/todo.json';
@@ -203,7 +260,7 @@ dashboardApp.controller('todoController', ['$scope', '$http', function ($scope, 
     };
   });
 }]);
-
+/*
 dashboardApp.controller('eventsController', ['$scope', '$http', function ($scope, $http) {
   var url = 'data/events.json';
   $http.get(url).success(function (data) {

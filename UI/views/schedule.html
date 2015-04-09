@@ -1,0 +1,28 @@
+<div class="itemPanel">
+  <h3 class="colHeader">Schedule</h3>
+  <div id="schedule" class="itemPanel" ng-controller="scheduleController" ng-cloak>
+    <div id="schedule" class="itemPanel">
+      <ul class="itemList">
+        <li ng-repeat="item in schedule | orderBy:'tf'" class="container-fluid {{'ad' + item.tf}}">
+          <div class="row">
+            <div class="col-md-1 col-xs-1 calDate">
+              <small>
+                <strong>{{item.time}}</strong>
+            </small>
+              <br>
+              <small>
+              <strong>{{item.ampm | uppercase}}</strong>
+            </small>
+            </div>
+            <div class="col-md-11 col-xs-11">
+              {{item.title}}
+              <br>
+              <small>
+              <a title="See map (opens in new window)" target ="_blank" href="{{item.location_link}}"><span class="sr-only">See map for </span>{{item.location}}</a>
+            </small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>

@@ -1,0 +1,57 @@
+<div id="todo" class="itemPanel" ng-controller="todoController" ng-cloak style="margin-top:25px">
+  <div class="container-fluid" style="padding:0">
+    <div class="row">
+      <h3 class="colHeader col-lg-5 col-md-5 col-xs-5" style="padding:0;margin:0">To Do</h3>
+      <div class="col-lg-7 col-md-7 col-xs-7" style="text-align:right;padding-right:0">      
+        <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none">
+          - <span class="sr-only">Delete selected to dos</span>
+        </button>      
+        <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal">
+          + <span class="sr-only">Add a new to do</span>
+        </button>
+        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+          View <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" id="selectTodos" role="menu" aria-labelledby="dropdownMenu1" style="">
+          <li role="presentation">
+            <a id="selectSheduled" role="menuitem" tabindex="-1" href="#">Scheduled</a>
+          </li>
+          <li role="presentation">
+            <a id="selectUnscheduled" role="menuitem" tabindex="-1" href="#">Unscheduled</a>
+          </li>
+          <li role="presentation">
+            <a id="selectCompleted" role="menuitem" tabindex="-1" href="#">Completed</a>
+          </li>
+          <li role="presentation">
+            <a id="selectAll" role="menuitem" tabindex="-1" href="#">All</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>  
+  <ul class="itemList">
+    <li ng-repeat="item in todos | orderBy:'due'" class="container-fluid" ng-class="isOverdue(item)">
+      <div class="overdueFlag">
+        <i class="glyphicon glyphicon-fire"></i>
+      </div>
+      <div class="row">
+        <div class="col-lg-1 col-md-1 col-xs-1 {{item.origin}} iconContainer">
+          <span ng-if="item.origin ==='gt'"><input type="checkbox" /></span>
+        </div>
+        <div class="col-lg-7 col-md-7 col-xs-7">
+          {{item.title}}
+          <br>
+          <small>
+              <span ng-if="item.origin !=='gt'"><a class="courseLink" href="{{item.course_link}}"><span class="sr-only">View item in site for </span>{{item.context}}</a></span>
+              <span ng-if="item.origin ==='gt'">{{item.info.message}}</span>
+              <span class="noDueDate" ng-if="item.due ===''"></span>
+              <span class="dueDate" ng-if="item.due !==''"></span>
+            </small>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date">
+          <small class="dateSpan">{{item.due | dateUntil}}</small>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

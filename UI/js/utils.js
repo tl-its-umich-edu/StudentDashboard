@@ -46,7 +46,50 @@ var errorHandler = function (url, result) {
 
 };
 
+var canvasToDoCleaner = function(result){
+  var transformedData =[];
+  $.each(result.data, function() {
+    var newObj = {};
+    //console.log(this.assignment)
+    newObj.title = this.title;
+    newObj.due_date = moment(this.end_at).format("dddd, MMMM Do YYYY, h:mm a");
+    newObj.due_date_sort = moment(this.end_at, moment.ISO_8601).unix();
+    newObj.link = this.html_url;
+    newObj.context = this.context_code;
+    newObj.contextLMS = 'canvas'
+    newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.id;
 
+    if(this.assignment) {
+      newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.assignment.course_id;
+      newObj.grade_type = this.assignment.grading_type;
+      newObj.grade = this.assignment.points_possible;
+    }
+    transformedData.push(newObj)
+  });
+
+  return transformedData;
+
+}
+
+var ctoolsToDoCleaner = function(result){
+  var transformedData =[];
+  $.each(result.data.dash_collection, function() {
+    var newObj = {};
+    if (this.calendarItem.calendarTimeLabelKey ==='assignment.due.date' || this.calendarItem.calendarTimeLabelKey ==='assignment.close.date' ) {
+      newObj.title = this.calendarItem.title;
+      newObj.due_date = moment.utc(this.calendarItem.calendarTime).format("dddd, MMMM Do YYYY, h:mm a");
+      newObj.due_date_sort = this.calendarItem.calendarTime.toString().substr(0, 10);
+      newObj.link = this.calendarItem.entityReference;
+      newObj.grade = '';
+      newObj.done = '';
+      newObj.context = this.calendarItem.context.contextTitle;
+      newObj.contextUrl = this.calendarItem.context.contextUrl;
+      newObj.contextLMS = 'ctools';
+      transformedData.push(newObj)
+    }
+  });
+  return transformedData;
+}
 
 /**
  *
@@ -70,7 +113,7 @@ $(document).on('click', '.showMoreInstructors', function (e) {
  * So commented out
  */
 
-/*
+
 $(document).on('click', '.courseLink', function (e) {
   e.preventDefault();
   alert('This would take you to the course site for ' + $(this).text());
@@ -154,4 +197,3 @@ $(document).on('click', '#selectTodos a', function (e) {
 $(document).on('click', '#showAllPanels', function () {
   //$('.phasePlusOne').toggle();
 });
-*/

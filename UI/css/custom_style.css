@@ -172,33 +172,21 @@ i[class*="Games"]:before {
     margin-top: 45px;
     padding:0;
 }
-#todo{
-    padding: 0 5px;
-    background: #fff;
-}
 
-.overdue:before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  right: -5px;
-  border-width: 0 25px 25px 0;
-  border-style: solid;
-  border-color: transparent #cc3b3b transparent transparent;
-}
 .overdueFlag{
     display:none
 }
 
+.overdue {
+    /*border-right:5px solid #cc3b3b;*/
+}
 .overdue .overdueFlag{
     display:block;
     position:absolute;
-    top:1px;
-    right:0;
-    color:#fff;
-    font-family:Arial;
-    font-weight:bold;
-    font-size:11px
+    top:4px;
+    right:4px;
+    color:#cc3b3b;
+    font-size:15px
 }
 
 .overdue .dateSpan{
