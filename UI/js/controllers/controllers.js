@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, dashboardApp */
+/* global $, _, moment, errorHandler, angular, dashboardApp */
 
 /**
  * Terms controller - Angular dependencies are injected.
@@ -73,4 +73,55 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
   };
 
+}]);
+
+dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
+  var url = 'data/sched.json';
+  $http.get(url).success(function (data) {
+    $scope.schedule = data;
+  });
+}]);
+
+
+
+dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$scope', '$http', function (ToDosCanvas, ToDosCTools, $scope, $http) {
+  var canvasData = [];
+  var ctoolsData = [];
+  var combinedData = [];
+  ToDosCanvas.getToDos('data/schedule/canvas.json').then(function (data) {
+    data = eval(data);
+    canvasData = data;
+    ToDosCTools.getToDos('data/schedule/ctools.json').then(function (data) {
+      ctoolsData = data;
+      combinedData = combinedData.concat(canvasData,ctoolsData);
+      
+      $scope.todos = combinedData;
+      $scope.isOverdue = function (item) {
+      //return item.due;
+      var when = moment.unix(item.due_date_sort);
+      var now = moment();
+      if (when < now) {
+        return 'overdue';
+      }
+    };
+    });
+  });  
+}]);
+
+
+
+dashboardApp.controller('todoController', ['$scope', '$http', function ($scope, $http) {
+  var url = 'data/todo.json';
+
+  $http.get(url).success(function (data) {
+    $scope.todos = data;
+    $scope.isOverdue = function (item) {
+      //return item.due;
+      var when = moment.unix(item.due);
+      var now = moment();
+      if (when < now) {
+        return 'overdue';
+      }
+    };
+  });
 }]);
