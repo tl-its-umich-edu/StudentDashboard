@@ -8,7 +8,6 @@ class WAPIResultWrapper
     @value = Hash['Meta' => Hash['httpStatus' => status,
                                  'Message' => msg],
                   'Result' => result]
-    @value
   end
 
   def meta_status

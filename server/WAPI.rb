@@ -142,19 +142,10 @@ class WAPI
   # Renew the current token.  Will set the current @token value in the object
   def renew_token
 
-    #logger.info "WAPI: renew_token"
     begin
-      msg = Thread.current.to_s
-      renew = Stopwatch.new(msg)
-      renew.start;
       logger.info("WAPI: #{__LINE__}: token_server: #{@token_server}")
-      response = RestClient.post @token_server,
-                                 "grant_type=client_credentials&scope=PRODUCTION",
-                                 {
-                                     :Authorization => @renewal,
-                                     :content_type => "application/x-www-form-urlencoded"
-                                 }
-      ## If it worked then parse the result.  This is here to capture any JSON parsing exceptions.
+      response = runTokenRenewalPost
+      ## If it worked then parse the result as json.  This is here to capture any JSON parsing exceptions.
       if response.code == 200
         ## will need to get the access_token below.  If it is not JSON that is an error.
         s = JSON.parse(response)
@@ -162,31 +153,44 @@ class WAPI
       end
     rescue Exception => exp
       # If got an exception for the renewal then wrap that up to be returned.
-      logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json)
       logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
-      wr = WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
-      renew.stop
-      logger.info("WAPI: #{__LINE__}: failed to renew token: "+renew.pretty_summary)
-      return wr
+      return WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
     end
 
-#    logger.debug("WAPI: #{__LINE__}: got response: "+response.inspect)
-
-## got no response or an error, wrap that up.
+    ## got no response so say that.
     if response.nil?
       logger.warn("WAPI: #{__LINE__}: error renewing token: nil response ")
-      wr = WAPIResultWrapper.new(666, "error renewing token: nil response", response)
-    elsif response.code != 200
-      logger.warn("WAPI: #{__LINE__}: error renewing token: response code: "+response.code)
-      wr = WAPIResultWrapper.new(666, "error renewing token: response code", response)
-    else
-      print_token = sprintf "%5s", @token
-      #logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
-      wr = WAPIResultWrapper.new(200, "token renewed", response)
+      return WAPIResultWrapper.new(666, "error renewing token: nil response", response)
     end
-    renew.stop
-    logger.info("WAPI: renewed token: stopwatch: "+renew.pretty_summary)
-    wr
+
+    # if got an error so say that.
+    if response.code != 200
+      logger.warn("WAPI: #{__LINE__}: error renewing token: response code: "+response.code)
+      return WAPIResultWrapper.new(666, "error renewing token: response code", response)
+    end
+
+    # all ok
+    print_token = sprintf "%5s", @token
+    logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
+    return WAPIResultWrapper.new(200, "token renewed", response)
+  end
+
+
+  ## Uses global class instance variables for these values for now
+  def runTokenRenewalPost
+    msg = Thread.current.to_s
+    renew = Stopwatch.new(msg)
+    renew.start;
+    response = RestClient.post @token_server,
+                               "grant_type=client_credentials&scope=PRODUCTION",
+                               {
+                                   :Authorization => @renewal,
+                                   :content_type => "application/x-www-form-urlencoded"
+                               }
+  ensure
+    # make sure to print the elapsed time for the renewal.
+    renew.stop;
+    logger.info("WAPI: renew token post: stopwatch: "+renew.pretty_summary)
   end
 
 end
