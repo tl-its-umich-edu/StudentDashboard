@@ -195,6 +195,8 @@ END
                        starting_log_level
                    end
 
+    set :logging, logger.level
+
   end
 
   def self.configureStatic
