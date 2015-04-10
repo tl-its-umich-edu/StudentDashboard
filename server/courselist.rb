@@ -101,6 +101,7 @@ class CourseList < Sinatra::Base
 
   @@latte_admin_group = nil
 
+  # initial default
   @@use_log_level = "DEBUG"
 
   ## api docs
