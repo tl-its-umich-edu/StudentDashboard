@@ -101,6 +101,9 @@ class CourseList < Sinatra::Base
 
   @@latte_admin_group = nil
 
+  # initial default
+  @@use_log_level = "DEBUG"
+
   ## api docs
   @@apidoc = <<END
 
@@ -160,7 +163,44 @@ END
     $stdout.sync = true
   end
 
+  # Allow resetting the log level based on a string and ignoring case. If the
+  # string doesn't make sense it just logs a message.
+
+  def self.setLoggingLevel (use_log_level)
+
+    # anything to do?
+    return if use_log_level.nil?;
+    return if use_log_level.size == 0;
+
+    # Keep the old level in case the new level doesn't make sense.
+    starting_log_level = logger.level
+
+    # update log level based on the string value passed in.
+    use_log_level.upcase!
+    logger.level = case use_log_level
+                     when "DEBUG" then
+                       Logger::DEBUG
+                     when "INFO" then
+                       Logger::INFO
+                     when "WARN" then
+                       Logger::WARN
+                     when "ERROR" then
+                       Logger::ERROR
+                     when "FATAL" then
+                       Logger::FATAL
+                     when "UNKNOWN" then
+                       Logger::UNKNOWN
+                     else
+                       logger.error("log level requested is not understood: #{use_log_level}");
+                       starting_log_level
+                   end
+
+    set :logging, logger.level
+
+  end
+
   def self.configureStatic
+
     f = File.dirname(__FILE__)+"/../UI"
     logger.debug("UI files: "+f)
     set :public_folder, f
@@ -170,6 +210,10 @@ END
 
     # read in yml configuration into a class variable
     @@ls = self.get_local_config_yml(@@studentdashboard, "./server/local/studentdashboard.yml")
+
+    @@use_log_level = @@ls['use_log_level'] || "INFO"
+
+    setLoggingLevel(@@use_log_level);
 
     # override default values from configuration file if they are specified.
     @@anonymous_user = @@ls['anonymous_user'] || "anonymous"
@@ -240,7 +284,7 @@ END
   ## make sure logging is available
   configure :test do
 
-    set :logging, Logger::INFO
+    #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
 
     #configureLogging
@@ -248,14 +292,14 @@ END
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
     configureStatic
-    set :logging, Logger::INFO
+    #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
   end
 
   ## make sure logging is available in localhost
   configure :production, :development do
 
-    set :logging, Logger::INFO
+    #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
 
@@ -266,7 +310,7 @@ END
 
     configureLogging
 
-    set :logging, Logger::INFO
+    #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
 

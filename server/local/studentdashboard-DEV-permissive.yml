@@ -23,4 +23,6 @@ latte_admin_group: TL-Latte-admin-test
 # should be a test user.
 check_uniqname: ststvii
 check_termid: 2060
+# set logging level.  Default is INFO.
+use_log_level: DEBUG
 ### end ###
