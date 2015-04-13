@@ -63,8 +63,8 @@ class CourseList < Sinatra::Base
   # name of application to use for security information
   @@application_name = "SD-QA"
 
-  # default name of anonymous user
-  @@anonymous_user = "anonymous"
+  # default name of default user
+  @@default_user = "default"
 
   # default location for student dashboard configuration
   @@studentdashboard = "#{@@config_base}/studentdashboard.yml"
@@ -216,7 +216,7 @@ END
     setLoggingLevel(@@use_log_level);
 
     # override default values from configuration file if they are specified.
-    @@anonymous_user = @@ls['anonymous_user'] || "anonymous"
+    @@default_user = @@ls['default_user'] || "anonymous"
     @@invalid_query_text = @@ls['invalid_query_text'] || @@invalid_query_text
     @@authn_uniqname_override = @@ls['authn_uniqname_override'] || @@authn_uniqname_override
     @@application_name = @@ls['application_name'] || @@application_name
@@ -320,7 +320,7 @@ END
   #### Authorization
   # In production the StudentDashboard requires that the user be authenticated.  It verifies this by using the
   # name set in the REMOTE_USER environment variable.  If that variable has no value it will be set to the
-  # anonymous user name configured in the studentdashboard.yml file.
+  # default user name configured in the studentdashboard.yml file.
 
   # The Student Dashboard UI makes REST calls back to the application to get data.  These calls are checked to ensure
   # that the call only requests data for the authenticated userid.  The list of users that can override this restriction
@@ -473,11 +473,11 @@ END
     logger.debug "REQUEST: * start processing (user, session, stopwatch)"
 
     ## Get a user name.
-    ## if there is no remote_user then set it to anonymous.
+    ## if there is no remote_user then set it to default.
     user = request.env['REMOTE_USER']
-    # If not set then use the anonymous user
+    # If not set then use the default user
     if user.nil? || user.length == 0
-      user = @@anonymous_user
+      user = @@default_user
     end
 
     ## Now check to see if allowed to override the user.

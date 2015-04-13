@@ -10,7 +10,7 @@ application_name: StudentDashboard-PROD
 # Text returned if Latte does not understand a query at all.
 invalid_query_text: Sorry, I don't understand this request.
 # Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
-anonymous_user: anonymous
+default_user: anonymous
 # default term to use if none is specified.
 default_term: 2020
 # configure the stub authentication method for testing.  override should be false unless special testing is being done.
