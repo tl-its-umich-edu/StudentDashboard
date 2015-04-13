@@ -15,7 +15,7 @@ require 'net-ldap'
 
 require_relative '../ldap_check'
 
-class TestLdap < MiniTest::Test
+class LdapTest < MiniTest::Test
   include Logging
 
   # Called before every test method runs. Can be used
