@@ -10,7 +10,7 @@ application_name: SD-QA
 # Text returned if Latte does not understand a query at all.
 invalid_query_text: Come on, ask something reasonable
 # Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
-anonymous_user: anonymous
+default_user: anonymous
 # default term to use if none is specified.
 default_term: 2010
 # configure the stub authentication method for testing.  override should be false unless special testing is being done.
