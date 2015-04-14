@@ -1,14 +1,20 @@
 require_relative './Logging'
 require 'json'
+require_relative 'WAPI'
 
 include Logging
+
+# Wrap result of call made by WAPI so that caller can ALWAYS rely on there being a return
+# value for the call even if there was an external problem with the call.  The 'Meta' hash value reflects
+# whether or not the WAPI code itself could actually make the call. The 'Result' has value contains
+# the result of the external call in the 'Result' hash value if the call was made successfully.
+
 class WAPIResultWrapper
 
   def initialize(status, msg, result)
     @value = Hash['Meta' => Hash['httpStatus' => status,
                                  'Message' => msg],
                   'Result' => result]
-    @value
   end
 
   def meta_status
@@ -48,7 +54,7 @@ class WAPIResultWrapper
   # reconstituted ruby object.
   def self.value_from_json(json_string)
     # create a new wrapper
-    wr = WAPIResultWrapper.new(200, "dummy msg", "dummy result")
+    wr = WAPIResultWrapper.new(WAPI::SUCCESS, "dummy msg", "dummy result")
     # set the content of the wrapper to the parsed contents of the json string.
     wr.setValue(JSON.parse(json_string))
     wr
@@ -67,12 +73,5 @@ class WAPIResultWrapper
     c['Result'] = new_result
     c.to_json
   end
-
-  # Return the hash as a json string.
-  #def to_json
-#    puts "to_json"
-#    p @value
-#    @value.to_json
-#  end
 
 end
