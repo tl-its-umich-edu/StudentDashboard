@@ -34,11 +34,12 @@ class WAPI
   HTTP_SUCCESS = 200
   HTTP_UNAUTHORIZED = 401
 
-  # key and secret are oauth key and secret for generating tokens.
-  # token_server is full url for request to generate / renew tokens.
+  # The application provides the values required to make a connection
+  # to the WSO2 ESB.  The key and secret are oauth key and secret for generating tokens.
+  # The token_server is full url for request to generate / renew tokens.
   #
-  # api_prefix is string that will be prefixed to every request made
-  # through this instance.  It will contain host and may anything else
+  # The api_prefix is string that will be prefixed to every request made
+  # through this instance.  It will contain host and anything else
   # that will appear in front of every request.  E.g. It might contain
   # https://woodpigeon.dsc.umich.edu:8243/StudentDashboard/v1 or just
   # https://woodpigeon.dsc.umich.edu:8243 depending on how you choose
