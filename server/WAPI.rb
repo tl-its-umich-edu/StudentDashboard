@@ -23,12 +23,16 @@ include Logging
 
 class WAPI
 
-  # constants for the status value of the wrapper. Only a few
-  # need to be checked.
-
+  # Constants for the status value of the wrapper. The potential
+  # errors / status can be different so they need not be the same
+  # as the HTTP_STATUS.  These are referenced with the namespace
+  # WAPI:: for consistency across modules.  E.g. WAPI::UNKNOWN_ERROR.
   SUCCESS = 200
   UNKNOWN_ERROR = 666
-  UNAUTHORIZED = 401
+
+  # Constants for the http status of the underlying request.
+  HTTP_SUCCESS = 200
+  HTTP_UNAUTHORIZED = 401
 
   # key and secret are oauth key and secret for generating tokens.
   # token_server is full url for request to generate / renew tokens.
@@ -117,7 +121,7 @@ class WAPI
       wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", j)
     rescue Exception => exp
       logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
-      wrapped_response = WAPIResultWrapper.new(UNKNOWN_ERROR, "EXCEPTION", exp)
+      wrapped_response = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "EXCEPTION", exp)
     end
     #logger.debug "WAPI: #{__LINE__}: do_request: wrapped response: "+wrapped_response.inspect
     r.stop
@@ -132,13 +136,13 @@ class WAPI
     wrapped_response = do_request(request)
 
     ## If appropriate try to renew the token.
-    if wrapped_response.meta_status == UNKNOWN_ERROR &&
+    if wrapped_response.meta_status == WAPI::UNKNOWN_ERROR &&
         wrapped_response.result.respond_to?('http_code') &&
-        wrapped_response.result.http_code == UNAUTHORIZED
+        wrapped_response.result.http_code == HTTP_UNAUTHORIZED
       #logger.debug("WAPI: #{__LINE__}: unauthorized on initial request: "+wrapped_response.inspect)
       wrapped_response = renew_token()
       ## if the token renewed ok then try the request again.
-      if wrapped_response.meta_status == SUCCESS
+      if wrapped_response.meta_status == WAPI::SUCCESS
 #        logger.debug("WAPI: #{__LINE__}: retrying request after token renewal")
         wrapped_response = do_request(request)
       end
@@ -153,7 +157,7 @@ class WAPI
       logger.info("WAPI: #{__LINE__}: token_server: #{@token_server}")
       response = runTokenRenewalPost
       ## If it worked then parse the result as json.  This is here to capture any JSON parsing exceptions.
-      if response.code == 200
+      if response.code == HTTP_SUCCESS
         ## will need to get the access_token below.  If it is not JSON that is an error.
         s = JSON.parse(response)
         @token = s['access_token']
@@ -167,19 +171,19 @@ class WAPI
     ## got no response so say that.
     if response.nil?
       logger.warn("WAPI: #{__LINE__}: error renewing token: nil response ")
-      return WAPIResultWrapper.new(UNKNOWN_ERROR, "error renewing token: nil response", response)
+      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "error renewing token: nil response", response)
     end
 
     # if got an error so say that.
-    if response.code != 200
+    if response.code != HTTP_SUCCESS
       logger.warn("WAPI: #{__LINE__}: error renewing token: response code: "+response.code)
-      return WAPIResultWrapper.new(UNKNOWN_ERROR, "error renewing token: response code", response)
+      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "error renewing token: response code", response)
     end
 
     # all ok
     print_token = sprintf "%5s", @token
     logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
-    return WAPIResultWrapper.new(200, "token renewed", response)
+    return WAPIResultWrapper.new(WAPI::SUCCESS, "token renewed", response)
   end
 
 

@@ -1,5 +1,6 @@
 require_relative './Logging'
 require 'json'
+require_relative 'WAPI'
 
 include Logging
 class WAPIResultWrapper
