@@ -53,7 +53,7 @@ var canvasToDoCleaner = function(result){
     //console.log(this.assignment)
     newObj.title = this.title;
     newObj.due_date = moment(this.end_at).format("dddd, MMMM Do YYYY, h:mm a");
-    newObj.due_date_sort = moment(this.end_at, moment.ISO_8601).unix();
+    newObj.due_date_sort = moment(this.end_at, moment.ISO_8601).unix().toString();
     newObj.link = this.html_url;
     newObj.context = this.context_code;
     newObj.contextLMS = 'canvas'
@@ -76,10 +76,13 @@ var ctoolsToDoCleaner = function(result){
   $.each(result.data.dash_collection, function() {
     var newObj = {};
     if (this.calendarItem.calendarTimeLabelKey ==='assignment.due.date' || this.calendarItem.calendarTimeLabelKey ==='assignment.close.date' ) {
+      var siteInfo = this.calendarItem.context.contextUrl.split('portal/site');
+      var siteInfoServer = siteInfo[0];
+      var siteInfoId = siteInfo[2];
       newObj.title = this.calendarItem.title;
       newObj.due_date = moment.utc(this.calendarItem.calendarTime).format("dddd, MMMM Do YYYY, h:mm a");
       newObj.due_date_sort = this.calendarItem.calendarTime.toString().substr(0, 10);
-      newObj.link = this.calendarItem.entityReference;
+      newObj.link = siteInfoServer + '/direct/assignment/deepLink/' + this.calendarItem.entityReference.replace('/assignment/a/','') + '.json';
       newObj.grade = '';
       newObj.done = '';
       newObj.context = this.calendarItem.context.contextTitle;
@@ -108,17 +111,27 @@ $(document).on('click', '.showMoreInstructors', function (e) {
   return null;
 });
 
+$(document).on('click', 'a.assigLinkctools', function (e) {
+  e.preventDefault();
+  var url = $(this).attr('href');
+  alert('this would open the assignment in the site if the world were a just place')
+  /* below does not work because of Cross-Origin Request - but it is the only 
+  client side way of getting to the directtool enabled assignment, this will need to 
+  happen at the servlet level
+
+  var jqxhr = $.getJSON( url, function() {
+    //open a window based on the return value's data.assignmentUrl
+  })
+  .fail(function() {
+    //open a window based on the site URL as a fallback
+  });
+  */
+  return null;
+});
 /**
  * Folowing handlers are for portions of the dashboard yet to be developed
  * So commented out
  */
-
-
-$(document).on('click', '.courseLink', function (e) {
-  e.preventDefault();
-  alert('This would take you to the course site for ' + $(this).text());
-  return null;
-});
 
 $(document).on('click', '.mailTolink', function (e) {
   e.preventDefault();
