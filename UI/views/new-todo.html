@@ -31,30 +31,25 @@
   </div>  
   <ul class="itemList">
     <li ng-repeat="item in todos | orderBy:'due_date_sort'" class="container-fluid" ng-class="isOverdue(item)">
-     <!--
       <div class="overdueFlag">
         <i class="glyphicon glyphicon-fire"></i>
       </div>
-      -->
       <div class="row">
         <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
           <span ng-if="item.origin ==='gt'"><input type="checkbox" /></span>
         </div>
-        <!--
         <div class="col-lg-7 col-md-7 col-xs-7">
-          <a href="{{item.link}}">{{item.title}}</a>
+          <a target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
           <br>
           <small>
-              <span ng-if="item.origin !=='gt'"><a class="courseLink" href="{{item.contextUrl}}"><span class="sr-only">View item in site for </span>{{item.context}}</a></span>
+              <span ng-if="item.origin !=='gt'"><a class="courseLink" data-target="{{item.contextLMS}}" target="_blank" href="{{item.contextUrl}}"><span class="sr-only">View {{item.title}} in course site</span><span aria-hidden="true">Go to course site</span></a></span>
               <span ng-if="item.origin ==='gt'">{{item.info.message}}</span>
               <span class="noDueDate" ng-if="item.due ===''"></span>
               <span class="dueDate" ng-if="item.due !==''"></span>
             </small>
         </div>
-        -->
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date">
-          <small class="dateSpan">{{item.due_date_sort}} {{item.contextLMS}}</small>
-          <!--<small class="dateSpan">{{item.due_date_sort | dateUntil}} - {{item.due_date}}</small>-->
+          <small class="dateSpan">{{item.due_date_sort | dateUntil}}</small>
         </div>
       
       </div>
