@@ -27,85 +27,84 @@ class CourseList < Sinatra::Base
   include DataProviderESB
   include DataProviderFile
 
-  #### NOTE on variables in classes:
-  ### @@var is a Class variable: same copy shared by the class and subclasses. Available to class and instance methods.
-  ### It is seldom useful as hard to control who can change it.  Not the same as a Java class variable.
-  ### @var (in class definition before methods) is a class instance variable and is shared only over the
-  ### that class (not children).  Available only to class methods and is private to the class and is similar to a
-  ### Java class variable.
-  ### When @var referenced in an instance method it is an instance variable and is only available to instance methods.
-  ### This is similar to Java instance variable.  However in Sinatra itself we should use the settings capability
-  ### instead.
-
-  ### TODO: change from class variables to use settings capability of Sinatra.
+  # To store persistent configuration values in Sinatra requires using the settings feature.
+  # To make all our configuration values available we store a hash of all the
+  # configuration values using settings and access the values through that hash.
 
   ## These configuration values are defined with default values but can, and
   ## often are, overridden by values in the configuration yml files.  The default
   ## values are designed to be useful for development.
 
-  ## Hash to hold the configuration values read in.
-  @@l = Hash.new
+  ## Reading configuration files and overriding values is currently clunky and may be addressed in a
+  ## separate jira.
 
-  ## Location to find the configuration files.  This can't be overridden by values
-  ## in the configuration file because this allows finding the configuration files.
-  @@config_base ||= '/usr/local/ctools/app/ctools/tl/home'
+  #### Setup default values.
+  ## Will store configuration settings in this hash.
+  config_hash = Hash.new
+
+  # Will store the hash in the Sinatra settings object so it is available
+  # where needed.
+  set :latte_config, config_hash
+
+  # Location to find the configuration files.  This can't be overridden by values
+  # in the configuration file because this is what identifies the location
+  # of the file to read.
+  config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
   # forbid/allow specifying a different user on request url
-  @@authn_uniqname_override = false
+  config_hash[:authn_uniqname_override] = false
 
   ### response to query that is not understood.
-  @@invalid_query_text = "invalid query. what U want?"
+  config_hash[:invalid_query_text] = "invalid query. what U want?"
 
   ## base directory to ease referencing files in the
   ## build.
-  @@BASE_DIR = File.dirname(File.dirname(__FILE__))
+  config_hash[:BASE_DIR] = File.dirname(File.dirname(__FILE__))
 
   # name of application to use for security information
-  @@application_name = "SD-QA"
+  config_hash[:application_name] = "SD-QA"
 
   # default name of default user
-  @@default_user = "default"
+  config_hash[:default_user] = "default"
 
   # default location for student dashboard configuration
-  @@studentdashboard = "#{@@config_base}/studentdashboard.yml"
+  config_hash[:studentdashboard] = "#{config_base}/studentdashboard.yml"
 
   # location for yml file describing the build.
-  @@build_file = "#{@@config_base}/build.yml"
+  config_hash[:build_file] = "#{config_base}/build.yml"
 
   # default location for the security information
-  @@security_file = "#{@@config_base}/security.yml"
+  config_hash[:security_file] = "#{config_base}/security.yml"
 
   # default location for file containing display strings.
-  @@strings_file = "#{@@config_base}/strings.yml"
+  config_hash[:strings_file] = "#{config_base}/strings.yml"
 
-  @@log_file = "server/log/sinatra.log"
+  config_hash[:log_file] = "server/log/sinatra.log"
 
-  @@default_term = 2010
+  config_hash[:default_term] = 2010
 
-  @@check_uniqname = "ststvii"
-  @@check_termid = 2020
+  config_hash[:check_uniqname] = "ststvii"
+  config_hash[:check_termid] = 2020
 
   # Hold data required if need to put in a wait to simulate authn
   # processing time.
-  @@authn_prng = nil
-  @@authn_total_wait_time = 0
-  @@authn_total_stub_calls = 0
+  config_hash[:authn_prng] = nil
+  config_hash[:authn_total_wait_time] = 0
+  config_hash[:authn_total_stub_calls] = 0
 
-  ## potential list of user with admin priviliges.
-  #@@admin = []
-
-  @@admin_members = nil
+  ## potential list of user with admin privileges.
+  config_hash[:admin_members] = nil
 
   ## location of the data files.
-  @@data_provider_file_directory = nil
+  config_hash[:data_provider_file_directory] = nil
 
-  @@latte_admin_group = nil
+  config_hash[:latte_admin_group] = nil
 
   # initial default
-  @@use_log_level = "DEBUG"
+  config_hash[:use_log_level] = "DEBUG"
 
   ## api docs
-  @@apidoc = <<END
+  config_hash[:apidoc] = <<END
 
 <p/>
 HOST://api - this documentation.
@@ -155,7 +154,9 @@ END
   def self.configureLogging
 
     ## In Tomcat commenting these three will make output show up in localhost log.
-    log = File.new(@@log_file, "a+")
+
+    config_hash = settings.latte_config
+    log = File.new(config_hash[:log_file], "a+")
     $stdout.reopen(log)
     $stderr.reopen(log)
 
@@ -205,78 +206,83 @@ END
     logger.debug("UI files: "+f)
     set :public_folder, f
 
+    config_hash = settings.latte_config
+
     ## Set early because it will not change.
-    @@server = Socket.gethostname
+    config_hash[:server] = Socket.gethostname
+
+    ## Reading configuration files and overriding values is currently clunky and may be addressed in a
+    ## separate jira.
 
     # read in yml configuration into a class variable
-    @@ls = self.get_local_config_yml(@@studentdashboard, "./server/local/studentdashboard.yml")
+    external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml")
 
-    @@use_log_level = @@ls['use_log_level'] || "INFO"
+    config_hash[:use_log_level] = external_config['use_log_level'] || "INFO"
 
-    setLoggingLevel(@@use_log_level);
+    setLoggingLevel(config_hash[:use_log_level]);
 
     # override default values from configuration file if they are specified.
-    @@default_user = @@ls['default_user'] || "anonymous"
-    @@invalid_query_text = @@ls['invalid_query_text'] || @@invalid_query_text
-    @@authn_uniqname_override = @@ls['authn_uniqname_override'] || @@authn_uniqname_override
-    @@application_name = @@ls['application_name'] || @@application_name
+    config_hash[:default_user] = external_config['default_user'] || "anonymous"
+    config_hash[:invalid_query_text] = external_config['invalid_query_text'] || config_hash[:invalid_query_text]
+    config_hash[:authn_uniqname_override] = external_config['authn_uniqname_override'] || config_hash[:authn_uniqname_override]
+    config_hash[:application_name] = external_config['application_name'] || config_hash[:application_name]
 
     ## See if wait times are set for authn stub wait.
-    @@authn_wait_min = @@ls['authn_wait_min'] || 0
-    @@authn_wait_max = @@ls['authn_wait_max'] || 0
+    config_hash[:authn_wait_min] = external_config['authn_wait_min'] || 0
+    config_hash[:authn_wait_max] = external_config['authn_wait_max'] || 0
 
     #### setup information for providers
     ## configuration information for the file data provider. If not provided then a different
     ## provider will be used.
-    @@data_provider_file_directory = @@ls['data_provider_file_directory'] || nil
+    config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
 
-    @@latte_admin_group = @@ls['latte_admin_group'] || nil
-    logger.debug "admin group is: #{@@latte_admin_group}"
+    config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
+    logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
 
     ## If the full path to the provider directory was specified then use it.
     ## Otherwise append what was provided to the local base directory
-    if !(@@data_provider_file_directory.nil? || @@data_provider_file_directory.start_with?('/'))
-      @@data_provider_file_directory = "#{@@BASE_DIR}/#{@@data_provider_file_directory}"
+    if !(config_hash[:data_provider_file_directory].nil? || config_hash[:data_provider_file_directory].start_with?('/'))
+      config_hash[:data_provider_file_directory] = "#{config_hash[:BASE_DIR]}/#{config_hash[:data_provider_file_directory]}"
     end
 
     ##### setup information for authn override
-    #logger.debug "authn_uniqname_override: "+@@authn_uniqname_override.to_s
     ## If there is an authn wait specified then setup a random number generator.
     ## create a variable with a random number generator
-    if @@authn_uniqname_override && (@@authn_wait_min > 0 || @@authn_wait_max > 0)
-      @@authn_prng = Random.new
-      logger.debug "authn wait range is: #{@@authn_wait_min} to #{@@authn_wait_max}"
+    if config_hash[:authn_uniqname_override] && (config_hash[:authn_wait_min] > 0 || config_hash[:authn_wait_max] > 0)
+      config_hash[:authn_prng] = Random.new
+      logger.debug "authn wait range is: #{config_hash[:authn_wait_min]} to #{config_hash[:authn_wait_max]}"
     end
 
-    @@admin = @@ls['admin'] || []
+    config_hash[:admin] = external_config['admin'] || []
 
-    @@default_term = @@ls['default_term'] || @@default_term
+    config_hash[:default_term] = external_config['default_term'] || config_hash[:default_term]
 
     # read in yml for the build configuration into a class variable
     begin
-      @@build = self.get_local_config_yml(@@build_file, "./server/local/build.yml")
-      @@build_time = @@build['time']
-      @@build_id = @@build['tag'] || @@build['last_commit']
+      config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml")
+      config_hash[:build_time] = config_hash[:build]['time']
+      config_hash[:build_id] = config_hash[:build]['tag'] || config_hash[:build]['last_commit']
     rescue
       # The file only needs to be there when a build has been done.  If it isn't there
       # then just use default values.
-      @@build = "no build file specified"
-      @@build_time = Time.now
-      @@build_id = 'development'
+      config_hash[:build] = "no build file specified"
+      config_hash[:build_time] = Time.now
+      config_hash[:build_id] = 'development'
     end
 
     ## read in yml for the strings into a class variable.
     begin
-      @@strings = self.get_local_config_yml(@@strings_file, "./server/local/strings.yml")
+      config_hash[:strings] = self.get_local_config_yml(config_hash[:strings_file], "./server/local/strings.yml")
     rescue
       logger.warn "No strings yml configuration file found"
-      @@strings = Hash.new()
+      config_hash[:strings] = Hash.new()
     end
 
-    @@check_uniqname = @@ls['check_uniqname'] unless @@ls['check_uniqname'].nil?
-    @@check_termid = @@ls['check_termid'] unless @@ls['check_termid'].nil?
-    logger.debug "check_uniqname: #{@@check_uniqname}"
-    logger.debug "check_termid: #{@@check_termid}"
+    config_hash[:check_uniqname] = external_config['check_uniqname'] unless external_config['check_uniqname'].nil?
+    config_hash[:check_termid] = external_config['check_termid'] unless external_config['check_termid'].nil?
+
+    logger.debug "check_uniqname: #{config_hash[:check_uniqname]}"
+    logger.debug "check_termid: #{config_hash[:check_termid]}"
 
   end
 
@@ -333,13 +339,15 @@ END
   helpers do
 
     def allow_uniqname_override user
-      @@authn_uniqname_override == true || admin_user(user)
+
+      settings.latte_config[:authn_uniqname_override] == true || admin_user(user)
     end
 
     ## This will use the UNIQNAME query parameter to set the user considered to be authenticated.  It should
     ## only be invoked in a test setting. It's use can be configured in the studentdashboard.yml file.
     def uniqnameOverride
 
+      config_hash = settings.latte_config
       # See if there is a candidate to use as authenticated userid name.
       uniqname = params['UNIQNAME']
       logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
@@ -360,12 +368,12 @@ END
 
       ## Since container authentication may have been skipped entirely we allow a configurable wait time
       ## before returning which will simulate the delay that could occur with external authentication.
-      if !@@authn_prng.nil?
-        wait_sec = @@authn_prng.rand(@@authn_wait_min..@@authn_wait_max)
-        @@authn_total_wait_time += wait_sec
-        @@authn_total_stub_calls += 1
+      if !config_hash[:authn_prng].nil?
+        wait_sec = config_hash[:authn_prng].rand(config_hash[:authn_wait_min]..config_hash[:authn_wait_max])
+        config_hash[:authn_total_wait_time] += wait_sec
+        config_hash[:authn_total_stub_calls] += 1
         sleep wait_sec
-        logger.debug "#{__LINE__}: wait_sec: #{wait_sec} auth total_wait: #{@@authn_total_wait_time} total_calls: #{@@authn_total_stub_calls}"
+        logger.debug "#{__LINE__}: wait_sec: #{wait_sec} auth total_wait: #{config_hash[:authn_total_wait_time]} total_calls: #{config_hash[:authn_total_stub_calls]}"
       end
 
       # things changed so redirect with the new information.
@@ -377,10 +385,13 @@ END
     # get the information from the admin users MCommunity group.
     def admin_user(user)
       ## If no information to check nobody is an admin.
-      return nil if @@latte_admin_group.nil?
 
-      @@admin_members = LdapCheck.new("group" => @@latte_admin_group) if @@admin_members.nil?
-      @@admin_members.is_user_in_admin_hash user
+      config_hash = settings.latte_config
+
+      return nil if config_hash[:latte_admin_group].nil?
+
+      config_hash[:admin_members] = LdapCheck.new("group" => config_hash[:latte_admin_group]) if config_hash[:admin_members].nil?
+      config_hash[:admin_members].is_user_in_admin_hash user
 
     end
 
@@ -471,13 +482,14 @@ END
     # person of interest is.
 
     logger.debug "REQUEST: * start processing (user, session, stopwatch)"
+    config_hash = settings.latte_config
 
     ## Get a user name.
     ## if there is no remote_user then set it to default.
     user = request.env['REMOTE_USER']
     # If not set then use the default user
     if user.nil? || user.length == 0
-      user = @@default_user
+      user = config_hash[:default_user]
     end
 
     ## Now check to see if allowed to override the user.
@@ -529,21 +541,24 @@ END
   ## If the request isn't for anything specific then return the UI page.
   get '/' do
 
+    config_hash = settings.latte_config
+    logger.debug "from (/) settings:"
+
     ### Currently pull the erb file from the UI directory.
-    idx = File.read("#{@@BASE_DIR}/UI/index.erb")
+    idx = File.read("#{config_hash[:BASE_DIR]}/UI/index.erb")
 
     # Make some values available to the UI.
-    @server = @@server
+    @server = config_hash[:server]
     @remote_user = request.env['REMOTE_USER']
-    @build_time = @@build_time
-    @build_id = @@build_id
+    @build_time = config_hash[:build_time]
+    @build_id = config_hash[:build_id]
     logger.debug "REQUEST: / end root request"
 
     # Make the strings hash available.  If there is ever a need to
     # select different sets of strings at different times, perhaps by language,
     # it would be trivial to expand the yml file and modify this
     # line to pick amongst different sets of keys.
-    @strings = @@strings["strings"]
+    @strings = config_hash[:strings]["strings"]
 
     # This MUST be the last statement since it returns the output text.
     erb idx
@@ -556,8 +571,11 @@ END
 
   ## Dump configuration settings to log upon request`
   get '/settings' do
-    logger.info "@@ls: (json) #{@@ls}"
-    logger.info "@@build: #{@@build}"
+    logger.info "PRINT CURRENT CONFIGURATION"
+    config_hash = settings.latte_config
+    config_hash.each.sort.each do |key, value|
+      logger.info "KEY: #{key}\tVALUE: [#{value}]"
+    end
     "settings dumped to log file"
   end
 
@@ -620,10 +638,12 @@ END
 
   ############ check out the esb course call and time the performance.
   check_esb = lambda do
+
+    config_hash = settings.latte_config
     st = Stopwatch.new("timing of check url")
     st.start
 
-    course_data = dataProviderCourse(@@check_uniqname, @@check_termid.to_s)
+    course_data = dataProviderCourse(settings.latte_config[:check_uniqname], settings.latte_config[:check_termid].to_s)
 
     st.stop
     logger.debug "status: "+course_data.inspect
@@ -636,7 +656,7 @@ END
       maybe_ok = "NOT OK"
     end
 
-    return sprintf "status=%s elapsed=%.3f server=%s", maybe_ok, st.summary[0], @@server
+    return sprintf "status=%s elapsed=%.3f server=%s", maybe_ok, st.summary[0], config_hash[:server]
   end
 
 
@@ -644,9 +664,10 @@ END
 
   ## catch any request not matched and give an error.
   get '*' do
+    config_hash = settings.latte_config
     logger.debug "REQUEST: * bad query catch"
     response.status = 400
-    return "#{@@invalid_query_text}"
+    return "#{config_hash[:invalid_query_text]}"
   end
 
   # At end of request print the elapsed time for the request.
@@ -664,13 +685,14 @@ END
 
   def dataProviderCourse(a, termid)
 
+    config_hash = settings.latte_config
     logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
-    logger.debug "data_provider_file_director: #{@@data_provider_file_directory}"
+    logger.debug "data_provider_file_director: #{config_hash[:data_provider_file_directory]}"
 
-    if !@@data_provider_file_directory.nil?
-      return dataProviderFileCourse(a, termid, "#{@@data_provider_file_directory}/courses")
+    if !config_hash[:data_provider_file_directory].nil?
+      return dataProviderFileCourse(a, termid, "#{config_hash[:data_provider_file_directory]}/courses")
     else
-      return dataProviderESBCourse(a, termid, @@security_file, @@application_name, @@default_term)
+      return dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
     end
 
   end
@@ -679,10 +701,12 @@ END
 
     logger.debug "DataProviderTerms uniqname: #{uniqname}"
 
-    if !@@data_provider_file_directory.nil?
-      terms = dataProviderFileTerms(uniqname, "#{@@data_provider_file_directory}/terms")
+    config_hash = settings.latte_config
+
+    if !config_hash[:data_provider_file_directory].nil?
+      terms = dataProviderFileTerms(uniqname, "#{config_hash[:data_provider_file_directory]}/terms")
     else
-      terms = dataProviderESBTerms(uniqname, @@security_file, @@application_name)
+      terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
     logger.debug "Dpt: returns: "+terms.inspect
