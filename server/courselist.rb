@@ -643,7 +643,7 @@ END
     st = Stopwatch.new("timing of check url")
     st.start
 
-    course_data = dataProviderCourse(settings.latte_config[:check_uniqname], settings.latte_config[:check_termid].to_s)
+    course_data = dataProviderCourse(config_hash[:check_uniqname], config_hash[:check_termid].to_s)
 
     st.stop
     logger.debug "status: "+course_data.inspect
