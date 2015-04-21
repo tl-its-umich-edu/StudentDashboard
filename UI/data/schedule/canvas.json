@@ -40,7 +40,7 @@
             "locked_for_user": false
         },
         "context_code": "course_416",
-        "end_at": "2015-04-09T03:59:00Z",
+        "end_at": "2015-04-15T03:59:00Z",
         "start_at": "2015-04-09T03:59:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6189",
         "html_url": "https://umich.test.instructure.com/courses/416/assignments/6189"
@@ -86,7 +86,7 @@
             "locked_for_user": false
         },
         "context_code": "course_416",
-        "end_at": "2015-04-09T03:59:00Z",
+        "end_at": "2015-04-15T03:59:00Z",
         "start_at": "2015-04-09T03:59:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6187",
         "html_url": "https://umich.test.instructure.com/courses/416/assignments/6187"
@@ -132,7 +132,7 @@
             "locked_for_user": false
         },
         "context_code": "course_416",
-        "end_at": "2015-04-09T03:59:00Z",
+        "end_at": "2015-04-16T03:59:00Z",
         "start_at": "2015-04-09T03:59:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6188",
         "html_url": "https://umich.test.instructure.com/courses/416/assignments/6188"
@@ -178,7 +178,7 @@
             "locked_for_user": false
         },
         "context_code": "course_416",
-        "end_at": "2015-04-09T12:00:00Z",
+        "end_at": "2015-04-17T12:00:00Z",
         "start_at": "2015-04-09T12:00:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6097",
         "html_url": "https://umich.test.instructure.com/courses/416/assignments/6097"
@@ -308,7 +308,7 @@
             "lock_explanation": "This assignment was locked Apr 1 at 11:59pm."
         },
         "context_code": "course_571",
-        "end_at": "2015-04-11T03:59:00Z",
+        "end_at": "2015-04-16T03:59:00Z",
         "start_at": "2015-04-11T03:59:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_2456",
         "html_url": "https://umich.test.instructure.com/courses/571/assignments/2456"
@@ -354,7 +354,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-11T03:59:00Z",
+        "end_at": "2015-04-14T03:59:00Z",
         "start_at": "2015-04-11T03:59:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_177",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/177"
@@ -524,7 +524,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-11T03:59:59Z",
+        "end_at": "2015-04-16T03:59:59Z",
         "start_at": "2015-04-11T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_329",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/329"
@@ -605,7 +605,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-11T03:59:59Z",
+        "end_at": "2015-04-16T03:59:59Z",
         "start_at": "2015-04-11T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_178",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/178"
@@ -651,7 +651,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-11T03:59:59Z",
+        "end_at": "2015-04-14T03:59:59Z",
         "start_at": "2015-04-11T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_4735",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/4735"
@@ -697,7 +697,7 @@
             "locked_for_user": false
         },
         "context_code": "course_571",
-        "end_at": "2015-04-12T03:59:00Z",
+        "end_at": "2015-04-17T03:59:00Z",
         "start_at": "2015-04-12T03:59:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_5674",
         "html_url": "https://umich.test.instructure.com/courses/571/assignments/5674"
@@ -746,7 +746,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-12T03:59:59Z",
+        "end_at": "2015-04-17T03:59:59Z",
         "start_at": "2015-04-12T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_325",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/325"
@@ -792,7 +792,7 @@
             "locked_for_user": false
         },
         "context_code": "course_571",
-        "end_at": "2015-04-12T03:59:59Z",
+        "end_at": "2015-04-17T03:59:59Z",
         "start_at": "2015-04-12T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6272",
         "html_url": "https://umich.test.instructure.com/courses/571/assignments/6272"
@@ -838,7 +838,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-12T03:59:59Z",
+        "end_at": "2015-04-17T03:59:59Z",
         "start_at": "2015-04-12T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_4736",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/4736"
@@ -924,7 +924,7 @@
             "locked_for_user": false
         },
         "context_code": "course_571",
-        "end_at": "2015-04-12T03:59:59Z",
+        "end_at": "2015-04-17T03:59:59Z",
         "start_at": "2015-04-12T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_2764",
         "html_url": "https://umich.test.instructure.com/courses/571/assignments/2764"
@@ -1015,7 +1015,7 @@
             "locked_for_user": false
         },
         "context_code": "course_571",
-        "end_at": "2015-04-13T03:59:59Z",
+        "end_at": "2015-04-16T03:59:59Z",
         "start_at": "2015-04-13T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6270",
         "html_url": "https://umich.test.instructure.com/courses/571/assignments/6270"
@@ -1066,7 +1066,7 @@
             "locked_for_user": false
         },
         "context_code": "course_416",
-        "end_at": "2015-04-13T12:00:00Z",
+        "end_at": "2015-04-16T12:00:00Z",
         "start_at": "2015-04-13T12:00:00Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_6234",
         "html_url": "https://umich.test.instructure.com/courses/416/assignments/6234",
@@ -1088,7 +1088,7 @@
         "all_day": false,
         "all_day_date": null,
         "created_at": "2015-03-27T14:30:00Z",
-        "end_at": "2015-04-13T18:30:00Z",
+        "end_at": "2015-04-16T18:30:00Z",
         "id": 4358,
         "location_address": "",
         "location_name": "",

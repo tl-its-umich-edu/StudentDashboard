@@ -233,13 +233,19 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
       
       $scope.todos = combinedData;
       $scope.isOverdue = function (item) {
-      //return item.due;
-      var when = moment.unix(item.due_date_sort);
-      var now = moment();
-      if (when < now) {
-        return 'overdue';
-      }
-    };
+        var when = moment.unix(item.due_date_sort);
+        var now = moment();
+        if (when < now) {
+          return 'overdue';
+        }
+      };
+      $scope.newToDo = function (item) {
+        var newObj = {};
+        newObj.title = $('#toDoTitle').val();
+        newObj.message = $('#toDoMessage').val();
+        newObj.origin='gt';
+        $scope.todos.push(newObj)
+      };
     });
   });  
 }]);
