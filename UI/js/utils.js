@@ -58,7 +58,7 @@ var canvasToDoCleaner = function(result){
     newObj.context = this.context_code;
     newObj.contextLMS = 'canvas'
     newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.id;
-
+    newObj.descripion = '';
     if(this.assignment) {
       newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.assignment.course_id;
       newObj.grade_type = this.assignment.grading_type;
@@ -88,6 +88,7 @@ var ctoolsToDoCleaner = function(result){
       newObj.context = this.calendarItem.context.contextTitle;
       newObj.contextUrl = this.calendarItem.context.contextUrl;
       newObj.contextLMS = 'ctools';
+      newObj.descripion = '';
       transformedData.push(newObj)
     }
   });
