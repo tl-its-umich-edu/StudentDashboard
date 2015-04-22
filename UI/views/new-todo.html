@@ -3,7 +3,7 @@
     <div class="row">
       <h3 class="colHeader col-lg-5 col-md-5 col-xs-5" style="padding:0;margin:0">To Do</h3>
       <div class="col-lg-7 col-md-7 col-xs-7" style="text-align:right;padding-right:0">      
-        <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none">
+        <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none" ng-click="removeToDos()" >
           - <span class="sr-only">Delete selected to dos</span>
         </button>      
         <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal">
@@ -56,40 +56,40 @@
     </li>
   </ul>
 <div class="modal fade" id="newToDoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Close</span>
-                        </button>
-                        <h3 class="modal-title" id="myModalLabel">New To Do</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="toDoTitle" class="sr-only">
-                                Email address
-                            </label>
-                            <input type="text" class="form-control" id="toDoTitle" placeholder="To do title">
-                        </div>
-                        <div class="form-group">
-                            <label for="toDoMessage" class="sr-only">
-                                Stuff...
-                            </label>
-                            <textarea class="form-control" id="toDoMessage" placeholder="Stuff to do...." style="height:200px">
-                            </textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary" ng-click="newToDo()"  data-dismiss="modal">
-                            Save To Do
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                  <span class="sr-only">Close</span>
+              </button>
+              <h3 class="modal-title" id="myModalLabel">New To Do</h3>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                  <label for="toDoTitle" class="sr-only">
+                      Email address
+                  </label>
+                  <input type="text" class="form-control" id="toDoTitle" placeholder="To do title">
+              </div>
+              <div class="form-group">
+                  <label for="toDoMessage" class="sr-only">
+                      Stuff...
+                  </label>
+                  <textarea class="form-control" id="toDoMessage" placeholder="Stuff to do...." style="height:200px">
+                  </textarea>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">
+                  Close
+              </button>
+              <button type="button" class="btn btn-primary" ng-click="newToDo()"  data-dismiss="modal">
+                  Save To Do
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
 
 </div>

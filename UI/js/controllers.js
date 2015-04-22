@@ -239,13 +239,18 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
           return 'overdue';
         }
       };
-      $scope.newToDo = function (item) {
+      $scope.newToDo = function () {
         var newObj = {};
         newObj.title = $('#toDoTitle').val();
         newObj.message = $('#toDoMessage').val();
         newObj.origin='gt';
         $scope.todos.push(newObj)
       };
+      $scope.removeToDos = function () {
+        console.log('removing something!')
+        //$scope.todos.push(newObj)
+      };
+
     });
   });  
 }]);
