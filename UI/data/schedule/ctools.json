@@ -233,7 +233,7 @@
   "entityId": "10890"
 },{
   "calendarItem": {
-    "calendarTime": 1429045200000,
+    "calendarTime": 1429802959000,
     "calendarTimeLabelKey": "assignment.close.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -291,7 +291,7 @@
   "entityId": "10894"
 },{
   "calendarItem": {
-    "calendarTime": 1429045200000,
+    "calendarTime": 1429975759000,
     "calendarTimeLabelKey": "assignment.close.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
