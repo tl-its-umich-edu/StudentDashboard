@@ -50,15 +50,32 @@ var canvasToDoCleaner = function(result){
   var transformedData =[];
   $.each(result.data, function() {
     var newObj = {};
-    //console.log(this.assignment)
     newObj.title = this.title;
     newObj.due_date = moment(this.end_at).format("dddd, MMMM Do YYYY, h:mm a");
+    newObj.due_date_short = moment(this.end_at).format("MM/DD");
     newObj.due_date_sort = moment(this.end_at, moment.ISO_8601).unix().toString();
     newObj.link = this.html_url;
     newObj.context = this.context_code;
-    newObj.contextLMS = 'canvas'
+    newObj.contextLMS = 'canvas';
     newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.id;
-    newObj.descripion = '';
+    newObj.description = '';
+
+    var nowDay = moment();
+    var nowDayAnd4 = moment().add(4, 'days');
+    var dueDay = moment(this.end_at);
+    var dueDayAnd4 = moment(this.end_at).add(4, 'days')
+
+    if(dueDay.isBefore(nowDay)) { 
+      newObj.later = 'earlier';
+    }
+    else {
+      if(dueDay.isAfter(nowDayAnd4) ) { 
+        newObj.later = 'later';
+      }
+      else {
+        newObj.later = 'now';
+      }
+    }
     if(this.assignment) {
       newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.assignment.course_id;
       newObj.grade_type = this.assignment.grading_type;
@@ -89,6 +106,23 @@ var ctoolsToDoCleaner = function(result){
       newObj.contextUrl = this.calendarItem.context.contextUrl;
       newObj.contextLMS = 'ctools';
       newObj.descripion = '';
+      
+      var nowDay = moment();
+      var nowDayAnd4 = moment().add(4, 'days');
+      var dueDay = moment.utc(this.calendarItem.calendarTime);
+      var dueDayAnd4 = moment.utc(this.calendarItem.calendarTime).add(4, 'days')
+
+      if(dueDay.isBefore(nowDay)) { 
+        newObj.later = 'earlier';
+      }
+      else {
+        if(dueDay.isAfter(nowDayAnd4) ) { 
+          newObj.later = 'later';
+        }
+        else {
+          newObj.later = 'now';
+        }
+      }
       transformedData.push(newObj)
     }
   });
