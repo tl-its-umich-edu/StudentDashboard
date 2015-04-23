@@ -56,7 +56,7 @@ module DataProviderESB
     logger.debug("dPESBC: result: "+result.inspect)
 
     begin
-    r = JSON.parse(result)
+      r = JSON.parse(result)
     rescue => exp
       logger.warn("EXCEPTION: dataProviderESBCourse: course request exp: "+exp.to_s+" result: "+r.inspect)
       return WAPIResultWrapper.new(666, "EXCEPTION: course request returned: ", r)
@@ -96,17 +96,24 @@ module DataProviderESB
       return WAPIResultWrapper.new(666, "EXCEPTION: term request parsing", result)
     end
 
-    logger.info("dataProviderESBTerm: parsed:"+parsed.inspect)
+    logger.info("DPESBTERM: #{__LINE__}: parsed:"+parsed.inspect)
     if parsed.has_key?('getMyRegTermsResponse')
-      terms_value = parsed['getMyRegTermsResponse']['Term']
-      msg = "found terms from ESB"
-      if terms_value.nil?
-        msg = "no terms returned from ESB"
-        terms_value = Array.new;
+      logger.info "DPESBTERM: #{__LINE__}: term request has response: with getMyRegTermsResponse"
+      logger.info "DPESBTERM: #{__LINE__}: value: "+parsed['getMyRegTermsResponse'].inspect
+      begin
+        terms_value = parsed['getMyRegTermsResponse']['Term']
+        logger.info "DPESBTERM: #{__LINE__}: terms_value: "+terms_value.inspect
+        msg = "found terms from ESB"
+        if terms_value.nil?
+          msg = "no terms returned from ESB"
+          terms_value = Array.new;
+        end
+      rescue
+        logger.info "DPESBTERM: #{__LINE__}:in terms rescue block"
       end
       terms = WAPIResultWrapper.new(200, msg, terms_value)
     end
-    logger.info("dataProviderESBTerm: term request returned: terms:"+terms.inspect)
+    logger.info("DPESBTERM: #{__LINE__}:term request returned: terms:"+terms.inspect)
     return terms
   end
 

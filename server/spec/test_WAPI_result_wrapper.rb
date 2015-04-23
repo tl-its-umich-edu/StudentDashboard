@@ -76,6 +76,24 @@ class TestWAPIResultWrapper < Minitest::Test
     assert valid_json?(x), "wrapped result should be json"
   end
 
+  def test_value_of_nil
+    # if get back nil terms still have it parse ok.
+    w = WAPIResultWrapper.new("status", "msg", Hash.new['getMyRegTermsResponse']=nil)
+    refute_nil(w, "create wrapped object")
+    assert w.valid?, "check for valid wrapper object"
+    t = JSON.parse(w.value_as_json)['Result']
+    assert_equal(t, "", "get back empty string")
+  end
+
+  def test_value_is_empty_string
+    # if get back empty string as terms still have it parse ok.
+    w = WAPIResultWrapper.new("status", "msg", Hash.new['getMyRegTermsResponse']="")
+    refute_nil(w, "create wrapped object")
+    assert w.valid?, "check for valid wrapper object"
+    t = JSON.parse(w.value_as_json)['Result']
+    assert_equal(t, "", "get back empty string")
+  end
+
   def test_valid_wrapper
     w = WAPIResultWrapper.new("status", "msg", "result")
     refute_nil(w, "create wrapped object")
@@ -84,7 +102,7 @@ class TestWAPIResultWrapper < Minitest::Test
 
   def test_invalid_wrapper
     w = WAPIResultWrapper.new("status", "msg", "result")
-    w.setValue(Hash["micro","true"])
+    w.setValue(Hash["micro", "true"])
     refute w.valid?, "check for valid wrapper object"
   end
 
