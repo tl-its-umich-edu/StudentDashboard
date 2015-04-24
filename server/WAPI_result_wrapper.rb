@@ -56,11 +56,11 @@ class WAPIResultWrapper
     # create a new wrapper
     wr = WAPIResultWrapper.new(WAPI::SUCCESS, "dummy msg", "dummy result")
     # set the content of the wrapper to the parsed contents of the json string.
-    logger.debug "WAPI_wrapper: #{__LINE__}: value_from_json (input)" + wr.inspect
     begin
       wr.setValue(JSON.parse(json_string))
     rescue
       wr = WAPIResultWrapper.new(666, "dummy msg", "error json parsing #{json_string}")
+      logger.debug "WAPI_wrapper: #{__LINE__}: error parsing as json: #{json_string}"
     end
 
     wr

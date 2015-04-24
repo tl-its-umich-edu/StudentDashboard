@@ -59,14 +59,14 @@ module DataProviderESB
       r = JSON.parse(result)
     rescue => exp
       logger.warn("EXCEPTION: dataProviderESBCourse: course request exp: "+exp.to_s+" result: "+r.inspect)
-      return WAPIResultWrapper.new(666, "EXCEPTION: course request returned: ", r)
+      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "EXCEPTION: course request returned: ", r)
     end
 
     if r.has_key?('getMyClsScheduleResponse')
       r = r['getMyClsScheduleResponse']['RegisteredClasses']
       logger.debug("dPESBC: with classes r: "+r.inspect)
       # return newly wrapped result after extracting the course data
-      classes = WAPIResultWrapper.new(200, "found courses from ESB", r)
+      classes = WAPIResultWrapper.new(WAPI::SUCCESS, "found courses from ESB", r)
     end
 
     return classes
@@ -93,28 +93,31 @@ module DataProviderESB
       parsed = JSON.parse(result)
     rescue => exp
       logger.warn("EXCEPTION: dataProviderESBTerm: term request returned: exp: "+exp.to_s+" result: "+result.inspect)
-      return WAPIResultWrapper.new(666, "EXCEPTION: term request parsing", result)
+      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "EXCEPTION: term request parsing", result)
     end
 
-    logger.info("DPESBTERM: #{__LINE__}: parsed:"+parsed.inspect)
-    if parsed.has_key?('getMyRegTermsResponse')
-      logger.info "DPESBTERM: #{__LINE__}: term request has response: with getMyRegTermsResponse"
-      logger.info "DPESBTERM: #{__LINE__}: value: "+parsed['getMyRegTermsResponse'].inspect
-      begin
-        terms_value = parsed['getMyRegTermsResponse']['Term']
-        logger.info "DPESBTERM: #{__LINE__}: terms_value: "+terms_value.inspect
-        msg = "found terms from ESB"
-        if terms_value.nil?
-          msg = "no terms returned from ESB"
-          terms_value = Array.new;
-        end
-      rescue
-        logger.info "DPESBTERM: #{__LINE__}:in terms rescue block"
-      end
-      terms = WAPIResultWrapper.new(200, msg, terms_value)
+    if !parsed.has_key?('getMyRegTermsResponse')
+      return WAPIResultWrapper.new(666, "ERROR: term request did not return term data", terms.inspect)
     end
-    logger.info("DPESBTERM: #{__LINE__}:term request returned: terms:"+terms.inspect)
-    return terms
+
+    # got some result for terms
+    logger.debug("DPESBTERM: #{__LINE__}: parsed:"+parsed.inspect)
+    begin
+      terms_value = parsed['getMyRegTermsResponse']['Term']
+      logger.debug "DPESBTERM: #{__LINE__}: terms_value: "+terms_value.inspect
+      # make sure missing terms represented by empty array.
+      msg = "found terms from ESB"
+      if terms_value.nil?
+        msg = "no terms returned from ESB"
+        terms_value = Array.new;
+      end
+      terms_return = WAPIResultWrapper.new(WAPI::SUCCESS, msg, terms_value)
+    rescue => e
+      error_msg = "DPESBTERM: #{__LINE__}: UNEXPECTED ERROR: now in terms rescue block for: #{terms} with exception: #{e} at: "+Logging.trimBackTraceRVM(caller).to_s
+      logger.warn error_msg
+      terms_return = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR,error_msg,terms.inspect)
+    end
+    terms_return
   end
 
 end

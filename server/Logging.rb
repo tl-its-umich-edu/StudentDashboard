@@ -26,4 +26,9 @@ module Logging
   def logger
     Logging.logger
   end
+
+  # Trim could be generalized if needed
+  def self.trimBackTraceRVM(backTraceArray)
+    backTraceArray.reject {|s| s.match(/.rvm/) }
+  end
 end
