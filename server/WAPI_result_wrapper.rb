@@ -59,7 +59,7 @@ class WAPIResultWrapper
     begin
       wr.setValue(JSON.parse(json_string))
     rescue
-      wr = WAPIResultWrapper.new(666, "dummy msg", "error json parsing #{json_string}")
+      wr = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "dummy msg", "error json parsing #{json_string}")
       logger.debug "WAPI_wrapper: #{__LINE__}: error parsing as json: #{json_string}"
     end
 
