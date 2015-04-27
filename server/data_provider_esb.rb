@@ -97,7 +97,7 @@ module DataProviderESB
     end
 
     if !parsed.has_key?('getMyRegTermsResponse')
-      return WAPIResultWrapper.new(666, "ERROR: term request did not return term data", terms.inspect)
+      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "ERROR: term request did not return term data", terms.inspect)
     end
 
     # got some result for terms
