@@ -232,6 +232,9 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
       combinedData = combinedData.concat(canvasData,ctoolsData);
       
       $scope.todos = combinedData;
+      
+      $scope.when = ['earlier','now', 'later'];
+
       $scope.isOverdue = function (item) {
         var when = moment.unix(item.due_date_sort);
         var now = moment();
