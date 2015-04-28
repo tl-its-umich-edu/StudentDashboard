@@ -1,0 +1,6882 @@
+{
+  "Buildings": {
+    "Building": [
+      {
+        "ID": "1000005",
+        "Name": "NICHOLS ARBORETUM RESIDENCE",
+        "Abbreviation": "ARB R",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000006",
+        "Name": "NICHOLS ARBORETUM STORAGE SHED",
+        "Abbreviation": "ARB S",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000007",
+        "Name": "NICHOLS ARBORETUM GAR WORKSHOP",
+        "Abbreviation": "ARB G",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000010",
+        "Name": "BURNHAM HOUSE",
+        "Abbreviation": "BURNH",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000040",
+        "Name": "OH MARY ALICE AND LILLIAN GODDARD HALL",
+        "Abbreviation": "OH GO",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000041",
+        "Name": "OH ARTHUR AND HAZEL VANDENBERG HALL",
+        "Abbreviation": "OH VA",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000042",
+        "Name": "OH ADELIA CHEEVER RESIDENCE",
+        "Abbreviation": "OH CH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000043",
+        "Name": "OH GEDDES RESIDENCE",
+        "Abbreviation": "OH GD",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000044",
+        "Name": "OH JULIA ESTHER EMANUEL RESIDENCE",
+        "Abbreviation": "OH EM",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000045",
+        "Name": "OH PAMELA NOBLE RESIDENCE",
+        "Abbreviation": "OH NO",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000046",
+        "Name": "OH LAUREL HARPER SEELEY HALL",
+        "Abbreviation": "OH SL",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000047",
+        "Name": "OH PLANT SERVICE",
+        "Abbreviation": "OH SR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000051",
+        "Name": "BARBOUR BETSY HOUSE",
+        "Abbreviation": "B BAR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000052",
+        "Name": "COOK MARTHA BUILDING",
+        "Abbreviation": "COOK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000053",
+        "Name": "COUZENS HALL",
+        "Abbreviation": "COUZN",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000054",
+        "Name": "EAST QUADRANGLE",
+        "Abbreviation": "EQ",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000055",
+        "Name": "FLETCHER HALL",
+        "Abbreviation": "FLETC",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000057",
+        "Name": "HENDERSON MARY BARTRON HOUSE",
+        "Abbreviation": "HENDH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000059",
+        "Name": "LLOYD ALICE CROCKER HALL",
+        "Abbreviation": "ALH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000060",
+        "Name": "MARKLEY MARY BUTLER HALL",
+        "Abbreviation": "MMARK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000061",
+        "Name": "MOSHER ELIZA M HALL & JORDAN MYRA B HALL",
+        "Abbreviation": "MOJO",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000062",
+        "Name": "NEWBERRY HELEN H RESIDENCE",
+        "Abbreviation": "NEWBY",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000063",
+        "Name": "SOUTH QUADRANGLE",
+        "Abbreviation": "SQ",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000064",
+        "Name": "STOCKWELL MADELON LOUISA HALL",
+        "Abbreviation": "STOCK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000065",
+        "Name": "VAUGHAN VICTOR C HOUSE",
+        "Abbreviation": "VVAUN",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000066",
+        "Name": "WEST QUADRANGLE",
+        "Abbreviation": "WQ",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000100",
+        "Name": "MOLECULAR & BEHAVIORAL NEUROSCIENCE INSTITUTE",
+        "Abbreviation": "MHRI",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000105",
+        "Name": "LIPSEY STANFORD STUDENT PUBLICATIONS BUILDING",
+        "Abbreviation": "LIPSE",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000108",
+        "Name": "LAWYERS CLUB AND MUNGER CHARLES T RESIDENCES",
+        "Abbreviation": "LAW C",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000109",
+        "Name": "COOK JOHN P BUILDING",
+        "Abbreviation": "C LAW",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000120",
+        "Name": "MICHIGAN UNION",
+        "Abbreviation": "UNION",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000135",
+        "Name": "WYLY SAM HALL",
+        "Abbreviation": "W-BUS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000137",
+        "Name": "KRESGE BUSINESS ADMIN LIBRARY",
+        "Abbreviation": "K-BUS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000139",
+        "Name": "BUSINESS ADMIN EXECUTIVE DORM",
+        "Abbreviation": "EXRES",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000145",
+        "Name": "INSTITUTE FOR SOCIAL RESEARCH",
+        "Abbreviation": "ISR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000149",
+        "Name": "FLEMING ROBBEN W & ALDYTH ADMINISTRATION BUILDING",
+        "Abbreviation": "FLEMG",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000150",
+        "Name": "LITERATURE SCIENCE AND THE ARTS",
+        "Abbreviation": "LSA",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000151",
+        "Name": "ALUMNI MEMORIAL HALL",
+        "Abbreviation": "UMMA",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000152",
+        "Name": "ANGELL JAMES B HALL AND TISCH HALL",
+        "Abbreviation": "AH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000154",
+        "Name": "LORCH HALL",
+        "Abbreviation": "LORCH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000155",
+        "Name": "BURTON MEMORIAL TOWER",
+        "Abbreviation": "BMT",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000158",
+        "Name": "CHEMISTRY & DOW WILLARD H LABORATORY",
+        "Abbreviation": "CHEM",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000159",
+        "Name": "CLEMENTS WILLIAM L LIBRARY",
+        "Abbreviation": "CLEMT",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000162",
+        "Name": "DENTAL BLDG AND W K KELLOGG FOUNDATION INSTITUTE",
+        "Abbreviation": "DENT",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000165",
+        "Name": "DENNISON DAVID M BUILDING",
+        "Abbreviation": "DENN",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000166",
+        "Name": "EAST HALL",
+        "Abbreviation": "EH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000167",
+        "Name": "WEST HALL",
+        "Abbreviation": "WH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000168",
+        "Name": "ANIMAL RESEARCH FACILITY",
+        "Abbreviation": "ARF",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000172",
+        "Name": "RACKHAM HORACE H SCHOOL OF GRADUATE STUDIES",
+        "Abbreviation": "RACK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000175",
+        "Name": "HAVEN HALL",
+        "Abbreviation": "HH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000176",
+        "Name": "HEALTH SERVICE",
+        "Abbreviation": "HLTSV",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000177",
+        "Name": "HILL AUDITORIUM",
+        "Abbreviation": "HILL",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000178",
+        "Name": "NEWBERRY HALL",
+        "Abbreviation": "KELMU",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000179",
+        "Name": "HUTCHINS HALL",
+        "Abbreviation": "HUTCH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000180",
+        "Name": "POWER CENTER FOR PERFORMING ARTS",
+        "Abbreviation": "POWER",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000181",
+        "Name": "HATCHER HARLAN H SOUTH GRADUATE LIBRARY",
+        "Abbreviation": "GLIBS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000183",
+        "Name": "LANE HALL",
+        "Abbreviation": "LANE",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000184",
+        "Name": "COOK WILLIAM W LEGAL RESEARCH LIBRARY",
+        "Abbreviation": "LLIB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000185",
+        "Name": "HATCHER H NORTH GRADUATE LIBRARY",
+        "Abbreviation": "GLIBN",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000186",
+        "Name": "POUND MADELON HOUSE",
+        "Abbreviation": "PND H",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000187",
+        "Name": "POUND MADELON HOUSE GARAGE",
+        "Abbreviation": "PND G",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000188",
+        "Name": "LITTLE CLARENCE COOK SCIENCE BLD",
+        "Abbreviation": "CCL",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000189",
+        "Name": "DANA SAMUEL TRASK BUILDING",
+        "Abbreviation": "DANA",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000190",
+        "Name": "MEDICAL SCIENCE UNIT I",
+        "Abbreviation": "MSC1",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000191",
+        "Name": "MICHIGAN LEAGUE",
+        "Abbreviation": "LEAG",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000192",
+        "Name": "ALUMNI CENTER",
+        "Abbreviation": "ALUMN",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000193",
+        "Name": "RUTHVEN ALEXANDER G MUSEUMS BLDG",
+        "Abbreviation": "AGRMU",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000194",
+        "Name": "MUSEUMS ANNEX",
+        "Abbreviation": "MUS A",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000196",
+        "Name": "NORTH HALL",
+        "Abbreviation": "NH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000197",
+        "Name": "MASON HALL",
+        "Abbreviation": "MH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000198",
+        "Name": "DETROIT OBSERVATORY",
+        "Abbreviation": "OBSRV",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000200",
+        "Name": "MEDICAL SCIENCE UNIT II",
+        "Abbreviation": "MSC2",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000201",
+        "Name": "HARTWIG MARIE DOROTHY ADMINISTRATION BUILDING",
+        "Abbreviation": "HARTW",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000203",
+        "Name": "PRESIDENTS RESIDENCE",
+        "Abbreviation": "PRESR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000204",
+        "Name": "VAUGHAN HENRY FRIEZE PUBLIC HEALTH BUILDING",
+        "Abbreviation": "SPH1",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000205",
+        "Name": "1027 EAST HURON BUILDING",
+        "Abbreviation": "EHURN",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000206",
+        "Name": "ANGELL HALL AUDITORIUMS",
+        "Abbreviation": "AHAUD",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000207",
+        "Name": "MODERN LANGUAGES BUILDING",
+        "Abbreviation": "MLB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000208",
+        "Name": "RANDALL HARRISON M LABORATORY",
+        "Abbreviation": "RAND",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000209",
+        "Name": "TAUBMAN A ALFRED HEALTH SCIENCES LIBRARY",
+        "Abbreviation": "TAUBL",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000210",
+        "Name": "BUHL LAWRENCE D RESEARCH CEN FOR HUMAN GENETICS",
+        "Abbreviation": "BUHL",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000211",
+        "Name": "KRAUS EDWARD HENRY BUILDING",
+        "Abbreviation": "NS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000212",
+        "Name": "SIMPSON THOMAS H MEMORIAL INST MEDICAL RESEARCH",
+        "Abbreviation": "SIMP",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000213",
+        "Name": "MEDICAL SCIENCES RESEARCH BLDG II",
+        "Abbreviation": "MSRB2",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000214",
+        "Name": "LSA ADMINISTRATION ANNEX",
+        "Abbreviation": "LSAAD",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000215",
+        "Name": "STUDENT ACTIVITIES",
+        "Abbreviation": "SAB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000216",
+        "Name": "TAPPAN HALL",
+        "Abbreviation": "TAP",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000219",
+        "Name": "SCHOOL OF SOCIAL WORK BUILDING",
+        "Abbreviation": "SSWB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000220",
+        "Name": "N C GROUNDS STORAGE BUILDING #1",
+        "Abbreviation": "NCGS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000221",
+        "Name": "EDUCATION SCHOOL OF",
+        "Abbreviation": "SEB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000222",
+        "Name": "MICHIGAN NEWS BUILDING",
+        "Abbreviation": "NEWS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000223",
+        "Name": "MEDICAL SCIENCES RESEARCH BLDG I",
+        "Abbreviation": "MSRB1",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000225",
+        "Name": "DANCE BUILDING",
+        "Abbreviation": "DANCE",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000226",
+        "Name": "CENTRAL CAMPUS REC BLD BELL MARGARET POOL",
+        "Abbreviation": "CCRB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000227",
+        "Name": "SHAPIRO HAROLD T AND VIVIAN B LIBRARY",
+        "Abbreviation": "ULIB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000229",
+        "Name": "MEDICAL SCIENCES RESEARCH BLDG III",
+        "Abbreviation": "MSRB3",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000230",
+        "Name": "COLLEGE OF PHARMACY BUILDING",
+        "Abbreviation": "PHARM",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000234",
+        "Name": "FRANCIS THOMAS JR PUBLIC HEALTH",
+        "Abbreviation": "SPH2",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000252",
+        "Name": "FOREST SWITCHING STATION",
+        "Abbreviation": "FORST",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000253",
+        "Name": "HILL ST PARKING STRUCTURE",
+        "Abbreviation": "HILPK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000254",
+        "Name": "FLETCHER ST PARKING STRUCTURE",
+        "Abbreviation": "FLETP",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000255",
+        "Name": "THOMPSON ST PARKING STRUCTURE",
+        "Abbreviation": "THOMP",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000257",
+        "Name": "CHURCH ST PARKING STRUCTURE",
+        "Abbreviation": "CH PK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000258",
+        "Name": "CATHERINE ST PARKING STRUCTURE",
+        "Abbreviation": "CA PK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000259",
+        "Name": "THAYER ST PARKING STRUCTURE",
+        "Abbreviation": "TH PK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000260",
+        "Name": "CENTRAL POWER PLANT",
+        "Abbreviation": "CPP",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000261",
+        "Name": "PLANT SERVICE BUILDING",
+        "Abbreviation": "PLNT",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000263",
+        "Name": "PALMER DRIVE PARKING STRUCTURE",
+        "Abbreviation": "PLMV",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000268",
+        "Name": "SALT STORAGE BUILDING",
+        "Abbreviation": "SLTST",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000269",
+        "Name": "EQUIPMENT MAINTENANCE SHOP",
+        "Abbreviation": "EQUIP",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000300",
+        "Name": "MED CTR N ENTRANCE PARKING STRUCTURE",
+        "Abbreviation": "MCNPK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000301",
+        "Name": "CANCER CENTER",
+        "Abbreviation": "CC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000306",
+        "Name": "EAST HOSPITAL MECHANICAL BLDG",
+        "Abbreviation": "EHMCH",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000308",
+        "Name": "MED-INN",
+        "Abbreviation": "MEDIN",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000309",
+        "Name": "UNIVERSITY HOSPITAL SOUTH UNIT 1",
+        "Abbreviation": "UHSU1",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000312",
+        "Name": "UNIVERSITY HOSPITAL SOUTH UNIT 2",
+        "Abbreviation": "UHSU2",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000313",
+        "Name": "TOWSLEY CENTER FOR CONTINUING MEDICAL EDUCATION",
+        "Abbreviation": "TOWSL",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000314",
+        "Name": "UNIVERSITY HOSPITAL SOUTH UNIT 3",
+        "Abbreviation": "UHSU3",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000315",
+        "Name": "MEDICAL CENTER DR PARKING STRUCT",
+        "Abbreviation": "MC PK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000316",
+        "Name": "UNIVERSITY HOSPITALS",
+        "Abbreviation": "UHOSP",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000317",
+        "Name": "TAUBMAN A ALFRED HEALTH CARE CTR",
+        "Abbreviation": "TAUBC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000318",
+        "Name": "UNIVERSITY HOSPITAL SOUTH UNIT 4",
+        "Abbreviation": "UHSU4",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000319",
+        "Name": "MEDICAL PROFESSIONAL BUILDING",
+        "Abbreviation": "MPB",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000320",
+        "Name": "SIMPSON CIRCLE PARKING STRUCTURE",
+        "Abbreviation": "SIMPK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000323",
+        "Name": "MEDICAL CAMPUS SWITCH STATION SE",
+        "Abbreviation": "MCSWT",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000324",
+        "Name": "KELLOGG W K EYE CENTER",
+        "Abbreviation": "KEC",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000327",
+        "Name": "1018 FULLER BUILDING",
+        "Abbreviation": "FILLR",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000331",
+        "Name": "GLEN AVE PARKING STRUCTURE",
+        "Abbreviation": "GL PK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000332",
+        "Name": "300 N INGALLS BUILDING",
+        "Abbreviation": "NIB",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000333",
+        "Name": "SCHOOL OF NURSING BUILDING",
+        "Abbreviation": "SNB",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000335",
+        "Name": "300 400 N INGALLS BOILER HSE",
+        "Abbreviation": "NIBBL",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000340",
+        "Name": "RONALD MCDONALD HOUSE",
+        "Abbreviation": "R MCD",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000348",
+        "Name": "CHELSEA FAMILY PRACTICE",
+        "Abbreviation": "CH FP",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000350",
+        "Name": "EAST ANN ARBOR HEALTH AND GERIATRICS CENTER",
+        "Abbreviation": "EAAHC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000390",
+        "Name": "UNIV HOSPITALS CHILD CARE CENTER",
+        "Abbreviation": "UHCCC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000394",
+        "Name": "LURIE ANN AND ROBERT H TOWER",
+        "Abbreviation": "LT",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000395",
+        "Name": "BAGNOUD FRANCOIS-XAVIER BUILDING",
+        "Abbreviation": "FXB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000396",
+        "Name": "DUDERSTADT JAMES AND ANNE CENTER",
+        "Abbreviation": "DC",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000397",
+        "Name": "LURIE ROBERT H ENGINEERING CTR",
+        "Abbreviation": "LEC",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000399",
+        "Name": "NORTH CAMPUS ADMINISTRATIVE COMPLEX",
+        "Abbreviation": "NCAC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000400",
+        "Name": "LAY WALTER E AUTOMOTIVE ENGINEERING LABORATORY",
+        "Abbreviation": "AL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000402",
+        "Name": "BONISTEEL INTERDISCIPLINARY RESEARCH BUILDING",
+        "Abbreviation": "BIRB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000403",
+        "Name": "COOLEY MORTIMER E BUILDING",
+        "Abbreviation": "COOL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000404",
+        "Name": "MICHIGAN MEMORIAL PHOENIX PROJECT LABORATORY",
+        "Abbreviation": "PHNX",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000405",
+        "Name": "NUCLEAR ENGINEERING LABORATORIES",
+        "Abbreviation": "NEL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000406",
+        "Name": "LURIE ANN AND ROBERT H BIOMEDICAL ENGINEERING BLD",
+        "Abbreviation": "LBME",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000407",
+        "Name": "BROWN GEORGE GRANGER MEMORIAL LABORATORIES",
+        "Abbreviation": "GGBL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000408",
+        "Name": "NORTH CAMPUS SWITCH STATION",
+        "Abbreviation": "NC SS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000409",
+        "Name": "FIRE SERV INSTR RES CENTER",
+        "Abbreviation": "FIRES",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000414",
+        "Name": "ENVIRONMENTAL AND WATER RESOURCES ENGINEERING BL",
+        "Abbreviation": "EWRE",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000415",
+        "Name": "NAVAL ARCHITECTURE AND MARINE ENGINEERING",
+        "Abbreviation": "NAME",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000416",
+        "Name": "RADIATION SCIENCES LABORATORY 1",
+        "Abbreviation": "RAD 1",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000417",
+        "Name": "RADIATION SCIENCES LABORATORY  2",
+        "Abbreviation": "RAD 2",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000418",
+        "Name": "NORTH CAMPUS SERVICE BLDG #1",
+        "Abbreviation": "NC SV",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000419",
+        "Name": "LAUNDRY",
+        "Abbreviation": "LAUND",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1000420",
+        "Name": "SCHOOL OF INFORMATION NORTH",
+        "Abbreviation": "SINFN",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000421",
+        "Name": "AEROSPACE ENGINEERING LAB WIND TUNNEL LAB",
+        "Abbreviation": "AETU",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000422",
+        "Name": "AEROSPACE ENGINEERING LAB PROPULSION LAB",
+        "Abbreviation": "AEPR",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000423",
+        "Name": "AERO ENG LAB PUMPING STATION",
+        "Abbreviation": "AELPS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000424",
+        "Name": "GORGUZE FAMILY LABORATORY",
+        "Abbreviation": "GFLAB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000425",
+        "Name": "AEROSPACE ENGINEERING LAB PLASMA RESEARCH",
+        "Abbreviation": "AEP",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000426",
+        "Name": "AERO ENG POWER PLANT",
+        "Abbreviation": "AEPP",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000427",
+        "Name": "NORTH CAMPUS RECREATION BUILDING",
+        "Abbreviation": "NCRB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000429",
+        "Name": "INDUSTRIAL AND OPERATIONS ENGINEERING BUILDING",
+        "Abbreviation": "IOE",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000430",
+        "Name": "NORTH CAMPUS STORAGE BUILDING",
+        "Abbreviation": "NCSB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000432",
+        "Name": "ART ARCHITECTURE BUILDING",
+        "Abbreviation": "A&AB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000434",
+        "Name": "IST GAS STORAGE BUILDING",
+        "Abbreviation": "ISTGS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000435",
+        "Name": "ENGINEERING RESEARCH BUILDING 1",
+        "Abbreviation": "ISTCO",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000436",
+        "Name": "ENGINEERING RESEARCH BUILDING 2",
+        "Abbreviation": "ISTLW",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000437",
+        "Name": "GERSTACKER CARL A BUILDING",
+        "Abbreviation": "GERST",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000439",
+        "Name": "BENTLEY ALVIN M & ARVELLA D HISTORICAL LIBRARY",
+        "Abbreviation": "BHLIB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000440",
+        "Name": "MOORE EARL V BLDG",
+        "Abbreviation": "SM",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000441",
+        "Name": "SPACE RESEARCH LABORATORY",
+        "Abbreviation": "SRB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000442",
+        "Name": "PIERPONT WILBUR K COMMONS",
+        "Abbreviation": "PIER",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000443",
+        "Name": "CHRYSLER CENTER CONTINUING ENGINEERING EDUCATION",
+        "Abbreviation": "CHRYS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000444",
+        "Name": "U-M TRANSPORTATION RESEARCH INST",
+        "Abbreviation": "UMTRI",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000445",
+        "Name": "STEARNS FREDERICK BUILDING",
+        "Abbreviation": "STRNS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000446",
+        "Name": "FORD GERALD R LIBRARY",
+        "Abbreviation": "FORDL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000447",
+        "Name": "DOW HERBERT H BUILDING",
+        "Abbreviation": "DOW",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000448",
+        "Name": "ELECTRICAL ENGINEERING AND COMPUTER SCIENCE BLD",
+        "Abbreviation": "EECS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000449",
+        "Name": "NORTH CAMPUS HOUSING SERVICE BLD",
+        "Abbreviation": "NCHSG",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000450",
+        "Name": "NORTHWOOD I SVC BUILDING 450",
+        "Abbreviation": "NW450",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000451",
+        "Name": "NORTHWOOD I APTS 451",
+        "Abbreviation": "NW451",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000452",
+        "Name": "NORTHWOOD I APTS 452",
+        "Abbreviation": "NW452",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000453",
+        "Name": "NORTHWOOD I APTS 453",
+        "Abbreviation": "NW453",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000454",
+        "Name": "NORTHWOOD I APTS 454",
+        "Abbreviation": "NW454",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000455",
+        "Name": "NORTHWOOD I APTS 455",
+        "Abbreviation": "NW455",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000456",
+        "Name": "NORTHWOOD I APTS 456",
+        "Abbreviation": "NW456",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000457",
+        "Name": "NORTHWOOD II SVC BUILDING 457",
+        "Abbreviation": "NW457",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000458",
+        "Name": "NORTHWOOD II SVC BUILDING 458",
+        "Abbreviation": "NW458",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000459",
+        "Name": "NORTHWOOD II SVC BUILDING 459",
+        "Abbreviation": "NW459",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000460",
+        "Name": "NORTHWOOD II SVC BUILDING 460",
+        "Abbreviation": "NW460",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000461",
+        "Name": "NORTHWOOD II SVC BUILDING 461",
+        "Abbreviation": "NW461",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000462",
+        "Name": "NORTHWOOD II APTS 462",
+        "Abbreviation": "NW462",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000464",
+        "Name": "NORTHWOOD II APTS 464",
+        "Abbreviation": "NW464",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000465",
+        "Name": "NORTHWOOD II APTS 465",
+        "Abbreviation": "NW465",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000466",
+        "Name": "NORTHWOOD II APTS 466",
+        "Abbreviation": "NW466",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000467",
+        "Name": "NORTHWOOD II APTS 467",
+        "Abbreviation": "NW467",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000468",
+        "Name": "NORTHWOOD II APTS 468",
+        "Abbreviation": "NW468",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000469",
+        "Name": "NORTHWOOD II APTS 469",
+        "Abbreviation": "NW2 A",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000470",
+        "Name": "NORTHWOOD II APTS 470",
+        "Abbreviation": "NW470",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000471",
+        "Name": "NORTHWOOD II APTS 471",
+        "Abbreviation": "NW471",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000472",
+        "Name": "NORTHWOOD II APTS 472",
+        "Abbreviation": "NW472",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000473",
+        "Name": "NORTHWOOD II APTS 473",
+        "Abbreviation": "NW473",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000474",
+        "Name": "NORTHWOOD II APTS 474",
+        "Abbreviation": "NW474",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000475",
+        "Name": "NORTHWOOD II APTS 475",
+        "Abbreviation": "NW475",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000476",
+        "Name": "NORTHWOOD II APTS 476",
+        "Abbreviation": "NW476",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000477",
+        "Name": "NORTHWOOD II APTS 477",
+        "Abbreviation": "NW477",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000478",
+        "Name": "NORTHWOOD II APTS 478",
+        "Abbreviation": "NW478",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000479",
+        "Name": "NORTHWOOD II APTS 479",
+        "Abbreviation": "NW479",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000480",
+        "Name": "NORTHWOOD II APTS 480",
+        "Abbreviation": "NW480",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000481",
+        "Name": "NORTHWOOD II APTS 481",
+        "Abbreviation": "NW481",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000482",
+        "Name": "NORTHWOOD II APTS 482",
+        "Abbreviation": "NW482",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000483",
+        "Name": "NORTHWOOD II APTS 483",
+        "Abbreviation": "NW483",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000484",
+        "Name": "NORTHWOOD II APTS 484",
+        "Abbreviation": "NW484",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000485",
+        "Name": "NORTHWOOD II APTS 485",
+        "Abbreviation": "NW485",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000486",
+        "Name": "NORTHWOOD II APTS 486",
+        "Abbreviation": "NW486",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000487",
+        "Name": "NORTHWOOD II APTS 487",
+        "Abbreviation": "NW487",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000488",
+        "Name": "NORTHWOOD II APTS 488",
+        "Abbreviation": "NW488",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000489",
+        "Name": "NORTHWOOD II APTS 489",
+        "Abbreviation": "NW489",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000490",
+        "Name": "NORTHWOOD II APTS 490",
+        "Abbreviation": "NW490",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000491",
+        "Name": "NORTHWOOD II APTS 491",
+        "Abbreviation": "NW491",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000492",
+        "Name": "NORTHWOOD II APTS 492",
+        "Abbreviation": "NW492",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000493",
+        "Name": "NORTHWOOD II APTS 493",
+        "Abbreviation": "NW493",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000494",
+        "Name": "NORTHWOOD II APTS 494",
+        "Abbreviation": "NW494",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000495",
+        "Name": "NORTHWOOD II APTS 495",
+        "Abbreviation": "NW495",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000496",
+        "Name": "NORTHWOOD II APTS 496",
+        "Abbreviation": "NW496",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000497",
+        "Name": "NORTHWOOD II APTS 497",
+        "Abbreviation": "NW497",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000498",
+        "Name": "CRAM PLACE COMMUNITY CENTER",
+        "Abbreviation": "NW498",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000499",
+        "Name": "NORTHWOOD III SVC BUILDING 499",
+        "Abbreviation": "NW499",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000500",
+        "Name": "NORTHWOOD III SVC BUILDING 500",
+        "Abbreviation": "NW500",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000501",
+        "Name": "NORTHWOOD III APTS 501",
+        "Abbreviation": "NW501",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000502",
+        "Name": "NORTHWOOD III APTS 502",
+        "Abbreviation": "NW502",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000503",
+        "Name": "NORTHWOOD III APTS 503",
+        "Abbreviation": "NW503",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000504",
+        "Name": "NORTHWOOD III APTS 504",
+        "Abbreviation": "NW504",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000505",
+        "Name": "NORTHWOOD III APTS 505",
+        "Abbreviation": "NW505",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000506",
+        "Name": "NORTHWOOD III APTS 506",
+        "Abbreviation": "NW506",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000507",
+        "Name": "NORTHWOOD III APTS 507",
+        "Abbreviation": "NW507",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000508",
+        "Name": "NORTHWOOD III APTS 508",
+        "Abbreviation": "NW508",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000510",
+        "Name": "BAITS VERA I EATON HOUSE",
+        "Abbreviation": "VBEAT",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000511",
+        "Name": "BAITS VERA I LEE HOUSE",
+        "Abbreviation": "VBLEE",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000512",
+        "Name": "BAITS VERA I PARKER HOUSE",
+        "Abbreviation": "VBPRK",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000513",
+        "Name": "BAITS VERA I SMITH HOUSE",
+        "Abbreviation": "VBSMT",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000514",
+        "Name": "BAITS VERA I STANLEY HOUSE",
+        "Abbreviation": "VBSTN",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000515",
+        "Name": "BAITS VERA II COMAN HOUSE",
+        "Abbreviation": "VBCMN",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000516",
+        "Name": "BAITS VERA II CONGER HOUSE",
+        "Abbreviation": "VBCON",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000517",
+        "Name": "BAITS VERA II CROSS HOUSE",
+        "Abbreviation": "VBCRS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000518",
+        "Name": "BAITS VERA II THIEME HOUSE",
+        "Abbreviation": "VBTHM",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000519",
+        "Name": "BAITS VERA II ZIWET HOUSE",
+        "Abbreviation": "VBZWT",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000555",
+        "Name": "BURSLEY JOSEPH A & MARGUERITE K HALL",
+        "Abbreviation": "BURS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000600",
+        "Name": "NORTHWOOD COMMUNITY CENTER",
+        "Abbreviation": "FAMIL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000601",
+        "Name": "NORTHWOOD IV APTS 601",
+        "Abbreviation": "NW601",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000602",
+        "Name": "NORTHWOOD IV APTS 602",
+        "Abbreviation": "NW602",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000603",
+        "Name": "NORTHWOOD IV APTS 603",
+        "Abbreviation": "NW603",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000604",
+        "Name": "NORTHWOOD IV APTS 604",
+        "Abbreviation": "NW604",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000605",
+        "Name": "NORTHWOOD IV APTS 605",
+        "Abbreviation": "NW605",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000606",
+        "Name": "NORTHWOOD IV APTS 606",
+        "Abbreviation": "NW606",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000607",
+        "Name": "NORTHWOOD IV APTS 607",
+        "Abbreviation": "NW607",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000608",
+        "Name": "NORTHWOOD IV APTS 608",
+        "Abbreviation": "NW608",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000609",
+        "Name": "NORTHWOOD IV APTS 609",
+        "Abbreviation": "NW609",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000610",
+        "Name": "NORTHWOOD IV APTS 610",
+        "Abbreviation": "NW610",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000611",
+        "Name": "NORTHWOOD IV APTS 611",
+        "Abbreviation": "NW611",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000612",
+        "Name": "NORTHWOOD IV APTS 612",
+        "Abbreviation": "NW612",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000613",
+        "Name": "NORTHWOOD IV APTS 613",
+        "Abbreviation": "NW613",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000614",
+        "Name": "NORTHWOOD IV APTS 614",
+        "Abbreviation": "NW614",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000615",
+        "Name": "NORTHWOOD IV APTS 615",
+        "Abbreviation": "NW615",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000616",
+        "Name": "NORTHWOOD IV APTS 616",
+        "Abbreviation": "NW616",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000617",
+        "Name": "NORTHWOOD IV APTS 617",
+        "Abbreviation": "NW617",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000618",
+        "Name": "NORTHWOOD IV APTS 618",
+        "Abbreviation": "NW618",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000619",
+        "Name": "NORTHWOOD IV APTS 619",
+        "Abbreviation": "NW619",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000620",
+        "Name": "NORTHWOOD IV APTS 620",
+        "Abbreviation": "NW620",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000621",
+        "Name": "NORTHWOOD IV APTS 621",
+        "Abbreviation": "NW621",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000622",
+        "Name": "NORTHWOOD IV APTS 622",
+        "Abbreviation": "NW622",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000623",
+        "Name": "NORTHWOOD IV APTS 623",
+        "Abbreviation": "NW623",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000624",
+        "Name": "NORTHWOOD IV APTS 624",
+        "Abbreviation": "NW624",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000625",
+        "Name": "NORTHWOOD IV APTS 625",
+        "Abbreviation": "NW625",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000626",
+        "Name": "NORTHWOOD IV APTS 626",
+        "Abbreviation": "NW626",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000627",
+        "Name": "NORTHWOOD IV APTS 627",
+        "Abbreviation": "NW627",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000628",
+        "Name": "NORTHWOOD IV APTS 628",
+        "Abbreviation": "NW628",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000629",
+        "Name": "NORTHWOOD IV APTS 629",
+        "Abbreviation": "NW629",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000630",
+        "Name": "NORTHWOOD IV APTS 630",
+        "Abbreviation": "NW630",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000631",
+        "Name": "NORTHWOOD IV APTS 631",
+        "Abbreviation": "NW631",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000632",
+        "Name": "NORTHWOOD IV APTS 632",
+        "Abbreviation": "NW632",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000633",
+        "Name": "NORTHWOOD IV APTS 633",
+        "Abbreviation": "NW633",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000634",
+        "Name": "NORTHWOOD IV APTS 634",
+        "Abbreviation": "NW634",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000635",
+        "Name": "NORTHWOOD IV APTS 635",
+        "Abbreviation": "NW635",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000636",
+        "Name": "NORTHWOOD IV APTS 636",
+        "Abbreviation": "NW636",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000637",
+        "Name": "NORTHWOOD IV APTS 637",
+        "Abbreviation": "NW637",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000638",
+        "Name": "NORTHWOOD IV APTS 638",
+        "Abbreviation": "NW638",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000639",
+        "Name": "NORTHWOOD IV APTS 639",
+        "Abbreviation": "NW639",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000640",
+        "Name": "NORTHWOOD IV APTS 640",
+        "Abbreviation": "NW640",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000641",
+        "Name": "NORTHWOOD IV APTS 641",
+        "Abbreviation": "NW641",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000642",
+        "Name": "NORTHWOOD IV APTS 642",
+        "Abbreviation": "NW642",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000643",
+        "Name": "NORTHWOOD IV APTS 643",
+        "Abbreviation": "NW643",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000644",
+        "Name": "NORTHWOOD IV APTS 644",
+        "Abbreviation": "NW644",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000645",
+        "Name": "NORTHWOOD IV APTS 645",
+        "Abbreviation": "NW645",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000646",
+        "Name": "NORTHWOOD IV APTS 646",
+        "Abbreviation": "NW646",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000647",
+        "Name": "NORTHWOOD IV APTS 647",
+        "Abbreviation": "NW647",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000648",
+        "Name": "NORTHWOOD IV APTS 648",
+        "Abbreviation": "NW648",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000649",
+        "Name": "NORTHWOOD IV APTS 649",
+        "Abbreviation": "NW649",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000650",
+        "Name": "NORTHWOOD IV APTS 650",
+        "Abbreviation": "NW650",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000651",
+        "Name": "NORTHWOOD IV APTS 651",
+        "Abbreviation": "NW651",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000652",
+        "Name": "NORTHWOOD IV APTS 652",
+        "Abbreviation": "NW652",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000653",
+        "Name": "NORTHWOOD IV APTS 653",
+        "Abbreviation": "NW653",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000654",
+        "Name": "NORTHWOOD IV APTS 654",
+        "Abbreviation": "NW654",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000655",
+        "Name": "NORTHWOOD IV APTS 655",
+        "Abbreviation": "NW655",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000656",
+        "Name": "NORTHWOOD IV APTS 656",
+        "Abbreviation": "NW656",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000657",
+        "Name": "NORTHWOOD IV APTS 657",
+        "Abbreviation": "NW657",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000658",
+        "Name": "NORTHWOOD IV APTS 658",
+        "Abbreviation": "NW658",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000659",
+        "Name": "NORTHWOOD IV APTS 659",
+        "Abbreviation": "NW659",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000660",
+        "Name": "NORTHWOOD IV APTS 660",
+        "Abbreviation": "NW660",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000661",
+        "Name": "NORTHWOOD IV APTS 661",
+        "Abbreviation": "NW661",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000662",
+        "Name": "NORTHWOOD IV APTS 662",
+        "Abbreviation": "NW662",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000663",
+        "Name": "NORTHWOOD IV APTS 663",
+        "Abbreviation": "NW663",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000664",
+        "Name": "NORTHWOOD IV APTS 664",
+        "Abbreviation": "NW664",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000665",
+        "Name": "NORTHWOOD IV APTS 665",
+        "Abbreviation": "NW665",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000666",
+        "Name": "NORTHWOOD IV APTS 666",
+        "Abbreviation": "NW666",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000667",
+        "Name": "NORTHWOOD IV APTS 667",
+        "Abbreviation": "NW667",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000668",
+        "Name": "NORTHWOOD IV APTS 668",
+        "Abbreviation": "NW668",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000669",
+        "Name": "NORTHWOOD IV APTS 669",
+        "Abbreviation": "NW669",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000670",
+        "Name": "NORTHWOOD IV APTS 670",
+        "Abbreviation": "NW670",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000671",
+        "Name": "NORTHWOOD IV APTS 671",
+        "Abbreviation": "NW671",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000672",
+        "Name": "NORTHWOOD IV APTS 672",
+        "Abbreviation": "NW672",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000673",
+        "Name": "NORTHWOOD IV APTS 673",
+        "Abbreviation": "NW673",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000674",
+        "Name": "NORTHWOOD IV APTS 674",
+        "Abbreviation": "NW674",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000675",
+        "Name": "NORTHWOOD IV APTS 675",
+        "Abbreviation": "NW675",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000676",
+        "Name": "NORTHWOOD IV APTS 676",
+        "Abbreviation": "NW676",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000677",
+        "Name": "NORTHWOOD IV APTS 677",
+        "Abbreviation": "NW677",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000678",
+        "Name": "NORTHWOOD IV APTS 678",
+        "Abbreviation": "NW678",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000679",
+        "Name": "NORTHWOOD IV APTS 679",
+        "Abbreviation": "NW679",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000680",
+        "Name": "NORTHWOOD IV APTS 680",
+        "Abbreviation": "NW680",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000681",
+        "Name": "NORTHWOOD IV APTS 681",
+        "Abbreviation": "NW681",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000682",
+        "Name": "NORTHWOOD IV APTS 682",
+        "Abbreviation": "NW682",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000683",
+        "Name": "NORTHWOOD IV APTS 683",
+        "Abbreviation": "NW683",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000684",
+        "Name": "NORTHWOOD IV APTS 684",
+        "Abbreviation": "NW684",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1000700",
+        "Name": "CRISLER CENTER",
+        "Abbreviation": "CRIS",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000703",
+        "Name": "INDOOR TRACK BUILDING",
+        "Abbreviation": "T&TB",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000704",
+        "Name": "OOSTERBAAN BENNIE FIELD HOUSE",
+        "Abbreviation": "BOFH",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000705",
+        "Name": "SCHEMBECHLER GLENN E HALL",
+        "Abbreviation": "SCHEM",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000706",
+        "Name": "FERRY FIELD PUMP HOUSE",
+        "Abbreviation": "FFPMP",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000709",
+        "Name": "YOST ICE ARENA",
+        "Abbreviation": "YOST",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000710",
+        "Name": "COLISEUM",
+        "Abbreviation": "COLSM",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000711",
+        "Name": "MICHIGAN STADIUM",
+        "Abbreviation": "STADM",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000714",
+        "Name": "STADIUM PUMPING STATION",
+        "Abbreviation": "STPMP",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000718",
+        "Name": "CANHAM DONALD B NATATORIUM",
+        "Abbreviation": "CANHM",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000719",
+        "Name": "INTRAMURAL SPORTS BUILDING",
+        "Abbreviation": "IM",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000725",
+        "Name": "GOLF CLUBHOUSE",
+        "Abbreviation": "GCCHS",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000728",
+        "Name": "ELBEL FIELD LOCKER BUILDING",
+        "Abbreviation": "ELBEL",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000731",
+        "Name": "WEIDENBACH JOHN P HALL",
+        "Abbreviation": "WEIDN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000732",
+        "Name": "KEEN CLIFFORD P ARENA",
+        "Abbreviation": "KEEN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000733",
+        "Name": "FISHER RAY BASEBALL STADIUM",
+        "Abbreviation": "FISHR",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000737",
+        "Name": "GOLF COURSE CART SHED",
+        "Abbreviation": "GCSHD",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000738",
+        "Name": "TISCH PRESTON ROBERT TENNIS BLD",
+        "Abbreviation": "TENN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000739",
+        "Name": "GOLF COURSE PUMP HOUSE II",
+        "Abbreviation": "GCPH2",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000740",
+        "Name": "GOLF COURSE PUMP HOUSE I",
+        "Abbreviation": "GCPH1",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000741",
+        "Name": "GOLF COURSE GARAGE",
+        "Abbreviation": "GCGAR",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000742",
+        "Name": "CAMPUS SAFETY SERVICES BUILDING",
+        "Abbreviation": "CSSB",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000747",
+        "Name": "GOLF COURSE COMFORT STATION A",
+        "Abbreviation": "GCCSA",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000748",
+        "Name": "GOLF COURSE COMFORT STATION B",
+        "Abbreviation": "GCCSB",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000749",
+        "Name": "GOLF COURSE PRACTICE RANGE BLDG",
+        "Abbreviation": "GCPR",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000799",
+        "Name": "BUHR BUILDING",
+        "Abbreviation": "BUHR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000800",
+        "Name": "FACILITIES SERVICES BUILDING A",
+        "Abbreviation": "FSB A",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000801",
+        "Name": "FACILITIES SERVICES BUILDING B",
+        "Abbreviation": "FSB B",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000802",
+        "Name": "FACILITIES SERVICES BUILDING C",
+        "Abbreviation": "FSB C",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000803",
+        "Name": "ATHLETIC CAMPUS SWITCH STATION",
+        "Abbreviation": "ATHSS",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000804",
+        "Name": "HOOVER ANNEX",
+        "Abbreviation": "HVRAN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000805",
+        "Name": "HOOVER AVE HEATING PLANT",
+        "Abbreviation": "HVRHP",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000807",
+        "Name": "PHYSICAL PROPERTIES BUILDING",
+        "Abbreviation": "PHSPR",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000808",
+        "Name": "TRANSPORTATION SERVICES BUILDING",
+        "Abbreviation": "TRNSV",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000810",
+        "Name": "GAS PAD STORAGE BUILDING",
+        "Abbreviation": "GASPS",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000812",
+        "Name": "VARSITY DRIVE BUILDING",
+        "Abbreviation": "VARDR",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000813",
+        "Name": "REVELLI WILLIAM D BAND REHEARSAL HALL",
+        "Abbreviation": "REVEL",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000814",
+        "Name": "INSTITUTE OF CONTINUING LEGAL ED",
+        "Abbreviation": "ICLE",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000815",
+        "Name": "ADMINISTRATIVE SERVICES",
+        "Abbreviation": "ADSRV",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000816",
+        "Name": "1032 GREENE BUILDING",
+        "Abbreviation": "GRN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1000819",
+        "Name": "MICHIGAN SQUARE",
+        "Abbreviation": "MI SQ",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000829",
+        "Name": "1322 WILMOT",
+        "Abbreviation": "WLMT",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000830",
+        "Name": "ARGUS BUILDING I",
+        "Abbreviation": "ARG1",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000831",
+        "Name": "ARGUS BUILDING II",
+        "Abbreviation": "ARG2",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000832",
+        "Name": "ARGUS BUILDING III",
+        "Abbreviation": "ARG3",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000837",
+        "Name": "HURON BANK",
+        "Abbreviation": "HBANK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000841",
+        "Name": "COMMUNITY DENTISTRY",
+        "Abbreviation": "C-DEN",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000851",
+        "Name": "KINESIOLOGY BUILDING",
+        "Abbreviation": "OBL",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1000854",
+        "Name": "CARVER BUILDING",
+        "Abbreviation": "CARVR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000858",
+        "Name": "MADISON BUILDING",
+        "Abbreviation": "MADSN",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000861",
+        "Name": "INGLIS HOUSE",
+        "Abbreviation": "INGHS",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000862",
+        "Name": "INGLIS CARETAKERS RESIDENCE",
+        "Abbreviation": "INGRE",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000863",
+        "Name": "INGLIS PEACOCK HOUSE",
+        "Abbreviation": "INGPH",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000864",
+        "Name": "INGLIS STORAGE BUILDING",
+        "Abbreviation": "INGSB",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000865",
+        "Name": "INGLIS WELL HOUSE",
+        "Abbreviation": "INGWL",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000866",
+        "Name": "INGLIS ROOT CELLAR",
+        "Abbreviation": "INGRS",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000867",
+        "Name": "INGLIS GREENHOUSE AND GARAGE",
+        "Abbreviation": "INGGH",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000868",
+        "Name": "INGLIS GREENHOUSE #2",
+        "Abbreviation": "INGG2",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000869",
+        "Name": "HURON TOWERS",
+        "Abbreviation": "HURTW",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000871",
+        "Name": "BRADFORD BUILDING",
+        "Abbreviation": "BRADF",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000878",
+        "Name": "CITY CENTER BUILDING",
+        "Abbreviation": "CTYCT",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000879",
+        "Name": "555 SOUTH FOREST BUILDING",
+        "Abbreviation": "555 F",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000880",
+        "Name": "BOYER BUILDING",
+        "Abbreviation": "BOYER",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000885",
+        "Name": "1736 BROADWAY HOUSE",
+        "Abbreviation": "1736H",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000886",
+        "Name": "TROTTER WILLIAM MONROE HOUSE",
+        "Abbreviation": "TROTR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000887",
+        "Name": "LIBERTY CENTRE",
+        "Abbreviation": "LIBCT",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000890",
+        "Name": "PERRY BUILDING",
+        "Abbreviation": "PERRY",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000891",
+        "Name": "1736 BROADWAY GARAGE",
+        "Abbreviation": "1736G",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1000897",
+        "Name": "HEALTH MANAGEMENT RESEARCH",
+        "Abbreviation": "PPA",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1000918",
+        "Name": "RADRICK FARMS DRIVE RANGE SHELT",
+        "Abbreviation": "RFDRS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000942",
+        "Name": "SHEEP RESEARCH FAC PORTAL VISTA",
+        "Abbreviation": "SRPRT",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000943",
+        "Name": "SHEEP RESEARCH FAC SQUARE DOME",
+        "Abbreviation": "SRSQD",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000944",
+        "Name": "SHEEP RESEARCH FAC EAST BARN",
+        "Abbreviation": "SREBN",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000946",
+        "Name": "SHEEP RESEARCH FACILITY P BARN 1",
+        "Abbreviation": "SRBN1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000947",
+        "Name": "SHEEP RESEARCH FACILITY HAY BARN",
+        "Abbreviation": "SRHAY",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000950",
+        "Name": "RADRICK FARMS POOL HOUSE",
+        "Abbreviation": "RFPHS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000953",
+        "Name": "RADRICK FARMS RECREATION FACILTY",
+        "Abbreviation": "RFREC",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000954",
+        "Name": "RADRICK FARMS PUMP HOUSE",
+        "Abbreviation": "RFPMP",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000955",
+        "Name": "RADRICK FARMS CARETAKERS HOUSE",
+        "Abbreviation": "RFCT",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000956",
+        "Name": "RADRICK FARMS SHED-GARAGE",
+        "Abbreviation": "RFSHD",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000957",
+        "Name": "RADRICK FARMS TACKROOM-BARN",
+        "Abbreviation": "RFTAK",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000958",
+        "Name": "RADRICK FARMS CHICKEN HOUSE",
+        "Abbreviation": "RFCHK",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000959",
+        "Name": "RADRICK FARMS CORNCRIB #1",
+        "Abbreviation": "RFCC1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000960",
+        "Name": "RADRICK FARMS FOOD SERVICE BLDG",
+        "Abbreviation": "RFFOD",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000962",
+        "Name": "RADRICK FARMS FIRE BARN",
+        "Abbreviation": "RFFRB",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000963",
+        "Name": "RADRICK FARMS GOLF CLUBHOUSE",
+        "Abbreviation": "RFGCH",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000970",
+        "Name": "RADRICK FARMS COMFORT STATION",
+        "Abbreviation": "RFCST",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000971",
+        "Name": "RADRICK FARMS GOLF STORAGE BLDG",
+        "Abbreviation": "RFGSB",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000972",
+        "Name": "RADRICK FARMS BARN #1",
+        "Abbreviation": "RFBN1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000973",
+        "Name": "SHEEP RESEARCH FACILITY OLD BARN",
+        "Abbreviation": "SROLD",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000974",
+        "Name": "RADRICK FARMS GOLF CART BUILDING",
+        "Abbreviation": "RFGCT",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000976",
+        "Name": "MATT BOT GNDS HOUSE",
+        "Abbreviation": "BGGHS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000978",
+        "Name": "MATTHAEI BOT GDNS NORTH BARN #2",
+        "Abbreviation": "BGBN2",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000979",
+        "Name": "MATTHAEI BOT GDNS NORTH BARN #1",
+        "Abbreviation": "BGBN1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000980",
+        "Name": "MATTHAEI BOT GDNS STORAGE BLDG",
+        "Abbreviation": "BGSTG",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000981",
+        "Name": "MATTHAEI BOT GDNS UTILITY-BOILER",
+        "Abbreviation": "BGUTL",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000982",
+        "Name": "MATTHAEI BOT GDNS RESEARCH-ADMIN",
+        "Abbreviation": "BGRES",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000983",
+        "Name": "MATTHAEI BOT GDNS GREENHOUSE #1",
+        "Abbreviation": "BGGH1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000984",
+        "Name": "MATTHAEI BOT GDNS GREENHOUSE #2",
+        "Abbreviation": "BGGH2",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000985",
+        "Name": "MATTHAEI BOT GDNS SUPT RESIDENCE",
+        "Abbreviation": "BGSRS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000986",
+        "Name": "MATTHAEI BOT GDNS ENVIRONMENT",
+        "Abbreviation": "BG EN",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000987",
+        "Name": "MATTHAEI BOT GDNS SCREENHOUSE #1",
+        "Abbreviation": "BGSH",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000988",
+        "Name": "MATTHAEI BOT GDNS GREENHOUSE #3",
+        "Abbreviation": "BGGH3",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000989",
+        "Name": "MATTHAEI BOT GDNS GREENHOUSE #4",
+        "Abbreviation": "BGGH4",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000990",
+        "Name": "MATTHAEI BOT GDNS GREENHOUSE #5",
+        "Abbreviation": "BGGH5",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000991",
+        "Name": "MATTHAEI BOT GDNS EXHIB GRN HSE",
+        "Abbreviation": "BGEXH",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000992",
+        "Name": "MATTHAEI BOT GDNS REPTILE HSE",
+        "Abbreviation": "BGREP",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000994",
+        "Name": "MATTHAEI BOT GDNS INSTR SHELTER",
+        "Abbreviation": "BGINS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1000999",
+        "Name": "SEISMOGRAPH STATION",
+        "Abbreviation": "SEISM",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001004",
+        "Name": "DEARBORN FAIR LANE COTTAGE NORTH 2",
+        "Abbreviation": "FLCN",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001005",
+        "Name": "DEARBORN FAIR LANE COTTAGE EAST 3",
+        "Abbreviation": "FLCE",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001006",
+        "Name": "DEARBORN FAIR LANE COTTAGE SOUTH 1",
+        "Abbreviation": "FLCS",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001008",
+        "Name": "DEARBORN FAIR LANE PONY BARN",
+        "Abbreviation": "FLPB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001009",
+        "Name": "DEARBORN SCIENCE BUILDING",
+        "Abbreviation": "SB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001011",
+        "Name": "DEARBORN COMPUTER INFORMATION SCIENCE",
+        "Abbreviation": "CIS",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001012",
+        "Name": "DEARBORN ADMINISTRATION BLDG",
+        "Abbreviation": "AB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001013",
+        "Name": "DEARBORN ENGINEERING LAB BLDG",
+        "Abbreviation": "ELB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001014",
+        "Name": "DEARBORN FUEL MIXING BUILDING",
+        "Abbreviation": "FMB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001015",
+        "Name": "DEARBORN ACADEMIC SUPPORT CENTER",
+        "Abbreviation": "ASC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001016",
+        "Name": "DEARBORN MONTEITH PARKING STRUCTURE",
+        "Abbreviation": "MPS",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001017",
+        "Name": "DEARBORN FIELDHOUSE AND WELLNESS CENTER",
+        "Abbreviation": "FHWC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001018",
+        "Name": "DEARBORN REC AND ORGANIZATION CTR",
+        "Abbreviation": "ROC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001019",
+        "Name": "DEARBORN CHANCELLORS RESIDENCE",
+        "Abbreviation": "CHRES",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001020",
+        "Name": "DEARBORN CASL ANNEX",
+        "Abbreviation": "CA",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001047",
+        "Name": "DEARBORN KINDERGARTEN MODULE",
+        "Abbreviation": "KM",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001060",
+        "Name": "DEARBORN UNIVERSITY CENTER",
+        "Abbreviation": "UC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001065",
+        "Name": "DEARBORN MARDIGIAN LIBRARY",
+        "Abbreviation": "ML",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001070",
+        "Name": "DEARBORN MFG SYSTEMS ENGIN LAB",
+        "Abbreviation": "MSEL",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001073",
+        "Name": "DEARBORN GROUNDS BUILDING",
+        "Abbreviation": "GB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001074",
+        "Name": "DEARBORN CAMPUS SUPPORT SERVICES",
+        "Abbreviation": "CSS",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001075",
+        "Name": "DEARBORN PRECHTER H C ENGINEERING COMPLEX",
+        "Abbreviation": "HPEC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001076",
+        "Name": "DEARBORN ENVIRONMENTAL INTERPRETIVE CENTER",
+        "Abbreviation": "EIC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001077",
+        "Name": "DEARBORN SOCIAL SCIENCES BUILDING",
+        "Abbreviation": "SSB",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001078",
+        "Name": "DEARBORN PROFESSIONAL EDUCATION CENTER",
+        "Abbreviation": "PEC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001079",
+        "Name": "DEARBORN SB COMPUTING WING",
+        "Abbreviation": "CW",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001080",
+        "Name": "DEARBORN COLLEGE OF ARTS SCIENCE LETTERS",
+        "Abbreviation": "CASL",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1001450",
+        "Name": "MCGRAW HILL OBSERV BUILDING 1.3",
+        "Abbreviation": "MCH13",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001451",
+        "Name": "MCGRAW HILL OBSERV SERVICE BLDG",
+        "Abbreviation": "MCHSV",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001452",
+        "Name": "MCGRAW HILL OBSERV STORAGE BLDG",
+        "Abbreviation": "MCHST",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001453",
+        "Name": "MCGRAW HILL OBSERV BUILDING 2.4",
+        "Abbreviation": "MCH24",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001501",
+        "Name": "RACKHAM HORACE H EDUCATIONAL MEMORIAL",
+        "Abbreviation": "RCMED",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001505",
+        "Name": "86 ELIOT ST",
+        "Abbreviation": "86ELI",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1001606",
+        "Name": "FLINT ROSS HOUSE",
+        "Abbreviation": "FROSS",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001630",
+        "Name": "FLINT WM R MURCHIE SCIENCE BLDG",
+        "Abbreviation": "FSCI",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001633",
+        "Name": "FLINT PLANT SERVICES BUILDING",
+        "Abbreviation": "FPLTS",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001649",
+        "Name": "FLINT THOMPSON FRANCES W LIBRARY",
+        "Abbreviation": "FLIB",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001650",
+        "Name": "FLINT DAVID M FRENCH HALL",
+        "Abbreviation": "FFRNC",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001651",
+        "Name": "FLINT HARRISON PARKING RAMP",
+        "Abbreviation": "FHAPK",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001652",
+        "Name": "FLINT MILL STREET PARKING STRUCTURE",
+        "Abbreviation": "FMILL",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001660",
+        "Name": "FLINT CENTRAL ENERGY PLANT",
+        "Abbreviation": "FENRG",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001662",
+        "Name": "FLINT UNIVERSITY PAVILION",
+        "Abbreviation": "FPAVL",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001663",
+        "Name": "FLINT WATER STREET PARKING STRUCTURE",
+        "Abbreviation": "FWATR",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001664",
+        "Name": "FLINT UNIV PAVILION ANNEX",
+        "Abbreviation": "FPANX",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001670",
+        "Name": "FLINT HARDING MOTT UNIV CENTER",
+        "Abbreviation": "FMOTC",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001671",
+        "Name": "FLINT RECREATION BUILDING",
+        "Abbreviation": "F REC",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1001694",
+        "Name": "FLINT WILLIAM S WHITE BUILDING",
+        "Abbreviation": "FWHIT",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1002201",
+        "Name": "WILLOW RUN OPERATIONS",
+        "Abbreviation": "WROPR",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002204",
+        "Name": "WILLOW RUN POWERHOUSE",
+        "Abbreviation": "WRPH",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002205",
+        "Name": "WILLOW RUN AUTO MAINTENANCE SHOP",
+        "Abbreviation": "WRAMS",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002206",
+        "Name": "WILLOW RUN SEWAGE PUMP STATION",
+        "Abbreviation": "WRSPS",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002207",
+        "Name": "WILLOW RUN MAINTENANCE SHOP",
+        "Abbreviation": "WRMNT",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002209",
+        "Name": "WILLOW RUN SUPPLY #9",
+        "Abbreviation": "WRSP9",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002214",
+        "Name": "WILLOW RUN RECREATION BUILDING",
+        "Abbreviation": "WRREC",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002227",
+        "Name": "WILLOW RUN OFFICER QRTRS #27",
+        "Abbreviation": "WR27",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002235",
+        "Name": "WILLOW RUN WATER METER VAULT",
+        "Abbreviation": "WRWTR",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002236",
+        "Name": "WILLOW RUN ELECTRIC METER HOUSE",
+        "Abbreviation": "WREMH",
+        "Campus": "Willow Run"
+      },
+      {
+        "ID": "1002500",
+        "Name": "MITCHELL FIELD BUILDING",
+        "Abbreviation": "MITCH",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002501",
+        "Name": "AUXILIARY SERVICES BUILDING 1",
+        "Abbreviation": "AUXS1",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002502",
+        "Name": "AUXILIARY SERVICES BUILDING 2",
+        "Abbreviation": "AUXS2",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002505",
+        "Name": "ENGINEERING RESEARCH SUPPORT BLD",
+        "Abbreviation": "ERSB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002506",
+        "Name": "NORTH CAMPUS FACILITIES SERVICES BUILDING",
+        "Abbreviation": "NCFSB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002514",
+        "Name": "NORTH CAMPUS GROUND SVC FACILITY",
+        "Abbreviation": "NDGSF",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002515",
+        "Name": "TELECOMMUNICATIONS BLDG I",
+        "Abbreviation": "TELE1",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002517",
+        "Name": "NORTH CAMPUS MICROWAVE TOWER",
+        "Abbreviation": "NCTWR",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002518",
+        "Name": "NC BEAL-CRAM SWITCH GEAR",
+        "Abbreviation": "NCBCS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002519",
+        "Name": "UM TRANS RES FLAMMABLE STOR BLDG",
+        "Abbreviation": "UMTFS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002701",
+        "Name": "NORTHWOOD V APTS 2701",
+        "Abbreviation": "N2701",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002702",
+        "Name": "NORTHWOOD V APTS 2702",
+        "Abbreviation": "N2702",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002703",
+        "Name": "NORTHWOOD V APTS 2703",
+        "Abbreviation": "N2703",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002704",
+        "Name": "NORTHWOOD V APTS 2704",
+        "Abbreviation": "N2704",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002705",
+        "Name": "NORTHWOOD V APTS 2705",
+        "Abbreviation": "N2705",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002706",
+        "Name": "NORTHWOOD V APTS 2706",
+        "Abbreviation": "N2706",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002707",
+        "Name": "NORTHWOOD V APTS 2707",
+        "Abbreviation": "N2707",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002708",
+        "Name": "NORTHWOOD V APTS 2708",
+        "Abbreviation": "N2708",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002709",
+        "Name": "NORTHWOOD V APTS 2709",
+        "Abbreviation": "N2709",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002710",
+        "Name": "NORTHWOOD V APTS 2710",
+        "Abbreviation": "N2710",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002711",
+        "Name": "NORTHWOOD V APTS 2711",
+        "Abbreviation": "N2711",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002712",
+        "Name": "NORTHWOOD V APTS 2712",
+        "Abbreviation": "N2712",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002713",
+        "Name": "NORTHWOOD V APTS 2713",
+        "Abbreviation": "N2713",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002714",
+        "Name": "NORTHWOOD V APTS 2714",
+        "Abbreviation": "N2714",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002715",
+        "Name": "NORTHWOOD V APTS 2715",
+        "Abbreviation": "N2715",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002716",
+        "Name": "NORTHWOOD V APTS 2716",
+        "Abbreviation": "N2716",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002717",
+        "Name": "NORTHWOOD V APTS 2717",
+        "Abbreviation": "N2717",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002718",
+        "Name": "NORTHWOOD V APTS 2718",
+        "Abbreviation": "N2718",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002719",
+        "Name": "NORTHWOOD V APTS 2719",
+        "Abbreviation": "N2719",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002720",
+        "Name": "NORTHWOOD V APTS 2720",
+        "Abbreviation": "N2720",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002721",
+        "Name": "NORTHWOOD V APTS 2721",
+        "Abbreviation": "N2721",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002722",
+        "Name": "NORTHWOOD V APTS 2722",
+        "Abbreviation": "N2722",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002723",
+        "Name": "NORTHWOOD V APTS 2723",
+        "Abbreviation": "N2723",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002724",
+        "Name": "NORTHWOOD V APTS 2724",
+        "Abbreviation": "N2724",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002725",
+        "Name": "NORTHWOOD V APTS 2725",
+        "Abbreviation": "N2725",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002726",
+        "Name": "NORTHWOOD V APTS 2726",
+        "Abbreviation": "N2726",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002727",
+        "Name": "NORTHWOOD V APTS 2727",
+        "Abbreviation": "N2727",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002728",
+        "Name": "NORTHWOOD V APTS 2728",
+        "Abbreviation": "N2728",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002729",
+        "Name": "NORTHWOOD V APTS 2729",
+        "Abbreviation": "N2729",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002730",
+        "Name": "NORTHWOOD V APTS 2730",
+        "Abbreviation": "N2730",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002731",
+        "Name": "NORTHWOOD V APTS 2731",
+        "Abbreviation": "N2731",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002732",
+        "Name": "NORTHWOOD V APTS 2732",
+        "Abbreviation": "N2732",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002733",
+        "Name": "NORTHWOOD V APTS 2733",
+        "Abbreviation": "N2733",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002734",
+        "Name": "NORTHWOOD V APTS 2734",
+        "Abbreviation": "N2734",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002735",
+        "Name": "NORTHWOOD V APTS 2735",
+        "Abbreviation": "N2735",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002736",
+        "Name": "NORTHWOOD V APTS 2736",
+        "Abbreviation": "N2736",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002737",
+        "Name": "NORTHWOOD V APTS 2737",
+        "Abbreviation": "N2737",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002738",
+        "Name": "NORTHWOOD V APTS 2738",
+        "Abbreviation": "N2738",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002739",
+        "Name": "NORTHWOOD V APTS 2739",
+        "Abbreviation": "N2739",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002740",
+        "Name": "NORTHWOOD V APTS 2740",
+        "Abbreviation": "N2740",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002741",
+        "Name": "NORTHWOOD V APTS 2741",
+        "Abbreviation": "N2741",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002742",
+        "Name": "NORTHWOOD V APTS 2742",
+        "Abbreviation": "N2742",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002743",
+        "Name": "NORTHWOOD V APTS 2743",
+        "Abbreviation": "N2743",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002744",
+        "Name": "NORTHWOOD V APTS 2744",
+        "Abbreviation": "N2744",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002745",
+        "Name": "NORTHWOOD V APTS 2745",
+        "Abbreviation": "N2745",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002746",
+        "Name": "NORTHWOOD V APTS 2746",
+        "Abbreviation": "N2746",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002747",
+        "Name": "NORTHWOOD V APTS 2747",
+        "Abbreviation": "N2747",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002748",
+        "Name": "NORTHWOOD V APTS 2748",
+        "Abbreviation": "N2748",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002749",
+        "Name": "NORTHWOOD V APTS 2749",
+        "Abbreviation": "N2749",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002750",
+        "Name": "NORTHWOOD V APTS 2750",
+        "Abbreviation": "N2750",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002751",
+        "Name": "NORTHWOOD V APTS 2751",
+        "Abbreviation": "N2751",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002752",
+        "Name": "NORTHWOOD V APTS 2752",
+        "Abbreviation": "N2752",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002753",
+        "Name": "NORTHWOOD V APTS 2753",
+        "Abbreviation": "N2753",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002754",
+        "Name": "NORTHWOOD V APTS 2754",
+        "Abbreviation": "N2754",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002755",
+        "Name": "NORTHWOOD V APTS 2755",
+        "Abbreviation": "N2755",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002756",
+        "Name": "NORTHWOOD V APTS 2756",
+        "Abbreviation": "N2756",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002757",
+        "Name": "NORTHWOOD V APTS 2757",
+        "Abbreviation": "N2757",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002758",
+        "Name": "NORTHWOOD V APTS 2758",
+        "Abbreviation": "N2758",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002759",
+        "Name": "NORTHWOOD V APTS 2759",
+        "Abbreviation": "N2759",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002760",
+        "Name": "NORTHWOOD V APTS 2760",
+        "Abbreviation": "N2760",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002761",
+        "Name": "NORTHWOOD V APTS 2761",
+        "Abbreviation": "N2761",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002762",
+        "Name": "NORTHWOOD V APTS 2762",
+        "Abbreviation": "N2762",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002763",
+        "Name": "NORTHWOOD V APTS 2763",
+        "Abbreviation": "N2763",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002764",
+        "Name": "NORTHWOOD V APTS 2764",
+        "Abbreviation": "N2764",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002765",
+        "Name": "NORTHWOOD V APTS 2765",
+        "Abbreviation": "N2765",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002766",
+        "Name": "NORTHWOOD V APTS 2766",
+        "Abbreviation": "N2766",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002767",
+        "Name": "NORTHWOOD V APTS 2767",
+        "Abbreviation": "N2767",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002768",
+        "Name": "NORTHWOOD V APTS 2768",
+        "Abbreviation": "N2768",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002769",
+        "Name": "NORTHWOOD V APTS 2769",
+        "Abbreviation": "N2769",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002770",
+        "Name": "NORTHWOOD V APTS 2770",
+        "Abbreviation": "N2770",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002771",
+        "Name": "NORTHWOOD V APTS 2771",
+        "Abbreviation": "N2771",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002772",
+        "Name": "NORTHWOOD V APTS 2772",
+        "Abbreviation": "N2772",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002773",
+        "Name": "NORTHWOOD V APTS 2773",
+        "Abbreviation": "N2773",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002774",
+        "Name": "NORTHWOOD V APTS 2774",
+        "Abbreviation": "N2774",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002775",
+        "Name": "NORTHWOOD V APTS 2775",
+        "Abbreviation": "N2775",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002776",
+        "Name": "NORTHWOOD V APTS 2776",
+        "Abbreviation": "N2776",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002777",
+        "Name": "NORTHWOOD V APTS 2777",
+        "Abbreviation": "N2777",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002778",
+        "Name": "NORTHWOOD V APTS 2778",
+        "Abbreviation": "N2778",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1002779",
+        "Name": "NORTHWOOD V APTS 2779",
+        "Abbreviation": "N2779",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1003410",
+        "Name": "STINCHFIELD WOODS STORAGE BLD #1",
+        "Abbreviation": "SWST1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003411",
+        "Name": "STINCHFIELD WOODS RESIDENCE",
+        "Abbreviation": "SWRES",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003412",
+        "Name": "STINCHFIELD WOODS MEETING BLDG",
+        "Abbreviation": "STWDS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003413",
+        "Name": "STINCHFIELD WOODS STORAGE BLD #2",
+        "Abbreviation": "SWST2",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003414",
+        "Name": "RADIO BROADCASTING STATION",
+        "Abbreviation": "RDOST",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003416",
+        "Name": "RADIO BROADCASTING ST PUMP HOUSE",
+        "Abbreviation": "RADPM",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003420",
+        "Name": "PORTAGE LK OBSERV 28 FT R T BUILDING",
+        "Abbreviation": "PL28",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003421",
+        "Name": "PORTAGE LK OBSERV RECEIVER BUILDING",
+        "Abbreviation": "PLREC",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003423",
+        "Name": "PORTAGE LK OBSERV 85 FT R T BUILDING",
+        "Abbreviation": "PL85",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003424",
+        "Name": "PORTAGE LK TOOL STG TRAILR",
+        "Abbreviation": "PLSTG",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003425",
+        "Name": "PORTAGE LK OBSERV 24 IN O T BUILDING",
+        "Abbreviation": "PL24",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003426",
+        "Name": "PORTAGE LK OBSERV STORAGE WORKSHOP",
+        "Abbreviation": "PLWKS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003501",
+        "Name": "BASE LINE LAKE FARM HOUSE",
+        "Abbreviation": "BLHSE",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003502",
+        "Name": "BASE LINE LAKE FARM GARAGE SHOP #1",
+        "Abbreviation": "BLGR1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003511",
+        "Name": "BASE LINE LAKE FARM STORAGE SHOP",
+        "Abbreviation": "BLSSH",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1003541",
+        "Name": "SAGINAW FOREST RESIDENCE",
+        "Abbreviation": "SFRES",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1003542",
+        "Name": "SAGINAW FOREST GARAGE",
+        "Abbreviation": "SFGAR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1003546",
+        "Name": "ATH DEPT CREW BOATHOUSE FACILITY",
+        "Abbreviation": "ACBH",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1004001",
+        "Name": "BIOLOGICAL ST DINING ADMIN",
+        "Abbreviation": "B S D",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004002",
+        "Name": "BIOLOGICAL ST G R LARUE LIBRARY",
+        "Abbreviation": "BSLIB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004004",
+        "Name": "BIOLOGICAL ST CARPENTER SHOP",
+        "Abbreviation": "BSCPT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004005",
+        "Name": "BIOLOGICAL ST FOREST LABORATORY",
+        "Abbreviation": "BSFOR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004006",
+        "Name": "BIOLOGICAL ST PUMP SHED",
+        "Abbreviation": "BSPS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004007",
+        "Name": "BIOLOGICAL ST HILLTOP HOUSE II",
+        "Abbreviation": "BSHH2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004008",
+        "Name": "BIOLOGICAL ST GARAGE",
+        "Abbreviation": "BSGAR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004009",
+        "Name": "BIOLOGICAL ST HILLTOP HOUSE I",
+        "Abbreviation": "BSHH1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004010",
+        "Name": "BIOLOGICAL ST CORT LABORATORY",
+        "Abbreviation": "BSCRT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004011",
+        "Name": "BIOLOGICAL ST HOUGHTON LAB",
+        "Abbreviation": "BSHTN",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004012",
+        "Name": "BIOLOGICAL ST WELCH LABORATORY",
+        "Abbreviation": "BSWCH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004013",
+        "Name": "BIOLOGICAL ST HUNGERFORD LAB",
+        "Abbreviation": "BSHGR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004014",
+        "Name": "BIOLOGICAL ST STORAGE",
+        "Abbreviation": "BSSTR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004015",
+        "Name": "BIOLOGICAL ST PETTINGILL LAB",
+        "Abbreviation": "BSPET",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004016",
+        "Name": "BIOLOGICAL ST BLANCHARD",
+        "Abbreviation": "BSBLA",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004017",
+        "Name": "BIOLOGICAL ST REIGHARD LAB",
+        "Abbreviation": "BSREI",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004018",
+        "Name": "BIOLOGICAL ST CREASER LAB",
+        "Abbreviation": "BSCRE",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004019",
+        "Name": "BIOLOGICAL ST NEWCOMBE LAB",
+        "Abbreviation": "BSNEW",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004020",
+        "Name": "BIOLOGICAL ST NICHOLS LAB",
+        "Abbreviation": "BSNIC",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004021",
+        "Name": "BIOLOGICAL ST CHEMICAL STORAGE",
+        "Abbreviation": "BSCMS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004022",
+        "Name": "BIOLOGICAL ST ASST SUPERINTEN HS",
+        "Abbreviation": "BSASP",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004023",
+        "Name": "BIOLOGICAL ST WOMENS LDRY-SHOWER",
+        "Abbreviation": "BSWSH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004024",
+        "Name": "BIOLOGICAL ST COOLERS BOILER",
+        "Abbreviation": "BSCLB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004025",
+        "Name": "BIOLOGICAL ST RESTROOM-SHOWER",
+        "Abbreviation": "BSRRS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004026",
+        "Name": "BIOLOGICAL ST CABIN ES18AB",
+        "Abbreviation": "ES18A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004027",
+        "Name": "BIOLOGICAL ST CABIN ES23",
+        "Abbreviation": "ES23",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004028",
+        "Name": "BIOLOGICAL ST MENS BATHHOUSE",
+        "Abbreviation": "BSMBH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004029",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES29",
+        "Abbreviation": "ES29",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004030",
+        "Name": "BIOLOGICAL ST MGR HOUSE ES27",
+        "Abbreviation": "ES27",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004031",
+        "Name": "BIOLOGICAL ST FOREST COTT ES25",
+        "Abbreviation": "ES25",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004032",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES40",
+        "Abbreviation": "ES40",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004033",
+        "Name": "BIOLOGICAL ST SAWMILL STORAGE",
+        "Abbreviation": "BSSAW",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004034",
+        "Name": "BIOLOGICAL ST STORAGE SHED #1",
+        "Abbreviation": "BSST1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004035",
+        "Name": "BIOLOGICAL ST CABIN UDE 2",
+        "Abbreviation": "UDE2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004036",
+        "Name": "BIOLOGICAL ST CABIN UDE 3",
+        "Abbreviation": "UDE3",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004038",
+        "Name": "BIOLOGICAL ST RES BIOLOGIST HSE",
+        "Abbreviation": "BSRHS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004039",
+        "Name": "BIOLOGICAL ST SPARROW LAB",
+        "Abbreviation": "BSSPA",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004040",
+        "Name": "BIOLOGICAL ST TOILET",
+        "Abbreviation": "BSTLT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004042",
+        "Name": "BIOLOGICAL ST SCIENTIST RES",
+        "Abbreviation": "BSSIR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004045",
+        "Name": "BIOLOGICAL ST STORAGE A3",
+        "Abbreviation": "BSST3",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004048",
+        "Name": "BIOLOGICAL ST SUPERINTENDENT HSE",
+        "Abbreviation": "BSSPH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004049",
+        "Name": "BIOLOGICAL ST CABIN WS15",
+        "Abbreviation": "WS15",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004054",
+        "Name": "BIOLOGICAL ST STREAMSIDE LAB",
+        "Abbreviation": "BSSTL",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004055",
+        "Name": "BIOLOGICAL ST RES GREENHOUSE",
+        "Abbreviation": "BSGHR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004058",
+        "Name": "BIOLOGICAL ST SOIL BIOTRON",
+        "Abbreviation": "BSSOL",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004060",
+        "Name": "BIOLOGICAL ST CABIN UDW28",
+        "Abbreviation": "UDW28",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004061",
+        "Name": "BIOLOGICAL ST CABIN UDW26",
+        "Abbreviation": "UDW26",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004062",
+        "Name": "BIOLOGICAL ST CABIN UDW24",
+        "Abbreviation": "UDW24",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004063",
+        "Name": "BIOLOGICAL ST CABIN UDW22",
+        "Abbreviation": "UDW22",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004064",
+        "Name": "BIOLOGICAL ST CABIN UDW20",
+        "Abbreviation": "UDW20",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004065",
+        "Name": "BIOLOGICAL ST CABIN UDW18",
+        "Abbreviation": "UDW18",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004066",
+        "Name": "BIOLOGICAL ST CABIN UDW16",
+        "Abbreviation": "UDW16",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004067",
+        "Name": "BIOLOGICAL ST CABIN UDW14",
+        "Abbreviation": "UDW14",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004068",
+        "Name": "BIOLOGICAL ST CABIN UDW12",
+        "Abbreviation": "UDW12",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004069",
+        "Name": "BIOLOGICAL ST CABIN UDW10",
+        "Abbreviation": "UDW10",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004070",
+        "Name": "BIOLOGICAL ST CABIN UDW8",
+        "Abbreviation": "UDW8",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004071",
+        "Name": "BIOLOGICAL ST CABIN UDW6",
+        "Abbreviation": "UDW6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004072",
+        "Name": "BIOLOGICAL ST CABIN UDW4",
+        "Abbreviation": "UDW4",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004073",
+        "Name": "BIOLOGICAL ST CABIN UDW2",
+        "Abbreviation": "UDW2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004074",
+        "Name": "BIOLOGICAL ST CABIN UDW23",
+        "Abbreviation": "UDW23",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004075",
+        "Name": "BIOLOGICAL ST CABIN UDW21",
+        "Abbreviation": "UDW21",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004076",
+        "Name": "BIOLOGICAL ST CABIN UDW19",
+        "Abbreviation": "UDW19",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004077",
+        "Name": "BIOLOGICAL ST CABIN UDW17",
+        "Abbreviation": "UDW17",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004078",
+        "Name": "BIOLOGICAL ST CABIN UDW15",
+        "Abbreviation": "UDW15",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004079",
+        "Name": "BIOLOGICAL ST CABIN UDW13",
+        "Abbreviation": "UDW13",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004080",
+        "Name": "BIOLOGICAL ST CABIN UDW11",
+        "Abbreviation": "UDW11",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004081",
+        "Name": "BIOLOGICAL ST CABIN UDW9",
+        "Abbreviation": "UDW9",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004082",
+        "Name": "BIOLOGICAL ST CABIN UDW7",
+        "Abbreviation": "UDW7",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004083",
+        "Name": "BIOLOGICAL ST CABIN UDW5",
+        "Abbreviation": "UDW5",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004084",
+        "Name": "BIOLOGICAL ST CABIN UDW3",
+        "Abbreviation": "UDW3",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004085",
+        "Name": "BIOLOGICAL ST CABIN WS20",
+        "Abbreviation": "WS20",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004086",
+        "Name": "BIOLOGICAL ST CABIN WS18",
+        "Abbreviation": "WS18",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004087",
+        "Name": "BIOLOGICAL ST CABIN WS16",
+        "Abbreviation": "WS16",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004088",
+        "Name": "BIOLOGICAL ST CABIN WS14",
+        "Abbreviation": "WS14",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004089",
+        "Name": "BIOLOGICAL ST CABIN WS12",
+        "Abbreviation": "WS12",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004090",
+        "Name": "BIOLOGICAL ST CABIN WS10",
+        "Abbreviation": "WS10",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004091",
+        "Name": "BIOLOGICAL ST CABIN WS8",
+        "Abbreviation": "WS8",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004092",
+        "Name": "BIOLOGICAL ST CABIN WS6",
+        "Abbreviation": "WS6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004093",
+        "Name": "BIOLOGICAL ST CABIN WS21",
+        "Abbreviation": "WS21",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004094",
+        "Name": "BIOLOGICAL ST CABIN WS19",
+        "Abbreviation": "WS19",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004095",
+        "Name": "BIOLOGICAL ST CABIN WS17",
+        "Abbreviation": "WS17",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004096",
+        "Name": "BIOLOGICAL ST STOCKARD LAB",
+        "Abbreviation": "BSSKL",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004097",
+        "Name": "BIOLOGICAL ST CABIN WS13",
+        "Abbreviation": "WS13",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004098",
+        "Name": "BIOLOGICAL ST CABIN WS11",
+        "Abbreviation": "WS11",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004099",
+        "Name": "BIOLOGICAL ST CABIN WS9",
+        "Abbreviation": "WS9",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004100",
+        "Name": "BIOLOGICAL ST CABIN WS7",
+        "Abbreviation": "WS7",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004101",
+        "Name": "BIOLOGICAL ST CABIN WS5",
+        "Abbreviation": "WS5",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004102",
+        "Name": "BIOLOGICAL ST CABIN WS3",
+        "Abbreviation": "WS3",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004103",
+        "Name": "BIOLOGICAL ST CABIN WS1",
+        "Abbreviation": "WS1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004104",
+        "Name": "BIOLOGICAL ST HEALTH SERVICE ES2",
+        "Abbreviation": "BS HS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004105",
+        "Name": "BIOLOGICAL ST CABIN ES4",
+        "Abbreviation": "ES4",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004106",
+        "Name": "BIOLOGICAL ST CABIN ES6",
+        "Abbreviation": "ES6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004109",
+        "Name": "BIOLOGICAL ST CABIN UDW31",
+        "Abbreviation": "UDW31",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004110",
+        "Name": "BIOLOGICAL ST CABIN UDW30",
+        "Abbreviation": "UDW30",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004111",
+        "Name": "BIOLOGICAL ST CABIN UDW29",
+        "Abbreviation": "UDW29",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004112",
+        "Name": "BIOLOGICAL ST CABIN UDE1",
+        "Abbreviation": "UDE1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004113",
+        "Name": "BIOLOGICAL ST CABIN A8",
+        "Abbreviation": "BSA8",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004114",
+        "Name": "BIOLOGICAL ST CABIN A6",
+        "Abbreviation": "BSA6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004115",
+        "Name": "BIOLOGICAL ST CABIN A4",
+        "Abbreviation": "BSA4",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004116",
+        "Name": "BIOLOGICAL ST CABIN A2",
+        "Abbreviation": "BSA2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004117",
+        "Name": "BIOLOGICAL ST CABIN ES7",
+        "Abbreviation": "ES7",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004118",
+        "Name": "BIOLOGICAL ST CABIN ES9",
+        "Abbreviation": "ES9",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004119",
+        "Name": "BIOLOGICAL ST CABIN ES11",
+        "Abbreviation": "ES11",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004120",
+        "Name": "BIOLOGICAL ST CABIN ES8",
+        "Abbreviation": "ES8",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004121",
+        "Name": "BIOLOGICAL ST CABIN ES10",
+        "Abbreviation": "ES10",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004122",
+        "Name": "BIOLOGICAL ST CABIN ES12",
+        "Abbreviation": "ES12",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004123",
+        "Name": "BIOLOGICAL ST CABIN ES14",
+        "Abbreviation": "ES14",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004124",
+        "Name": "BIOLOGICAL ST CABIN ES16",
+        "Abbreviation": "ES16",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004125",
+        "Name": "BIOLOGICAL ST CABIN ES18",
+        "Abbreviation": "ES18",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004126",
+        "Name": "BIOLOGICAL ST CABIN ES20",
+        "Abbreviation": "ES20",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004127",
+        "Name": "BIOLOGICAL ST CABIN ES22",
+        "Abbreviation": "ES22",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004128",
+        "Name": "BIOLOGICAL ST CABIN ES24",
+        "Abbreviation": "ES24",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004130",
+        "Name": "BIOLOGICAL ST CABIN C8",
+        "Abbreviation": "BSC8",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004131",
+        "Name": "BIOLOGICAL ST CABIN D5",
+        "Abbreviation": "BSD5",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004132",
+        "Name": "BIOLOGICAL ST CABIN D7",
+        "Abbreviation": "BSD7",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004137",
+        "Name": "BIOLOGICAL ST LECTURE HALL",
+        "Abbreviation": "BSLEC",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004139",
+        "Name": "BIOLOGICAL ST CABIN C6",
+        "Abbreviation": "BSC6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004140",
+        "Name": "BIOLOGICAL ST CABIN C4",
+        "Abbreviation": "BSC4",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004141",
+        "Name": "BIOLOGICAL ST CABIN C2",
+        "Abbreviation": "BSC2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004142",
+        "Name": "BIOLOGICAL ST CABIN ES19",
+        "Abbreviation": "ES19",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004143",
+        "Name": "BIOLOGICAL ST CABIN ES21",
+        "Abbreviation": "ES21",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004144",
+        "Name": "BIOLOGICAL ST CABIN D1",
+        "Abbreviation": "BSD1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004145",
+        "Name": "BIOLOGICAL ST CABIN D3",
+        "Abbreviation": "BSD3",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004146",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES26",
+        "Abbreviation": "ES26",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004147",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES28",
+        "Abbreviation": "ES28",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004148",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES30",
+        "Abbreviation": "ES30",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004149",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES32",
+        "Abbreviation": "ES32",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004150",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES34",
+        "Abbreviation": "ES34",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004151",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES36",
+        "Abbreviation": "ES36",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004152",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES38",
+        "Abbreviation": "ES38",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004153",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES42",
+        "Abbreviation": "ES42",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004154",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES44",
+        "Abbreviation": "ES44",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004155",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES46",
+        "Abbreviation": "ES46",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004156",
+        "Name": "BIOLOGICAL ST CABIN UDW1",
+        "Abbreviation": "BSUW1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004157",
+        "Name": "BIOLOGICAL ST FACULTY HOUSE ES48",
+        "Abbreviation": "ES48",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004158",
+        "Name": "BIOLOGICAL ST DIR RES ES50",
+        "Abbreviation": "BSDRR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004171",
+        "Name": "BIOLOGICAL ST RESIDENCE HALL",
+        "Abbreviation": "BSRHL",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004301",
+        "Name": "FRESH AIR CAMP CABIN # 1",
+        "Abbreviation": "FA1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004302",
+        "Name": "FRESH AIR CAMP CABIN # 2",
+        "Abbreviation": "FA2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004303",
+        "Name": "FRESH AIR CAMP CABIN # 3",
+        "Abbreviation": "FA3",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004306",
+        "Name": "FRESH AIR CAMP CABIN # 6",
+        "Abbreviation": "FA6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004322",
+        "Name": "FRESH AIR CAMP #22 ACTIVITY BLD2",
+        "Abbreviation": "FA22",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004324",
+        "Name": "FRESH AIR CAMP #24 CRAFTS",
+        "Abbreviation": "FA24",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004325",
+        "Name": "FRESH AIR CAMP #25 KITCHEN",
+        "Abbreviation": "FA25",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004328",
+        "Name": "FRESH AIR CAMP #28 SHWR-RESTROOM",
+        "Abbreviation": "FA28",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004329",
+        "Name": "FRESH AIR CAMP #29 WATERFRONT H",
+        "Abbreviation": "FA29",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004331",
+        "Name": "FRESH AIR CAMP #31 WATER PUMP H",
+        "Abbreviation": "FA31",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004334",
+        "Name": "FRESH AIR CAMP #34 ACTIVITY BLD3",
+        "Abbreviation": "FA34",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004336",
+        "Name": "FRESH AIR CAMP #36 ELEC SW HOUSE",
+        "Abbreviation": "FA36",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004363",
+        "Name": "FRESH AIR CAMP #63 DINING REC",
+        "Abbreviation": "FA63",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004364",
+        "Name": "FRESH AIR CAMP STORAGE BLDG",
+        "Abbreviation": "FASTG",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004401",
+        "Name": "GEORGE EDWIN S RES CARTKR HS",
+        "Abbreviation": "GRCTH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004402",
+        "Name": "GEORGE EDWIN S RESERVE CARTKR GA",
+        "Abbreviation": "GRCTG",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004403",
+        "Name": "GEORGE EDWIN S RESERVE WORKSHOP",
+        "Abbreviation": "GRWSP",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004404",
+        "Name": "GEORGE EDWIN S RESERVE STABLE",
+        "Abbreviation": "GRSTB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004405",
+        "Name": "GEORGE EDWIN S RESERVE CAMBN LAB",
+        "Abbreviation": "GRLIB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004406",
+        "Name": "GEORGE EDWIN S RESERVE GARAGE AP",
+        "Abbreviation": "GRGRA",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004407",
+        "Name": "GEORGE EDWIN S RESERVE H N DALE",
+        "Abbreviation": "GRDAL",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004408",
+        "Name": "GEORGE EDWIN S RESERVE LAB",
+        "Abbreviation": "GRLAB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004409",
+        "Name": "GEORGE EDWIN S RESERVE SHED",
+        "Abbreviation": "GRSHD",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004410",
+        "Name": "GEORGE EDWIN S RESERVE N GATE HS",
+        "Abbreviation": "GRGHS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004412",
+        "Name": "GEORGE EDWIN S RESERVE GARAGE #2",
+        "Abbreviation": "GRGR2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004415",
+        "Name": "GEORGE EDWIN S RESERVE COTTAGE",
+        "Abbreviation": "GRTC",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004416",
+        "Name": "GEORGE EDWIN S RESERVE SHELTER",
+        "Abbreviation": "GRSLT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004417",
+        "Name": "GEORGE EDWIN S RESERVE FROG POND",
+        "Abbreviation": "GRFRG",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004418",
+        "Name": "GEORGE EDWIN S RESERVE WILTSE",
+        "Abbreviation": "GRWLT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004431",
+        "Name": "OSBORN C S PRES WEST DWELLING",
+        "Abbreviation": "OSWED",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004432",
+        "Name": "OSBORN C S PRES SOUTH DWELLING",
+        "Abbreviation": "OSSDW",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004433",
+        "Name": "OSBORN C S PRES SOUTH GARAGE",
+        "Abbreviation": "OSSGR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004434",
+        "Name": "OSBORN C S PRES GANDER COTTAGE",
+        "Abbreviation": "OSGND",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004435",
+        "Name": "OSBORN C S PRES GO-DOWN LIBRARY",
+        "Abbreviation": "OSLIG",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004437",
+        "Name": "OSBORN C S PRES LITTLE DUCK CAB",
+        "Abbreviation": "OSDUK",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004439",
+        "Name": "OSBORN C S PRES PUMPHOUSE",
+        "Abbreviation": "OSPHS",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004442",
+        "Name": "OSBORN C S PRES SHED #2",
+        "Abbreviation": "OSSHD",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004446",
+        "Name": "OSBORN C S PRES PUMPHOUSE #6",
+        "Abbreviation": "OSPH6",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004448",
+        "Name": "OSBORN C S PRES SHED #8",
+        "Abbreviation": "OSSH8",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004570",
+        "Name": "CAMP DAVIS DORM #2",
+        "Abbreviation": "CDDM2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004572",
+        "Name": "CAMP DAVIS KEEPER HOUSE",
+        "Abbreviation": "CDKPH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004573",
+        "Name": "CAMP DAVIS MESS HALL",
+        "Abbreviation": "CDMES",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004574",
+        "Name": "CAMP DAVIS INSTRUMENT SHOP",
+        "Abbreviation": "CDISP",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004575",
+        "Name": "CAMP DAVIS SHOP",
+        "Abbreviation": "CDSHP",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004576",
+        "Name": "CAMP DAVIS GARAGE",
+        "Abbreviation": "CDGAR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004577",
+        "Name": "CAMP DAVIS LOG CABIN",
+        "Abbreviation": "CDLOG",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004578",
+        "Name": "CAMP DAVIS ADVANCED CLASSROOM",
+        "Abbreviation": "CDACR",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004579",
+        "Name": "CAMP DAVIS JOHNSTON HALL",
+        "Abbreviation": "CDJHN",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004580",
+        "Name": "CAMP DAVIS STORAGE BARN",
+        "Abbreviation": "CDSTB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004581",
+        "Name": "CAMP DAVIS DORMITORY #1",
+        "Abbreviation": "CDDM1",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004583",
+        "Name": "CAMP DAVIS CABIN 1A",
+        "Abbreviation": "CD1A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004584",
+        "Name": "CAMP DAVIS CABIN 2A",
+        "Abbreviation": "CD2A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004610",
+        "Name": "CAMP DAVIS CABIN 3A",
+        "Abbreviation": "CD3A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004611",
+        "Name": "CAMP DAVIS CABIN 4A",
+        "Abbreviation": "CD4A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004612",
+        "Name": "CAMP DAVIS CABIN 5A",
+        "Abbreviation": "CD5A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004613",
+        "Name": "CAMP DAVIS CABIN 6A",
+        "Abbreviation": "CD6A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004614",
+        "Name": "CAMP DAVIS CABIN 7A",
+        "Abbreviation": "CD7A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004615",
+        "Name": "CAMP DAVIS CABIN 8A",
+        "Abbreviation": "CD8A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004616",
+        "Name": "CAMP DAVIS CABIN 9A",
+        "Abbreviation": "CD9A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004617",
+        "Name": "CAMP DAVIS CABIN 10A",
+        "Abbreviation": "CD10A",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004618",
+        "Name": "CAMP DAVIS CABIN 1B",
+        "Abbreviation": "CD1B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004619",
+        "Name": "CAMP DAVIS CABIN 2B",
+        "Abbreviation": "CD2B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004620",
+        "Name": "CAMP DAVIS CABIN 3B",
+        "Abbreviation": "CD3B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004621",
+        "Name": "CAMP DAVIS CABIN 4B",
+        "Abbreviation": "CD4B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004622",
+        "Name": "CAMP DAVIS CABIN 6B",
+        "Abbreviation": "CD6B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004623",
+        "Name": "CAMP DAVIS CABIN 7B",
+        "Abbreviation": "CD7B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004624",
+        "Name": "CAMP DAVIS CABIN 8B",
+        "Abbreviation": "CD8B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004625",
+        "Name": "CAMP DAVIS CABIN 9B",
+        "Abbreviation": "CD9B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004626",
+        "Name": "CAMP DAVIS CABIN 1C",
+        "Abbreviation": "CD1C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004627",
+        "Name": "CAMP DAVIS CABIN 2C",
+        "Abbreviation": "CD2C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004628",
+        "Name": "CAMP DAVIS CABIN 4C",
+        "Abbreviation": "CD4C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004629",
+        "Name": "CAMP DAVIS CABIN 5C",
+        "Abbreviation": "CD5C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004630",
+        "Name": "CAMP DAVIS CABIN 6C",
+        "Abbreviation": "CD6C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004631",
+        "Name": "CAMP DAVIS CABIN 7C",
+        "Abbreviation": "CD7C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004632",
+        "Name": "CAMP DAVIS STUDENT CABIN 8C",
+        "Abbreviation": "CD8C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004633",
+        "Name": "CAMP DAVIS STUDENT CABIN 9C",
+        "Abbreviation": "CD9C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004640",
+        "Name": "CAMP DAVIS SHOWER HOUSE",
+        "Abbreviation": "CDSHW",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004641",
+        "Name": "CAMP DAVIS TOILET LAUNDRY 5B",
+        "Abbreviation": "CD5B",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004642",
+        "Name": "CAMP DAVIS TOILET 3C",
+        "Abbreviation": "CD3C",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004645",
+        "Name": "CAMP DAVIS BLANKET STORAGE",
+        "Abbreviation": "CDBST",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004646",
+        "Name": "CAMP DAVIS EARDLEY CABIN",
+        "Abbreviation": "CDERD",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1004647",
+        "Name": "CAMP DAVIS INTRO CLASSRM",
+        "Abbreviation": "CDINT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005006",
+        "Name": "WORKPLACE INTEGRATORS",
+        "Abbreviation": "WPI",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005009",
+        "Name": "VETERANS ADMINISTRATION BLDG 1",
+        "Abbreviation": "VA HO",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005011",
+        "Name": "BURLINGTON OFFICE CENTER",
+        "Abbreviation": "BURLN",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005012",
+        "Name": "UNIVERSITY HOSPITALS HELIPAD",
+        "Abbreviation": "HELPD",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005017",
+        "Name": "FLINT NORTHBANK CENTER",
+        "Abbreviation": "FNBNK",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1005018",
+        "Name": "NORTH CAMPUS CHILDRENS CENTER",
+        "Abbreviation": "NCRCC",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005019",
+        "Name": "CANTON HEALTH CENTER",
+        "Abbreviation": "CANHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005020",
+        "Name": "MICHIGAN VIRTUAL AUTOMOTIVE COLLEGE",
+        "Abbreviation": "MVAC",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005021",
+        "Name": "FUTURE PROBLEM SOLVING",
+        "Abbreviation": "FPS",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005022",
+        "Name": "CORRIGAN MOVING SYSTEMS",
+        "Abbreviation": "CRGN",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005024",
+        "Name": "309 MAYNARD",
+        "Abbreviation": "MAYNA",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005027",
+        "Name": "UM DEVELOPMENT NEW YORK",
+        "Abbreviation": "DEVNY",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005029",
+        "Name": "BRIGHTON HEALTH CENTER",
+        "Abbreviation": "BR HC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005035",
+        "Name": "DEVELOPMENT MAJOR GIFTS PASADENA",
+        "Abbreviation": "DEVCA",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005036",
+        "Name": "LIFE SCIENCES INSTITUTE BUILDING",
+        "Abbreviation": "LSI",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005037",
+        "Name": "TAUBMAN A ALFRED BIOMEDICAL SCIENCE RESEARCH BLDG",
+        "Abbreviation": "BSRB",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1005038",
+        "Name": "EAST ANN ARBOR AMBULATORY SURGICAL CENTER",
+        "Abbreviation": "AMBSC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005041",
+        "Name": "M DEN TRAILERS",
+        "Abbreviation": "MDEN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005042",
+        "Name": "CENTRAL CAMPUS REC BLD STORAGE FACILITY",
+        "Abbreviation": "CCRBS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005043",
+        "Name": "FLINT NORTHBANK PARKING RAMP",
+        "Abbreviation": "FNBPK",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1005046",
+        "Name": "UNDERGRADUATE SCIENCE BUILDING",
+        "Abbreviation": "USB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005047",
+        "Name": "PALMER COMMONS",
+        "Abbreviation": "PALM",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005048",
+        "Name": "RADRICK FARMS STORAGE",
+        "Abbreviation": "RFSTR",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005049",
+        "Name": "FOREST AVE PARKING STRUCTURE",
+        "Abbreviation": "FORPK",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005050",
+        "Name": "NORTH EAST CORPORATE CENTER 1",
+        "Abbreviation": "NECC1",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005051",
+        "Name": "UMH MODULAR OFFICE A",
+        "Abbreviation": "MOD A",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005054",
+        "Name": "ROSE MOVING STORAGE - DETROIT",
+        "Abbreviation": "ROSDT",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005056",
+        "Name": "NEW HOPE BAPTIST CHURCH",
+        "Abbreviation": "NWHP",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005057",
+        "Name": "CAMP DAVIS EDUCATION BLDG 440",
+        "Abbreviation": "CDEB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005058",
+        "Name": "MICHIGAN VISITING NURSES",
+        "Abbreviation": "MI VN",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005059",
+        "Name": "WALGREEN CHARLES R JR DRAMA CENTER",
+        "Abbreviation": "WDC",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005060",
+        "Name": "GALLERIA BUILDING",
+        "Abbreviation": "GALLR",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005067",
+        "Name": "ROSE MOVING STORAGE - TAYLOR",
+        "Abbreviation": "ROSTL",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005069",
+        "Name": "NORTH EAST CORPORATE CENTER 2",
+        "Abbreviation": "NECC2",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005070",
+        "Name": "EISENHOWER CP",
+        "Abbreviation": "EHCP",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005071",
+        "Name": "UMHS WELLNESS CENTER",
+        "Abbreviation": "WELCN",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005077",
+        "Name": "SHEPHERD DONALD R WOMENS GYMNASTIC CENTER",
+        "Abbreviation": "SHPWG",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005079",
+        "Name": "EISENHOWER COMMERCE CENTER - BLDG 2",
+        "Abbreviation": "EHCC2",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005088",
+        "Name": "ROSE MOVING STORAGE - DEARBORN",
+        "Abbreviation": "ROSDB",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005090",
+        "Name": "MODULAR AOSS NEWCOMB TRACT FACILITY",
+        "Abbreviation": "MODNW",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005091",
+        "Name": "1631 SOUTH STATE",
+        "Abbreviation": "1631S",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005092",
+        "Name": "BEYSTER BOB AND BETTY BUILDING",
+        "Abbreviation": "BYSTR",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005094",
+        "Name": "PROJECT DYNAMICS INC.",
+        "Abbreviation": "PDI",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005098",
+        "Name": "KELLOGG EYE CENTER - MILFORD",
+        "Abbreviation": "KECML",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005100",
+        "Name": "GOLF COURSE MAINTENANCE BUILDING",
+        "Abbreviation": "GCMNT",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005101",
+        "Name": "WEILL JOAN & SANFORD HALL",
+        "Abbreviation": "WEILL",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005102",
+        "Name": "BREHM TOWER",
+        "Abbreviation": "BREHM",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005107",
+        "Name": "306 S STATE",
+        "Abbreviation": "306ST",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005109",
+        "Name": "FRANKEL SAMUEL AND JEAN CARDIOVASCULAR CENTER",
+        "Abbreviation": "CVC",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005111",
+        "Name": "NC GROUNDS STORAGE BUILDING # 2",
+        "Abbreviation": "NCGS2",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005115",
+        "Name": "CORONA SOUTH BUILDING",
+        "Abbreviation": "CRNAS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005116",
+        "Name": "NC GROUNDS STORAGE BUILDING # 3",
+        "Abbreviation": "NCGS3",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005117",
+        "Name": "UPJOHN RACHEL BUILDING",
+        "Abbreviation": "UPJHN",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005118",
+        "Name": "ONE NORTH MAIN",
+        "Abbreviation": "1NM",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005119",
+        "Name": "CAMP DAVIS BATH HOUSE",
+        "Abbreviation": "CDBTH",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005120",
+        "Name": "ROSS STEPHEN M ACADEMIC CENTER",
+        "Abbreviation": "ROSS",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005121",
+        "Name": "GLICK AL FIELD HOUSE",
+        "Abbreviation": "GLICK",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005123",
+        "Name": "ALUMNI FIELD",
+        "Abbreviation": "SFTBL",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005125",
+        "Name": "MODULAR ATHLETICS MAINTENANCE",
+        "Abbreviation": "MODAT",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005126",
+        "Name": "CENTRAL CAMPUS AND UM HOSPITAL LOAD CENTER",
+        "Abbreviation": "CCHLC",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1005128",
+        "Name": "DEARBORN FAIRLANE CENTER",
+        "Abbreviation": "FC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1005131",
+        "Name": "NC STORAGE BUILDING #4",
+        "Abbreviation": "NCST4",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005132",
+        "Name": "ANN STREET PARKING STRUCTURE",
+        "Abbreviation": "ANNPK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1005133",
+        "Name": "GOVERNMENT RELATIONS - LANSING",
+        "Abbreviation": "GR LN",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005134",
+        "Name": "AMERICAN INTERIORS",
+        "Abbreviation": "AINTR",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005135",
+        "Name": "OFFICE SYSTEMS INSTALLATION GROUP",
+        "Abbreviation": "OSIG",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005136",
+        "Name": "1327 GEDDES AVENUE",
+        "Abbreviation": "1327G",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005137",
+        "Name": "DEARBORN INSTITUTE FOR ADVANCED VEHICLE SYSTEMS",
+        "Abbreviation": "IAVS",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1005138",
+        "Name": "DEARBORN SCIENCE LEARNING RESEARCH CTR",
+        "Abbreviation": "SLRC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1005139",
+        "Name": "NORTH CAMPUS CHILLER PLANT",
+        "Abbreviation": "NCCHL",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005140",
+        "Name": "NORTH CAMPUS GROUND SVC FACILITY ANNEX",
+        "Abbreviation": "NCGSA",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005143",
+        "Name": "TRAVERWOOD II",
+        "Abbreviation": "TWD2",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005144",
+        "Name": "KRUGER INTERNATIONAL AGI DIVISION",
+        "Abbreviation": "KRUGR",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005145",
+        "Name": "INTEGRATED INTERIORS",
+        "Abbreviation": "INTGI",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005146",
+        "Name": "CARDIOVASCULAR CENTER PARKING STRUCTURE",
+        "Abbreviation": "CVCPK",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1005147",
+        "Name": "WATERS BUILDING",
+        "Abbreviation": "WTRSB",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005148",
+        "Name": "WATERWORKS BUILDING",
+        "Abbreviation": "WWRKS",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005149",
+        "Name": "CHABAD HOUSE",
+        "Abbreviation": "CHABD",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005150",
+        "Name": "GREAT LAKES COMMISSION",
+        "Abbreviation": "GLCOM",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005151",
+        "Name": "FULBARI",
+        "Abbreviation": "FULBR",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005153",
+        "Name": "TRAVERWOOD III",
+        "Abbreviation": "TWD3",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005154",
+        "Name": "UM ISR 5N444 HARVEST LANE",
+        "Abbreviation": "5N444",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005157",
+        "Name": "SCHOOL OF SOCIAL WORK MIDTOWN",
+        "Abbreviation": "SSWMT",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005158",
+        "Name": "SCHOOL OF SOCIAL WORK SOUTHWEST",
+        "Abbreviation": "SSWSW",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005160",
+        "Name": "JUNGE FAMILY CHAMPIONS CENTER",
+        "Abbreviation": "JUNGE",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005162",
+        "Name": "NORTH WESTERN COLLEGE",
+        "Abbreviation": "NWC",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005163",
+        "Name": "UM ISR 960 WOODSIDE TERRACE",
+        "Abbreviation": "960WO",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005165",
+        "Name": "2205 COMMONWEALTH BLVD",
+        "Abbreviation": "CMWTH",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005167",
+        "Name": "SCHOOL OF DENTISTRY HOME OFFICE",
+        "Abbreviation": "DNTHM",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005168",
+        "Name": "AUTO LAB FUEL STORAGE BUILDING",
+        "Abbreviation": "ALFSB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005169",
+        "Name": "BIOLOGICAL SCIENCE BUILDING",
+        "Abbreviation": "BSB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005172",
+        "Name": "UM ISR 335 BISMARK STREET",
+        "Abbreviation": "335BI",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005173",
+        "Name": "MOTT CHILDRENS VON VOIGTLANDER WOMENS HOSPITALS",
+        "Abbreviation": "MOTVV",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005174",
+        "Name": "ONE FORD PLACE",
+        "Abbreviation": "1FORD",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005176",
+        "Name": "UM ISR 62070 MOUND ROAD",
+        "Abbreviation": "62070",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005177",
+        "Name": "NORTH QUADRANGLE RESIDENTIAL AND ACADEMIC COMPLEX",
+        "Abbreviation": "NQ",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005178",
+        "Name": "UM ISR 1 EAGLE HARBOR TRAIL",
+        "Abbreviation": "1EAGL",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005179",
+        "Name": "202 SOUTH THAYER BUILDING",
+        "Abbreviation": "STB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005180",
+        "Name": "PALMER MOVING STORAGE - TAYLOR",
+        "Abbreviation": "PALTY",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005181",
+        "Name": "SOUTH STATE COMMONS II",
+        "Abbreviation": "SSCII",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005187",
+        "Name": "PALMER MOVING STORAGE - WARREN",
+        "Abbreviation": "PALWN",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005188",
+        "Name": "ROSS SCHOOL OF BUSINESS BUILDING",
+        "Abbreviation": "R-BUS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005189",
+        "Name": "WVGR TRANSMITTER BUILDING",
+        "Abbreviation": "WVGRT",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005190",
+        "Name": "BIOLOGICAL ST CO2 LABORATORY",
+        "Abbreviation": "BSCO2",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005191",
+        "Name": "BIOLOGICAL ST LABORATORY-STORAGE BUILDING",
+        "Abbreviation": "BSLAB",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005192",
+        "Name": "ORCHESTRA PLACE",
+        "Abbreviation": "ORCH",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005193",
+        "Name": "WALL STREET EAST PARKING STRUCTURE",
+        "Abbreviation": "WSEPK",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005195",
+        "Name": "ATHLETICS MAINTENANCE BUILDING",
+        "Abbreviation": "ATHMN",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005196",
+        "Name": "THE PARKWAY GROUP",
+        "Abbreviation": "PKWGP",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005197",
+        "Name": "ROCHDALE COOP CENTER",
+        "Abbreviation": "RDALE",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005198",
+        "Name": "MICHIGAN STATE UNIVERSITY",
+        "Abbreviation": "MSU",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005200",
+        "Name": "1009 CORNWELL PLACE",
+        "Abbreviation": "1009C",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1005202",
+        "Name": "MULTIPLE BUILDING PROJECTS",
+        "Abbreviation": "MBP",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005203",
+        "Name": "SITE IMPROVEMENT PROJECTS",
+        "Abbreviation": "SITIP",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005204",
+        "Name": "LAKE ORION WINDOW TREATMENTS",
+        "Abbreviation": "LKORW",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005205",
+        "Name": "NC GROUNDS GARAGE 1",
+        "Abbreviation": "NCGG1",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005206",
+        "Name": "ROSE MOVING & STORAGE - BELLEVILLE",
+        "Abbreviation": "RSEBL",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005208",
+        "Name": "STOP N LOCK",
+        "Abbreviation": "STOPL",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005209",
+        "Name": "1580 ELLSWORTH ROAD",
+        "Abbreviation": "1580E",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005210",
+        "Name": "CHELSEA ARBOR ALCOHOL AND DRUG TREATMENT CENTER",
+        "Abbreviation": "CHLTC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005211",
+        "Name": "PLYMOUTH BUILDING",
+        "Abbreviation": "2929P",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005214",
+        "Name": "RAHS HEALTH CENTER SCARLETT MIDDLE SCHOOL",
+        "Abbreviation": "RAHS4",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005215",
+        "Name": "RAHS HEALTH CENTER ANN ARBOR TECHNOL HIGH SCHOOL",
+        "Abbreviation": "RAHS5",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005217",
+        "Name": "NMC UNIVERSITY CENTER",
+        "Abbreviation": "NMCUC",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005218",
+        "Name": "MICHIGAN SOLAR HOUSE",
+        "Abbreviation": "MISOL",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005219",
+        "Name": "FLINT STUDENT HOUSING FACILITY",
+        "Abbreviation": "FSHF",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1005220",
+        "Name": "1608 RHODE ISLAND AVENUE",
+        "Abbreviation": "1608R",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005221",
+        "Name": "CONSTRUCTION TRAILER CHILDRENS AND WOMENS HOSPITAL",
+        "Abbreviation": "CTCWH",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005223",
+        "Name": "NORTH CAMPUS AUXILIARY SUPPORT  BUILDING",
+        "Abbreviation": "NCASP",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005224",
+        "Name": "STAMPS AUDITORIUM",
+        "Abbreviation": "STAMP",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005225",
+        "Name": "UM ISR 425 EAST END AVENUE",
+        "Abbreviation": "425EN",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005226",
+        "Name": "MCKINLEY TOWNE CENTRE II",
+        "Abbreviation": "MCTC2",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005231",
+        "Name": "COLLEGIAN BUILDING",
+        "Abbreviation": "COLGN",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005233",
+        "Name": "MICHIGAN OFFICE MOVERS",
+        "Abbreviation": "MIMOV",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005234",
+        "Name": "SIMONS FOUNDATION",
+        "Abbreviation": "SIMNS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005235",
+        "Name": "SOUTH HALL",
+        "Abbreviation": "LSSH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005236",
+        "Name": "BAHNA WRESTLING  CENTER",
+        "Abbreviation": "WRESL",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005237",
+        "Name": "SAILING CLUB BUILDING",
+        "Abbreviation": "SAILC",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005238",
+        "Name": "CLINICAL PATHOLOGY BUILDING",
+        "Abbreviation": "CPB",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005239",
+        "Name": "BRIGHTON DIAGNOSTIC AND TREATMENT CENTER",
+        "Abbreviation": "BDTC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005240",
+        "Name": "TOWSLEY CHILDRENS HOUSE",
+        "Abbreviation": "TWSCH",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005241",
+        "Name": "TRAVERWOOD IV",
+        "Abbreviation": "TWD4",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005242",
+        "Name": "MICHIGAN STADIUM NORTH PLAZA BUILDING A",
+        "Abbreviation": "STPBA",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005243",
+        "Name": "MICHIGAN STADIUM NORTH PLAZA BUILDING B",
+        "Abbreviation": "STPBB",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005244",
+        "Name": "DEARBORN CHILD DEVELOPMENT CENTER",
+        "Abbreviation": "CDC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1005247",
+        "Name": "INTERCOLLEGIATE SOCCER STADIUM",
+        "Abbreviation": "ICST",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005248",
+        "Name": "RAHS HEALTH CENTER WILLOW RUN HIGH SCHOOL",
+        "Abbreviation": "RAHS6",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005249",
+        "Name": "STATE STREET STORAGE",
+        "Abbreviation": "",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005250",
+        "Name": "MICHIGAN COMPUTER SUPPLIES",
+        "Abbreviation": "MICS",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005251",
+        "Name": "EYDE CENTER",
+        "Abbreviation": "EYDE",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005252",
+        "Name": "SPARROW PROFESSIONAL BUILDING",
+        "Abbreviation": "SPARW",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005253",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 10",
+        "Abbreviation": "NB010",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005254",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 14",
+        "Abbreviation": "NB014",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005255",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 15",
+        "Abbreviation": "NB015",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005256",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 16",
+        "Abbreviation": "NB016",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005258",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 18",
+        "Abbreviation": "NB018",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005259",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 20",
+        "Abbreviation": "NB020",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005260",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 22",
+        "Abbreviation": "NB022",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005261",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 23",
+        "Abbreviation": "NB023",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005262",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 25",
+        "Abbreviation": "NB025",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005263",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 26",
+        "Abbreviation": "NB026",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005264",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 28",
+        "Abbreviation": "NB028",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005265",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 30",
+        "Abbreviation": "NB030",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005266",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 35",
+        "Abbreviation": "NB035",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005267",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 36",
+        "Abbreviation": "NB036",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005268",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 40",
+        "Abbreviation": "NB040",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005269",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 50",
+        "Abbreviation": "NB050",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005270",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 60",
+        "Abbreviation": "NB060",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005271",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 70",
+        "Abbreviation": "NB070",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005272",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 73",
+        "Abbreviation": "NCRPK",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005273",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 80",
+        "Abbreviation": "NB080",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005274",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 85",
+        "Abbreviation": "NB085",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005275",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 90",
+        "Abbreviation": "NB090",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005276",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 100",
+        "Abbreviation": "NB100",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005277",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 200",
+        "Abbreviation": "NB200",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005278",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 300",
+        "Abbreviation": "NB300",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005279",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 400",
+        "Abbreviation": "NB400",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005280",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 500",
+        "Abbreviation": "NB500",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005281",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 520",
+        "Abbreviation": "NB520",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005282",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 550",
+        "Abbreviation": "NB550",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005283",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 800",
+        "Abbreviation": "NB800",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005284",
+        "Name": "BIOLOGICAL ST AMERIFLUX TOWER LAB",
+        "Abbreviation": "BSAMT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005285",
+        "Name": "BIOLOGICAL ST PROPHET TOWER LAB",
+        "Abbreviation": "BSPRT",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005286",
+        "Name": "BIOLOGICAL ST FASET TEMP BLDG",
+        "Abbreviation": "BSFST",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005287",
+        "Name": "523 SOUTH DIVISION BUILDING",
+        "Abbreviation": "523DI",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005288",
+        "Name": "SHARED SERVICES CENTER",
+        "Abbreviation": "ATR2",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005289",
+        "Name": "DAVIDSON WILLIAM PLAYER DEVELOPMENT CENTER",
+        "Abbreviation": "PLAYC",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005290",
+        "Name": "BAXTER ROAD MONITORING SHED",
+        "Abbreviation": "BXTSH",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005294",
+        "Name": "GLERL SOUTH STATE",
+        "Abbreviation": "GLEST",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005295",
+        "Name": "625 E LIBERTY STREET",
+        "Abbreviation": "625LI",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005296",
+        "Name": "HOWELL TEEN CLINIC",
+        "Abbreviation": "HTEEN",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005297",
+        "Name": "NORTH CAMPUS GROUNDS STORAGE SHED",
+        "Abbreviation": "NCGSS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005299",
+        "Name": "CAMP DAVIS FACULTY CABIN 1D",
+        "Abbreviation": "CD1D",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005300",
+        "Name": "CAMP DAVIS FACULTY CABIN 2D",
+        "Abbreviation": "CD2D",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005301",
+        "Name": "CAMP DAVIS FACULTY CABIN 3D",
+        "Abbreviation": "CD3D",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005302",
+        "Name": "CAMP DAVIS FACULTY CABIN 4D",
+        "Abbreviation": "CD4D",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005303",
+        "Name": "CAMP DAVIS FACULTY CABIN 1E",
+        "Abbreviation": "CD1E",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005304",
+        "Name": "CAMP DAVIS FACULTY CABIN 2E",
+        "Abbreviation": "CD2E",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005305",
+        "Name": "CAMP DAVIS FACULTY CABIN 3E",
+        "Abbreviation": "CD3E",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005306",
+        "Name": "CAMP DAVIS FACULTY CABIN 4E",
+        "Abbreviation": "CD4E",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005307",
+        "Name": "CAMP DAVIS FACULTY CABIN 1F",
+        "Abbreviation": "CD1F",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005308",
+        "Name": "CAMP DAVIS FACULTY CABIN 2F",
+        "Abbreviation": "CD2F",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005309",
+        "Name": "CAMP DAVIS FACULTY CABIN 3F",
+        "Abbreviation": "CD3F",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005310",
+        "Name": "CAMP DAVIS FACULTY CABIN 4F",
+        "Abbreviation": "CD4F",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005311",
+        "Name": "CAMP DAVIS FACULTY CABIN 5F",
+        "Abbreviation": "CD5F",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005312",
+        "Name": "CAMP DAVIS FACULTY CABIN 6F",
+        "Abbreviation": "CD6F",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005313",
+        "Name": "CAMP DAVIS FACULTY CABIN 1G",
+        "Abbreviation": "CD1G",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005314",
+        "Name": "CAMP DAVIS FACULTY CABIN 2G",
+        "Abbreviation": "CD2G",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005315",
+        "Name": "CAMP DAVIS FACULTY CABIN 3G",
+        "Abbreviation": "CD3G",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005316",
+        "Name": "CAMP DAVIS FACULTY CABIN 4G",
+        "Abbreviation": "CD4G",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005317",
+        "Name": "CAMP DAVIS FACULTY CABIN 5G",
+        "Abbreviation": "CD5G",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005318",
+        "Name": "CAMP DAVIS FACULTY CABIN 6G",
+        "Abbreviation": "CD6G",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005319",
+        "Name": "WEISFELD FAMILY GOLF CENTER",
+        "Abbreviation": "WGOLF",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005321",
+        "Name": "RAHS HEALTH CENTER YPSILANTI WEST MIDDLE SCHOOL",
+        "Abbreviation": "RAHS",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005322",
+        "Name": "UNIVERSITY MOVING AND STORAGE",
+        "Abbreviation": "",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005323",
+        "Name": "3853 RESEARCH PARK DRIVE",
+        "Abbreviation": "RESPK",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005324",
+        "Name": "305 W LIBERTY",
+        "Abbreviation": "305WL",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005331",
+        "Name": "RADRICK FARMS COMFORT STATION #2",
+        "Abbreviation": "RFCS2",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005332",
+        "Name": "OXFORD COMMERCE PARK",
+        "Abbreviation": "OCP",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005333",
+        "Name": "GEORGE EDWIN S RESERVE GAS STORAGE",
+        "Abbreviation": "",
+        "Campus": "Summer Camps"
+      },
+      {
+        "ID": "1005334",
+        "Name": "NORTH CAMPUS SUPPORT FACILITY",
+        "Abbreviation": "",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005335",
+        "Name": "NORTH CAMPUS RESEARCH COMPLEX BUILDING 86",
+        "Abbreviation": "NBO86",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005337",
+        "Name": "TEMPORARY LACROSSE TRAILER",
+        "Abbreviation": "LACRS",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005338",
+        "Name": "UM TRANSPORTATION RESEARCH TESTING BUILDING",
+        "Abbreviation": "TRTB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005340",
+        "Name": "RIVER PLACE OFFICES",
+        "Abbreviation": "RVPL",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005341",
+        "Name": "NORTHVILLE HEALTH CENTER",
+        "Abbreviation": "NHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005342",
+        "Name": "2725 S INDUSTRIAL HWY",
+        "Abbreviation": "2725I",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005343",
+        "Name": "RIVERFRONT CENTER",
+        "Abbreviation": "RVRFT",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1005344",
+        "Name": "RAHS HEALTH CENTER LINCOLN HIGH SCHOOL",
+        "Abbreviation": "RAHS2",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005345",
+        "Name": "RAHS HEALTH CENTER YPSILANTI HIGH SCHOOL",
+        "Abbreviation": "RAHS3",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005346",
+        "Name": "UNIVERSITY OF MICHIGAN CREDIT UNION",
+        "Abbreviation": "UMCU",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005347",
+        "Name": "SCHOOL OF NURSING NEW BUILDING",
+        "Abbreviation": "SNNEW",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1005348",
+        "Name": "MODULAR MRI BUILDING",
+        "Abbreviation": "MRI",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005349",
+        "Name": "SHEPHERD DONALD R SOFTBALL CENTER",
+        "Abbreviation": "SFTBL",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005350",
+        "Name": "MOTT CHARLES STEWART COMMUNITY COLLEGE",
+        "Abbreviation": "MOTTC",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1005351",
+        "Name": "214 S STATE ST",
+        "Abbreviation": "214ST",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005352",
+        "Name": "3915 RESEARCH PARK DRIVE",
+        "Abbreviation": "",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005353",
+        "Name": "719 W ELLSWORTH ROAD",
+        "Abbreviation": "719EL",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005354",
+        "Name": "1991 N TOOLEY RD SURVIVAL FLIGHT",
+        "Abbreviation": "1991T",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005355",
+        "Name": "TRANSPORTATION OPERATIONS AND MAINTENANCE FACILITY",
+        "Abbreviation": "TOMF",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005356",
+        "Name": "NORTH CAMPUS MICROWAVE SERVICE BUILDING",
+        "Abbreviation": "NCMSB",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005357",
+        "Name": "FIELD HOCKEY TEAM CENTER",
+        "Abbreviation": "FHTC",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005358",
+        "Name": "FIELD HOCKEY STADIUM",
+        "Abbreviation": "FHSTD",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005359",
+        "Name": "FIELD HOCKEY TICKET OFFICE",
+        "Abbreviation": "FHTKT",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005360",
+        "Name": "URBAN ALTERNATIVES HOUSE",
+        "Abbreviation": "URBAN",
+        "Campus": "UM-Flint"
+      },
+      {
+        "ID": "1005361",
+        "Name": "CLIMATE CONTROL INDOOR STORAGE",
+        "Abbreviation": "CCIS",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005362",
+        "Name": "780 TOWN CENTER DR",
+        "Abbreviation": "780TC",
+        "Campus": "UM-Dearborn"
+      },
+      {
+        "ID": "1005363",
+        "Name": "TEMPORARY FIELD HOCKEY TRAILER",
+        "Abbreviation": "",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005367",
+        "Name": "MODULAR ACCELERATOR BUILDING",
+        "Abbreviation": "ACCEL",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1005368",
+        "Name": "3901-3913 VARSITY DRIVE BUILDING",
+        "Abbreviation": "VARDB",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005369",
+        "Name": "MUNGER GRADUATE RESIDENCES",
+        "Abbreviation": "MUNGR",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005370",
+        "Name": "BLAU JEFF T HALL",
+        "Abbreviation": "BLAU",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005371",
+        "Name": "ATHLETIC DEPARTMENT OPERATIONS CENTER",
+        "Abbreviation": "ADOC",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005372",
+        "Name": "725 STATE CIRCLE",
+        "Abbreviation": "725ST",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005373",
+        "Name": "FIVE STAR STORE IT",
+        "Abbreviation": "5STAR",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005374",
+        "Name": "1776 ELLSWORTH RD",
+        "Abbreviation": "1776E",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005375",
+        "Name": "METRO HEALTH HOSPITAL",
+        "Abbreviation": "MHH",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005376",
+        "Name": "6 W MICHIGAN AVE",
+        "Abbreviation": "6WMI",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005377",
+        "Name": "TROY MEDICAL PLAZA",
+        "Abbreviation": "TMP",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005378",
+        "Name": "ROSS SCHOOL OF BUSINESS AUXILIARY BUILDING",
+        "Abbreviation": "RSBAB",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005379",
+        "Name": "CENTRAL CAMPUS SUPPORT FACILITY",
+        "Abbreviation": "CCSF",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1005380",
+        "Name": "MITCHELL FIELD RECREATION BUILDING",
+        "Abbreviation": "",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005382",
+        "Name": "WOODWARD GARDENS",
+        "Abbreviation": "WDWDG",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1005385",
+        "Name": "POSTMA RICHARD L FAMILY CLUBHOUSE",
+        "Abbreviation": "PFCH",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005386",
+        "Name": "DEVON SELF STORAGE",
+        "Abbreviation": "DEVON",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1005387",
+        "Name": "FIELD HOCKEY TICKET OFFICE WEST",
+        "Abbreviation": "FHTKW",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1005388",
+        "Name": "WEST ANN ARBOR HEALTH CENTER NEW",
+        "Abbreviation": "WAAHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1005389",
+        "Name": "BUS STORAGE BUILDING",
+        "Abbreviation": "BUS S",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005390",
+        "Name": "HEAVY EQUIPMENT WASH",
+        "Abbreviation": "HEW",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005391",
+        "Name": "DEAN ROAD VEHICLE SERVICE STATION",
+        "Abbreviation": "DVSS",
+        "Campus": "North Campus"
+      },
+      {
+        "ID": "1005392",
+        "Name": "WOODWARD GARDENS PARKING STRUCTURE",
+        "Abbreviation": "WGPS",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1008005",
+        "Name": "WASHTENAW PROFESSIONAL BUILDING",
+        "Abbreviation": "WPB",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1008006",
+        "Name": "REICHERT HEALTH BUILDING",
+        "Abbreviation": "REICH",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008013",
+        "Name": "DOMINO FARMS",
+        "Abbreviation": "DMNO",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008016",
+        "Name": "BRIARWOOD 5",
+        "Abbreviation": "BWD5",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008030",
+        "Name": "BRIARWOOD 2",
+        "Abbreviation": "BWD2",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008036",
+        "Name": "SURVIVAL FLIGHT ANN ARBOR AIRPORT",
+        "Abbreviation": "SFFLT",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008038",
+        "Name": "511 GLEN AVENUE",
+        "Abbreviation": "511GL",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1008039",
+        "Name": "1011 CORNWELL PLACE",
+        "Abbreviation": "1011C",
+        "Campus": "Medical Campus"
+      },
+      {
+        "ID": "1008042",
+        "Name": "BRIARWOOD 4",
+        "Abbreviation": "BWD4",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008047",
+        "Name": "GOVERNMENT RELATIONS - WASHINGTON DC",
+        "Abbreviation": "GR DC",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1008050",
+        "Name": "PLANT STORAGE BUILDING #1",
+        "Abbreviation": "PSB1",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1008051",
+        "Name": "PLANT STORAGE BUILDING #2",
+        "Abbreviation": "PSB2",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1008052",
+        "Name": "PLANT STORAGE BUILDING #3",
+        "Abbreviation": "PSB3",
+        "Campus": "Stephen M Ross Athletic Campus"
+      },
+      {
+        "ID": "1008054",
+        "Name": "HAMILTON SQUARE",
+        "Abbreviation": "HANSQ",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1008055",
+        "Name": "715 E HURON",
+        "Abbreviation": "715HU",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1008060",
+        "Name": "101 SIMPSON ROAD",
+        "Abbreviation": "101SI",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008065",
+        "Name": "BRIARWOOD 3",
+        "Abbreviation": "BWD3",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008067",
+        "Name": "WALLACE MIKE AND MARY HOUSE",
+        "Abbreviation": "WALHS",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1008070",
+        "Name": "INN STORAGE",
+        "Abbreviation": "INSTG",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1008072",
+        "Name": "EISENHOWER CORPORATE PARK WEST",
+        "Abbreviation": "ECPW",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008076",
+        "Name": "BRIARWOOD 1",
+        "Abbreviation": "BWD1",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008079",
+        "Name": "ARBOR LAKES 1",
+        "Abbreviation": "AL1",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008080",
+        "Name": "ARBOR LAKES 2",
+        "Abbreviation": "AL2",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008081",
+        "Name": "ARBOR LAKES 3",
+        "Abbreviation": "AL3",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008090",
+        "Name": "WOLVERINE TOWER",
+        "Abbreviation": "WOTO",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1008095",
+        "Name": "NEW CENTER ONE",
+        "Abbreviation": "NC1",
+        "Campus": "Other"
+      },
+      {
+        "ID": "1008096",
+        "Name": "LIVONIA SPECIALTY CARE",
+        "Abbreviation": "LSC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008098",
+        "Name": "ANN ARBOR INSTITUTE BUILDING",
+        "Abbreviation": "AAIB",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1008100",
+        "Name": "PLYMOUTH PARK",
+        "Abbreviation": "PLMPK",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008101",
+        "Name": "HANDICRAFT BUILDING",
+        "Abbreviation": "HANDI",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1008102",
+        "Name": "AIRPORT PLAZA - 3815 PLAZA DRIVE",
+        "Abbreviation": "3815P",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1008106",
+        "Name": "717 E HURON",
+        "Abbreviation": "717HU",
+        "Campus": "Central Campus"
+      },
+      {
+        "ID": "1008110",
+        "Name": "WEST ANN ARBOR HEALTH CENTER",
+        "Abbreviation": "WAAHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008111",
+        "Name": "HOWELL PEDIATRICS",
+        "Abbreviation": "HPEDS",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008112",
+        "Name": "2098 HURON VALLEY PROFESSIONAL CENTER",
+        "Abbreviation": "2098H",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008116",
+        "Name": "ANN ARBOR ICE CUBE",
+        "Abbreviation": "ICUBE",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008120",
+        "Name": "YPSILANTI HEALTH CENTER",
+        "Abbreviation": "YPSHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008121",
+        "Name": "SALINE HEALTH CENTER",
+        "Abbreviation": "SALHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008126",
+        "Name": "KMS FUSION BLDG",
+        "Abbreviation": "KMS",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008130",
+        "Name": "BRIARWOOD 10",
+        "Abbreviation": "BRWD9",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008137",
+        "Name": "MICHIGAN HOUSE",
+        "Abbreviation": "MIHSE",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008142",
+        "Name": "BRIARWOOD 9",
+        "Abbreviation": "BWD9",
+        "Campus": "Medical Campus UMH"
+      },
+      {
+        "ID": "1008149",
+        "Name": "DEXTER FAMILY PRACTICE",
+        "Abbreviation": "DEXFP",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008155",
+        "Name": "LIVONIA HEALTH CENTER",
+        "Abbreviation": "LIVHC",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008157",
+        "Name": "320 W ANN",
+        "Abbreviation": "320AN",
+        "Campus": "Ann Arbor Non-Campus"
+      },
+      {
+        "ID": "1008161",
+        "Name": "KELLOGG EYE CENTER - BRIGHTON",
+        "Abbreviation": "KWCBR",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008162",
+        "Name": "TRAVERWOOD",
+        "Abbreviation": "TWD",
+        "Campus": "CDC Outlying Clinics"
+      },
+      {
+        "ID": "1008600",
+        "Name": "TELCOM MICROWAVE BLDG",
+        "Abbreviation": "TLMIC",
+        "Campus": "Other"
+      }
+    ]
+  }
+}

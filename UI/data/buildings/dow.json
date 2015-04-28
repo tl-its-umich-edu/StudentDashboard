@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1000447",
+      "Name": "DOW HERBERT H BUILDING",
+      "Abbreviation": "DOW",
+      "Campus": "North Campus",
+      "StreetNumber": "2300",
+      "StreetDirection": "",
+      "StreetName": "HAYWARD ST",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109-2136",
+      "Latitude": "42.2929984",
+      "Longitude": "-83.715477",
+      "Phase": "SERV"
+    }
+  }
+}

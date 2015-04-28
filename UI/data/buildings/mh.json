@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1000197",
+      "Name": "MASON HALL",
+      "Abbreviation": "MH",
+      "Campus": "Central Campus",
+      "StreetNumber": "419",
+      "StreetDirection": "S",
+      "StreetName": "STATE ST",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109-1027",
+      "Latitude": "42.2770546",
+      "Longitude": "-83.7395089",
+      "Phase": "SERV"
+    }
+  }
+}

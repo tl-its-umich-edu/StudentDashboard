@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1000432",
+      "Name": "ART ARCHITECTURE BUILDING",
+      "Abbreviation": "A&AB",
+      "Campus": "North Campus",
+      "StreetNumber": "2000",
+      "StreetDirection": "",
+      "StreetName": "BONISTEEL BLVD",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109-2069",
+      "Latitude": "42.2893331",
+      "Longitude": "-83.7173866",
+      "Phase": "SERV"
+    }
+  }
+}
