@@ -66,14 +66,14 @@ var canvasToDoCleaner = function(result){
     var dueDayAnd4 = moment(this.end_at).add(4, 'days')
 
     if(dueDay.isBefore(nowDay)) { 
-      newObj.later = 'earlier';
+      newObj.when = 'earlier';
     }
     else {
       if(dueDay.isAfter(nowDayAnd4) ) { 
-        newObj.later = 'later';
+        newObj.when = 'later';
       }
       else {
-        newObj.later = 'now';
+        newObj.when = 'now';
       }
     }
     if(this.assignment) {
@@ -113,14 +113,14 @@ var ctoolsToDoCleaner = function(result){
       var dueDayAnd4 = moment.utc(this.calendarItem.calendarTime).add(4, 'days')
 
       if(dueDay.isBefore(nowDay)) { 
-        newObj.later = 'earlier';
+        newObj.when = 'earlier';
       }
       else {
         if(dueDay.isAfter(nowDayAnd4) ) { 
-          newObj.later = 'later';
+          newObj.when = 'later';
         }
         else {
-          newObj.later = 'now';
+          newObj.when = 'now';
         }
       }
       transformedData.push(newObj)
