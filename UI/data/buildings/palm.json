@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1005047",
+      "Name": "PALMER COMMONS",
+      "Abbreviation": "PALM",
+      "Campus": "Central Campus",
+      "StreetNumber": "100",
+      "StreetDirection": "",
+      "StreetName": "WASHTENAW AVE",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109-2218",
+      "Latitude": "42.2805604",
+      "Longitude": "-83.7340217",
+      "Phase": "SERV"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1000448",
+      "Name": "ELECTRICAL ENGINEERING AND COMPUTER SCIENCE BLD",
+      "Abbreviation": "EECS",
+      "Campus": "North Campus",
+      "StreetNumber": "1301",
+      "StreetDirection": "",
+      "StreetName": "BEAL AVE",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109-2122",
+      "Latitude": "42.2924201",
+      "Longitude": "-83.7139208",
+      "Phase": "SERV"
+    }
+  }
+}

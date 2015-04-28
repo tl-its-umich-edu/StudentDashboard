@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1005046",
+      "Name": "UNDERGRADUATE SCIENCE BUILDING",
+      "Abbreviation": "USB",
+      "Campus": "Central Campus",
+      "StreetNumber": "204",
+      "StreetDirection": "",
+      "StreetName": "WASHTENAW AVE",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109-2215",
+      "Latitude": "42.2800441",
+      "Longitude": "-83.73481",
+      "Phase": "SERV"
+    }
+  }
+}

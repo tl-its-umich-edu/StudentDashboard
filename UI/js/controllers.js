@@ -13,6 +13,48 @@ dashboardApp.run(function ($rootScope) {
   $rootScope.lang = JSON.parse($('#lang').text());
 });
 
+
+
+dashboardApp.factory('getMapCoords', function ($http) {
+  return {
+    getCoords: function (building) {
+      var url = 'data/buildings/' + _.last(building.split(' ')).toLowerCase() + '.json';
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          var coords = {};
+          coords.latitude = result.data.Buildings.Building.Latitude;
+          coords.longitude = result.data.Buildings.Building.Longitude;
+          return coords;
+        },
+        function error() {
+          //do something in case of error
+          //result.errors.failure = true;
+          //return result.errors;
+        }
+      );
+    }
+  };
+});
+
+
+dashboardApp.factory('pageDay', function () {
+  return {
+      getDay: function (wdayintnew) {
+        //wdayintnew=4; // for testing
+        var weekday=new Array(7);
+        weekday[1]=['Mo', 'Monday'];
+        weekday[2]=['Tu', 'Tuesday'];
+        weekday[3]=['We', 'Wednesday'];
+        weekday[4]=['Th', 'Thursday'];
+        weekday[5]=['Fr', 'Friday'];
+        weekday[6]=['Sa', 'Saturday'];
+        weekday[7]=['Su', 'Sunday'];
+        return  weekday[wdayintnew];
+      }
+  };
+});
+
+
 /**
  * Singleton that does the requests for the courses
  * Inner function uses the URL passed to it
@@ -180,15 +222,6 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
  * developed.
  */
 
-
-dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
-  var url = 'data/sched.json';
-  $http.get(url).success(function (data) {
-    $scope.schedule = data;
-  });
-}]);
-
-
 dashboardApp.factory('ToDosCanvas', function ($http) {
   return {
     getToDos: function (url) {
@@ -224,10 +257,10 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
   var canvasData = [];
   var ctoolsData = [];
   var combinedData = [];
-  ToDosCanvas.getToDos('data/schedule/canvas.json').then(function (data) {
+  ToDosCanvas.getToDos('data/todo/canvas.json').then(function (data) {
     data = eval(data);
     canvasData = data;
-    ToDosCTools.getToDos('data/schedule/ctools.json').then(function (data) {
+    ToDosCTools.getToDos('data/todo/ctools.json').then(function (data) {
       ctoolsData = data;
       combinedData = combinedData.concat(canvasData,ctoolsData);
       
@@ -274,20 +307,107 @@ dashboardApp.controller('todoController', ['$scope', '$http', function ($scope, 
     };
   });
 }]);
-/*
-dashboardApp.controller('eventsController', ['$scope', '$http', function ($scope, $http) {
-  var url = 'data/events.json';
-  $http.get(url).success(function (data) {
-    $scope.events = data;
-  });
-}]);
 
-dashboardApp.controller('uniEventsController', ['$scope', '$http', function ($scope, $http) {
-  var url = 'data/uniWeekEvents.json';
-  //var url = 'data/uniEvents.json';
-  //var url = 'https://events.umich.edu/week/json'
+
+
+
+dashboardApp.controller('scheduleController', ['getMapCoords', 'pageDay', '$scope', '$http', function (getMapCoords, pageDay, $scope, $http) {
+  var url = 'data/schedule/schedule.json';
   $http.get(url).success(function (data) {
-    $scope.unievents = data;
+    var wdayint = moment().weekday();
+  
+    $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
+    $scope.dateWeek = moment().format('dddd');
+
+    $.each(data.getMyClsScheduleResponse.RegisteredClass, function (i, l) {
+      var AggrMeeting ='';
+      var AggrLocation =[];
+      var parseableTime = '';
+      if(l.Meeting.length){
+        $.each(l.Meeting, function (i, l) {
+            AggrMeeting  = AggrMeeting  + l.Days;
+            AggrLocation.push(l.Location);
+            //console.log(AggrLocation)
+            if (l.Times.split('-')[0].indexOf('PM') !== -1) {
+              var tempTime = parseInt(l.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
+              parseableTime = tempTime + l.Times.split('-')[0].replace('PM','').split(':')[1];
+            }
+            else  {
+              parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+            }
+        });    
+      } 
+      else {
+        AggrMeeting = l.Meeting.Days;
+        AggrLocation.push(l.Meeting.Location);
+
+        if (l.Meeting.Times.split('-')[0].indexOf('PM') !== -1) {
+          var tempTime = parseInt(l.Meeting.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
+          parseableTime = tempTime  + l.Meeting.Times.split('-')[0].replace('PM','').split(':')[1];
+        }
+        else  {
+          parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+        }
+      }
+      //console.log(AggrLocation)
+      l.Meeting.AggrLocation = AggrLocation;
+      if(parseableTime ===''){
+        parseableTime = '2500';
+      }
+
+      l.parseableTime = parseInt(parseableTime);
+
+      if (AggrMeeting !=='') {
+        l.AggrMeeting = AggrMeeting;
+      }
+      else {
+        //might consider explicitly filtering this out
+        l.AggrMeeting = 'NA';
+      }
+    });
+    
+    $scope.schedule = data.getMyClsScheduleResponse.RegisteredClass;
+
+    $scope.openMap = function ( building, mobile) {
+      getMapCoords.getCoords(building).then(function (data) {
+        if (data.failure) {
+           //report error 
+        } else {
+          // open new Google maps window with directions from current location
+          if (mobile) {
+            window.open('https://www.google.com/maps/dir/Current+Location/' + data.latitude + ',' + data.longitude);
+          }
+          else {
+            window.open('http://maps.google.com/maps?q=' + data.latitude + ',' + data.longitude);
+          }
+
+        }
+      });
+    };
+
+    $scope.pageDay = function (dir) {
+      var wdayintnew;
+      if(dir === 'next') {
+        if (wdayint === 7) {
+          wdayintnew = 1;
+        }
+        else {
+          wdayintnew = wdayint + 1;
+        }
+      }
+      else {
+        if (wdayint === 1) {
+          wdayintnew = 7;
+        }
+        else {
+          wdayintnew = wdayint - 1;
+        }
+      }
+
+      wdayint = wdayintnew;
+      
+      $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
+      $scope.dateWeek = pageDay.getDay(wdayint)[1];
+    };
   });
 }]);
-*/

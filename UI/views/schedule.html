@@ -1,28 +1,45 @@
-<div class="itemPanel">
-  <h3 class="colHeader">Schedule</h3>
-  <div id="schedule" class="itemPanel" ng-controller="scheduleController" ng-cloak>
-    <div id="schedule" class="itemPanel">
-      <ul class="itemList">
-        <li ng-repeat="item in schedule | orderBy:'tf'" class="container-fluid {{'ad' + item.tf}}">
-          <div class="row">
-            <div class="col-md-1 col-xs-1 calDate">
-              <small>
-                <strong>{{item.time}}</strong>
-            </small>
-              <br>
-              <small>
-              <strong>{{item.ampm | uppercase}}</strong>
-            </small>
-            </div>
-            <div class="col-md-11 col-xs-11">
-              {{item.title}}
-              <br>
-              <small>
-              <a title="See map (opens in new window)" target ="_blank" href="{{item.location_link}}"><span class="sr-only">See map for </span>{{item.location}}</a>
-            </small>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
+<div  ng-controller="scheduleController" class="itemPanel">
+<h3 class="colHeader">Schedule <small>{{dateWeek}}</small>
+  <div class="btn-group pull-right">
+        <button class="btn btn-sm btn-default" type="button" ng-click="pageDay('prev')">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+        </button> 
+        <button class="btn btn-sm btn-default" type="button" ng-click="pageDay('next')">
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
   </div>
+</h3>
+<div id="schedule"  ng-cloak>
+  <div id="schedule" class="itemPanel">
+    <ul class="itemList">
+     
+      <li ng-repeat="item in filtered= (schedule | filter: {AggrMeeting : weekdayAbbr})|  orderBy: 'parseableTime'"  class="container-fluid" >
+    
+        <div class="row">
+          <div class="col-md-2 col-xs-2 calDate">
+            <small>
+              <strong ng-show="item.Meeting.length">{{item.Meeting[0].Times | fixClassTimes}}</strong>
+              <strong ng-hide="item.Meeting.length">{{item.Meeting.Times | fixClassTimes}}</strong>
+            </small>
+          </div>
+          <div class="col-md-10 col-xs-10">
+            {{item.SubjectCode}} {{item.CatalogNumber}} {{item.SectionNumber}} {{item.SectionType}} 
+            <br>
+            <small>
+              {{item.CourseDescr}}<br>
+                <!--// below should be a link if there is a location we can look up
+                on click we can retrieve the building json and open a new Google Maps window with those coordinates 
+                first the link for mobile (with directions from current location, next the link for-->
+                <span ng-repeat="location in item.Meeting.AggrLocation">
+                  <em ng-show="$index > 0">/</em>
+                  <a href="#" class="visible-xs-inline" ng-click="openMap(location, true)"><i class="glyphicon glyphicon-search"></i><em class="sr-only">See map for </em> {{location}}</a>
+                  <a href="#" class="visible-sm-inline visible-md-inline visible-lg-inline"  ng-click="openMap(location, false)"><i class="glyphicon glyphicon-search"></i><em class="sr-only">See map for </em> {{location}}</a>
+                </span>
+            </small>
+          </div>
+        </div>
+      </li>
+      <li ng-show="filtered.length ===0">You have nothing scheduled today that we know of</li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,309 @@
+{
+  "getMyClsScheduleResponse": {
+    "@schemaLocation": "http://mais.he.umich.edu/schemas/getMyClsScheduleResponse.v1 http://csqa9ib.dsc.umich.edu/PSIGW/PeopleSoftServiceListeningConnector/getMyClsScheduleResponse.v1.xsd",
+    "RegisteredClass": [
+      {
+        "ClassNumber": "30554",
+        "SubjectCode": "ARTDES",
+        "CatalogNumber": "100",
+        "SectionNumber": "001",
+        "SectionType": "LAB",
+        "SectionTypeDescr": "Laboratory",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Studio: Drawing I",
+        "ClassTopic": "",
+        "CreditHours": "3",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "MoWe",
+          "Times": "6:00PM - 9:00PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "2058 A&AB",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "Luchs,Kathryn E",
+          "LastName": "Luchs",
+          "FirstName": "Kathryn",
+          "Uniqname": "BRACKETT",
+          "InstructorRole": "Primary Instructor"
+        }
+      },
+      {
+        "ClassNumber": "31096",
+        "SubjectCode": "ARTDES",
+        "CatalogNumber": "240",
+        "SectionNumber": "001",
+        "SectionType": "LAB",
+        "SectionTypeDescr": "Laboratory",
+        "SessionDescr": "Regular",
+        "CourseDescr": "3D Modeling&Motion",
+        "ClassTopic": "",
+        "CreditHours": "3",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "MoWe",
+          "Times": "6:00PM - 9:00PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "2114 A&AB",
+          "TopicDescr": ""
+        }
+      },
+      {
+        "ClassNumber": "25474",
+        "SubjectCode": "CLCIV",
+        "CatalogNumber": "350",
+        "SectionNumber": "001",
+        "SectionType": "LEC",
+        "SectionTypeDescr": "Lecture",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Classical Topics",
+        "ClassTopic": "",
+        "CreditHours": "3",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "MoWe",
+          "Times": "2:30PM - 4:00PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "2062 PALM",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "McAlpine,Lynley Jane",
+          "LastName": "McAlpine",
+          "FirstName": "Lynley",
+          "Uniqname": "LYNLEY",
+          "InstructorRole": "Primary Instructor"
+        }
+      },
+      {
+        "ClassNumber": "20174",
+        "SubjectCode": "EECS",
+        "CatalogNumber": "216",
+        "SectionNumber": "001",
+        "SectionType": "LEC",
+        "SectionTypeDescr": "Lecture",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Intro Signals&Syst",
+        "ClassTopic": "Masc/Fem in Ancient Art & Lit",
+        "CreditHours": "4",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "TuTh",
+          "Times": "10:30AM - 12:00PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "1200 EECS",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "Grizzle,Jessy W",
+          "LastName": "Grizzle",
+          "FirstName": "Jessy",
+          "Uniqname": "GRIZZLE",
+          "InstructorRole": "Primary Instructor"
+        }
+      },
+      {
+        "ClassNumber": "20175",
+        "SubjectCode": "EECS",
+        "CatalogNumber": "216",
+        "SectionNumber": "011",
+        "SectionType": "DIS",
+        "SectionTypeDescr": "Discussion",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Intro Signals&Syst",
+        "ClassTopic": "",
+        "CreditHours": "4",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "Fr",
+          "Times": "9:30AM - 10:30AM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "1010 DOW",
+          "TopicDescr": ""
+        }
+      },
+      {
+        "ClassNumber": "20180",
+        "SubjectCode": "EECS",
+        "CatalogNumber": "216",
+        "SectionNumber": "022",
+        "SectionType": "LAB",
+        "SectionTypeDescr": "Laboratory",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Intro Signals&Syst",
+        "ClassTopic": "",
+        "CreditHours": "4",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "Th",
+          "Times": "6:00PM - 9:00PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "1016 EECS",
+          "TopicDescr": ""
+        }
+      },
+      {
+        "ClassNumber": "18332",
+        "SubjectCode": "MATH",
+        "CatalogNumber": "216",
+        "SectionNumber": "010",
+        "SectionType": "LEC",
+        "SectionTypeDescr": "Lecture",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Intro Diff Equat",
+        "ClassTopic": "",
+        "CreditHours": "4",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "MoWeFr",
+          "Times": "8:00AM - 9:00AM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "2260 USB",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "Kocyigit,Ilker",
+          "LastName": "Kocyigit",
+          "FirstName": "Ilker",
+          "Uniqname": "ILKERK",
+          "InstructorRole": "Primary Instructor"
+        }
+      },
+      {
+        "ClassNumber": "11874",
+        "SubjectCode": "MATH",
+        "CatalogNumber": "216",
+        "SectionNumber": "013",
+        "SectionType": "LAB",
+        "SectionTypeDescr": "Laboratory",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Intro Diff Equat",
+        "ClassTopic": "",
+        "CreditHours": "4",
+        "LMSURL": "",
+        "Meeting": [
+          {
+            "MeetingNumber": "1",
+            "Days": "Th",
+            "Times": "3:00PM - 4:00PM",
+            "StartDate": "01/07/2015",
+            "EndDate": "04/21/2015",
+            "Location": "1866 EH",
+            "TopicDescr": ""
+          },
+          {
+            "MeetingNumber": "2",
+            "Days": "Th",
+            "Times": "3:00PM - 4:00PM",
+            "StartDate": "01/07/2015",
+            "EndDate": "04/21/2015",
+            "Location": "B745 EH",
+            "TopicDescr": ""
+          }
+        ]
+      },
+      {
+        "ClassNumber": "17624",
+        "SubjectCode": "MECHENG",
+        "CatalogNumber": "990",
+        "SectionNumber": "010",
+        "SectionType": "IND",
+        "SectionTypeDescr": "Independent Study",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Diss-Precand",
+        "ClassTopic": "",
+        "CreditHours": "1 - 8",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "",
+          "Times": "",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "TBA",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "Ghosh,Amit K",
+          "LastName": "Ghosh",
+          "FirstName": "Amit",
+          "Uniqname": "AKG",
+          "InstructorRole": "Primary Instructor"
+        }
+      },
+      {
+        "ClassNumber": "24559",
+        "SubjectCode": "PUBPOL",
+        "CatalogNumber": "456",
+        "SectionNumber": "001",
+        "SectionType": "LEC",
+        "SectionTypeDescr": "Lecture",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Local Gov: Opp Activ",
+        "ClassTopic": "",
+        "CreditHours": "3",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "MoWe",
+          "Times": "1:00PM - 2:30PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "1210 WEILL",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "Hieftje,John J",
+          "LastName": "Hieftje",
+          "FirstName": "John",
+          "Uniqname": "JHIEFTJE",
+          "InstructorRole": "Primary Instructor"
+        }
+      },
+      {
+        "ClassNumber": "27850",
+        "SubjectCode": "WRITING",
+        "CatalogNumber": "120",
+        "SectionNumber": "001",
+        "SectionType": "SEM",
+        "SectionTypeDescr": "Seminar",
+        "SessionDescr": "Regular",
+        "CourseDescr": "Wrtg Multiling Stu",
+        "ClassTopic": "",
+        "CreditHours": "3",
+        "LMSURL": "",
+        "Meeting": {
+          "MeetingNumber": "1",
+          "Days": "TuTh",
+          "Times": "4:00PM - 5:30PM",
+          "StartDate": "01/07/2015",
+          "EndDate": "04/21/2015",
+          "Location": "3440 MH",
+          "TopicDescr": ""
+        },
+        "Instructor": {
+          "InstructorName": "Xia,Jing",
+          "LastName": "Xia",
+          "FirstName": "Jing",
+          "Uniqname": "JXIAAPL",
+          "InstructorRole": "Primary Instructor"
+        }
+      }
+    ]
+  }
+}

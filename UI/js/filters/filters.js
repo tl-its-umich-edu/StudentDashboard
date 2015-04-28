@@ -54,4 +54,10 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
       }
       return value + (tail || ' …');
   };
+}).filter('fixClassTimes', function () {
+  return function (input) {
+    if (input) {
+      return input.replace('-', ' ');
+    }
+  };
 });

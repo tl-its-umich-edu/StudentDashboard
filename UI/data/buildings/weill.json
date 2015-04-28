@@ -1,0 +1,19 @@
+{
+  "Buildings": {
+    "Building": {
+      "ID": "1005101",
+      "Name": "WEILL JOAN & SANFORD HALL",
+      "Abbreviation": "WEILL",
+      "Campus": "Central Campus",
+      "StreetNumber": "735",
+      "StreetDirection": "S",
+      "StreetName": "STATE ST",
+      "City": "ANN ARBOR",
+      "State": "MI",
+      "ZipCode": "48109",
+      "Latitude": "42.272211",
+      "Longitude": "-83.7402751",
+      "Phase": "SERV"
+    }
+  }
+}
