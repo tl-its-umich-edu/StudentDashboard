@@ -90,6 +90,7 @@ function makeConfigTar {
 function makeWarFile {
     atStep "make war file"
     warble
+    cp StudentDashboard.war portal.$ts.war
     mv StudentDashboard.war StudentDashboard.$ts.war
     mv *.war ./ARTIFACTS
 }

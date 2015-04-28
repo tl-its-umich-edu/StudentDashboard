@@ -1,3 +1,34 @@
+# This is a yaml configuration file for Latte.  Note that white space indentation matters for yaml
+# The actual values are set up front.  Explanation of the values is at the end of the file.
+#
+# PURPOSE: <reason for this configuration>
+#
+# Application name which must match a value in the security.yml file.  Identifies the credentials and ESB to use.
+application_name: SD-QA
+# use file based data provider if not commented.
+#data_provider_file_directory: server/test-files
+# Text returned if Latte does not understand a query at all.
+invalid_query_text: Come on, ask something reasonable
+# Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
+default_user: anonymous
+# default term to use if none is specified.
+default_term: 2010
+# configure the stub authentication method for testing.  override should be false unless special testing is being done.
+authn_uniqname_override: false
+authn_wait_min: 0.01
+authn_wait_max: 0.03
+# public members of this MCommunity group have administrative privileges on Latte.
+latte_admin_group: TL-Latte-admin-test
+# These values are used to run a check query on the Latte ESB connection.  The uniqname
+# should be a test user.
+check_uniqname: ststvii
+check_termid: 2060
+#
+# Set logging level.  Default is INFO.
+use_log_level: DEBUG
+
+############# Explanation
+
 ### This yaml format file specifies configuration values that may change from
 ### instance to instance.  E.g. the values may need to be different between the
 ### developer, qa, and production instances.
@@ -7,21 +38,21 @@
 # for ESB oauth authentication.  It must match up with a corresponding application name
 # in the security.yml file.  See that file for details on the authentication information.
 
-application_name: SD-QA
+#application_name: SD-QA
 
 ##### Values below here are unlikely to change except when
 ##### testing.
 # Text to use when the server gets a non-standard request.
 
-invalid_query_text: Come on, ask something reasonable
+#invalid_query_text: Come on, ask something reasonable
 
 # The name to use when no user name is available.  This is primarily useful
 # in test installations.
 
-anonymous_user: anonymous
+#anonymous_user: anonymous
 
 #### Default term to use for course lookups if no other information is available.
-default_term: 2010
+#default_term: 2010
 
 # These values allow implementation of a stub authentication service (to be used
 # primarily for load testing).
@@ -35,9 +66,9 @@ default_term: 2010
 # that would be caused by using an external authentication system can be
 # modeled during load testing.
 
-authn_uniqname_override: true
-authn_wait_min: 0.01
-authn_wait_max: 0.03
+#authn_uniqname_override: false
+#authn_wait_min: 0.01
+#authn_wait_max: 0.03
 
 ## The latte_admin_group specifies the name of a MCommunity group.  Members
 ## of that group will have administrative tools for Latte.  In particular they will
@@ -45,11 +76,12 @@ authn_wait_max: 0.03
 ## The members of the group are read on startup and it will require a restart to
 ## make changes effective.
 
-## The members of the group are read on startup and it will require a restart to
-## make changes effective.
+#latte_admin_group: TL-Latte-admin-test
+#latte_admin_group: ctsupportstaff
 
-latte_admin_group: TL-Latte-admin-test
-
+## values for running the check query against ESB
+check_uniqname: ststvii
+check_termid: 2060
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:

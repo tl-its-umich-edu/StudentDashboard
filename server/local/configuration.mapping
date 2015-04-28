@@ -1,18 +1,21 @@
-# An application will need to run in several different environments.  E.g. development,
-# load testing, and production. This file specifies mappings between the file names that
-# the application relies on being available and the actual physical location of those files.
-# Typically the mapping between files will be implemented with a symbolic link.
+# An application will need to run in several different environments with different configuration requirements.
+# E.g. development, QA, load testing, and production environments will not have identical needs.
+# So that it is simple to maintain the different configurations this configuration.mapping
+# file specifies, for different configurations, mappings between the specific file names that the application expects
+# to see and the actual physical location of those files. Typically the application will continue to look for
+# the customary files and we'll create a symbolic link to ensure the file appropriate
+# to the desired configuration is actually used.
 #
 # This configuration mapping file is delivered in the build artifacts.
 #
-# The line format is:
+# The format for each line is:
 #[configuration_name] symbolic_name physical_name
 #
-# The configuration_name groups related file mappings.  E.g. there may be a group of related
+# The "configuration_name" groups related file mappings.  E.g. There will be one or more files
 # files appropriate for DEV which are different from those for QA-LOADTESTING.  The
-# configuration_name value is used during installation to determine which mappings
-# are appropriate for the chosen environment. The symbolic_name is the name that
-# the application itself will use to access the file. The physical_name is the
+# configuration_name value is specified during installation to determine which mappings
+# are appropriate for the chosen environment. The "symbolic_name" is the name that
+# the application itself will use to access the file. The "physical_name" is the
 # name of a physical file that actually contains information.
 #
 # These names may be specified as absolute file path names or relative path names.
@@ -20,16 +23,28 @@
 # If the name is a relative name then if the environment variable SYMBOLIC_PREFIX has a value
 # that value will be prepended to the symbolic_name.  Similarly if the environment
 # variable PHYSICAL_PREFIX has a value it will be prepended to the physical_name.
-# These environment variables will be set during the the installation. For PREFIX
-# variable that does not have a defined value the corresponding files will be considered
+# These environment variables can be set during the the installation. For either PREFIX
+# variable, if it does not have a defined value then the referenced files will be expected
 # to be located relative to the directory that contains this mapping file.
 #
-[SD-DEV]          studentdashboard.yml studentdashboard-DEV.yml
-[SD-LOCALHOST]    studentdashboard.yml studentdashboard-LOCALHOST.yml
-[SD-PROD]         studentdashboard.yml studentdashboard-PROD.yml
-# Note that a single physical instance might have multiple sets of configuration files for
-# different purposes.
-[SD-QA]           studentdashboard.yml studentdashboard-QA.yml
-[SD-QA-LOAD-TEST] studentdashboard.yml studentdashboard-QA-LOAD-TEST.yml
-[SD-QA-NOAUTH]    studentdashboard.yml studentdashboard-QA-NOAUTH.yml
+# The correct number of configurations depends entirely on the current development and installation needs.
+# There are likely to be many more configurations for DEV than for the other instances.
+#
+####### DEV configurations.
+## PERMISSIVE means that uniqname override is turned on for everybody. RESTRICTIVE means that only the
+## members of the MCommunity group can use the uniqname override.
+## FILE means that data comes from local data files rather than the ESB.  By default we use the ESB provider.
+[DEV-PERMISSIVE-FILE]   studentdashboard.yml ./local/studentdashboard-DEV-permissive-file.yml
+[DEV-PERMISSIVE]        studentdashboard.yml ./local/studentdashboard-DEV-permissive.yml
+[DEV-RESTRICTIVE-FILE]  studentdashboard.yml ./local/studentdashboard-DEV-restrictive-file.yml
+[DEV-RESTRICTIVE]       studentdashboard.yml ./local/studentdashboard-DEV-restrictive.yml
+####### QA configurations.
+## There is no load test instance so QA is configured differently depending on what the load test needs are.
+[QA-LOAD-TEST]          studentdashboard.yml ./local/studentdashboard-QA-LOAD-TEST.yml
+## For one test we needed the load test configuration but using the production ESB.
+[QA-PESB]               studentdashboard.yml ./local/studentdashboard-QA-PESB.yml
+## Default QA configuration.
+[QA]                    studentdashboard.yml ./local/studentdashboard-QA.yml
+####### PROD configuration.
+[PROD]                  studentdashboard.yml ./local/studentdashboard-PROD.yml
 # end

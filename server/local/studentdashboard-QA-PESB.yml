@@ -1,71 +1,28 @@
-### This yaml format file specifies configuration values that may change from
-### instance to instance.  E.g. the values may need to be different between the
-### developer, qa, and production instances.
-### NOTE: White space indentation matters for yaml.
-
-# This is the name of the ESB "application" that identifies the credentials to be used
-# for ESB oauth authentication.  It must match up with a corresponding application name
-# in the security.yml file.  See that file for details on the authentication information.
-
+# This is a yaml configuration file for Latte.  Note that white space indentation matters for yaml
+# The actual values are set up front.  Explanation of the values is at the end of the file.
+#
+# PURPOSE: QA instance for load testing permissive uniqname PRODUCTION ESB based.
+#
+# Application name which must match a value in the security.yml file.  Identifies the credentials and ESB to use.
 application_name: StudentDashboard-PROD
-
-##### Values below here are unlikely to change except when
-##### testing.
-# Text to use when the server gets a non-standard request.
-
+# use file based data provider if not commented.
+#data_provider_file_directory: server/test-files
+# Text returned if Latte does not understand a query at all.
 invalid_query_text: Come on, ask something reasonable
-
-# The name to use when no user name is available.  This is primarily useful
-# in test installations.
-
-anonymous_user: anonymous
-
-#### Default term to use for course lookups if no other information is available.
+# Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
+default_user: anonymous
+# default term to use if none is specified.
 default_term: 2010
-
-# These values allow implementation of a stub authentication service (to be used
-# primarily for load testing).
-# The authn_uniqname_override, when set to 'true' will allow the uniqname of the user
-# may be taken from the URL UNIQNAME parameter rather than
-# using the authenticated user.  E.g. localhost:3000/?UNIQNAME=bono with run StudentDashboard
-# as if the user is bono.
-
-# The two "authn_wait_..." values give the range of time to wait between changing
-# the user name and returning.  They are included so that the effect of a delay
-# that would be caused by using an external authentication system can be
-# modeled during load testing.
-
+# configure the stub authentication method for testing.  override should be false unless special testing is being done.
 authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
-
-## The latte_admin_group specifies the name of a MCommunity group.  Members
-## of that group will have administrative tools for Latte.  In particular they will
-## be able to request information for people besides themselves.
-## The members of the group are read on startup and it will require a restart to
-## make changes effective.
-
+# public members of this MCommunity group have administrative privileges on Latte.
 latte_admin_group: TL-Latte-admin-test
-
-## values for running the check query against ESB
+# These values are used to run a check query on the Latte ESB connection.  The uniqname
+# should be a test user.
 check_uniqname: ststvii
 check_termid: 2060
-
-######### Data provider selection ###########
-## Two data provider implementations are supplied:
-## ESB - this is the default and the configuration is in the security.yml file.
-## FB (file based) - This is primarily for testing and allows reading data
-## from local files.  Configuration is documented below.
-
-### file based data provider value:
-#data_provider_file_directory: server/test-files
-# This value is used for the optional file based data provider.
-# If the value is not set then the ESB based provider is used.
-# If data_file_provider_directory does have a value then Latte will treat
-# the value as a directory name and will look there for files matching
-# the request.  If the directory starts with
-# a '/' it is taken as an absolute path.  Otherwise the base directory for
-# application is prepended to the path.  For example it may look within
-# the directory /usr/latte/really/good/directory or within the expanded war file.
-########## end #########
-
+# set logging level.  Default is INFO.
+use_log_level: INFO
+### end ###
