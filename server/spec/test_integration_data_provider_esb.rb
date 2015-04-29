@@ -103,6 +103,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def test_esb_no_terms
 
+    skip("address with another jira")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
