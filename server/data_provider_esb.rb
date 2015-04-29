@@ -3,19 +3,22 @@
 
 module DataProviderESB
 
+  ## constants for understanding data from ESB.
+  TERM_REG_KEY = 'getMyRegTermsResponse'
+  TERM_KEY = 'Term'
+  CLS_SCHEDULE_KEY = 'getMyClsScheduleResponse'
+  REGISTERED_CLASSES_KEY = 'RegisteredClasses'
+
   @@w = nil
   @@yml = nil
 
-  def setup_WAPI(app_name)
-    logger.info "setup_WAPI: use ESB application: #{app_name}"
+  def setupWAPI(app_name)
+    logger.info "setupWAPI: use ESB application: #{app_name}"
     application = @@yml[app_name]
     @@w = WAPI.new application
   end
 
-  def init_ESB(security_file, app_name)
-
-    logger.info "init_ESB"
-    logger.info("security_file: "+security_file.to_s)
+  def initESB(security_file, app_name)
 
     requested_file = security_file
 
@@ -27,19 +30,63 @@ module DataProviderESB
       file_name = default_security_file
     end
 
-    logger.debug "init_ESB: security file_name: #{file_name}"
+    logger.info "init_ESB: use security file_name: #{file_name}"
     @@yml = YAML.load_file(file_name)
 
-    setup_WAPI(app_name)
+    setupWAPI(app_name)
+  end
+
+  def ensure_ESB(app_name, security_file)
+    if @@w.nil?
+      logger.debug "@@w is nil"
+      @@w = initESB(security_file, app_name)
+    end
+  end
+
+  # Run the request and return the resulting data.
+  def callDataUrl(url)
+    logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl: #{__LINE__}: url: "+url)
+
+    data = @@w.get_request(url)
+    logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl:  #{url}: data: "+data.inspect)
+    result = data.result
+    logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl: result: "+result.inspect)
+    result
+  end
+
+  # Accept string from ESB and extract out required information.  If the string is not valid JSON
+  # that's an error.  'query_key' is the name of the mpathways script used to get the data. The 'detail_key'
+  # is the part of the information we want to get.
+  def parseESBData(result, query_key, detail_key)
+    begin
+      logger.debug("dataProviderESB parseESBData: #{__LINE__}:  input: #{result}: #{query_key}:#{detail_key}")
+      # If it doesn't parse then it is a problem addressed in the rescue.
+      parsed = JSON.parse(result)
+      logger.debug("dataProviderESB parseESBData: #{__LINE__}:  parsed:"+parsed.inspect)
+      query_key_value = parsed[query_key]
+
+      ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen if,
+      ## for example, a user has no terms.
+      ## Make these conditions separate so easy to take out when ESB returns expected values.
+      return WAPIResultWrapper.new(WAPI::SUCCESS, "replace nil value with empty array", []) if query_key_value.nil?
+      return WAPIResultWrapper.new(WAPI::SUCCESS, "replace empty string with empty array", []) if query_key_value.length == 0
+
+      parsed_value = parsed[query_key][detail_key]
+
+      # if there is a detail_key but no data that's an error.
+      raise "ESBInvalidData: input: #{result}" if parsed_value.nil?
+      return WAPIResultWrapper.new(WAPI::SUCCESS, "found value #{query_key}:#{detail_key} from ESB", parsed_value)
+    rescue => excpt
+      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "bad data for key: #{query_key}:#{detail_key}: ",
+                                   excpt.message+ " "+Logging.trimBackTraceRVM(excpt.backtrace).join("/n"))
+    end
+    # won't get here.
   end
 
   def dataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
     logger.info "data provider is DataProviderESB."
     ## if necessary initialize the ESB connection.
-    if @@w.nil?
-      logger.debug "@@w is nil"
-      @@w = init_ESB(security_file, app_name)
-    end
+    ensure_ESB(app_name, security_file)
 
     if termid.nil? || termid.length == 0
       logger.debug "dPESBC: #{__LINE__}: defaulting term to #{default_term}"
@@ -47,77 +94,20 @@ module DataProviderESB
     end
 
     url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
-
-    logger.debug("dPESBC: #{__LINE__}: url: "+url)
-
-    classes = @@w.get_request(url)
-    logger.debug("dPESBC: classes: "+classes.inspect)
-    result = classes.result
-    logger.debug("dPESBC: result: "+result.inspect)
-
-    begin
-      r = JSON.parse(result)
-    rescue => exp
-      logger.warn("EXCEPTION: dataProviderESBCourse: course request exp: "+exp.to_s+" result: "+r.inspect)
-      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "EXCEPTION: course request returned: ", r)
-    end
-
-    if r.has_key?('getMyClsScheduleResponse')
-      r = r['getMyClsScheduleResponse']['RegisteredClasses']
-      logger.debug("dPESBC: with classes r: "+r.inspect)
-      # return newly wrapped result after extracting the course data
-      classes = WAPIResultWrapper.new(WAPI::SUCCESS, "found courses from ESB", r)
-    end
-
-    return classes
+    result = callDataUrl(url)
+    parseESBData(result, CLS_SCHEDULE_KEY, REGISTERED_CLASSES_KEY)
   end
+
 
   def dataProviderESBTerms(uniqname, security_file, app_name)
     logger.info "data provider is DataProviderESB."
     ## if necessary initialize the ESB connection.
-    if @@w.nil?
-      logger.debug "@@w is nil"
-      @@w = init_ESB(security_file, app_name)
-    end
+    ensure_ESB(app_name, security_file)
 
     url = "/Students/#{uniqname}/Terms"
-
-    logger.debug("DPESBT: url: "+url)
-
-    terms = @@w.get_request(url)
-    logger.debug("DPESBT: #{__LINE__}: dataProviderESBTerms: terms: "+terms.inspect)
-    result = terms.result
-    logger.debug("DPESBT: #{__LINE__}: dataProviderESBTerms: result: "+result.inspect)
-
-    begin
-      parsed = JSON.parse(result)
-    rescue => exp
-      logger.warn("EXCEPTION: dataProviderESBTerm: term request returned: exp: "+exp.to_s+" result: "+result.inspect)
-      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "EXCEPTION: term request parsing", result)
-    end
-
-    if !parsed.has_key?('getMyRegTermsResponse')
-      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "ERROR: term request did not return term data", terms.inspect)
-    end
-
-    # got some result for terms
-    logger.debug("DPESBTERM: #{__LINE__}: parsed:"+parsed.inspect)
-    begin
-      terms_value = parsed['getMyRegTermsResponse']['Term']
-      logger.debug "DPESBTERM: #{__LINE__}: terms_value: "+terms_value.inspect
-      # make sure missing terms represented by empty array.
-      msg = "found terms from ESB"
-      if terms_value.nil?
-        msg = "no terms returned from ESB"
-        terms_value = Array.new;
-      end
-      terms_return = WAPIResultWrapper.new(WAPI::SUCCESS, msg, terms_value)
-    rescue => e
-      error_msg = "DPESBTERM: #{__LINE__}: UNEXPECTED ERROR: now in terms rescue block for: #{terms} with exception: #{e} at: "+Logging.trimBackTraceRVM(caller).to_s
-      logger.warn error_msg
-      terms_return = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR,error_msg,terms.inspect)
-    end
-    terms_return
+    result = callDataUrl(url)
+    parseESBData(result, TERM_REG_KEY, TERM_KEY)
   end
+
 
 end
