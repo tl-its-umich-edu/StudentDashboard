@@ -29,9 +29,9 @@ module Logging
 #        "#{severity} #{caller[4]} #{msg}\n"
 #      }
 
-      Logging.logger.formatter = proc { |severity, datetime, progname, msg|
-              "#{severity[0..0]}, [#{datetime}] #{severity} #{caller[4]} #{msg}\n"
-            }
+#      Logging.logger.formatter = proc { |severity, datetime, progname, msg|
+#              "#{severity[0..0]}, [#{datetime}] #{severity} #{caller[4]} #{msg}\n"
+#            }
 
       # default Log format:
       #   SeverityID, [Date Time mSec #pid] SeverityLabel -- ProgName: message
