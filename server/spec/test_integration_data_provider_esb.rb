@@ -114,10 +114,11 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
     refute_nil(m,"create provider object")
     terms = m.dataProviderESBTerms("xxx", @security_file,@esb_application)
-    assert_equal(200,terms.meta_status,'find terms json meta status')
+    puts "terms: "+terms.inspect
+    assert_equal(WAPI::UNKNOWN_ERROR,terms.meta_status,'get bad result for missing uniqname')
     logger.debug "terms: "+terms.inspect
     t = terms.result
-
+    puts "t: "+t.inspect
     assert(t.length == 0,"get empty array when no terms")
 
   end

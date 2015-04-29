@@ -56,7 +56,7 @@ module DataProviderESB
 
   # Accept string from ESB and extract out required information.  If the string is not valid JSON
   # that's an error.  'query_key' is the name of the mpathways script used to get the data. The 'detail_key'
-  # is the part of the information we want to get.
+  # is the part of the returned information we want to get.
   def parseESBData(result, query_key, detail_key)
     begin
       logger.debug("dataProviderESB parseESBData: #{__LINE__}:  input: #{result}: #{query_key}:#{detail_key}")
@@ -65,8 +65,8 @@ module DataProviderESB
       logger.debug("dataProviderESB parseESBData: #{__LINE__}:  parsed:"+parsed.inspect)
       query_key_value = parsed[query_key]
 
-      ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen if,
-      ## for example, a user has no terms.
+      ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen,
+      ## for example, a user has no term data at all.
       ## Make these conditions separate so easy to take out when ESB returns expected values.
       return WAPIResultWrapper.new(WAPI::SUCCESS, "replace nil value with empty array", []) if query_key_value.nil?
       return WAPIResultWrapper.new(WAPI::SUCCESS, "replace empty string with empty array", []) if query_key_value.length == 0
