@@ -2,7 +2,7 @@
   <div class="container-fluid" style="padding:0">
     <div class="row">
       <h3 class="colHeader col-lg-5 col-md-5 col-xs-5" style="padding:0;margin:0">To Do</h3>
-      <div class="col-lg-7 col-md-7 col-xs-7 form-inline" style="text-align:right;padding-right:0"> 
+      <div class="col-lg-7 col-md-7 col-xs-7 form-inline" style="text-align:right;padding-right:0">
         <!--
         <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none" ng-click="removeToDos()" >
           - <span class="sr-only">Delete selected to dos</span>
@@ -10,29 +10,10 @@
         <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal">
           + <span class="sr-only">Add a new to do</span>
         </button>
-        -->
-        <select ng-model="showWhen" class="form-control">
-            <option ng-repeat="when in when" value="{{when}}">{{when}}</option>
+        -->   
+        <select ng-model="showWhen">
+          <option ng-repeat="option in todo_time_options" value="{{option.value}}">{{option.name}}</option>
         </select>
-        <!--
-        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-          View <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" id="selectTodos" role="menu" aria-labelledby="dropdownMenu1" style="" ng-model="filterToDos">
-          <li role="presentation">
-            <a id="selectSheduled" role="menuitem" tabindex="-1" href="#"  ng-click='filter="earlier"'>Earlier</a>
-          </li>
-          <li role="presentation">
-            <a id="selectUnscheduled" role="menuitem" tabindex="-1" href="#" ng-click='filter="now"'>Now</a>
-          </li>
-          <li role="presentation">
-            <a id="selectCompleted" role="menuitem" tabindex="-1" href="#" ng-click='filter="later"'>Later</a>
-          </li>
-          <li role="presentation">
-            <a id="selectAll" role="menuitem" tabindex="-1" href="#">All</a>
-          </li>
-        </ul>
-      -->
       </div>
     </div>
   </div>  
