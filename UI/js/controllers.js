@@ -265,7 +265,7 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
       combinedData = combinedData.concat(canvasData,ctoolsData);
       
       $scope.todos = combinedData;
-      
+          
       $scope.todo_time_options = [
         {name:'Earlier', value:'earlier'},
         {name:'Now', value:'now'},
