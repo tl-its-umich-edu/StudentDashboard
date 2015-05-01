@@ -2,7 +2,7 @@
 /* jshint  strict: true*/
 /* global $, _, moment, errorHandler, angular */
 
-var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
+var dashboardApp = angular.module('dashboardApp', ['ngAnimate','dashFilters']);
 
 /**
  * Initialize Angular app with the user id and the strings file
@@ -268,10 +268,10 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
           
       $scope.todo_time_options = [
         {name:'Earlier', value:'earlier'},
-        {name:'Now', value:'now'},
+        {name:'Soon', value:'soon'},
         {name:'Later', value:'later'},
       ];
-      $scope.showWhen = "now";
+      $scope.showWhen = "soon";
 
       $scope.isOverdue = function (item) {
         var when = moment.unix(item.due_date_sort);

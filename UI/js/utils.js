@@ -73,7 +73,7 @@ var canvasToDoCleaner = function(result){
         newObj.when = 'later';
       }
       else {
-        newObj.when = 'now';
+        newObj.when = 'soon';
       }
     }
     if(this.assignment) {
