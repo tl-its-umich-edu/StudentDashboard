@@ -524,7 +524,7 @@
             "locked_for_user": false
         },
         "context_code": "course_154",
-        "end_at": "2015-04-28T03:59:59Z",
+        "end_at": "2015-05-03T03:59:59Z",
         "start_at": "2015-04-11T03:59:59Z",
         "url": "https://umich.test.instructure.com/api/v1/calendar_events/assignment_329",
         "html_url": "https://umich.test.instructure.com/courses/154/assignments/329"

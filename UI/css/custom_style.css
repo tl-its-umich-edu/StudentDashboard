@@ -203,6 +203,7 @@ i[class*="Games"]:before {
 .footerInfo {
     padding:10px;
 }
+
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
         padding:0

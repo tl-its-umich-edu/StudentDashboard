@@ -13,7 +13,7 @@
   <div id="schedule" class="itemPanel">
     <ul class="itemList">
      
-      <li ng-repeat="item in filtered= (schedule | filter: {AggrMeeting : weekdayAbbr})|  orderBy: 'parseableTime'"  class="container-fluid" >
+      <li ng-repeat="item in filtered= (schedule | filter: {AggrMeeting : weekdayAbbr})|  orderBy: 'parseableTime'"  class="container-fluid animate" >
     
         <div class="row">
           <div class="col-md-2 col-xs-2 calDate">
@@ -39,7 +39,7 @@
           </div>
         </div>
       </li>
-      <li ng-show="filtered.length ===0">You have nothing scheduled today that we know of</li>
+      <li ng-show="filtered.length ===0">You have nothing scheduled today that we know of.</li>
     </ul>
   </div>
 </div>
