@@ -3,4 +3,5 @@
 host: ldap.itd.umich.edu
 port: 389
 search_base: ou=Groups,dc=umich,dc=edu
+cache_seconds: 300
 #end
