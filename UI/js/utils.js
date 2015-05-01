@@ -129,6 +129,40 @@ var ctoolsToDoCleaner = function(result){
   return transformedData;
 }
 
+var GTasksToDoCleaner = function(result){
+  var transformedData =[];
+  $.each(result, function() {
+    var newObj = {};
+    newObj.title = this.title;
+    newObj.due_date = this.due_date;
+    newObj.due_date_short = this.due_date_short;
+    newObj.due_date_sort = this.due_date_sort;
+    newObj.link = this.html_url;
+    newObj.origin ='gt';
+    newObj.message = this.message;
+
+    var nowDay = moment();
+    var nowDayAnd4 = moment().add(4, 'days');
+    var dueDay = moment(this.end_at);
+    var dueDayAnd4 = moment(this.end_at).add(4, 'days')
+
+    if(dueDay.isBefore(nowDay)) { 
+      newObj.when = 'earlier';
+    }
+    else {
+      if(dueDay.isAfter(nowDayAnd4) ) { 
+        newObj.when = 'later';
+      }
+      else {
+        newObj.when = 'soon';
+      }
+    }
+    transformedData.push(newObj)
+  });
+  return transformedData;
+}
+
+
 /**
  *
  * event watchers
@@ -193,7 +227,7 @@ $(document).on('click', '#saveToDo', function () {
 
 
 $(document).ready(function () {
-  $(localStorage.getItem('toDoStore')).appendTo('#todo ul');
+  //$(localStorage.getItem('toDoStore')).appendTo('#todo ul');
   $('body').popover({
     selector: '.popOver',
     placement: 'bottom',
