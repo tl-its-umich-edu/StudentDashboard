@@ -321,7 +321,6 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
             newObj.when = 'soon';
           }
         }
-        console.log(newObj)
 
         $scope.todos.push(newObj);
 
