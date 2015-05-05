@@ -291,21 +291,37 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
         }
       };
 
-      $scope.enableEditor = function() {
-         $scope.editorEnabled = true;
-      }
-      $scope.disableEditor = function() {
-        $scope.editorEnabled = false;
-      };
       $scope.newToDo = function () {
         var newObj = {};
         newObj.title = $('#toDoTitle').val();
         newObj.message = $('#toDoMessage').val();
         newObj.origin='gt';
-        //newObj.when='soon';
         newObj.due_date = moment($('#newToDoDate').val()).format("dddd, MMMM Do YYYY, h:mm a");
         newObj.due_date_short = moment($('#newToDoDate').val()).format("MM/DD");
         newObj.due_date_sort = moment($('#newToDoDate').val()).unix().toString();
+
+        var nowDay = moment();
+        var nowDayAnd4 = moment().add(4, 'days');
+        var dueDay = moment($('#newToDoDate').val());
+        var dueDayAnd4 = moment(dueDay).add(4, 'days');
+
+        console.log(nowDay);
+        console.log(nowDayAnd4)
+        console.log(dueDay)
+        console.log(dueDayAnd4)
+
+        if(dueDay.isBefore(nowDay)) { 
+          newObj.when = 'earlier';
+        }
+        else {
+          if(dueDay.isAfter(nowDayAnd4) ) { 
+            newObj.when = 'later';;
+          }
+          else {
+            newObj.when = 'soon';
+          }
+        }
+        console.log(newObj)
 
         $scope.todos.push(newObj);
 
@@ -447,40 +463,3 @@ dashboardApp.controller('scheduleController', ['getMapCoords', 'pageDay', '$scop
     };
   });
 }]);
-
-dashboardApp.directive( 'editInPlace', function() {
-  return {
-    restrict: 'E',
-    scope: { value: '=' },
-    template: '<span ng-click="edit()" ng-bind="value"></span><input ng-model="value">',
-    link: function ( $scope, element, attrs ) {
-      // Let's get a reference to the input element, as we'll want to reference it.
-      var inputElement = angular.element( element.children()[1] );
-      
-      // This directive should have a set class so we can style it.
-      element.addClass( 'edit-in-place' );
-      
-      // Initially, we're not editing.
-      $scope.editing = false;
-      
-      // ng-click handler to activate edit-in-place
-      $scope.edit = function () {
-        $scope.editing = true;
-        
-        // We control display through a class on the directive itself. See the CSS.
-        element.addClass( 'active' );
-        
-        // And we must focus the element. 
-        // `angular.element()` provides a chainable array, like jQuery so to access a native DOM function, 
-        // we have to reference the first element in the array.
-        inputElement[0].focus();
-      };
-      
-      // When we leave the input, we're done editing.
-      inputElement.prop( 'onblur', function() {
-        $scope.editing = false;
-        element.removeClass( 'active' );
-      });
-    }
-  };
-});
