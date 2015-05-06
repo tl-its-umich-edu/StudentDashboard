@@ -76,6 +76,7 @@ var canvasToDoCleaner = function(result){
         newObj.when = 'soon';
       }
     }
+
     if(this.assignment) {
       newObj.contextUrl = 'https://umich.test.instructure.com/courses/' + this.assignment.course_id;
       newObj.grade_type = this.assignment.grading_type;
@@ -106,7 +107,7 @@ var ctoolsToDoCleaner = function(result){
       newObj.contextUrl = this.calendarItem.context.contextUrl;
       newObj.contextLMS = 'ctools';
       newObj.descripion = '';
-      
+
       var nowDay = moment();
       var nowDayAnd4 = moment().add(4, 'days');
       var dueDay = moment.utc(this.calendarItem.calendarTime);
@@ -140,24 +141,25 @@ var GTasksToDoCleaner = function(result){
     newObj.link = this.html_url;
     newObj.origin ='gt';
     newObj.message = this.message;
+    var nowDay = moment().unix().toString();
+    var nowDayAnd4 = moment().add(4, 'days').unix().toString();
+    var dueDay = moment(this.due_date_sort).unix().toString();
+    var dueDayAnd4 = moment(this.due_date_sort).add(4, 'days').unix().toString();
 
-    var nowDay = moment();
-    var nowDayAnd4 = moment().add(4, 'days');
-    var dueDay = moment(this.end_at);
-    var dueDayAnd4 = moment(this.end_at).add(4, 'days')
-
-    if(dueDay.isBefore(nowDay)) { 
+    if(dueDay < nowDay) { 
       newObj.when = 'earlier';
     }
     else {
-      if(dueDay.isAfter(nowDayAnd4) ) { 
-        newObj.when = 'later';
+      if(dueDay  > nowDayAnd4) { 
+        newObj.when = 'later';;
       }
       else {
         newObj.when = 'soon';
       }
     }
+
     transformedData.push(newObj)
+  
   });
   return transformedData;
 }

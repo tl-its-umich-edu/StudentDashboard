@@ -2,7 +2,7 @@
 /* jshint  strict: true*/
 /* global $, _, moment, errorHandler, angular */
 
-var dashboardApp = angular.module('dashboardApp', ['ngAnimate','dashFilters','xeditable']);
+var dashboardApp = angular.module('dashboardApp', ['ngAnimate','dashFilters','xeditable','ngSanitize']);
 
 /**
  * Initialize Angular app with the user id and the strings file
@@ -275,7 +275,13 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
       combinedData = combinedData.concat(canvasData,ctoolsData, toDoStore);
       
       $scope.todos = combinedData;
-          
+      
+      /* to debug sorting issues
+      $.each(combinedData, function() {
+        console.log( this.due_date_sort +  ': ' + this.title)
+      })
+      */
+     
       $scope.todo_time_options = [
         {name:'Earlier', value:'earlier'},
         {name:'Soon', value:'soon'},
@@ -298,23 +304,18 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
         newObj.origin='gt';
         newObj.due_date = moment($('#newToDoDate').val()).format("dddd, MMMM Do YYYY, h:mm a");
         newObj.due_date_short = moment($('#newToDoDate').val()).format("MM/DD");
-        newObj.due_date_sort = moment($('#newToDoDate').val()).unix().toString();
+        newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
 
-        var nowDay = moment();
-        var nowDayAnd4 = moment().add(4, 'days');
-        var dueDay = moment($('#newToDoDate').val());
-        var dueDayAnd4 = moment(dueDay).add(4, 'days');
+        var nowDay = moment().unix().toString();
+        var nowDayAnd4 = moment().add(4, 'days').unix().toString();
+        var dueDay = moment($('#newToDoDate').val()).unix().toString();
+        var dueDayAnd4 = moment($('#newToDoDate').val()).add(4, 'days').unix().toString();
 
-        console.log(nowDay);
-        console.log(nowDayAnd4)
-        console.log(dueDay)
-        console.log(dueDayAnd4)
-
-        if(dueDay.isBefore(nowDay)) { 
+        if(dueDay < nowDay) { 
           newObj.when = 'earlier';
         }
         else {
-          if(dueDay.isAfter(nowDayAnd4) ) { 
+          if(dueDay  > nowDayAnd4) { 
             newObj.when = 'later';;
           }
           else {
@@ -329,6 +330,10 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
            if (key == '$$hashKey') {
                return undefined;
            }
+           if (key == 'when') {
+               return undefined;
+           }
+
            return val;
         }));
 
@@ -386,6 +391,7 @@ dashboardApp.controller('scheduleController', ['getMapCoords', 'pageDay', '$scop
             else  {
               parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
             }
+
         });    
       } 
       else {

@@ -18,8 +18,8 @@
         <div class="row">
           <div class="col-md-2 col-xs-2 calDate">
             <small>
-              <strong ng-show="item.Meeting.length">{{item.Meeting[0].Times | fixClassTimes}}</strong>
-              <strong ng-hide="item.Meeting.length">{{item.Meeting.Times | fixClassTimes}}</strong>
+              <strong ng-show="item.Meeting.length" ng-bind-html="item.Meeting[0].Times | trustAsHtml"></strong>
+              <strong ng-hide="item.Meeting.length" ng-bind-html="item.Meeting.Times | fixClassTimes | trustAsHtml"></strong>
             </small>
           </div>
           <div class="col-md-10 col-xs-10">
