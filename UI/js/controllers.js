@@ -304,6 +304,8 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
         newObj.origin='gt';
         newObj.due_date = moment($('#newToDoDate').val()).format("dddd, MMMM Do YYYY, h:mm a");
         newObj.due_date_short = moment($('#newToDoDate').val()).format("MM/DD");
+        newObj.due_date_editable = moment($('#newToDoDate').val()).format("YYYY-MM-DD");
+        newObj.due_time_editable = $('#newToDoTime').val();
         newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
 
         var nowDay = moment().unix().toString();
@@ -339,14 +341,55 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
 
       };
       
+    $scope.updateToDo = function() {
+      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+         if (key == '$$hashKey') {
+             return undefined;
+         }
+         if (key == 'when') {
+             return undefined;
+         }
 
-    $scope.removeToDos = function(idx) {
+         return val;
+      }));
+    };
+
+    $scope.updateToDoDate = function(index) {
+        
+        console.log(index)
+
+        //do a bit of jiggering here with the item date valiues and save as below
+        /* values that need updating are:
+        
+        newObj.due_date = moment($('#newToDoDate').val()).format("dddd, MMMM Do YYYY, h:mm a");
+        newObj.due_date_short = moment($('#newToDoDate').val()).format("MM/DD");
+        newObj.due_date_editable = moment($('#newToDoDate').val()).format("YYYY-MM-DD");
+        newObj.due_time_editable = $('#newToDoTime').val();
+        newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
+        */
+      
+      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+         if (key == '$$hashKey') {
+             return undefined;
+         }
+         if (key == 'when') {
+             return undefined;
+         }
+
+         return val;
+      }));
+      
+
+    };
+
+    $scope.removeToDos = function() {
       $scope.todos.forEach(function(item) {
         var index = $scope.todos.indexOf(item);
         if (item.checked) {
-          $scope.todos.splice(index, 1); 
+          $scope.todos.splice(index, 1);
         }
       });
+
       localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
          if (key == '$$hashKey') {
              return undefined;
