@@ -24,7 +24,7 @@
       </div>
       <div class="row">
         <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
-          <span ng-if="item.origin ==='gt'"><input type="checkbox" /></span>
+          <span ng-if="item.origin ==='gt'"><input type="checkbox"  ng-model="item.checked" /></span>
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7">
           <a ng-if="item.origin !=='gt'" target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
