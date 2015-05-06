@@ -247,6 +247,7 @@ $(document).on('click', '#todo input', function () {
     $('#removeToDos').fadeOut();
   }
 });
+/*
 $(document).on('click', '#removeToDos', function () {
 
   var $store = '';
@@ -261,7 +262,7 @@ $(document).on('click', '#removeToDos', function () {
   $removeList.remove();
   $('#removeToDos').fadeOut();
 });
-
+*/
 $(document).on('click', '#selectTodos a', function (e) {
   e.preventDefault();
   var whatToDo = $(this).attr('id');

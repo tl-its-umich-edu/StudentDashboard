@@ -316,7 +316,7 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
         }
         else {
           if(dueDay  > nowDayAnd4) { 
-            newObj.when = 'later';;
+            newObj.when = 'later';
           }
           else {
             newObj.when = 'soon';
@@ -338,12 +338,29 @@ dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$sco
         }));
 
       };
-      $scope.removeToDos = function () {
-        alert('removing something!');
-        //$scope.todos.push(newObj)
-      };
+      
 
-    });
+    $scope.removeToDos = function(idx) {
+      $scope.todos.forEach(function(item) {
+        var index = $scope.todos.indexOf(item);
+        if (item.checked) {
+          $scope.todos.splice(index, 1); 
+        }
+      });
+      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+         if (key == '$$hashKey') {
+             return undefined;
+         }
+         if (key == 'when') {
+             return undefined;
+         }
+
+         return val;
+      }));
+
+    };
+
+  });
   });  
 }]);
 
