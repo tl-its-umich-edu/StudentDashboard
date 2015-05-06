@@ -1,0 +1,51 @@
+[
+        {
+            "time": "2:15",
+            "ampm": "pm",
+            "tf":1415,
+            "title": "Phil 220 Lect",
+            "location": "Tish Hall 201",
+            "location_link": "https://www.google.com/maps/place/Tisch+Hall/@42.2762833,-83.7396129,17z/data=!3m1!4b1!4m2!3m1!1s0x883cae47411ab0fd:0xeebfad1e88c34158?"
+        },
+        {
+            "time": "ALL",
+            "ampm": "DAY",
+            "tf":0,
+            "title": "3Delta Rush",
+            "location": "DDD",
+            "location_link": "https://www.google.com/maps/place/Delta+Delta+Delta/@42.272639,-83.73855,17z/data=!3m1!4b1!4m2!3m1!1s0x883cae4633c9781b:0xc7647a420245d660"
+        },
+        {
+            "time": "9:15",
+            "ampm": "am",
+            "tf": 915,
+            "title": "Chem 400 Lab Prep",
+            "location": "Chem 4213 Axelrod Lab ",
+            "location_link": "https://www.google.com/maps/place/930+N+University+Ave/@42.2783541,-83.7368851,17z/data=!3m1!4b1!4m2!3m1!1s0x883cae416a2529e9:0x9ee6ebccd4da9518"
+        },
+        {
+            "time": "ALL",
+            "ampm": "DAY",
+            "tf":0,
+            "title": "Last day to add/drop",
+            "location": "Office of the Registrar",
+            "location_link": null
+        },
+
+        {
+            "time": "12:15",
+            "ampm": "pm",
+            "tf":1215,
+            "title": "Chem 400 Lab",
+            "location": "Chem 4213 Axelrod Lab ",
+            "location_link": "https://www.google.com/maps/place/930+N+University+Ave/@42.2783541,-83.7368851,17z/data=!3m1!4b1!4m2!3m1!1s0x883cae416a2529e9:0x9ee6ebccd4da9518"
+        },
+        {
+            "time": "3:15",
+            "ampm": "pm",
+            "tf":1515,
+            "title": "Span 212",
+            "location": "MLB 65",
+            "location_link": "https://www.google.com/maps/place/Modern+Language+Bldg,+812+E+Washington+St/@42.2798669,-83.7390562,17z/data=!3m1!4b1!4m2!3m1!1s0x883cae40570831bd:0x95e552dc88f32403"
+        }
+    ]

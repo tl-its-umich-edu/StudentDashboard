@@ -1,0 +1,148 @@
+.mastHead {
+    
+    color:#fff;
+}
+.mastHead h1{
+    background: transparent url("../images/block-m.png") 10px 5px no-repeat;
+    color:#aaa;
+    margin-top:10px;
+    margin:0;
+    padding:15px 5px 15px 90px;
+    font-size:24px;
+
+}
+
+.navHead {
+    background-color: #09274c;
+}
+.navbar-default .navbar-nav > li > a { 
+    color:#ddd;
+}
+.navbar-default .navbar-nav > li > a:hover { 
+    color:#fff;
+}
+
+.contentWrapper {
+    margin-top: 45px;
+    padding:0;
+}
+
+#content {
+    background: #eee;
+    border-width:0 1px;
+    border-style: solid;
+    border-color: #ccc;
+ }
+
+ul {
+    padding: 1px 0 0 0;
+    list-style: none;
+}
+
+.itemPanel .itemList li {
+    position:relative;
+    margin: 5px 0;
+    padding: 10px;
+	background: #fff;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.15);
+	-moz-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.15);
+	box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.15);
+}
+
+.row {
+    margin: 0 0 5px 0;
+
+}
+
+.iconContainer {
+
+    height: 20px;
+    width:20px;
+    padding:0;
+}
+.canvas {
+    background: transparent url(../images/canvas-logo-sm.png) 0 0 no-repeat;
+}
+
+.ctools {
+    background: transparent url(../images/ct.png) 0 0 no-repeat;
+}
+
+.gt {
+    padding: 1px 2px 3px 4px;
+}
+
+.spinner{
+    background: transparent url(../images/spinner-xs.png) 0 0 no-repeat;
+    height: 20px;
+    width: 20px;
+    margin-right:10px;
+    margin-top:5px;
+}
+
+.itemPanel {
+    padding: 0 5px;
+
+}
+
+.date {
+    padding-right: 0;
+    text-align: right;
+}
+
+.calDate {
+    padding: 0;
+    text-align: right;
+}
+
+#todo {
+    padding: 0 5px;
+    background: #fff;
+}
+
+#todo .overdue:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -5px;
+  border-width: 0 25px 25px 0;
+  border-style: solid;
+  border-color: transparent #cc3b3b transparent transparent;
+}
+#todo .overdueFlag{
+    display:none
+}
+
+#todo  .overdue .overdueFlag{
+    display:block;
+    position:absolute;
+    top:1px;
+    right:0;
+    color:#fff;
+    font-family:Arial;
+    font-weight:bold;
+    font-size:11px
+}
+
+#todo .overdue .dateSpan{
+    color:#c00
+}
+
+#todo .newToDo label {
+    font-weight:normal;
+}
+.footerInfo {
+    padding:10px;
+}
+@media (max-width: 480px) {
+    .col1, .col2, .col3 {
+        padding:0
+    }
+    .colHeader {
+        padding:0 10px;
+        font-size:150%;
+    }
+}

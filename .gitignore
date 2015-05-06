@@ -1,0 +1,13 @@
+*.log
+*.pid
+**/logs/*log*
+**/log/*log*
+.DS_Store
+tmp_.*
+.idea
+**/security.yml
+**/build.yml
+ARTIFACTS
+**stderr
+server/spec/coverage/
+

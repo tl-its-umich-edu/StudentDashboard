@@ -1,5 +1,10 @@
 $: << File.dirname(__FILE__)
-require 'address-book'
+require './server/courselist'
 
-run AddressBook.new
+set :environment, :development
+
+#require 'newrelic_rpm'
+run CourseList.new
+# studentdashboard directory
+
 

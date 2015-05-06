@@ -1,0 +1,99 @@
+{
+    "Meta": {
+        "httpStatus": 200,
+        "Message": "found courses from ESB"
+    },
+    "Result": 
+[
+    {
+        "Title": "AMCULT 217",
+        "Subtitle": "Test: Very long subtitle that goes on and on and on and on",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "Test: VERY LONG SUBJECT THAT GOES ON AND ON AND ON AND ON 101",
+        "Subtitle": "Subject string test",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 219",
+        "Subtitle": "Instrucor name test",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Test: very long user display name that goes on and on and on and on",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 220",
+        "Subtitle": "Instructor role test",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Secondary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer Test: very long role name that goes on and on and on and on",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 221",
+        "Subtitle": "Instructor email test",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "Test: very long email address that goes on and on and on and on@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    }
+]
+}

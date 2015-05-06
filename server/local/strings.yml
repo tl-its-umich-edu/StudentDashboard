@@ -1,0 +1,20 @@
+# Map tags to strings.  If necessary it would be
+# easy to supply multiple sets of different strings with the
+# same keys for, say, internationalization.
+
+# Note the trailing ',' !
+# No tabs allowed!
+
+strings: {
+  applicationTitle: "Student Dashboard",
+  panelTitle: "My Courses",
+  errorCourses: "Sorry! We were unable to get information on your courses.",
+  lookAtOtherDashes: "Looking for upcoming assignments, events and activity across your courses? Check out",
+  lookAtOtherDashesNoCourses: "It looks like none of your classes are using web sites we know of.  Check out the ",
+  canvasName: "Canvas",
+  ctoolsName: "CTools",
+  canvasUrl: "https://umich.instructure.com/",
+  ctoolsUrl: "https://ctools.umich.edu/portal",
+  noCourses: "You seem to have no courses this term",
+  termFailure: "We are not able to access your term enrollment information at the moment. Please try again later."
+}

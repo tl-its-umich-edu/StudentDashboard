@@ -1,0 +1,224 @@
+{
+    "Meta": {
+        "httpStatus": 200,
+        "Message": "found courses from ESB"
+    },
+    "Result": [
+    {
+        "Title": "AMCULT 217",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 218",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 219",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 220",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 221",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 222",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 223",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 223",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 225",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 226",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 227",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 228",
+        "Subtitle": "Many courses",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Lecturer",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    }
+]
+}

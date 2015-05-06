@@ -1,0 +1,39 @@
+## This file maps from an "application" name to information
+## required to use the WSO2 ESB at Michigan.  The "application_name"
+## maps to the application name created for the relevant APIs in
+## the WSO2 API store and the other values are available from there.
+## There can be multiple application blocks below as each instance of the studentdashboard.yml
+## file provides a specific application name to indentify which information to use.
+
+## StudentDashboard uses the WAPI Ruby module and these values are passed through to that.
+
+## ALWAYS MODIFY A COPY OF THE TEMPLATE FILE AND NEVER CHECK IN THAT COPY.
+## NOTE: INDENTATION MATTERS.
+
+## The StudentDashboard application uses the WAPI Ruby module to access APIs implemented via the WSO2 ESB to get data.
+## The ESB requires security information and that information needs to be supplied in the following format.
+## Much of the information maps to information provided by the WSO2 api store.
+
+## Information for many applications can be specified in the same file.  The name of the application
+## that will be used for a particular instance of the StudentDashboard is specified in the studentdashboard.yml file.
+
+#The information format is:
+#your_application_name:
+# token_server: apple
+# api_prefix: steve
+# key: baseball
+# secret: practice
+# token: optional
+
+### WSO2 ties security credentials to "applications" created in it's API directory store.
+### The application name used here is the one selected for use by this instance of this program.
+### The token server URL is used to renew expired tokens.  Typically this is the same for
+### all applications using the same ESB.
+### WAPI will prefix each request it makes with this string.  The string can be anything you
+### wish to use.  This reduces duplication in the code.
+### The key and secret are supplied when registering an application in the ESB.
+### The ESB registration process provides a token along with the key and secret.  WAPI knows how to
+### get / renew this token automatically so it does not need to be explicitly specified.
+
+
+#### END ####

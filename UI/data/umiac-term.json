@@ -1,0 +1,184 @@
+{
+  "data": [
+    {
+      "campus": "Ann Arbor",
+      "catalog_nbr": "101",
+      "component": "LEC",
+      "enrollmentStatus": "E",
+      "instructorInfo": [
+        {
+          "emailId": null,
+          "instructor_subrole": "Primary",
+          "name": "Caldwell Jr,Ronald C",
+          "uniqueName": "RCCALD"
+        }
+      ],
+      "providerId": "2014,3,A,ECON,101,200",
+      "role": "Student",
+      "section": "200",
+      "subject": "ECON",
+      "subrole": "Registered",
+      "term": "Winter",
+      "title": "Principle Econ I",
+      "type": "course",
+      "units_taken": "4",
+      "url": "https:\/\/ctools.umich.edu\/portal\/site\/af9ceaf9-fb42-44c5-a79a-bf65f0df0870",
+      "year": "2014"
+    },
+    {
+      "campus": "Ann Arbor",
+      "catalog_nbr": "101",
+      "component": "DIS",
+      "enrollmentStatus": "E",
+      "instructorInfo": [
+        {
+          "emailId": null,
+          "instructor_subrole": "Unidentified",
+          "name": "Caldwell Jr,Ronald C",
+          "uniqueName": "RCCALD"
+        },
+        {
+          "emailId": null,
+          "instructor_subrole": "Primary",
+          "name": "Yang,Chenyu",
+          "uniqueName": "CHNYYANG"
+        }
+      ],
+      "providerId": "2014,3,A,ECON,101,209",
+      "role": "Student",
+      "section": "209",
+      "subject": "ECON",
+      "subrole": "Registered",
+      "term": "Winter",
+      "title": "Principle Econ I",
+      "type": "course",
+      "units_taken": "0",
+      "url": "",
+      "year": "2014"
+    },
+    {
+      "campus": "Ann Arbor",
+      "catalog_nbr": "440",
+      "component": "LEC",
+      "enrollmentStatus": "E",
+      "instructorInfo": [
+        {
+          "emailId": null,
+          "instructor_subrole": "Primary",
+          "name": "Laine,Richard M",
+          "uniqueName": "TALSDAD"
+        }
+      ],
+      "providerId": "2014,3,A,MATSCIE,440,001",
+      "role": "Student",
+      "section": "001",
+      "subject": "MATSCIE",
+      "subrole": "Registered",
+      "term": "Winter",
+      "title": "Ceramic Materials",
+      "type": "course",
+      "units_taken": "3",
+      "url": "https:\/\/ctools.umich.edu\/portal\/site\/7e0ebe3b-c0f8-4945-9019-f26d6ae710e0",
+      "year": "2014"
+    },
+    {
+      "campus": "Ann Arbor",
+      "catalog_nbr": "470",
+      "component": "LEC",
+      "enrollmentStatus": "E",
+      "instructorInfo": [
+        {
+          "emailId": null,
+          "instructor_subrole": "Primary",
+          "name": "Marquis,Emmanuelle",
+          "uniqueName": "EMARQ"
+        }
+      ],
+      "providerId": "2014,3,A,MATSCIE,470,001",
+      "role": "Student",
+      "section": "001",
+      "subject": "MATSCIE",
+      "subrole": "Registered",
+      "term": "Winter",
+      "title": "Phys Met",
+      "type": "course",
+      "units_taken": "3",
+      "url": "https:\/\/ctools.umich.edu\/portal\/site\/4f267c4f-1479-43e8-87ff-74ad1aae0f71",
+      "year": "2014"
+    },
+    {
+      "campus": "Ann Arbor",
+      "catalog_nbr": "480",
+      "component": "LEC",
+      "enrollmentStatus": "E",
+      "instructorInfo": [
+        {
+          "emailId": null,
+          "instructor_subrole": "Primary",
+          "name": "Shtein,Max",
+          "uniqueName": "MSHTEIN"
+        },
+        {
+          "emailId": null,
+          "instructor_subrole": "Secondary",
+          "name": "Taub,Alan",
+          "uniqueName": "ALANTAUB"
+        }
+      ],
+      "providerId": "2014,3,A,MATSCIE,480,001",
+      "role": "Student",
+      "section": "001",
+      "subject": "MATSCIE",
+      "subrole": "Registered",
+      "term": "Winter",
+      "title": "Matls Engr Design",
+      "type": "course",
+      "units_taken": "3",
+      "url": "https:\/\/ctools.umich.edu\/portal\/site\/a47b5b4a-6a54-4436-b098-fd39b5ce781e",
+      "year": "2014"
+    },
+    {
+      "campus": "Ann Arbor",
+      "catalog_nbr": "480",
+      "component": "LAB",
+      "enrollmentStatus": "E",
+      "instructorInfo": [
+        {
+          "emailId": null,
+          "instructor_subrole": "Secondary",
+          "name": "Batzli,Kiersten",
+          "uniqueName": "KBATZLI"
+        },
+        {
+          "emailId": null,
+          "instructor_subrole": "Secondary",
+          "name": "Shtein,Max",
+          "uniqueName": "MSHTEIN"
+        },
+        {
+          "emailId": null,
+          "instructor_subrole": "Primary",
+          "name": "Taub,Alan",
+          "uniqueName": "ALANTAUB"
+        }
+      ],
+      "providerId": "2014,3,A,MATSCIE,480,002",
+      "role": "Student",
+      "section": "002",
+      "subject": "MATSCIE",
+      "subrole": "Registered",
+      "term": "Winter",
+      "title": "Matls Engr Design",
+      "type": "course",
+      "units_taken": "0",
+      "url": "",
+      "year": "2014"
+    }
+  ],
+  "displayTitle": "mycourses : \/mycourses\/2014winter",
+  "entityId": "2014winter",
+  "entityProperties": {
+  },
+  "entityReference": "\/mycourses\/2014winter",
+  "entityURL": "https:\/\/ctools.umich.edu\/direct\/mycourses\/2014winter"
+}

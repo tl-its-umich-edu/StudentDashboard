@@ -1,0 +1,182 @@
+[
+    {
+        "Title": "AMCULT 218",
+        "Subtitle": "One primary instructor",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 219",
+        "Subtitle": "Two primary instructors",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+        {
+        "Title": "AMCULT 220",
+        "Subtitle": "One primary, one secondary",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+
+            {
+        "Title": "AMCULT 221",
+        "Subtitle": "One primary, two secondary",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+                        {
+                "Name": "Bob Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+
+        ]
+    },
+            {
+        "Title": "AMCULT 222",
+        "Subtitle": "Two secondary",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Jane Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Barbara Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+    {
+        "Title": "AMCULT 223",
+        "Subtitle": "One secondary",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Barbara Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+        ]
+    },
+{
+        "Title": "AMCULT 224",
+        "Subtitle": "One primary, one secondary, a Graduate Student Instructor",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Bog Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Bill Smith",
+                "Role": "Graduate Student Instructor",
+                "Email": "jsmith@umich.edu"
+            }
+
+        ]
+    },
+    {
+        "Title": "AMCULT 225",
+        "Subtitle": "One primary, one secondary, a Graduate Student Instructor, a Faculty Grader",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Barbara Smith",
+                "Role": "Primary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Bog Smith",
+                "Role": "Secondary Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Bill Smith",
+                "Role": "Graduate Student Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Bettie Smith",
+                "Role": "Faculty Grader",
+                "Email": "jsmith@umich.edu"
+            }
+
+
+        ]
+    },
+    {
+        "Title": "AMCULT 226",
+        "Subtitle": "A Graduate Student Instructor, a Faculty Grader",
+        "Source": "CTools",
+        "Link": "https://ctools.umich.edu/portal/site/d8457b9c-0e83-411a-abff-32ffa7899188",
+        "Instructor": [
+            {
+                "Name": "Bill Smith",
+                "Role": "Graduate Student Instructor",
+                "Email": "jsmith@umich.edu"
+            },
+            {
+                "Name": "Bettie Smith",
+                "Role": "Faculty Grader",
+                "Email": "jsmith@umich.edu"
+            }
+
+
+        ]
+    }
+
+]
