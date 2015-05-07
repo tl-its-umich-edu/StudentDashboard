@@ -1,6 +1,6 @@
 'use strict';
-/* jshint  strict: true*/
-/* global $, _, moment, errorHandler, angular, dashboardApp */
+/* jshint  evil: true, strict: true, unused:true, eqnull:true */
+/* global $, _, moment, dashboardApp, GTasksToDoCleaner */
 
 /**
  * Terms controller - Angular dependencies are injected.
@@ -75,53 +75,260 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 }]);
 
-dashboardApp.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
-  var url = 'data/sched.json';
+
+dashboardApp.controller('scheduleController', ['getMapCoords', 'pageDay', '$scope', '$http', function (getMapCoords, pageDay, $scope, $http) {
+  var url = 'data/schedule/schedule.json';
   $http.get(url).success(function (data) {
-    $scope.schedule = data;
+    var wdayint = moment().weekday();
+  
+    $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
+    $scope.dateWeek = moment().format('dddd');
+
+    $.each(data.getMyClsScheduleResponse.RegisteredClass, function (i, l) {
+      var AggrMeeting ='';
+      var AggrLocation =[];
+      var parseableTime = '';
+      if(l.Meeting.length){
+        $.each(l.Meeting, function (i, l) {
+            AggrMeeting  = AggrMeeting  + l.Days;
+            AggrLocation.push(l.Location);
+            //console.log(AggrLocation)
+            if (l.Times.split('-')[0].indexOf('PM') !== -1) {
+              var tempTime = parseInt(l.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
+              parseableTime = tempTime + l.Times.split('-')[0].replace('PM','').split(':')[1];
+            }
+            else  {
+              parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+            }
+
+        });    
+      } 
+      else {
+        AggrMeeting = l.Meeting.Days;
+        AggrLocation.push(l.Meeting.Location);
+
+        if (l.Meeting.Times.split('-')[0].indexOf('PM') !== -1) {
+          var tempTime = parseInt(l.Meeting.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
+          parseableTime = tempTime  + l.Meeting.Times.split('-')[0].replace('PM','').split(':')[1];
+        }
+        else  {
+          parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+        }
+      }
+      //console.log(AggrLocation)
+      l.Meeting.AggrLocation = AggrLocation;
+      if(parseableTime ===''){
+        parseableTime = '2500';
+      }
+
+      l.parseableTime = parseInt(parseableTime);
+
+      if (AggrMeeting !=='') {
+        l.AggrMeeting = AggrMeeting;
+      }
+      else {
+        //might consider explicitly filtering this out
+        l.AggrMeeting = 'NA';
+      }
+    });
+    
+    $scope.schedule = data.getMyClsScheduleResponse.RegisteredClass;
+
+    $scope.openMap = function ( building, mobile) {
+      getMapCoords.getCoords(building).then(function (data) {
+        if (data.failure) {
+           //report error 
+        } else {
+          // open new Google maps window with directions from current location
+          if (mobile) {
+            window.open('https://www.google.com/maps/dir/Current+Location/' + data.latitude + ',' + data.longitude);
+          }
+          else {
+            window.open('http://maps.google.com/maps?q=' + data.latitude + ',' + data.longitude);
+          }
+
+        }
+      });
+    };
+
+    $scope.pageDay = function (dir) {
+      var wdayintnew;
+      if(dir === 'next') {
+        if (wdayint === 7) {
+          wdayintnew = 1;
+        }
+        else {
+          wdayintnew = wdayint + 1;
+        }
+      }
+      else {
+        if (wdayint === 1) {
+          wdayintnew = 7;
+        }
+        else {
+          wdayintnew = wdayint - 1;
+        }
+      }
+
+      wdayint = wdayintnew;
+      
+      $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
+      $scope.dateWeek = pageDay.getDay(wdayint)[1];
+    };
   });
 }]);
 
 
 
-dashboardApp.controller('newTodoController', ['ToDosCanvas','ToDosCTools', '$scope', '$http', function (ToDosCanvas, ToDosCTools, $scope, $http) {
+dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope', function (ToDosCanvas, ToDosCTools, $scope) {
   var canvasData = [];
   var ctoolsData = [];
   var combinedData = [];
-  ToDosCanvas.getToDos('data/schedule/canvas.json').then(function (data) {
+
+  ToDosCanvas.getToDos('data/todo/canvas.json').then(function (data) {
     data = eval(data);
     canvasData = data;
-    ToDosCTools.getToDos('data/schedule/ctools.json').then(function (data) {
+    ToDosCTools.getToDos('data/todo/ctools.json').then(function (data) {
       ctoolsData = data;
-      combinedData = combinedData.concat(canvasData,ctoolsData);
+      if(localStorage.getItem('toDoStore')){
+        var toDoStore = GTasksToDoCleaner(eval(localStorage.getItem('toDoStore')));
+        combinedData = combinedData.concat(canvasData,ctoolsData, toDoStore);
+      }
+      else {
+        combinedData = combinedData.concat(canvasData,ctoolsData);
+      }  
+      
+      
       
       $scope.todos = combinedData;
+      
+      /* to debug sorting issues
+      $.each(combinedData, function() {
+        console.log( this.due_date_sort +  ': ' + this.title)
+      })
+      */
+     
+      $scope.todo_time_options = [
+        {name:'Earlier', value:'earlier'},
+        {name:'Soon', value:'soon'},
+        {name:'Later', value:'later'},
+      ];
+      $scope.showWhen = 'soon';
+
       $scope.isOverdue = function (item) {
-      //return item.due;
-      var when = moment.unix(item.due_date_sort);
-      var now = moment();
-      if (when < now) {
-        return 'overdue';
-      }
+        var when = moment.unix(item.due_date_sort);
+        var now = moment();
+        if (when < now) {
+          return 'overdue';
+        }
+      };
+
+      $scope.newToDo = function () {
+        var newObj = {};
+        newObj.title = $('#toDoTitle').val();
+        newObj.message = $('#toDoMessage').val();
+        newObj.origin='gt';
+        newObj.due_date = moment($('#newToDoDate').val()).format('dddd, MMMM Do YYYY, h:mm a');
+        newObj.due_date_short = moment($('#newToDoDate').val()).format('MM/DD');
+        newObj.due_date_editable = moment($('#newToDoDate').val()).format('YYYY-MM-DD');
+        newObj.due_time_editable = $('#newToDoTime').val();
+        newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
+
+        var nowDay = moment().unix().toString();
+        var nowDayAnd4 = moment().add(4, 'days').unix().toString();
+        var dueDay = moment($('#newToDoDate').val()).unix().toString();
+
+        if(dueDay < nowDay) { 
+          newObj.when = 'earlier';
+        }
+        else {
+          if(dueDay  > nowDayAnd4) { 
+            newObj.when = 'later';
+          }
+          else {
+            newObj.when = 'soon';
+          }
+        }
+
+        $scope.todos.push(newObj);
+
+        //strip Angular state info before storing
+        localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+           if (key == '$$hashKey') {
+               return undefined;
+           }
+           if (key == 'when') {
+               return undefined;
+           }
+
+           return val;
+        }));
+
+      };
+      
+    $scope.updateToDo = function() {
+      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+         if (key == '$$hashKey') {
+             return undefined;
+         }
+         if (key == 'when') {
+             return undefined;
+         }
+
+         return val;
+      }));
     };
-    });
-  });  
-}]);
 
+    $scope.updateToDoDate = function(index) {
+        
+        index = index;
+        //console.log(index)
 
+        //do a bit of jiggering here with the item date valiues and save as below
+        /* values that need updating are:
+        
+        newObj.due_date = moment($('#newToDoDate').val()).format("dddd, MMMM Do YYYY, h:mm a");
+        newObj.due_date_short = moment($('#newToDoDate').val()).format("MM/DD");
+        newObj.due_date_editable = moment($('#newToDoDate').val()).format("YYYY-MM-DD");
+        newObj.due_time_editable = $('#newToDoTime').val();
+        newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
+        */
+      
+      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+         if (key == '$$hashKey') {
+             return undefined;
+         }
+         if (key == 'when') {
+             return undefined;
+         }
 
-dashboardApp.controller('todoController', ['$scope', '$http', function ($scope, $http) {
-  var url = 'data/todo.json';
+         return val;
+      }));
+      
 
-  $http.get(url).success(function (data) {
-    $scope.todos = data;
-    $scope.isOverdue = function (item) {
-      //return item.due;
-      var when = moment.unix(item.due);
-      var now = moment();
-      if (when < now) {
-        return 'overdue';
-      }
     };
+
+    $scope.removeToDos = function() {
+      $scope.todos.forEach(function(item) {
+        var index = $scope.todos.indexOf(item);
+        if (item.checked) {
+          $scope.todos.splice(index, 1);
+        }
+      });
+
+      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
+         if (key == '$$hashKey') {
+             return undefined;
+         }
+         if (key == 'when') {
+             return undefined;
+         }
+
+         return val;
+      }));
+
+    };
+
   });
+  });  
 }]);

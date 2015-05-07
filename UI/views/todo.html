@@ -1,57 +1,97 @@
-<div id="todo" class="itemPanel" ng-controller="todoController" ng-cloak style="margin-top:25px">
+<div id="todo"  ng-controller="todoController" class="itemPanel" style="margin-top:20px">
   <div class="container-fluid" style="padding:0">
     <div class="row">
-      <h3 class="colHeader col-lg-5 col-md-5 col-xs-5" style="padding:0;margin:0">To Do</h3>
-      <div class="col-lg-7 col-md-7 col-xs-7" style="text-align:right;padding-right:0">      
-        <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none">
+      <div class=" col-lg-7 col-md-7 col-xs-7 form-inline">
+        <h3 class="colHeader pull-left" style="padding:0;margin:0">To Do</h3>
+        <label class="sr-only" for="todoTimeSelector">Due</label>
+        <select id="todoTimeSelector" class="form-control input-sm pull-left" style="margin-left:1em" ng-model="showWhen" ng-options="item.value as item.name for item in todo_time_options">
+        </select>
+      </div>
+      <div class="col-lg-5 col-md-5 col-xs-5 form-inline" style="text-align:right;padding-right:0">
+        <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none" ng-click="removeToDos()" >
           - <span class="sr-only">Delete selected to dos</span>
         </button>      
         <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal">
           + <span class="sr-only">Add a new to do</span>
         </button>
-        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-          View <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" id="selectTodos" role="menu" aria-labelledby="dropdownMenu1" style="">
-          <li role="presentation">
-            <a id="selectSheduled" role="menuitem" tabindex="-1" href="#">Scheduled</a>
-          </li>
-          <li role="presentation">
-            <a id="selectUnscheduled" role="menuitem" tabindex="-1" href="#">Unscheduled</a>
-          </li>
-          <li role="presentation">
-            <a id="selectCompleted" role="menuitem" tabindex="-1" href="#">Completed</a>
-          </li>
-          <li role="presentation">
-            <a id="selectAll" role="menuitem" tabindex="-1" href="#">All</a>
-          </li>
-        </ul>
       </div>
     </div>
   </div>  
   <ul class="itemList">
-    <li ng-repeat="item in todos | orderBy:'due'" class="container-fluid" ng-class="isOverdue(item)">
+    <li ng-repeat="item in todos | orderBy:'due_date_sort' | filter:showWhen" class="container-fluid" ng-class="isOverdue(item)" >
       <div class="overdueFlag">
         <i class="glyphicon glyphicon-fire"></i>
       </div>
       <div class="row">
-        <div class="col-lg-1 col-md-1 col-xs-1 {{item.origin}} iconContainer">
-          <span ng-if="item.origin ==='gt'"><input type="checkbox" /></span>
+        <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
+          <span ng-if="item.origin ==='gt'"><input type="checkbox"  ng-model="item.checked" /></span>
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7">
-          {{item.title}}
+          <a ng-if="item.origin !=='gt'" target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
+          <span ng-if="item.origin ==='gt'">
+            <a href="#" editable-text="item.title" onaftersave="updateToDo()">{{ item.title || "empty" }}</a>
+          </span>
           <br>
           <small>
-              <span ng-if="item.origin !=='gt'"><a class="courseLink" href="{{item.course_link}}"><span class="sr-only">View item in site for </span>{{item.context}}</a></span>
-              <span ng-if="item.origin ==='gt'">{{item.info.message}}</span>
+              <span ng-if="item.origin !=='gt'"><a class="courseLink" data-target="{{item.contextLMS}}" target="_blank" href="{{item.contextUrl}}"><span class="sr-only">View {{item.title}} in course site</span><span aria-hidden="true">Go to course site</span></a></span>
+              <span ng-if="item.origin ==='gt'">
+                <a href="#" editable-textarea="item.message"  onaftersave="updateToDo($index)" e-rows="3" e-cols="30">
+                  <span>{{ item.message | cut:true:35:'...' || 'no description' }}</span>
+                </a>
+              </span>
               <span class="noDueDate" ng-if="item.due ===''"></span>
               <span class="dueDate" ng-if="item.due !==''"></span>
             </small>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date">
-          <small class="dateSpan">{{item.due | dateUntil}}</small>
+          <small class="dateSpan">
+            {{item.due_date_sort | dateUntil}}<div ng-show="item.origin ==='gt'">
+            <a href="#" editable-date="item.due_date_editable" onaftersave="updateToDoDate($index)">{{item.due_date_editable || 'empty' }}</a>
+            <a href="#" editable-time="item.due_time_editable" onaftersave="updateToDoDate($index)">{{item.due_time_editable || 'empty' }}</a>
+            <div>
+          </small>
+        
         </div>
       </div>
     </li>
   </ul>
+<div class="modal fade" id="newToDoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                  <span class="sr-only">Close</span>
+              </button>
+              <h3 class="modal-title" id="myModalLabel">New To Do</h3>
+          </div>
+          <div class="modal-body">
+              <div class="form-group form-inline">
+                  <label for="toDoTitle" class="sr-only">
+                      Email address
+                  </label>
+                  <input type="text" class="form-control" id="toDoTitle" placeholder="To do title">
+                  
+                  <input id="newToDoDate" class="form-control" type="date" placeholder="mm/dd/yyyy">
+                  <input id="newToDoTime" class="form-control" type="time" placeholder="hh/mm/am|pm">
+              </div>
+              <div class="form-group">
+                  <label for="toDoMessage" class="sr-only">
+                      Stuff...
+                  </label>
+                  <textarea class="form-control" id="toDoMessage" placeholder="Stuff to do...." style="height:200px"></textarea>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">
+                  Close
+              </button>
+              <button type="button" class="btn btn-primary" ng-click="newToDo()"  data-dismiss="modal">
+                  Save To Do
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
+
 </div>

@@ -98,20 +98,6 @@ ul {
     text-align: right;
 }
 
-#todo {
-    padding: 0 5px;
-    background: #fff;
-}
-
-#todo .overdue:before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  right: -5px;
-  border-width: 0 25px 25px 0;
-  border-style: solid;
-  border-color: transparent #cc3b3b transparent transparent;
-}
 #todo .overdueFlag{
     display:none
 }
@@ -119,8 +105,8 @@ ul {
 #todo  .overdue .overdueFlag{
     display:block;
     position:absolute;
-    top:4px;
-    right:4px;
+    top:6px;
+    right:6px;
     color:#cc3b3b;
     font-size:15px
 }

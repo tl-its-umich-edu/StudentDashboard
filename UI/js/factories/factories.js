@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, errorHandler, _, dashboardApp */
+/* global $, errorHandler, _, dashboardApp, canvasToDoCleaner, ctoolsToDoCleaner */
 
 /**
  * Singleton that does the requests for the courses
@@ -85,6 +85,77 @@ dashboardApp.factory('Terms', function ($http) {
           result.errors = errorHandler(url, result);
           result.errors.failure = true;
           return result.errors;
+        }
+      );
+    }
+  };
+});
+
+
+dashboardApp.factory('getMapCoords', function ($http) {
+  return {
+    getCoords: function (building) {
+      var url = 'data/buildings/' + _.last(building.split(' ')).toLowerCase() + '.json';
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          var coords = {};
+          coords.latitude = result.data.Buildings.Building.Latitude;
+          coords.longitude = result.data.Buildings.Building.Longitude;
+          return coords;
+        },
+        function error() {
+          //do something in case of error
+          //result.errors.failure = true;
+          //return result.errors;
+        }
+      );
+    }
+  };
+});
+
+
+dashboardApp.factory('pageDay', function () {
+  return {
+      getDay: function (wdayintnew) {
+        //wdayintnew=4; // for testing
+        var weekday=new Array(7);
+        weekday[1]=['Mo', 'Monday'];
+        weekday[2]=['Tu', 'Tuesday'];
+        weekday[3]=['We', 'Wednesday'];
+        weekday[4]=['Th', 'Thursday'];
+        weekday[5]=['Fr', 'Friday'];
+        weekday[6]=['Sa', 'Saturday'];
+        weekday[7]=['Su', 'Sunday'];
+        return  weekday[wdayintnew];
+      }
+  };
+});
+
+
+dashboardApp.factory('ToDosCanvas', function ($http) {
+  return {
+    getToDos: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          return canvasToDoCleaner(result);
+        },
+        function error() {
+          //console.log('errors');
+        }
+      );
+    }
+  };
+});
+
+dashboardApp.factory('ToDosCTools', function ($http) {
+  return {
+    getToDos: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+            return ctoolsToDoCleaner(result);
+        },
+        function error() {
+          //console.log('errors');
         }
       );
     }
