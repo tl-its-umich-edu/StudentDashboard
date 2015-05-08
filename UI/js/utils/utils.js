@@ -200,3 +200,12 @@ $(document).on('click', '#todo input', function () {
     $('#removeToDos').fadeOut();
   }
 });
+
+$('#newToDoModal').on('hide.bs.modal', function (e) {
+  console.log('a')
+  $('#toDoTitle, #newToDoDate, #newToDoTime, #toDoMessage').val('');
+})
+
+$('#newToDoModal').on('hidden.bs.modal', function (e) {
+  $('#toDoTitle, #newToDoDate, #newToDoTime, #toDoMessage').val('');
+})
