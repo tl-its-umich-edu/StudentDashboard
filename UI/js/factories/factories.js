@@ -158,6 +158,19 @@ dashboardApp.factory('Schedule', function ($http) {
   };
 });
 
+/**
+ * Factory takes a building and returns that building's coordinates
+ * All mock data for now. 
+ *
+ * Building code is extracted from schedule > building is looked up
+ * by building code. coordinates are returned
+ *
+ * In the ESB this would be a 3 step request process
+ *
+ * Schedule > Find building id in building list > Use the id the request the coors.
+ *
+ * We might want to store the building index internally.
+ */
 
 dashboardApp.factory('getMapCoords', function ($http) {
   return {
@@ -180,6 +193,9 @@ dashboardApp.factory('getMapCoords', function ($http) {
   };
 });
 
+/**
+ * Factory to handle paginf in the Schedule panel
+ */
 
 dashboardApp.factory('pageDay', function () {
   return {
@@ -198,6 +214,9 @@ dashboardApp.factory('pageDay', function () {
   };
 });
 
+/**
+ *  Factory to return  the Canvas todo data as promise
+ */
 
 dashboardApp.factory('ToDosCanvas', function ($http) {
   return {
@@ -213,6 +232,10 @@ dashboardApp.factory('ToDosCanvas', function ($http) {
     }
   };
 });
+
+/**
+ *  Factory to return  the CTools todo data as promise
+*/
 
 dashboardApp.factory('ToDosCTools', function ($http) {
   return {

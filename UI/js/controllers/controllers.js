@@ -138,7 +138,9 @@ dashboardApp.controller('scheduleController', ['Schedule', 'getMapCoords', 'page
   };
 }]);
 
-
+/**
+ * Todo controller, using fake data for now
+ */
 
 dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope', function (ToDosCanvas, ToDosCTools, $scope) {
   var canvasData = [];

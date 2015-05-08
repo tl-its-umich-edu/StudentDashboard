@@ -1,35 +1,12 @@
 'use strict';
 /* jshint  strict: true, unused:false, eqnull:true */
-/* global $, moment */
+/* global $, moment, _ */
 
 /**
  * get the strings from a hidden DOM element and
  * evaluate so that it is available to the non-Angular js
  */
 var lang = JSON.parse($('#lang').text());
-
-/**
- * Show spinner whenever ajax activity starts
- */
-$(document).ajaxStart(function () {
-  $('#spinner').show();
-});
-
-/**
- * Hide spinner when ajax activity stops
- */
-$(document).ajaxStop(function () {
-  $('#spinner').hide();
-});
-
-/**
- * set up global ajax options
- */
-$.ajaxSetup({
-  type: 'GET',
-  dataType: 'json',
-  cache: false
-});
 
 /**
  * Generic error handler
@@ -46,6 +23,10 @@ var errorHandler = function (url, result) {
 
 };
 
+/**
+ * takes a standard Canvas todo json and normalizes it for consumption by
+ * the todo panel
+ */
 
 var canvasToDoCleaner = function(result){
   var transformedData =[];
@@ -89,6 +70,12 @@ var canvasToDoCleaner = function(result){
 
 };
 
+/**
+ * takes a standard CTools dashboard schedule feed json and normalizes it for consumption by
+ * the todo panel
+ */
+
+
 var ctoolsToDoCleaner = function(result){
   var transformedData =[];
   $.each(result.data.dash_collection, function() {
@@ -128,6 +115,11 @@ var ctoolsToDoCleaner = function(result){
   return transformedData;
 };
 
+/**
+ * Gets passed a Google tasks json tasklist representation
+ * and normalizes it for the todo panel
+ */
+
 var GTasksToDoCleaner = function(result){
   var transformedData =[];
   $.each(result, function() {
@@ -163,6 +155,10 @@ var GTasksToDoCleaner = function(result){
   return transformedData;
 };
 
+/**
+ * Save user added todos to localStorage (used when todo is added, edited, or deleted)
+ */
+
 var localStorateUpdateTodos = function(data) {
   localStorage.setItem('toDoStore', JSON.stringify(_.where(data, {origin: 'gt'}), function (key, val) {
      //strip Angular state info and the when value before storing
@@ -174,7 +170,7 @@ var localStorateUpdateTodos = function(data) {
      }
      return val;
   }));
-}
+};
 /**
  *
  * event watchers
@@ -192,6 +188,10 @@ $(document).on('click', '.showMoreInstructors', function (e) {
   return null;
 });
 
+/**
+ * Hide and show the delete todos button acording if at least one checkbox
+ * is checked or not
+ */
 
 $(document).on('click', '#todo input', function () {
   if ($('#todo input:checked').length) {
