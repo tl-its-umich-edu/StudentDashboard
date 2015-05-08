@@ -92,6 +92,73 @@ dashboardApp.factory('Terms', function ($http) {
 });
 
 
+/**
+ * Sigleton fulfils promise requested by Schedule controller for data
+ */
+
+dashboardApp.factory('Schedule', function ($http) {
+  return {
+    getSchedule: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          $.each(result.data.getMyClsScheduleResponse.RegisteredClass, function (i, l) {
+            var AggrMeeting ='';
+            var AggrLocation =[];
+            var parseableTime = '';
+            if(l.Meeting.length){
+              $.each(l.Meeting, function (i, l) {
+                  AggrMeeting  = AggrMeeting  + l.Days;
+                  AggrLocation.push(l.Location);
+                  //console.log(AggrLocation)
+                  if (l.Times.split('-')[0].indexOf('PM') !== -1) {
+                    var tempTime = parseInt(l.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
+                    parseableTime = tempTime + l.Times.split('-')[0].replace('PM','').split(':')[1];
+                  }
+                  else  {
+                    parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+                  }
+
+              });    
+            } 
+            else {
+              AggrMeeting = l.Meeting.Days;
+              AggrLocation.push(l.Meeting.Location);
+
+              if (l.Meeting.Times.split('-')[0].indexOf('PM') !== -1) {
+                var tempTime = parseInt(l.Meeting.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
+                parseableTime = tempTime  + l.Meeting.Times.split('-')[0].replace('PM','').split(':')[1];
+              }
+              else  {
+                parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+              }
+            }
+            //console.log(AggrLocation)
+            l.Meeting.AggrLocation = AggrLocation;
+            if(parseableTime ===''){
+              parseableTime = '2500';
+            }
+
+            l.parseableTime = parseInt(parseableTime);
+
+            if (AggrMeeting !=='') {
+              l.AggrMeeting = AggrMeeting;
+            }
+            else {
+              //might consider explicitly filtering this out
+              l.AggrMeeting = 'NA';
+            }
+          });  
+          return result.data.getMyClsScheduleResponse.RegisteredClass;
+        },
+        function error(result) {
+          //do something
+        }
+      );
+    }
+  };
+});
+
+
 dashboardApp.factory('getMapCoords', function ($http) {
   return {
     getCoords: function (building) {
@@ -161,3 +228,4 @@ dashboardApp.factory('ToDosCTools', function ($http) {
     }
   };
 });
+

@@ -163,7 +163,18 @@ var GTasksToDoCleaner = function(result){
   return transformedData;
 };
 
-
+var localStorateUpdateTodos = function(data) {
+  localStorage.setItem('toDoStore', JSON.stringify(_.where(data, {origin: 'gt'}), function (key, val) {
+     //strip Angular state info and the when value before storing
+     if (key == '$$hashKey') {
+         return undefined;
+     }
+     if (key == 'when') {
+         return undefined;
+     }
+     return val;
+  }));
+}
 /**
  *
  * event watchers

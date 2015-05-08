@@ -11,7 +11,8 @@
         <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none" ng-click="removeToDos()" >
           - <span class="sr-only">Delete selected to dos</span>
         </button>      
-        <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal">
+        <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal" title=
+        "Add new Google Task">
           + <span class="sr-only">Add a new to do</span>
         </button>
       </div>
@@ -49,8 +50,7 @@
             <a href="#" editable-date="item.due_date_editable" onaftersave="updateToDoDate($index)">{{item.due_date_editable || 'empty' }}</a>
             <a href="#" editable-time="item.due_time_editable" onaftersave="updateToDoDate($index)">{{item.due_time_editable || 'empty' }}</a>
             <div>
-          </small>
-        
+          </small>        
         </div>
       </div>
     </li>
@@ -63,7 +63,7 @@
                   <span aria-hidden="true">&times;</span>
                   <span class="sr-only">Close</span>
               </button>
-              <h3 class="modal-title" id="myModalLabel">New To Do</h3>
+              <h3 class="modal-title" id="myModalLabel">New Google Task <small>(will be listed here and in Google Tasks)</h3>
           </div>
           <div class="modal-body">
               <div class="form-group form-inline">

@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  evil: true, strict: true, unused:true, eqnull:true */
-/* global $, _, moment, dashboardApp, GTasksToDoCleaner */
+/* global $, _, moment, dashboardApp, GTasksToDoCleaner, localStorateUpdateTodos */
 
 /**
  * Terms controller - Angular dependencies are injected.
@@ -75,107 +75,67 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 }]);
 
+/**
+ * Schedule controller. Angular dependencies are injected - using canned data for now
+ */
 
-dashboardApp.controller('scheduleController', ['getMapCoords', 'pageDay', '$scope', '$http', function (getMapCoords, pageDay, $scope, $http) {
-  var url = 'data/schedule/schedule.json';
-  $http.get(url).success(function (data) {
-    var wdayint = moment().weekday();
-  
-    $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
-    $scope.dateWeek = moment().format('dddd');
+dashboardApp.controller('scheduleController', ['Schedule', 'getMapCoords', 'pageDay', '$scope', '$http', function (Schedule, getMapCoords, pageDay, $scope, $http) {
+  var scheduleUrl = 'data/schedule/schedule.json';
+  var wdayint = moment().weekday();
 
-    $.each(data.getMyClsScheduleResponse.RegisteredClass, function (i, l) {
-      var AggrMeeting ='';
-      var AggrLocation =[];
-      var parseableTime = '';
-      if(l.Meeting.length){
-        $.each(l.Meeting, function (i, l) {
-            AggrMeeting  = AggrMeeting  + l.Days;
-            AggrLocation.push(l.Location);
-            //console.log(AggrLocation)
-            if (l.Times.split('-')[0].indexOf('PM') !== -1) {
-              var tempTime = parseInt(l.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
-              parseableTime = tempTime + l.Times.split('-')[0].replace('PM','').split(':')[1];
-            }
-            else  {
-              parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
-            }
+  $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
+  $scope.dateWeek = moment().format('dddd');
 
-        });    
-      } 
-      else {
-        AggrMeeting = l.Meeting.Days;
-        AggrLocation.push(l.Meeting.Location);
+  Schedule.getSchedule(scheduleUrl).then(function (data) {
+    if (data.failure) {
+      $scope.$parent.term  = $rootScope.lang.termFailure;
+    }
+    else {
+      $scope.schedule = data;
+    }    
+  });  
 
-        if (l.Meeting.Times.split('-')[0].indexOf('PM') !== -1) {
-          var tempTime = parseInt(l.Meeting.Times.split('-')[0].replace('PM','').split(':')[0]) + 12;
-          parseableTime = tempTime  + l.Meeting.Times.split('-')[0].replace('PM','').split(':')[1];
+  $scope.openMap = function ( building, mobile) {
+    getMapCoords.getCoords(building).then(function (data) {
+      if (data.failure) {
+         //report error 
+      } else {
+        // open new Google maps window with directions from current location
+        if (mobile) {
+          window.open('https://www.google.com/maps/dir/Current+Location/' + data.latitude + ',' + data.longitude);
         }
-        else  {
-          parseableTime = l.Meeting.Times.split('-')[0].replace('AM','').replace(':','');
+        else {
+          window.open('http://maps.google.com/maps?q=' + data.latitude + ',' + data.longitude);
         }
-      }
-      //console.log(AggrLocation)
-      l.Meeting.AggrLocation = AggrLocation;
-      if(parseableTime ===''){
-        parseableTime = '2500';
-      }
 
-      l.parseableTime = parseInt(parseableTime);
-
-      if (AggrMeeting !=='') {
-        l.AggrMeeting = AggrMeeting;
-      }
-      else {
-        //might consider explicitly filtering this out
-        l.AggrMeeting = 'NA';
       }
     });
-    
-    $scope.schedule = data.getMyClsScheduleResponse.RegisteredClass;
+  };
 
-    $scope.openMap = function ( building, mobile) {
-      getMapCoords.getCoords(building).then(function (data) {
-        if (data.failure) {
-           //report error 
-        } else {
-          // open new Google maps window with directions from current location
-          if (mobile) {
-            window.open('https://www.google.com/maps/dir/Current+Location/' + data.latitude + ',' + data.longitude);
-          }
-          else {
-            window.open('http://maps.google.com/maps?q=' + data.latitude + ',' + data.longitude);
-          }
-
-        }
-      });
-    };
-
-    $scope.pageDay = function (dir) {
-      var wdayintnew;
-      if(dir === 'next') {
-        if (wdayint === 7) {
-          wdayintnew = 1;
-        }
-        else {
-          wdayintnew = wdayint + 1;
-        }
+  $scope.pageDay = function (dir) {
+    var wdayintnew;
+    if(dir === 'next') {
+      if (wdayint === 7) {
+        wdayintnew = 1;
       }
       else {
-        if (wdayint === 1) {
-          wdayintnew = 7;
-        }
-        else {
-          wdayintnew = wdayint - 1;
-        }
+        wdayintnew = wdayint + 1;
       }
+    }
+    else {
+      if (wdayint === 1) {
+        wdayintnew = 7;
+      }
+      else {
+        wdayintnew = wdayint - 1;
+      }
+    }
 
-      wdayint = wdayintnew;
-      
-      $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
-      $scope.dateWeek = pageDay.getDay(wdayint)[1];
-    };
-  });
+    wdayint = wdayintnew;
+    
+    $scope.weekdayAbbr = pageDay.getDay(wdayint)[0];
+    $scope.dateWeek = pageDay.getDay(wdayint)[1];
+  };
 }]);
 
 
@@ -252,31 +212,11 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
 
         $scope.todos.push(newObj);
 
-        //strip Angular state info before storing
-        localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
-           if (key == '$$hashKey') {
-               return undefined;
-           }
-           if (key == 'when') {
-               return undefined;
-           }
-
-           return val;
-        }));
-
+        localStorateUpdateTodos($scope.todos);
       };
       
     $scope.updateToDo = function() {
-      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
-         if (key == '$$hashKey') {
-             return undefined;
-         }
-         if (key == 'when') {
-             return undefined;
-         }
-
-         return val;
-      }));
+      localStorateUpdateTodos($scope.todos);
     };
 
     $scope.updateToDoDate = function(index) {
@@ -309,24 +249,13 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
     };
 
     $scope.removeToDos = function() {
-      $scope.todos.forEach(function(item) {
-        var index = $scope.todos.indexOf(item);
-        if (item.checked) {
-          $scope.todos.splice(index, 1);
+      for (var i = $scope.todos.length - 1; i >= 0; i--) {
+        if ($scope.todos[i].checked) {
+            $scope.todos.splice(i, 1);
         }
-      });
-
-      localStorage.setItem('toDoStore', JSON.stringify(_.where($scope.todos, {origin: 'gt'}), function (key, val) {
-         if (key == '$$hashKey') {
-             return undefined;
-         }
-         if (key == 'when') {
-             return undefined;
-         }
-
-         return val;
-      }));
-
+      }
+      localStorateUpdateTodos($scope.todos);
+      $('#removeToDos').fadeOut('slow');
     };
 
   });

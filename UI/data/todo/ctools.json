@@ -117,7 +117,7 @@
   "entityId": "10914"
 },{
   "calendarItem": {
-    "calendarTime": 1430524800000,
+    "calendarTime": 1431215000000,
     "calendarTimeLabelKey": "assignment.due.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -154,7 +154,7 @@
       "identifier": "assignment"
     },
     "subtype": null,
-    "title": "Assignment 2 (no submission)"
+    "title": "Assignment 22 (no submission)"
   },
   "context": {
     "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -175,7 +175,7 @@
   "entityId": "10898"
 },{
   "calendarItem": {
-    "calendarTime": 1428872400000,
+    "calendarTime": 1431216000000,
     "calendarTimeLabelKey": "assignment.due.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -212,7 +212,7 @@
       "identifier": "assignment"
     },
     "subtype": null,
-    "title": "Assignment 2"
+    "title": "Assignment 22"
   },
   "context": {
     "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -233,7 +233,7 @@
   "entityId": "10890"
 },{
   "calendarItem": {
-    "calendarTime": 1429802959000,
+    "calendarTime": 1431216000000,
     "calendarTimeLabelKey": "assignment.close.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -270,7 +270,7 @@
       "identifier": "assignment"
     },
     "subtype": null,
-    "title": "Assignment X"
+    "title": "Assignment YYY"
   },
   "context": {
     "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -291,7 +291,7 @@
   "entityId": "10894"
 },{
   "calendarItem": {
-    "calendarTime": 1429975759000,
+    "calendarTime": 1431129600000,
     "calendarTimeLabelKey": "assignment.close.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -328,7 +328,7 @@
       "identifier": "assignment"
     },
     "subtype": null,
-    "title": "Assignment 2 (no submission)"
+    "title": "Assignment 2xxx (no submission)"
   },
   "context": {
     "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -405,5 +405,470 @@
   "entityReference": "\/dash\/10906",
   "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10906",
   "entityId": "10906"
+},
+{
+  "calendarItem": {
+    "calendarTime": 1431291600000,
+    "calendarTimeLabelKey": "assignment.due.date",
+    "context": {
+      "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+      "contextTitle": "gsilver glti",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+      "id": 821
+    },
+    "entityReference": "\/assignment\/a\/e9222585-bb4f-40ed-a411-c5e2f51d2baf\/6b942738-81c6-44f5-b574-2b4b8a1cd80a",
+    "id": 2197,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+        "contextTitle": "gsilver glti",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+        "id": 821
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Associate assignment with existing Gradebook Item"
+  },
+  "context": {
+    "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+    "contextTitle": "gsilver glti",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+    "id": 821
+  },
+  "id": 10499,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10499",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10499",
+  "entityId": "10499"
+},{
+  "calendarItem": {
+    "calendarTime": 1431291600000,
+    "calendarTimeLabelKey": "assignment.due.date",
+    "context": {
+      "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+      "contextTitle": "gsilver glti",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+      "id": 821
+    },
+    "entityReference": "\/assignment\/a\/e9222585-bb4f-40ed-a411-c5e2f51d2baf\/5c4595e4-f073-42ee-a714-7a5553b55a36",
+    "id": 2195,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+        "contextTitle": "gsilver glti",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+        "id": 821
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Do not associate assignment to Gradebook"
+  },
+  "context": {
+    "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+    "contextTitle": "gsilver glti",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+    "id": 821
+  },
+  "id": 10491,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10491",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10491",
+  "entityId": "10491"
+},{
+  "calendarItem": {
+    "calendarTime": 1431291600000,
+    "calendarTimeLabelKey": "assignment.due.date",
+    "context": {
+      "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+      "contextTitle": "gsilver glti",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+      "id": 821
+    },
+    "entityReference": "\/assignment\/a\/e9222585-bb4f-40ed-a411-c5e2f51d2baf\/8b848e08-5418-4185-8c4a-daf5ccd42a59",
+    "id": 2196,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+        "contextTitle": "gsilver glti",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+        "id": 821
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Associate Assignment with Gradebook"
+  },
+  "context": {
+    "contextId": "e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+    "contextTitle": "gsilver glti",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/e9222585-bb4f-40ed-a411-c5e2f51d2baf",
+    "id": 821
+  },
+  "id": 10495,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10495",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10495",
+  "entityId": "10495"
+},{
+  "calendarItem": {
+    "calendarTime": 1431464400000,
+    "calendarTimeLabelKey": "assignment.due.date",
+    "context": {
+      "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+      "contextTitle": "Boing 100 100 F13",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+      "id": 608
+    },
+    "entityReference": "\/assignment\/a\/9477dc62-f6fe-4836-ae27-84d594a64127\/2c4881ad-8161-412b-ab63-2619110144d5",
+    "id": 2257,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+        "contextTitle": "Boing 100 100 F13",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+        "id": 608
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Assignment graded"
+  },
+  "context": {
+    "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+    "contextTitle": "Boing 100 100 F13",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+    "id": 608
+  },
+  "id": 10907,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10907",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10907",
+  "entityId": "10907"
+},{
+  "calendarItem": {
+    "calendarTime": 1431637200000,
+    "calendarTimeLabelKey": "assignment.due.date",
+    "context": {
+      "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+      "contextTitle": "Boing 100 100 F13",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+      "id": 608
+    },
+    "entityReference": "\/assignment\/a\/9477dc62-f6fe-4836-ae27-84d594a64127\/e3e15ed2-a59b-4f14-844c-bd7e5bd9469a",
+    "id": 2253,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+        "contextTitle": "Boing 100 100 F13",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+        "id": 608
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Assignment"
+  },
+  "context": {
+    "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+    "contextTitle": "Boing 100 100 F13",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+    "id": 608
+  },
+  "id": 10891,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10891",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10891",
+  "entityId": "10891"
+},{
+  "calendarItem": {
+    "calendarTime": 1431637200000,
+    "calendarTimeLabelKey": "assignment.close.date",
+    "context": {
+      "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+      "contextTitle": "Boing 100 100 F13",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+      "id": 608
+    },
+    "entityReference": "\/assignment\/a\/9477dc62-f6fe-4836-ae27-84d594a64127\/e3e15ed2-a59b-4f14-844c-bd7e5bd9469a",
+    "id": 2254,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+        "contextTitle": "Boing 100 100 F13",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+        "id": 608
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Assignment"
+  },
+  "context": {
+    "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+    "contextTitle": "Boing 100 100 F13",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+    "id": 608
+  },
+  "id": 10895,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10895",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10895",
+  "entityId": "10895"
+},{
+  "calendarItem": {
+    "calendarTime": 1431982800000,
+    "calendarTimeLabelKey": "assignment.due.date",
+    "context": {
+      "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+      "contextTitle": "Boing 100 100 F13",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+      "id": 608
+    },
+    "entityReference": "\/assignment\/a\/9477dc62-f6fe-4836-ae27-84d594a64127\/b6b613d1-9de8-4cbc-9dc9-627a6e97619f",
+    "id": 2255,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+        "contextTitle": "Boing 100 100 F13",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+        "id": 608
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Assignment 2 (no submission)"
+  },
+  "context": {
+    "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+    "contextTitle": "Boing 100 100 F13",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+    "id": 608
+  },
+  "id": 10899,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10899",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10899",
+  "entityId": "10899"
+},{
+  "calendarItem": {
+    "calendarTime": 1432155600000,
+    "calendarTimeLabelKey": "assignment.close.date",
+    "context": {
+      "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+      "contextTitle": "Boing 100 100 F13",
+      "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+      "id": 608
+    },
+    "entityReference": "\/assignment\/a\/9477dc62-f6fe-4836-ae27-84d594a64127\/b6b613d1-9de8-4cbc-9dc9-627a6e97619f",
+    "id": 2256,
+    "repeatingCalendarItem": {
+      "calendarTimeLabelKey": null,
+      "context": {
+        "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+        "contextTitle": "Boing 100 100 F13",
+        "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+        "id": 608
+      },
+      "entityReference": null,
+      "firstTime": null,
+      "frequency": null,
+      "id": 0,
+      "lastTime": null,
+      "maxCount": 0,
+      "sourceType": {
+        "id": 4,
+        "identifier": "assignment"
+      },
+      "subtype": null,
+      "title": null
+    },
+    "sequenceNumber": 0,
+    "sourceType": {
+      "id": 4,
+      "identifier": "assignment"
+    },
+    "subtype": null,
+    "title": "Assignment 2 (no submission)"
+  },
+  "context": {
+    "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
+    "contextTitle": "Boing 100 100 F13",
+    "contextUrl": "https:\/\/ctdev.dsc.umich.edu\/portal\/site\/9477dc62-f6fe-4836-ae27-84d594a64127",
+    "id": 608
+  },
+  "id": 10903,
+  "person": {
+    "id": 208,
+    "sakaiId": "7967cc8b-d477-42ab-be3e-f0cafd047b71",
+    "userId": "gsilver"
+  },
+  "hidden": false,
+  "sticky": false,
+  "entityReference": "\/dash\/10903",
+  "entityURL": "https:\/\/ctdev.dsc.umich.edu\/direct\/dash\/10903",
+  "entityId": "10903"
 }
 ]}
