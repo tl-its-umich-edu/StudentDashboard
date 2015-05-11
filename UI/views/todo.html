@@ -60,7 +60,7 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date">
           <small class="dateSpan">
-            <span  ng-show="due_date_sort">{{item.due_date_sort | dateUntil}}</span>
+            <span  ng-show="item.due_date_sort">{{item.due_date_sort | dateUntil}}</span>
             <div ng-show="item.origin ==='gt'">
               <a href="" ng-click="editTodo(item)"  data-toggle="modal" data-target="#editToDoModal">Edit</a>
             <div>
