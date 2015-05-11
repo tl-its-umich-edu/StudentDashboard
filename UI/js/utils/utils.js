@@ -125,29 +125,31 @@ var GTasksToDoCleaner = function(result){
   $.each(result, function() {
     var newObj = {};
     newObj.title = this.title;
-    newObj.due_date = this.due_date;
-    newObj.due_date_short = this.due_date_short;
-    newObj.due_date_sort = this.due_date_sort;
-    newObj.due_date_editable = this.due_date_editable;
-    newObj.due_time_editable = this.due_time_editable;
-    newObj.link = this.html_url;
     newObj.origin ='gt';
     newObj.message = this.message;
-    var nowDay = moment().unix().toString();
-    var nowDayAnd4 = moment().add(4, 'days').unix().toString();
-    var dueDay = moment(this.due_date_sort).unix().toString();
-
-    if(dueDay < nowDay) { 
-      newObj.when = 'earlier';
-    }
-    else {
-      if(dueDay  > nowDayAnd4) { 
-        newObj.when = 'later';
+    if(this.due_date){
+      newObj.due_date = this.due_date;
+      newObj.due_date_short = this.due_date_short;
+      newObj.due_date_sort = this.due_date_sort;
+      newObj.due_date_editable = this.due_date_editable;
+      newObj.due_time_editable = this.due_time_editable;
+      var nowDay = moment().unix().toString();
+      var nowDayAnd4 = moment().add(4, 'days').unix().toString();
+      var dueDay = moment(this.due_date_sort).unix().toString();
+      if(dueDay < nowDay) { 
+        newObj.when = 'earlier';
       }
       else {
-        newObj.when = 'soon';
+        if(dueDay  > nowDayAnd4) { 
+          newObj.when = 'later';
+        }
+        else {
+          newObj.when = 'soon';
+        }
       }
-    }
+    } else {
+      newObj.when = 'nodate';
+    }  
 
     transformedData.push(newObj);
   
