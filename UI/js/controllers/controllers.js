@@ -174,6 +174,7 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
         {name:'Earlier', value:'earlier'},
         {name:'Soon', value:'soon'},
         {name:'Later', value:'later'},
+        {name:'No date', value:'nodate'},
       ];
       $scope.showWhen = 'soon';
 
@@ -184,6 +185,21 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
           return 'overdue';
         }
       };
+
+      $scope.newTaskSubmitOnEnter = function(){
+        var newObj = {};
+        newObj.origin='gt';
+        newObj.title = $('#quickAddTask').val();
+        newObj.when = 'nodate'
+        $scope.todos.push(newObj);
+        localStorateUpdateTodos($scope.todos);
+        $scope.showTask=false;
+        $('#quickAddTask').val('');
+        $('#addToDo').focus();
+        $('#quickAddTaskMessage').fadeIn('slow').delay( 2000 ).fadeOut('slow');
+        
+      }
+
 
       $scope.newToDo = function () {
         var newObj = {};
@@ -219,14 +235,14 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
       
       $scope.editToDoSave = function() {
         var index = $('#editToDoSave').attr('data-index');
-        console.log(index)
+        //console.log(index)
         $scope.todos[index].title = $('#editToDoTitle').val();
         $scope.todos[index].message = $('#editToDoMessage').val();
         $scope.todos[index].due_date = moment($('#editToDoDate').val()).format('dddd, MMMM Do YYYY, h:mm a');
         $scope.todos[index].due_date_short = moment($('#editToDoDate').val()).format('MM/DD');
         $scope.todos[index].due_date_editable = moment($('#editToDoDate').val()).format('YYYY-MM-DD');
         $scope.todos[index].due_time_editable = $('#editToDoTime').val();
-        $scope.todos[index].due_date_sort = moment($('editToDoDate').val()).unix();
+        $scope.todos[index].due_date_sort = moment($('#editToDoDate').val()).unix();
         localStorateUpdateTodos($scope.todos);
       };
 

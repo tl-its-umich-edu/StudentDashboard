@@ -10,14 +10,31 @@
       <div class="col-lg-5 col-md-5 col-xs-5 form-inline" style="text-align:right;padding-right:0">
         <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none" ng-click="removeToDos()" >
           - <span class="sr-only">Delete selected to dos</span>
-        </button>      
+        </button>
+        
+        <button type="button" type="button" id="addToDo" class="btn btn-sm btn-default"  title=
+        "Add new Google Task" ng-click="showTask=true">
+          + <span class="sr-only">Add a new to do</span>
+        </button>
+        
+        <!--
         <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal" title=
         "Add new Google Task">
           + <span class="sr-only">Add a new to do</span>
         </button>
+        -->
       </div>
     </div>
+    <div class="row" ng-show="showTask" >
+      <div class=" col-lg-12 col-md-12 col-xs-12"  style="padding:0">
+        <input id="quickAddTask" ng-enter="newTaskSubmitOnEnter()" type="text" class="form-control" placeholder="Add a Google Task">
+      </div>
   </div>  
+  <div class="row">
+    <div class=" col-lg-12 col-md-12 col-xs-12"  style="padding:0">
+      <div class="alert alert-success" id="quickAddTaskMessage" style="display:none">Google Task added with no date. Use menu above to see/edit.</div>
+    </div>
+  </div>
   <ul class="itemList">
     <li ng-repeat="item in todos | orderBy:'due_date_sort' | filter:showWhen" class="container-fluid" ng-class="isOverdue(item)" >
       <div class="overdueFlag">

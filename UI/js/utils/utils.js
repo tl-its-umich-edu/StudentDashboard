@@ -201,8 +201,11 @@ $(document).on('click', '#todo input', function () {
   }
 });
 
+$(document).on('click', '#addToDo', function () {
+  $('#quickAddTask').focus()
+});
+
 $('#newToDoModal').on('hide.bs.modal', function (e) {
-  console.log('a')
   $('#toDoTitle, #newToDoDate, #newToDoTime, #toDoMessage').val('');
 })
 
