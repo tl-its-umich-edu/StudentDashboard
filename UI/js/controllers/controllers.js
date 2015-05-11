@@ -186,6 +186,11 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
         }
       };
 
+      $scope.setWhen = function(when) {
+        console.log(when)
+        $scope.showWhen = when;
+      }
+
       $scope.newTaskSubmitOnEnter = function(){
         var newObj = {};
         newObj.origin='gt';
