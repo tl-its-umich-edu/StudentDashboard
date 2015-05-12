@@ -174,7 +174,7 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
         {name:'Earlier', value:'earlier'},
         {name:'Soon', value:'soon'},
         {name:'Later', value:'later'},
-        {name:'No date', value:'nodate'},
+        {name:'No date specified', value:'nodate'},
       ];
       $scope.showWhen = 'soon';
 
