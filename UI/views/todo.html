@@ -63,8 +63,7 @@
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7">
           <a ng-if="item.origin !=='gt'" target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
-          <span ng-if="item.origin ==='gt'">{{item.title}}
-          </span>
+          <span ng-if="item.origin ==='gt'">{{item.title}}</span>
           <br>
           <small>
               <span ng-if="item.origin !=='gt'"><a class="courseLink" data-target="{{item.contextLMS}}" target="_blank" href="{{item.contextUrl}}"><span class="sr-only">View {{item.title}} in course site</span><span aria-hidden="true">Go to course site</span></a></span>

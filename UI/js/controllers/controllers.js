@@ -195,7 +195,8 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
         var newObj = {};
         newObj.origin='gt';
         newObj.title = $('#quickAddTask').val();
-        newObj.when = 'nodate'
+        newObj.when = 'nodate';
+        console.log(newObj)
         $scope.todos.push(newObj);
         localStorateUpdateTodos($scope.todos);
         $scope.showTask=false;
@@ -205,33 +206,35 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
         
       }
 
-
       $scope.newToDo = function () {
         var newObj = {};
         newObj.origin='gt';
         newObj.title = $('#toDoTitle').val();
         newObj.message = $('#toDoMessage').val();
-        newObj.due_date = moment($('#newToDoDate').val()).format('dddd, MMMM Do YYYY, h:mm a');
-        newObj.due_date_short = moment($('#newToDoDate').val()).format('MM/DD');
-        newObj.due_date_editable = moment($('#newToDoDate').val()).format('YYYY-MM-DD');
-        newObj.due_time_editable = $('#newToDoTime').val();
-        newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
+        if ($('#editToDoDate').val() !=='' ) {
+          newObj.due_date = moment($('#newToDoDate').val()).format('dddd, MMMM Do YYYY, h:mm a');
+          newObj.due_date_short = moment($('#newToDoDate').val()).format('MM/DD');
+          newObj.due_date_editable = moment($('#newToDoDate').val()).format('YYYY-MM-DD');
+          newObj.due_time_editable = $('#newToDoTime').val();
+          newObj.due_date_sort = moment($('#newToDoDate').val()).unix();
+          var nowDay = moment().unix().toString();
+          var nowDayAnd4 = moment().add(4, 'days').unix().toString();
+          var dueDay = moment($('#newToDoDate').val()).unix().toString();
 
-        var nowDay = moment().unix().toString();
-        var nowDayAnd4 = moment().add(4, 'days').unix().toString();
-        var dueDay = moment($('#newToDoDate').val()).unix().toString();
-
-        if(dueDay < nowDay) { 
-          newObj.when = 'earlier';
-        }
-        else {
-          if(dueDay  > nowDayAnd4) { 
-            newObj.when = 'later';
+          if(dueDay < nowDay) { 
+            newObj.when = 'earlier';
           }
           else {
-            newObj.when = 'soon';
+            if(dueDay  > nowDayAnd4) { 
+              newObj.when = 'later';
+            }
+            else {
+              newObj.when = 'soon';
+            }
           }
-        }
+        } else {
+           newObj.when = 'nodate';
+        }  
 
         $scope.todos.push(newObj);
         $('#toDoTitle, #newToDoDate, #newToDoTime, #toDoMessage').val('');
@@ -240,16 +243,21 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
       
       $scope.editToDoSave = function() {
         var index = $('#editToDoSave').attr('data-index');
-        //console.log(index)
         $scope.todos[index].title = $('#editToDoTitle').val();
         $scope.todos[index].message = $('#editToDoMessage').val();
-        $scope.todos[index].due_date = moment($('#editToDoDate').val()).format('dddd, MMMM Do YYYY, h:mm a');
-        $scope.todos[index].due_date_short = moment($('#editToDoDate').val()).format('MM/DD');
-        $scope.todos[index].due_date_editable = moment($('#editToDoDate').val()).format('YYYY-MM-DD');
-        $scope.todos[index].due_time_editable = $('#editToDoTime').val();
-        $scope.todos[index].due_date_sort = moment($('#editToDoDate').val()).unix();
+        if ($('#editToDoDate').val() !=='' ) {
+          $scope.todos[index].due_date = moment($('#editToDoDate').val()).format('dddd, MMMM Do YYYY, h:mm a');
+          $scope.todos[index].due_date_short = moment($('#editToDoDate').val()).format('MM/DD');
+          $scope.todos[index].due_date_editable = moment($('#editToDoDate').val()).format('YYYY-MM-DD');
+          $scope.todos[index].due_time_editable = $('#editToDoTime').val();
+          $scope.todos[index].due_date_sort = moment($('#editToDoDate').val()).unix();
+        }
+        else {
+          $scope.todos[index].when = 'nodate'
+        }
         localStorateUpdateTodos($scope.todos);
       };
+
 
       $scope.editTodo = function(item) {
         var index = $scope.todos.indexOf(item);  
