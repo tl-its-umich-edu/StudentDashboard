@@ -122,6 +122,17 @@ ul {
     padding:10px;
 }
 
+.label-info-custom {
+    background:#ddd;
+    color:#000;
+    padding:10px !important;
+    display: block;
+    font-size: 80%;
+    font-weight: normal;
+    line-height: 1;
+    text-align: left;
+}
+
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
         padding:0
