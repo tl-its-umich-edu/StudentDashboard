@@ -187,8 +187,8 @@ dashboardApp.controller('todoController', ['ToDosCanvas','ToDosCTools', '$scope'
       };
 
       $scope.setWhen = function(when) {
-        console.log(when)
         $scope.showWhen = when;
+        $scope.showTask=false;
       }
 
       $scope.newTaskSubmitOnEnter = function(){

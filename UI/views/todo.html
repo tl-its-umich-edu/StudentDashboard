@@ -2,14 +2,14 @@
   <div class="container-fluid" style="padding:0">
     <div class="row">
       <div class=" col-lg-4 col-md-4 col-xs-4">
-        <h3 class="colHeader pull-left" style="padding:0;margin:0 2em 0 0">To Do</h3>
+        <h3 class="colHeader pull-left" style="padding:0;margin:0">To Do</h3>
       <!--
         <label class="sr-only" for="todoTimeSelector">Due</label>
         <select id="todoTimeSelector" class="form-control input-sm pull-left" style="margin-left:1em" ng-model="showWhen" ng-options="item.value as item.name for item in todo_time_options">
         </select>
       -->
       </div>
-      <div class="col-lg-8 col-md-8 col-xs-8" style="text-align:right;padding-right:0">
+      <div class="col-lg-8 col-md-8 col-xs-8" style="text-align:right;padding-right:0" >
         <div class="btn-group btn-group-sm">
           <div class="dropdown btn-group">
             <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -27,8 +27,8 @@
           </button>
           
           <button type="button" type="button" id="addToDo" class="btn btn-sm btn-default"  title=
-          "Add new Google Task" ng-click="showTask=true">
-            + <span class="sr-only">Add a new to do</span>
+          "Add new Google Task" ng-click="showTask=!showTask">
+            <span ng-show="!showTask"> + </span><span ng-show="showTask"> &times; </span><span class="sr-only">Add a new to do</span>
           </button>
         </div>  
         <!--
@@ -39,14 +39,17 @@
         -->
       </div>
     </div>
-    <div class="row" ng-show="showTask" >
-      <div class=" col-lg-12 col-md-12 col-xs-12"  style="padding:0">
-        <input id="quickAddTask" ng-enter="newTaskSubmitOnEnter()" type="text" class="form-control" placeholder="Add a Google Task">
+    <div class="row" ng-show="showTask">
+      <div class=" col-lg-12 col-md-12 col-xs-12 input-group"  style="padding:0" >
+        <input id="quickAddTask" ng-enter="newTaskSubmitOnEnter()" type="text" class="form-control" placeholder="Add task + Enter. Or use button on right.">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"  data-toggle="modal" data-target="#newToDoModal" title="Add Google Task with details.">></button>
+        </span>
       </div>
   </div>  
   <div class="row">
     <div class=" col-lg-12 col-md-12 col-xs-12"  style="padding:0">
-      <div class="alert alert-success" id="quickAddTaskMessage" style="display:none">Google Task added. Use menu above to see and edit <i class="glyphicon glyphicon-arrow-up"></i> </div>
+      <div id="quickAddTaskMessage" class="label label-info-custom" style="display:none">Google Task added. Use menu above to see and edit.</div>
     </div>
   </div>
   <ul class="itemList">
