@@ -2,7 +2,7 @@
 /* jshint  strict: true*/
 /* global $, angular */
 
-var dashboardApp = angular.module('dashboardApp', ['ngAnimate','dashFilters','xeditable','ngSanitize']);
+var dashboardApp = angular.module('dashboardApp', ['dashFilters']);
 /**
  * Initialize Angular app with the user id and the strings file
  */
@@ -10,11 +10,4 @@ var dashboardApp = angular.module('dashboardApp', ['ngAnimate','dashFilters','xe
 dashboardApp.run(function ($rootScope) {
   $rootScope.user = $('#userId').text();
   $rootScope.lang = JSON.parse($('#lang').text());
-});
-
-
-dashboardApp.run(function(editableOptions, editableThemes) {
-  editableThemes.bs3.inputClass = 'input-xs';
-  editableThemes.bs3.buttonsClass = 'btn-xs';
-  editableOptions.theme = 'bs3';
 });
