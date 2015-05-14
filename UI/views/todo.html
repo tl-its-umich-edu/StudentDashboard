@@ -3,11 +3,6 @@
     <div class="row">
       <div class=" col-lg-6 col-md-6 col-xs-6">
         <h3 class="colHeader pull-left" style="padding:0;margin:0">To Do {{showWhen | titleCase}}</h3>
-      <!--
-        <label class="sr-only" for="todoTimeSelector">Due</label>
-        <select id="todoTimeSelector" class="form-control input-sm pull-left" style="margin-left:1em" ng-model="showWhen" ng-options="item.value as item.name for item in todo_time_options">
-        </select>
-      -->
       </div>
       <div class="col-lg-6 col-md-6 col-xs-6" style="text-align:right;padding-right:0">
         <div class="btn-group btn-group-sm">
@@ -31,12 +26,6 @@
             <span ng-show="!showTask"> + </span><span ng-show="showTask"> &times; </span><span class="sr-only">Add a new to do</span>
           </button>
         </div>  
-        <!--
-        <button type="button" id="addToDo" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newToDoModal" title=
-        "Add new Google Task">
-          + <span class="sr-only">Add a new to do</span>
-        </button>
-        -->
       </div>
     </div>
     <div class="row" ng-show="showTask">
