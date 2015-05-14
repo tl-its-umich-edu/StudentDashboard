@@ -133,6 +133,10 @@ ul {
     text-align: left;
 }
 
+.label-custom {
+    font-weight: normal;
+}
+
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
         padding:0
