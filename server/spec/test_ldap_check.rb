@@ -25,7 +25,7 @@ class LdapTest < MiniTest::Test
   def setup
     # by default assume the tests will run well and don't need
     # to have detailed log messages.
-    #logger.level = Logger::ERROR
+    logger.level = Logger::ERROR
     #logger.level = Logger::INFO
     #logger.level = Logger::DEBUG
     @group = "TL-Latte-admin-test"
