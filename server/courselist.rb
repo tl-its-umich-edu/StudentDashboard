@@ -126,8 +126,7 @@ END
   helpers do
 
     def self.verify_file_is_usable(requested_file)
-      return requested_file if ((File.exists? requested_file) && File.readable?(requested_file))
-      nil
+      ((File.exists? requested_file) && File.readable?(requested_file)) ? requested_file : nil
     end
 
     def self.get_local_config_yml(requested_file, default_file, required)
@@ -136,10 +135,11 @@ END
 
       if file_name.nil? then
         logger.fatal "can not find requested or default configuration file: [#{requested_file}] or [#{default_file}]" if required
-      else
-        logger.info "config: use file: [#{file_name}]"
-        YAML.load_file(file_name)
+        return nil
       end
+
+      logger.info "config: use file: [#{file_name}]"
+      YAML.load_file(file_name)
     end
 
   end
@@ -223,7 +223,7 @@ END
     ## separate jira.
 
     # read in yml configuration into a class variable
-    external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml",true)
+    external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml", true)
 
     config_hash[:use_log_level] = external_config['use_log_level'] || "INFO"
 
@@ -267,7 +267,7 @@ END
 
     # read in yml for the build configuration into a class variable
     begin
-      config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml",false)
+      config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml", false)
       logger.info "build.yml file is optional"
       config_hash[:build_time] = config_hash[:build]['time']
       config_hash[:build_id] = config_hash[:build]['tag'] || config_hash[:build]['last_commit']
@@ -281,7 +281,7 @@ END
 
     ## read in yml for the strings into a class variable.
     begin
-      config_hash[:strings] = self.get_local_config_yml(config_hash[:strings_file], "./server/local/strings.yml",true)
+      config_hash[:strings] = self.get_local_config_yml(config_hash[:strings_file], "./server/local/strings.yml", true)
     rescue
       logger.warn "No strings yml configuration file found"
       config_hash[:strings] = Hash.new()

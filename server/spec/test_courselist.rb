@@ -81,7 +81,7 @@ class TestCourseList < MiniTest::Test
   ## That makes testing much easier.
 
   def test_veto_request_not_admin_non_url
-    r = CourseList.vetoRequest("abba","dylan") { false }
+    r = CourseList.vetoRequest("abba", "dylan") { false }
     refute r, "unrelated url"
   end
 
@@ -90,13 +90,13 @@ class TestCourseList < MiniTest::Test
 
   def test_veto_request_simple_self_not_admin
     s = "/StudentDashboard"
-    r = CourseList.vetoRequest("daisy",s) { false }
+    r = CourseList.vetoRequest("daisy", s) { false }
     refute r, "self simple not admin"
   end
 
   def test_veto_request_simple_self_admin
     s = "/StudentDashboard"
-    r = CourseList.vetoRequest("daisy",s) { true }
+    r = CourseList.vetoRequest("daisy", s) { true }
     refute r, "self simple not admin"
   end
 
@@ -105,52 +105,53 @@ class TestCourseList < MiniTest::Test
   # ask for self
   def test_veto_request_uniqname_self_not_admin
     s = "/StudentDashboard/?UNIQNAME=daisy"
-    r = CourseList.vetoRequest("daisy",s) { false }
+    r = CourseList.vetoRequest("daisy", s) { false }
     refute r, "self uniqname not admin"
   end
 
   def test_veto_request_uniqname_self_admin
     s = "/StudentDashboard/?UNIQNAME=daisy"
-    r = CourseList.vetoRequest("daisy",s) { true }
+    r = CourseList.vetoRequest("daisy", s) { true }
     refute r, "self uniqname admin"
   end
 
   # ask for other
   def test_veto_request_uniqname_other_admin
     s = "/StudentDashboard/?UNIQNAME=dimples"
-    r = CourseList.vetoRequest("daisy",s) { true }
+    r = CourseList.vetoRequest("daisy", s) { true }
     refute r, "uniqname other admin"
   end
 
   def test_veto_request_uniqname_other_not_admin
     s = "/StudentDashboard/?UNIQNAME=dimples"
-    r = CourseList.vetoRequest("daisy",s) { false }
+    r = CourseList.vetoRequest("daisy", s) { false }
     assert r, "uniqname other not admin"
   end
 
   ##### courses url
- # ask for self
+  # ask for self
   def test_veto_request_courses_self_not_admin
     s="/StudentDashboard/courses/abba.json"
-    r = CourseList.vetoRequest("abba",s) { false }
+    r = CourseList.vetoRequest("abba", s) { false }
     refute r, "request my courses not admin"
   end
 
   def test_veto_request_courses_self_admin
     s="/StudentDashboard/courses/abba.json"
-    r = CourseList.vetoRequest("abba",s) { true }
+    r = CourseList.vetoRequest("abba", s) { true }
     refute r, "request my  courses admin"
   end
+
   # ask for other
   def test_veto_request_courses_other_not_admin
     s="/StudentDashboard/courses/abba.json"
-    r = CourseList.vetoRequest("daisy",s) { false }
+    r = CourseList.vetoRequest("daisy", s) { false }
     assert r, "request other courses not admin"
   end
 
   def test_veto_request_courses_other_admin
     s="/StudentDashboard/courses/abba.json"
-    r = CourseList.vetoRequest("abba",s) { true }
+    r = CourseList.vetoRequest("abba", s) { true }
     refute r, "request my  courses admin"
   end
 
