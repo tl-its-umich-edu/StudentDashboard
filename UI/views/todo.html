@@ -38,11 +38,12 @@
   </div>  
   <div class="row">
     <div class=" col-lg-12 col-md-12 col-xs-12"  style="padding:0">
-      <div id="quickAddTaskMessage" class="label label-info-custom" style="display:none">Google Task added. Use menu above to see and edit.</div>
+      <div id="quickAddTaskMessage" class="label label-info-custom" style="display:none">Google Task added. Find under "No Date Specified" in menu above.</div>
     </div>
   </div>
+  <div class="alert alert-info" ng-hide="filteredItems.length" ng-show="!filteredItems.length">No items found.{{useWhen}}</div>
   <ul class="itemList">
-    <li ng-repeat="item in todos | orderBy:'due_date_sort' | filter:showWhen" class="container-fluid" ng-class="isOverdue(item)" >
+    <li ng-repeat="item in filteredItems  = (todos | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid" ng-class="isOverdue(item)" >
       <div class="overdueFlag">
         <i class="glyphicon glyphicon-fire"></i>
       </div>

@@ -162,7 +162,7 @@ dashboardApp.factory('Schedule', function ($http) {
  * Factory takes a building and returns that building's coordinates
  * All mock data for now. 
  *
- * Building code is extracted from schedule > building is looked up
+ * Building code number is extracted from schedule > building is looked up
  * by building code. coordinates are returned
  *
  * In the ESB this would be a 3 step request process
@@ -194,7 +194,7 @@ dashboardApp.factory('getMapCoords', function ($http) {
 });
 
 /**
- * Factory to handle paginf in the Schedule panel
+ * Factory to handle paging in the Schedule panel
  */
 
 dashboardApp.factory('pageDay', function () {
