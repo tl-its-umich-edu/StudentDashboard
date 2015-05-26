@@ -64,16 +64,36 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
     return function(text) {
         return $sce.trustAsHtml(text);
     };
-}]).filter('titleCase', function() {
+}]).filter('headerText', function() {
     return function(str) {
-        if (str ==='nodate'){
-          return "No Date"
-        }
-        else {
-          return (str === undefined || str === null) ? '' : str.replace(/_|-/, ' ').replace(/\w\S*/g, function(txt){
-              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-          });
-        }
+      switch (str) {
+        case 'nodate':
+          return 'No Date Specified'
+        case 'earlier':
+          return 'Due Earlier'
+        case 'later':
+          return 'Due Later'
+        case 'soon':
+          return 'Due Soon'
+        default:
+          return 'Default message.'
+      }
+
+    };
+}).filter('noItemsFoundForTime', function() {
+    return function(str) {
+      switch (str) {
+        case 'nodate':
+          return 'No items without date found.'
+        case 'earlier':
+          return 'No earlier items found.'
+        case 'later':
+          return 'No later items found.'
+        case 'soon':
+          return 'No items due soon found.'
+        default:
+          return 'Default message.'
+      }
     };
 });
 
