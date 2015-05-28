@@ -156,11 +156,12 @@
 
              $scope.todos = combinedData;
 
-             /* to debug sorting issues*/
+             /* to debug sorting issues
              $.each(combinedData, function() {
-               console.log('when: ' + this.when + ', due date: ' + this.due_date  + ', sort date: '  + this.due_date_sort +  ', title: ' + this.title)
+               //console.log('when: ' + this.when + ', due date: ' + this.due_date  + ', sort date: '  + this.due_date_sort +  ', title: ' + this.title)
                //console.log(this.when)
              })
+             */
              
 
              $scope.todo_time_options = [{
@@ -189,17 +190,21 @@
              $scope.setWhen = function(when) {
                  $scope.showWhen = when;
                  $scope.showTask = false;
+                 $scope.selected = false;
+                 for (var i = $scope.todos.length - 1; i >= 0; i--) {
+                    $scope.todos[i].checked = false;
+                 }
              }
 
              $scope.newTaskSubmitOnEnter = function() {
                  var newObj = {};
                  newObj.origin = 'gt';
-                 newObj.title = $('#quickAddTask').val();
+                 newObj.title = $scope.newTask;
                  newObj.when = 'nodate';
                  $scope.todos.push(newObj);
                  localStorateUpdateTodos($scope.todos);
                  $scope.showTask = false;
-                 $('#quickAddTask').val('');
+                 $scope.newTask ='';
                  $('#addToDo').focus();
                  $('#quickAddTaskMessage').fadeIn('slow').delay(2000).fadeOut('slow');
 
@@ -261,7 +266,6 @@
                  $('#editToDoMessage').val(item.message);
                  $('#editToDoDate').val(item.due_date_editable);
                  $('#editToDoTime').val(item.due_time_editable);
-
                  $('#editToDoSave').attr('data-index', index);
              }
 
@@ -280,6 +284,20 @@
 
                  localStorateUpdateTodos($scope.todos);
              };
+
+            /**
+             * Hide and show the delete todos button acording if at least one checkbox
+             * is checked or not
+            */
+
+             $scope.change = function(){
+                if( _.where($scope.todos, {checked: true} ).length ){
+                    $scope.selected = true;
+                }
+                else {
+                    $scope.selected = false;
+                }
+             }
 
              $scope.removeToDos = function() {
                  for (var i = $scope.todos.length - 1; i >= 0; i--) {

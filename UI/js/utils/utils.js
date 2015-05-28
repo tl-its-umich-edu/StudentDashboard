@@ -190,18 +190,6 @@ $(document).on('click', '.showMoreInstructors', function (e) {
   return null;
 });
 
-/**
- * Hide and show the delete todos button acording if at least one checkbox
- * is checked or not
- */
-
-$(document).on('click', '#todo input', function () {
-  if ($('#todo input:checked').length) {
-    $('#removeToDos').fadeIn();
-  } else {
-    $('#removeToDos').fadeOut();
-  }
-});
 
 $(document).on('click', '#addToDo', function () {
   $('#quickAddTask').focus()

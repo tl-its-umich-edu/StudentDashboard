@@ -1,10 +1,10 @@
 <div id="todo"  ng-controller="todoController" class="itemPanel" style="margin-top:20px">
   <div class="container-fluid" style="padding:0">
     <div class="row">
-      <div class=" col-lg-8 col-md-8 col-xs-8">
+      <div class=" col-lg-8 col-md-8 col-xs-8" style="padding:0">
         <h3 class="colHeader pull-left" style="padding:0;margin:0">To Do <small>{{showWhen | headerText}}</small></h3>
       </div>
-      <div class="col-lg-4 col-md-4 col-xs-4" style="text-align:right;padding-right:0">
+      <div class="col-lg-4 col-md-4 col-xs-4" style="text-align:right;padding:0">
         <div class="btn-group btn-group-sm">
           <div class="dropdown btn-group">
             <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -13,11 +13,11 @@
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
               <li ng-repeat="item in
-          todo_time_options" role="presentation"><a ng-click="setWhen(item.value)"role="menuitem" tabindex="-1" href="#">{{item.name}}</a></li>
+          todo_time_options" role="presentation"><a ng-click="setWhen(item.value)" role="menuitem" tabindex="-1" href="#">{{item.name}}</a></li>
             </ul>
           </div>
 
-          <button type="button" id="removeToDos" class="btn btn-sm btn-primary" style="display:none" ng-click="removeToDos()" >
+          <button type="button" id="removeToDos" class="btn btn-sm btn-primary" ng-show="selected" ng-click="removeToDos()" >
             - <span class="sr-only">Delete selected to dos</span>
           </button>
           
@@ -30,7 +30,7 @@
     </div>
     <div class="row" ng-show="showTask">
       <div class=" col-lg-12 col-md-12 col-xs-12 input-group"  style="padding:0" >
-        <input id="quickAddTask" ng-enter="newTaskSubmitOnEnter()" type="text" class="form-control" placeholder="Add task + Enter. Or use button on right.">
+        <input id="quickAddTask" ng-enter="newTaskSubmitOnEnter()" type="text" class="form-control" placeholder="Add task + Enter. Or use button on right." ng-model="newTask">
         <span class="input-group-btn">
           <button class="btn btn-default" type="button"  data-toggle="modal" data-target="#newToDoModal" title="Add Google Task with details.">></button>
         </span>
@@ -49,7 +49,7 @@
       </div>
       <div class="row">
         <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
-          <span ng-if="item.origin ==='gt'"><input type="checkbox" id="gtitem{{$index+1}}" ng-model="item.checked" /></span>
+          <span ng-if="item.origin ==='gt'"><input type="checkbox" id="gtitem{{$index+1}}" ng-change="change()" ng-model="item.checked" /></span>
         </div>
         <div class="col-lg-7 col-md-7 col-xs-7">
           <a ng-if="item.origin !=='gt'" target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
@@ -68,7 +68,7 @@
           <small class="dateSpan">
             <span  ng-show="item.due_date_sort">{{item.due_date_sort | dateUntil}}</span>
             <div ng-show="item.origin ==='gt'">
-              <a href="" ng-click="editTodo(item)"  data-toggle="modal" data-target="#editToDoModal">Edit</a>
+              <a href="" ng-click="editTodo(item)"  data-toggle="modal" data-target="#editToDoModal">Edit <span class="sr-only">{{item.title}}</span></a>
             <div>
           </small>        
         </div>
