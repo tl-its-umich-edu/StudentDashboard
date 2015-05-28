@@ -117,7 +117,7 @@
   "entityId": "10914"
 },{
   "calendarItem": {
-    "calendarTime": 1431215000000,
+    "calendarTime": 1433105000000,
     "calendarTimeLabelKey": "assignment.due.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -154,7 +154,7 @@
       "identifier": "assignment"
     },
     "subtype": null,
-    "title": "Assignment 22 (no submission)"
+    "title": "Assignment 22 (nox submission)"
   },
   "context": {
     "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -175,7 +175,7 @@
   "entityId": "10898"
 },{
   "calendarItem": {
-    "calendarTime": 1431216000000,
+    "calendarTime": 1434105000000,
     "calendarTimeLabelKey": "assignment.due.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",
@@ -291,7 +291,7 @@
   "entityId": "10894"
 },{
   "calendarItem": {
-    "calendarTime": 1431129600000,
+    "calendarTime": 1434405000000,
     "calendarTimeLabelKey": "assignment.close.date",
     "context": {
       "contextId": "9477dc62-f6fe-4836-ae27-84d594a64127",

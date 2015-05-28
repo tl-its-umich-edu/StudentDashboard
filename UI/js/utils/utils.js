@@ -106,7 +106,7 @@ var ctoolsToDoCleaner = function(result){
           newObj.when = 'later';
         }
         else {
-          newObj.when = 'now';
+          newObj.when = 'soon';
         }
       }
       transformedData.push(newObj);

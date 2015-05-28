@@ -68,7 +68,7 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
     return function(str) {
       switch (str) {
         case 'nodate':
-          return 'No Date Specified'
+          return 'No Date'
         case 'earlier':
           return 'Due Earlier'
         case 'later':

@@ -156,11 +156,12 @@
 
              $scope.todos = combinedData;
 
-             /* to debug sorting issues
+             /* to debug sorting issues*/
              $.each(combinedData, function() {
-               console.log( this.due_date_sort +  ': ' + this.title)
+               console.log('when: ' + this.when + ', due date: ' + this.due_date  + ', sort date: '  + this.due_date_sort +  ', title: ' + this.title)
+               //console.log(this.when)
              })
-             */
+             
 
              $scope.todo_time_options = [{
                  name: 'Earlier',
@@ -172,7 +173,7 @@
                  name: 'Later',
                  value: 'later'
              }, {
-                 name: 'No date specified',
+                 name: 'No due date',
                  value: 'nodate'
              }, ];
              $scope.showWhen = 'soon';
