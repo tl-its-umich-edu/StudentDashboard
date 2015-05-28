@@ -124,17 +124,26 @@ END
   ## This method will return the contents of the requested (or default) configuration file.
   ## Methods in a Sinatra module need to be defined in a helpers section.
   helpers do
-    def self.get_local_config_yml(requested_file, default_file)
-      if File.exist? requested_file
-        file_name = requested_file
-      else
-        file_name = default_file
-      end
-      logger.debug "config yml file_name: #{file_name}"
-      YAML.load_file(file_name)
-    end
-  end
 
+    def self.verify_file_is_usable(requested_file)
+      ((File.exists? requested_file) && File.readable?(requested_file)) ? requested_file : nil
+    end
+
+    def self.get_local_config_yml(requested_file, default_file, required)
+
+      file_name = verify_file_is_usable(requested_file) || verify_file_is_usable(default_file) || nil
+
+      if file_name.nil? then
+        logger.fatal "can not find requested or default configuration file: [#{requested_file}] or [#{default_file}]" if required
+        return nil
+      end
+
+      logger.info "config: use file: [#{file_name}]"
+      YAML.load_file(file_name)
+
+    end
+
+  end
 
   #### Use the Ruby approach to configuring environment.
 
@@ -215,7 +224,7 @@ END
     ## separate jira.
 
     # read in yml configuration into a class variable
-    external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml")
+    external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml", true)
 
     config_hash[:use_log_level] = external_config['use_log_level'] || "INFO"
 
@@ -259,7 +268,8 @@ END
 
     # read in yml for the build configuration into a class variable
     begin
-      config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml")
+      config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml", false)
+      logger.info "build.yml file is optional"
       config_hash[:build_time] = config_hash[:build]['time']
       config_hash[:build_id] = config_hash[:build]['tag'] || config_hash[:build]['last_commit']
     rescue
@@ -272,7 +282,7 @@ END
 
     ## read in yml for the strings into a class variable.
     begin
-      config_hash[:strings] = self.get_local_config_yml(config_hash[:strings_file], "./server/local/strings.yml")
+      config_hash[:strings] = self.get_local_config_yml(config_hash[:strings_file], "./server/local/strings.yml", true)
     rescue
       logger.warn "No strings yml configuration file found"
       config_hash[:strings] = Hash.new()

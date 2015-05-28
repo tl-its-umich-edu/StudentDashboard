@@ -7,6 +7,7 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
 require '../WAPI'
+require_relative '../data_provider_esb'
 require 'rest-client'
 require 'logger'
 require 'yaml'
@@ -118,7 +119,7 @@ class TestIntegrationWAPI < Minitest::Test
     logger.info "#{__LINE__}: ttr: r "+r.inspect
     res = r.result
     ## note result is returned verbatim so likely needs to be parsed.
-    res = JSON.parse(res)
+    logger.debug "#{__LINE__}: ttr: j "+j.inspect
     j = res['getMyRegTermsResponse']['Term']
     assert j.length > 0, "need at least 1 term"
   end

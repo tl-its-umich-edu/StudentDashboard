@@ -27,6 +27,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
     @esb_application = "SD-TEST-DLH"
     @security_file = "./security.yml"
 
+    # may need to change this depending on the current state of the db.
     @known_uniqname = "ststvii"
     @default_term = "2020"
 
@@ -103,7 +104,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def test_esb_no_terms
 
-    skip("address with another jira")
+    skip("known to fail for 208 merge address with another jira")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
