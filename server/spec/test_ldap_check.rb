@@ -8,15 +8,17 @@ require 'minitest/unit'
 require 'logger'
 require_relative '../../server/Logging'
 
-## set the environment for testing
-#ENV['RACK_ENV'] = 'test'
-
 require 'net-ldap'
 
 require_relative '../ldap_check'
 
+REAL_USER = "dlhaines"
+
 class LdapTest < MiniTest::Test
   include Logging
+
+  # Test ldap functionality.  Note that calls real ldap group with real user
+  # so if those change then the results may change.
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
@@ -24,9 +26,10 @@ class LdapTest < MiniTest::Test
     # by default assume the tests will run well and don't need
     # to have detailed log messages.
     logger.level = Logger::ERROR
+    #logger.level = Logger::INFO
     #logger.level = Logger::DEBUG
-    #@group = "ctsupportstaff"
     @group = "TL-Latte-admin-test"
+
     # config_file has a default.  Use this file path instead if the path leads
     # to a file. This makes it possible to run the tests from different directories.
     @config_file = '../local/ldap.yml' if File.exists?('../local/ldap.yml')
@@ -58,10 +61,51 @@ class LdapTest < MiniTest::Test
     assert_equal("HOWDY", conf["port"], "can override default config file value")
   end
 
+  def test_constructor_config_file_value_override
+    @x = LdapCheck.new('group' => @group, 'config_file' => @config_file, 'cache_seconds' => 10)
+    assert_equal(10,@x.configuration['cache_seconds'],"override value in config file")
+    @x = LdapCheck.new('group' => @group, 'config_file' => @config_file, 'cache_seconds' => 7)
+    assert_equal(7,@x.configuration['cache_seconds'],"override value in config file")
+  end
+
   ## test to see if the membership query finds person that is in group
+
+
   def test_dlhaines_ctsupport
     assert @x, "have ldap check object"
-    found = @x.is_user_in_admin_hash "dlhaines"
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert found, "checking member in group"
+  end
+
+  def test_dlhaines_ctsupport_timed_in_one_cache_interval
+    @x = LdapCheck.new('group' => @group, 'config_file' => @config_file, 'cache_seconds' => 2)
+    assert @x, "have ldap check object"
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert found, "checking member in group"
+    assert_equal 1,@x.updateCount,"one request is one update"
+    found = @x.is_user_in_admin_hash REAL_USER
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert_equal 1,@x.updateCount,"three requests in one cache interval"
+    assert found, "checking member in group"
+  end
+
+  def test_dlhaines_ctsupport_timed_over_multiple_cache_intervals
+    # verify that if cache time is longer than time between requests will get a new update
+    # different environments might have different results depending on waits.
+    @x = LdapCheck.new('group' => @group, 'config_file' => @config_file, 'cache_seconds' => 2)
+    assert @x, "have ldap check object"
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert found, "checking member in group"
+    assert_equal 1,@x.updateCount,"one request is one update"
+    sleep 2
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert_equal 2,@x.updateCount,"request longer than interval A"
+    sleep 2
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert_equal 3,@x.updateCount,"request longer than interval B"
+    sleep 2
+    found = @x.is_user_in_admin_hash REAL_USER
+    assert_equal 4,@x.updateCount,"request longer than interval C"
     assert found, "checking member in group"
   end
 
@@ -73,7 +117,6 @@ class LdapTest < MiniTest::Test
   end
 
   def find_user_in_ldap_members user, members
-    puts "user: #{user} members: #{members}"
     found = false
     members.each { |e| found = true if e.start_with? "uid=#{user}," }
     found

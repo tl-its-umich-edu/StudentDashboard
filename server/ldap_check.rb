@@ -14,13 +14,18 @@ class LdapCheck
 
   ## Setup the ldap connection object and save the members of the group.
 
-
   def initialize(args={})
 
     # This file will be provided in the build with values
     # suitable for the MCommunity groups.
     @default_conf_file = "./server/local/ldap.yml"
+    @default_cache_seconds = 300
     conf_file_name = args["config_file"] || @default_conf_file
+
+    # keep track for caching
+    @lastUpdate = Time.at(0)
+    # allow checking how often update happens for testing and tuning.
+    @updateCount = 0
 
     # if file is missing then trap the "no such file" exception
     begin
@@ -43,27 +48,45 @@ class LdapCheck
       @conf_values[k] = args[k]
     }
 
+    configuration['cache_seconds'] = @default_cache_seconds unless (configuration['cache_seconds'])
+
     if logger.debug?
       logger.debug "final conf values"
-      @conf_values.each_key { |k| logger.debug "key: [#{k}] value: [#{@conf_values[k]}]" }
+      configuration.each_key { |k| logger.debug "key: [#{k}] value: [#{configuration[k]}]" }
     end
 
     ## save members in this group if one is specified.
-    save_group_members args['group'] if args['group']
+    #save_group_members args['group'] if args['group']
 
   end
 
 
-  # this provides access to verify / debug configuration.
+  # Provide access to configuration hash
   def configuration
     @conf_values
+  end
+
+  # provide access to count of LDAP update calls
+  def updateCount
+    @updateCount
   end
 
   # See if the specified user is in the list of members which was provided by
   # the LDAP call to MCommunity.
 
   def is_user_in_admin_hash user
-    logger.debug "admin user check: user: #{user} key: " + @admin_hash.has_key?(user).to_s
+
+    return nil unless configuration['group']
+    logger.debug "admin user check: user: #{user}"
+
+    # if the cache has expired then update the group members.
+    timeFromLastUpdate = Time.now() - @lastUpdate
+    if timeFromLastUpdate > configuration['cache_seconds']
+      logger.info "updating ldap_check admin hash"
+      @updateCount += 1
+      @lastUpdate = Time.now()
+      save_group_members configuration['group']
+    end
 
     @admin_hash.has_key? user
   end
@@ -75,10 +98,7 @@ class LdapCheck
 
     members.each do |m|
       u = regex_user.match(m)[1].to_s
-      # do not want to provide a default value since most queries
-      # will be about entries that aren't there.
-      @admin_hash[u] = 0 unless @admin_hash.has_key? u
-      @admin_hash[u] = @admin_hash[u] + 1
+      @admin_hash[u] = 1
     end
 
   end
@@ -88,6 +108,8 @@ class LdapCheck
     # Note that the hash returned for yaml uses strings for keys
     # so we adopt that approach throughout except for the call
     # to net-ldap where the keys are expected to be symbols.
+
+    logger.debug "update admin members from MCommunity"
 
     conf = configuration
     host = conf["host"]
@@ -110,5 +132,6 @@ class LdapCheck
 
 end
 
+# This empty class implements a named exception.
 class LdapCheckError < StandardError
 end
