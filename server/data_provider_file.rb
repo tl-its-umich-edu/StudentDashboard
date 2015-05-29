@@ -6,9 +6,16 @@ module DataProviderFile
 ### Return the data for a request from a matching file.  The file will be in the
 ### directory specified.
 ### The name of the file must be <name>.json.  The <name> will be the user name.
-### For testing this need not be a uniqname but can be anyname that maps to a file.
+### For testing this need not be a uniqname but can be any name that maps to a file.
 ### The url localhost:3000/courses/abba.json would map to a file named abba.json in the
 ### specified directory under the default test-files directory.
+
+## Use these values for the Student Dashboard check call.  Use static values since the file provider has
+## no configuration.  There must be a corresponding data file.  The "default" file should always
+## be available.
+
+  @@default_uniqname="default"
+  @@default_term=2010
 
   def dataProviderFileCourse(uniqname, termid, data_provider_file_directory)
     logger.debug "data provider is DataProviderFileCourse.\n"
@@ -35,6 +42,15 @@ module DataProviderFile
 
     return getWrappedDiskFile(data_file)
   end
+
+# The check call will return the results for a request that is done with a single
+# configured user and term.  This allows safely running the check via URL for external monitoring
+# without requiring authentication.
+
+  def dataProviderFileCheck(data_provider_file_directory)
+    return dataProviderFileCourse(@@default_uniqname, @@default_term, data_provider_file_directory)
+  end
+
 
   def getWrappedDiskFile(data_file)
     logger.debug "#{__LINE__}: DPFC: data file string: "+data_file
