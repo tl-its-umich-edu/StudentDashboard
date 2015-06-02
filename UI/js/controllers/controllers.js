@@ -244,6 +244,7 @@
              };
 
              $scope.editToDoSave = function() {
+
                  var index = $('#editToDoSave').attr('data-index');
                  $scope.todos[index].title = $('#editToDoTitle').val();
                  $scope.todos[index].message = $('#editToDoMessage').val();
@@ -253,9 +254,29 @@
                      $scope.todos[index].due_date_editable = moment($('#editToDoDate').val()).format('YYYY-MM-DD');
                      $scope.todos[index].due_time_editable = $('#editToDoTime').val();
                      $scope.todos[index].due_date_sort = moment($('#editToDoDate').val()).unix();
+                     $scope.todos[index].due_date_sort = moment($('#editToDoDate').val() + 'T' + $('#editToDoTime').val()).unix();
+                     //TODO: using this in several places
+                     //already - needs to be refactored.
+                     var nowDay = moment().unix().toString();
+                     var nowDayAnd4 = moment().add(4, 'days').unix().toString();
+                     var dueDay =  moment ( $('#editToDoDate').val() + 'T' + $('#editToDoTime').val() ).unix().toString();
+                     if (dueDay < nowDay) {
+                        $scope.todos[index].when = 'earlier';
+                     } else {
+                         if (dueDay > nowDayAnd4) {
+                             $scope.todos[index].when = 'later';
+                         } else {
+                             $scope.todos[index].when = 'soon';
+                         }
+                     }
+
+
+
+
                  } else {
                      $scope.todos[index].when = 'nodate'
                  }
+
                  localStorateUpdateTodos($scope.todos);
              };
 
