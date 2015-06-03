@@ -194,6 +194,7 @@
                  for (var i = $scope.todos.length - 1; i >= 0; i--) {
                     $scope.todos[i].checked = false;
                  }
+                 $('#todo .itemList').attr('tabindex',-1).focus();
              }
 
              $scope.newTaskSubmitOnEnter = function() {
