@@ -45,7 +45,6 @@
   <ul class="itemList">
     <li ng-repeat="item in filteredItems  = (todos | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid" ng-class="isOverdue(item)" >
       <div class="overdueFlag">
-        <i class="glyphicon glyphicon-fire"></i>
       </div>
       <div class="row">
         <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">

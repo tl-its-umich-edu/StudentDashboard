@@ -102,17 +102,9 @@ ul {
     display:none
 }
 
-#todo  .overdue .overdueFlag{
-    display:block;
-    position:absolute;
-    top:6px;
-    right:6px;
-    color:#cc3b3b;
-    font-size:15px
-}
-
 #todo .overdue .dateSpan{
-    color:#c00
+    color:#c00;
+    font-weight: bold;
 }
 
 #todo .newToDo label {
