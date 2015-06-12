@@ -19,10 +19,6 @@ authn_wait_min: 0.01
 authn_wait_max: 0.03
 # public members of this MCommunity group have administrative privileges on Latte.
 latte_admin_group: TL-Latte-admin-test
-# These values are used to run a check query on the Latte ESB connection.  The uniqname
-# should be a test user.
-check_uniqname: ststvii
-check_termid: 2060
 #
 # Set logging level.  Default is INFO.
 use_log_level: DEBUG
@@ -78,10 +74,6 @@ use_log_level: DEBUG
 
 #latte_admin_group: TL-Latte-admin-test
 #latte_admin_group: ctsupportstaff
-
-## values for running the check query against ESB
-check_uniqname: ststvii
-check_termid: 2060
 
 ######### Data provider selection ###########
 ## Two data provider implementations are supplied:

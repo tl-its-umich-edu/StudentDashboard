@@ -61,7 +61,7 @@ class CourseList < Sinatra::Base
   ## build.
   config_hash[:BASE_DIR] = File.dirname(File.dirname(__FILE__))
 
-  # name of application to use for security information
+  # name of application to use for information
   config_hash[:application_name] = "SD-QA"
 
   # default name of default user
@@ -82,9 +82,6 @@ class CourseList < Sinatra::Base
   config_hash[:log_file] = "server/log/sinatra.log"
 
   config_hash[:default_term] = 2010
-
-  config_hash[:check_uniqname] = "ststvii"
-  config_hash[:check_termid] = 2020
 
   # Hold data required if need to put in a wait to simulate authn
   # processing time.
@@ -287,12 +284,6 @@ END
       logger.warn "No strings yml configuration file found"
       config_hash[:strings] = Hash.new()
     end
-
-    config_hash[:check_uniqname] = external_config['check_uniqname'] unless external_config['check_uniqname'].nil?
-    config_hash[:check_termid] = external_config['check_termid'] unless external_config['check_termid'].nil?
-
-    logger.debug "check_uniqname: #{config_hash[:check_uniqname]}"
-    logger.debug "check_termid: #{config_hash[:check_termid]}"
 
   end
 
@@ -649,16 +640,14 @@ END
   ############ check out the esb course call and time the performance.
   check_esb = lambda do
 
-    config_hash = settings.latte_config
     st = Stopwatch.new("timing of check url")
     st.start
-
-    course_data = dataProviderCourse(config_hash[:check_uniqname], config_hash[:check_termid].to_s)
-
+    check_result = dataProviderCheck()
     st.stop
-    logger.debug "status: "+course_data.inspect
 
-    if (course_data.meta_status == 200)
+    logger.debug "status: "+check_result.inspect
+
+    if (check_result.meta_status == 200)
       response.status = 200
       maybe_ok = "OK"
     else
@@ -666,6 +655,7 @@ END
       maybe_ok = "NOT OK"
     end
 
+    config_hash = settings.latte_config
     return sprintf "status=%s elapsed=%.3f server=%s", maybe_ok, st.summary[0], config_hash[:server]
   end
 
@@ -719,10 +709,22 @@ END
       terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
-    logger.debug "Dpt: returns: "+terms.inspect
+    terms
+  end
 
-    return terms
+  def dataProviderCheck()
 
+    logger.debug "DataProviderCheck"
+
+    config_hash = settings.latte_config
+
+    if !config_hash[:data_provider_file_directory].nil?
+      check = dataProviderFileCheck("#{config_hash[:data_provider_file_directory]}/terms")
+    else
+      check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
+    end
+
+    check
   end
 
 end
