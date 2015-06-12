@@ -24,6 +24,8 @@
 # key: baseball
 # secret: practice
 # token: optional
+# check_uniqname: ststvii
+# check_termid: 2010
 
 ### WSO2 ties security credentials to "applications" created in it's API directory store.
 ### The application name used here is the one selected for use by this instance of this program.
@@ -34,6 +36,9 @@
 ### The key and secret are supplied when registering an application in the ESB.
 ### The ESB registration process provides a token along with the key and secret.  WAPI knows how to
 ### get / renew this token automatically so it does not need to be explicitly specified.
+
+### The check uniqname and termid are kept here since they may be sensitive and should change with
+### depending on the ESB instance being used.
 
 
 #### END ####

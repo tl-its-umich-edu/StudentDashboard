@@ -9,6 +9,7 @@ module DataProviderESB
   CLS_SCHEDULE_KEY = 'getMyClsScheduleResponse'
   REGISTERED_CLASSES_KEY = 'RegisteredClasses'
 
+  # Persistent values.  These should not be class variables :-(
   @@w = nil
   @@yml = nil
 
@@ -67,7 +68,7 @@ module DataProviderESB
 
       ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen,
       ## for example, a user has no term data at all.
-      ## Make these conditions separate so easy to take out when ESB returns expected values.
+      ## Make these conditions separate so it will be easy to take out when ESB returns expected values.
       return WAPIResultWrapper.new(WAPI::SUCCESS, "replace nil value with empty array", []) if query_key_value.nil?
       return WAPIResultWrapper.new(WAPI::SUCCESS, "replace empty string with empty array", []) if query_key_value.length == 0
 
@@ -75,6 +76,7 @@ module DataProviderESB
 
       # if there is a detail_key but no data that's an error.
       raise "ESBInvalidData: input: #{result}" if parsed_value.nil?
+      # we have data.
       return WAPIResultWrapper.new(WAPI::SUCCESS, "found value #{query_key}:#{detail_key} from ESB", parsed_value)
     rescue => excpt
       return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "bad data for key: #{query_key}:#{detail_key}: ",
@@ -88,7 +90,7 @@ module DataProviderESB
     ## if necessary initialize the ESB connection.
     ensure_ESB(app_name, security_file)
 
-    if termid.nil? || termid.length == 0
+    if termid.nil?
       logger.debug "dPESBC: #{__LINE__}: defaulting term to #{default_term}"
       termid = default_term
     end
@@ -109,5 +111,18 @@ module DataProviderESB
     parseESBData(result, TERM_REG_KEY, TERM_KEY)
   end
 
+  # get courses for a predefined user / term to allow non-authenticated performance check.
+  def dataProviderESBCheck(security_file, app_name)
+
+    ensure_ESB(app_name, security_file)
+
+    # get the pre-defined check values
+    check_uniqname = @@yml[app_name]['check_uniqname']
+    check_termid = @@yml[app_name]['check_termid']
+
+    raise "Bad check values for application: #{app_name} uniqname: [#{check_uniqname}] termid: [#{check_termid}]" unless (check_uniqname && check_termid)
+
+    dataProviderESBCourse(check_uniqname, check_termid, security_file, app_name, nil)
+  end
 
 end
