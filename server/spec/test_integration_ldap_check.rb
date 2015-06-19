@@ -68,8 +68,12 @@ class LdapTest < MiniTest::Test
     assert_equal(7,@x.configuration['cache_seconds'],"override value in config file")
   end
 
-  ## test to see if the membership query finds person that is in group
+  def test_constructor_bad_group_name
+    @x = LdapCheck.new('group' => @group+"HECK_no", 'config_file' => @config_file, 'cache_seconds' => 10)
+    found = @x.is_user_in_admin_hash REAL_USER+Time.now.to_s
+  end
 
+  ## test to see if the membership query finds person that is in group
 
   def test_dlhaines_ctsupport
     assert @x, "have ldap check object"

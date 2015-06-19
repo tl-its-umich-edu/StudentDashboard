@@ -86,6 +86,8 @@ class LdapCheck
       @updateCount += 1
       @lastUpdate = Time.now()
       save_group_members configuration['group']
+      # Might get a group with no members or that doesn't exist.
+      @admin_hash = Hash.new unless(@admin_hash)
     end
 
     @admin_hash.has_key? user
@@ -125,7 +127,7 @@ class LdapCheck
       groupFilter = Net::LDAP::Filter.construct(filterString)
       groupData = ldap.search(:filter => groupFilter)
 
-      add_to_members_hash groupData[0].member
+      add_to_members_hash groupData[0].member unless(groupData.empty?)
     end
 
   end
