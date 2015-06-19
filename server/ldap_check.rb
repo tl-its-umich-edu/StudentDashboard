@@ -127,7 +127,15 @@ class LdapCheck
       groupFilter = Net::LDAP::Filter.construct(filterString)
       groupData = ldap.search(:filter => groupFilter)
 
-      add_to_members_hash groupData[0].member unless(groupData.empty?)
+      # If there is a problem accessing the group data then the user can't
+      # be considered an admin.
+      begin
+        add_to_members_hash groupData[0].member
+      rescue StandardError => e
+        logger.info "error reading admin members group: #{e}"
+        return nil
+      end
+
     end
 
   end
