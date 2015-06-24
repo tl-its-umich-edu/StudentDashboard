@@ -85,8 +85,12 @@ class LdapCheck
       logger.info "updating ldap_check admin hash"
       @updateCount += 1
       @lastUpdate = Time.now()
+      # if resetting the values get rid of the set of members.
+      @admin_hash = nil;
       save_group_members configuration['group']
     end
+
+    logger.debug @admin_hash.inspect
 
     @admin_hash.has_key? user
   end
@@ -94,6 +98,7 @@ class LdapCheck
   def add_to_members_hash members
     regex_user = /uid=([^,]+),/;
 
+    # make sure there is a hash to put things in.
     @admin_hash = Hash.new() if @admin_hash.nil?
 
     members.each do |m|
