@@ -94,7 +94,7 @@ class CourseList < Sinatra::Base
 
   ## location of the data files.
   config_hash[:data_provider_file_directory] = nil
-  config_hash[:data_provider_uniqname] = nil
+  config_hash[:data_provider_file_uniqname] = nil
 
   config_hash[:latte_admin_group] = nil
 
@@ -242,7 +242,7 @@ END
     ## configuration information for the file data provider. If this is not set then a different
     ## provider will be used.
     config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
-    config_hash[:data_provider_uniqname] = external_config['data_provider_uniqname'] || nil
+    config_hash[:data_provider_file_uniqname] = external_config['data_provider_file_uniqname'] || nil
 
     config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
     logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
@@ -734,7 +734,7 @@ END
     config_hash = settings.latte_config
 
     if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck(config_hash[:data_provider_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
+      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
     else
       check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
     end

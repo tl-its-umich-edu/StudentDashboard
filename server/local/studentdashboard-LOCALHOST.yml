@@ -7,6 +7,8 @@
 application_name: SD-QA
 # use file based data provider if not commented.
 data_provider_file_directory: server/test-files
+# used for testing response to throttled check url requests.
+#data_provider_file_uniqname: test-throttling-terms
 # Text returned if Latte does not understand a query at all.
 invalid_query_text: Come on, ask something reasonable
 # Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.

@@ -81,7 +81,10 @@ use_log_level: DEBUG
 ## FB (file based) - This is primarily for testing and allows reading data
 ## from local files.  Configuration is documented below.
 
-### file based data provider value:
+### file based data provider values:
+# used for testing throttling behavior.
+#data_provider_file_uniqname: test-throttle-terms
+# used to set directory for the file data provider files.
 #data_provider_file_directory: server/test-files
 # This value is used for the optional file based data provider.
 # If the value is not set then the ESB based provider is used.
