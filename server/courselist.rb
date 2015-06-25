@@ -94,6 +94,7 @@ class CourseList < Sinatra::Base
 
   ## location of the data files.
   config_hash[:data_provider_file_directory] = nil
+  config_hash[:data_provider_uniqname] = nil
 
   config_hash[:latte_admin_group] = nil
 
@@ -238,9 +239,10 @@ END
     config_hash[:authn_wait_max] = external_config['authn_wait_max'] || 0
 
     #### setup information for providers
-    ## configuration information for the file data provider. If not provided then a different
+    ## configuration information for the file data provider. If this is not set then a different
     ## provider will be used.
     config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
+    config_hash[:data_provider_uniqname] = external_config['data_provider_uniqname'] || nil
 
     config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
     logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
@@ -651,7 +653,7 @@ END
       response.status = 200
       maybe_ok = "OK"
     else
-      response.status = 500
+      response.status = check_result.meta_status
       maybe_ok = "NOT OK"
     end
 
@@ -679,6 +681,13 @@ END
 
   #################### Data provider functions #################
 
+  # If a response response from the provider is throttled then log that fact.
+  SERVICE_UNAVAILABLE = "503"
+
+  def logIfUnavailable(response,msg)
+    logger.warn("provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
+  end
+
   ## Use the appropriate provider implementation.
   ## This should be implemented to set the desired function upon configuration rather than
   ## to look it up with each request.
@@ -690,11 +699,14 @@ END
     logger.debug "data_provider_file_director: #{config_hash[:data_provider_file_directory]}"
 
     if !config_hash[:data_provider_file_directory].nil?
-      return dataProviderFileCourse(a, termid, "#{config_hash[:data_provider_file_directory]}/courses")
+      courses = dataProviderFileCourse(a, termid, "#{config_hash[:data_provider_file_directory]}/courses")
     else
-      return dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
+      courses = dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
     end
 
+    logIfUnavailable(courses,"courses: user: #{a} term:#{termid}")
+
+    courses
   end
 
   def dataProviderTerms(uniqname)
@@ -709,8 +721,11 @@ END
       terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
+    logIfUnavailable(terms,"terms: user: #{uniqname}")
+
     terms
   end
+
 
   def dataProviderCheck()
 
@@ -719,10 +734,12 @@ END
     config_hash = settings.latte_config
 
     if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck("#{config_hash[:data_provider_file_directory]}/terms")
+      check = dataProviderFileCheck(config_hash[:data_provider_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
     else
       check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
     end
+
+    logIfUnavailable(check,"verify the check url configuration")
 
     check
   end
