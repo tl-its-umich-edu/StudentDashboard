@@ -65,6 +65,11 @@ files will be read from the directory
 */usr/local/ctools/app/ctools/tl/home* or, if a file isn't there,
 from the *server/local* directory in the expanded war file directory.
 
+The value of the directory name used for configuration files  can be overridden by an
+environment variable.  The variable LATTE_OPTS will be checked and it
+is not nil then the contents will be parsed as command line options.
+Everything except for *--config_dir* will be ignored.
+
 The file
 *security.yml* contains the ESB connection information.  There are no appropriate defaults and it must be 
 configured for each installation.  Copy the file *security.yaml.TEMPLATE* and
