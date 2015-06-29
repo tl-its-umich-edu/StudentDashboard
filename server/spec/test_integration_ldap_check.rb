@@ -29,6 +29,8 @@ class LdapTest < MiniTest::Test
     #logger.level = Logger::INFO
     #logger.level = Logger::DEBUG
     @group = "TL-Latte-admin-test"
+    # a group with no visible members
+    @group_private = "TL-Latte-private"
 
     # config_file has a default.  Use this file path instead if the path leads
     # to a file. This makes it possible to run the tests from different directories.
@@ -68,8 +70,19 @@ class LdapTest < MiniTest::Test
     assert_equal(7,@x.configuration['cache_seconds'],"override value in config file")
   end
 
-  ## test to see if the membership query finds person that is in group
+  def test_constructor_bad_group_name
+    @x = LdapCheck.new('group' => @group+"HECK_no", 'config_file' => @config_file, 'cache_seconds' => 10)
+    found = @x.is_user_in_admin_hash REAL_USER+Time.now.to_s
+  end
 
+  # the group exists but no members can be read from it.
+  def test_constructor_empty_group
+    @x = LdapCheck.new('group' => @group_private, 'config_file' => @config_file, 'cache_seconds' => 10)
+    found = @x.is_user_in_admin_hash REAL_USER
+  end
+
+
+  ## test to see if the membership query finds person that is in group
 
   def test_dlhaines_ctsupport
     assert @x, "have ldap check object"
