@@ -55,6 +55,21 @@ module DataProviderESB
     result
   end
 
+  # Run over a JSON compatible Ruby data structure and change any list containing just a single nil to be an empty list.
+  # The object is changed in place.
+  def fixArrayWithNilInPlace! (obj)
+    case
+      when obj.is_a?(Hash)
+        obj.each { |key, value| fixArrayWithNilInPlace! value }
+      when obj.is_a?(Array)
+        # empty the array if it only contains a nil
+        obj.pop if (obj.length == 1 && obj[0].is_a?(NilClass))
+        # process any other entries in the array.
+        obj.each { |value| fixArrayWithNilInPlace! value }
+    end
+    obj
+  end
+
   # Accept string from ESB and extract out required information.  If the string is not valid JSON
   # that's an error.  'query_key' is the name of the mpathways script used to get the data. The 'detail_key'
   # is the part of the returned information we want to get.
@@ -71,6 +86,9 @@ module DataProviderESB
       ## Make these conditions separate so it will be easy to take out when ESB returns expected values.
       return WAPIResultWrapper.new(WAPI::SUCCESS, "replace nil value with empty array", []) if query_key_value.nil?
       return WAPIResultWrapper.new(WAPI::SUCCESS, "replace empty string with empty array", []) if query_key_value.length == 0
+
+      # fix up any empty lists that only contain a nil.
+      fixArrayWithNilInPlace! parsed
 
       parsed_value = parsed[query_key][detail_key]
 
