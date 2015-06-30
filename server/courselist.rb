@@ -19,7 +19,6 @@ require_relative 'stopwatch'
 require_relative 'WAPI'
 require_relative 'WAPI_result_wrapper'
 require_relative 'ldap_check'
-require_relative 'OptionsParse'
 
 include Logging
 
@@ -47,18 +46,9 @@ class CourseList < Sinatra::Base
   # where needed.
   set :latte_config, config_hash
 
-  ## Allow override of the location of the studentdashboard.yml file.
-  if ENV['LATTE_OPTS'] then
-    env_options = OptionsParse.parseEnvironment('LATTE_OPTS')
-
-    unless env_options.config_base.nil?
-      config_base = env_options.config_base
-    end
-  end
-
-  # Location to find the configuration files if not specified by an environment variable.
-  # This can't be overridden by value in a configuration file because is the location
-  # of the configuration file.
+  # Location to find the configuration files.  This can't be overridden by values
+  # in the configuration file because this is what identifies the location
+  # of the file to read.
   config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
   # forbid/allow specifying a different user on request url
@@ -145,7 +135,7 @@ END
         return nil
       end
 
-      logger.info "local_config_yml: found file: [#{file_name}]"
+      logger.info "config: use file: [#{file_name}]"
       YAML.load_file(file_name)
 
     end
@@ -231,7 +221,6 @@ END
     ## separate jira.
 
     # read in yml configuration into a class variable
-    logger.info "requested configuration file is: #{config_hash[:studentdashboard]}"
     external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml", true)
 
     config_hash[:use_log_level] = external_config['use_log_level'] || "INFO"
