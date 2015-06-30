@@ -21,6 +21,6 @@ latte_admin_group: TL-Latte-admin-test
 use_log_level: DEBUG
 # These two are used for the disk file based test provider.
 # The ESB provider is used by default so these are commented out.
-#data_provider_file_uniqname: test-throttle-courses
+#data_provider_file_uniqname: test-throttling-terms
 #data_provider_file_directory: server/test-files
 ### end ###

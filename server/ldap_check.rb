@@ -85,8 +85,14 @@ class LdapCheck
       logger.info "updating ldap_check admin hash"
       @updateCount += 1
       @lastUpdate = Time.now()
+      # if resetting the values get rid of the set of members.
+      @admin_hash = nil;
       save_group_members configuration['group']
+      # Might get a group with no members or that doesn't exist.
+      @admin_hash = Hash.new unless(@admin_hash)
     end
+
+    logger.debug @admin_hash.inspect
 
     @admin_hash.has_key? user
   end
@@ -94,6 +100,7 @@ class LdapCheck
   def add_to_members_hash members
     regex_user = /uid=([^,]+),/;
 
+    # make sure there is a hash to put things in.
     @admin_hash = Hash.new() if @admin_hash.nil?
 
     members.each do |m|
@@ -125,7 +132,15 @@ class LdapCheck
       groupFilter = Net::LDAP::Filter.construct(filterString)
       groupData = ldap.search(:filter => groupFilter)
 
-      add_to_members_hash groupData[0].member
+      # If there is a problem accessing the group data then the user can't
+      # be considered an admin.
+      begin
+        add_to_members_hash groupData[0].member
+      rescue StandardError => e
+        logger.info "error reading admin members group: #{e}"
+        return nil
+      end
+
     end
 
   end

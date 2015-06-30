@@ -47,8 +47,9 @@ module DataProviderFile
 # configured user and term.  This allows safely running the check via URL for external monitoring
 # without requiring authentication.
 
-  def dataProviderFileCheck(data_provider_file_directory)
-    return dataProviderFileCourse(@@default_uniqname, @@default_term, data_provider_file_directory)
+  def dataProviderFileCheck(uniqname,data_provider_file_directory)
+    uniqname = @@default_uniqname if (uniqname.nil?)
+    return dataProviderFileCourse(uniqname, @@default_term, data_provider_file_directory)
   end
 
 

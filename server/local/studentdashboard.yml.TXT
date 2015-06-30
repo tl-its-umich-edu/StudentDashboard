@@ -54,8 +54,13 @@
 ### file based data provider value configuration.
 # This is the user used for the 'check' url processing.   It
 # corresponds to a file in the courses directory.
-#data_provider_file_uniqname: test-throttle-courses
-
+# Used for testing throttling behavior.
+#data_provider_file_uniqname: test-throttle-terms
+# Used to set directory for the file data provider files.
+#data_provider_file_directory: server/test-files
+#
+# This file directory value is used for the optional file based data provider.
+# If the value is not set then the ESB based provider is used.
 # If data_file_provider_directory does have a value then Latte will treat
 # the value as a directory name and will look there for files matching
 # the request.  If the directory starts with
