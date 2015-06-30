@@ -1,0 +1,10 @@
+{
+  "Meta": {
+    "httpStatus": 503,
+    "Message": "test throttled request from ESB"
+  },
+  "Result": [
+    {
+    }
+  ]
+}
