@@ -1,12 +1,10 @@
 # This is a yaml configuration file for Latte.  Note that white space indentation matters for yaml
-# The actual values are set up front.  Explanation of the values is at the end of the file.
+# See the studentdashboard.yml.TXT for details.
 #
-# PURPOSE: QA instance for load testing permissive uniqname ESB based.
+# PURPOSE: QA instance for load testing with uniqname override.
 #
 # Application name which must match a value in the security.yml file.  Identifies the credentials and ESB to use.
 application_name: SD-QA
-# use file based data provider if not commented.
-#data_provider_file_directory: server/test-files
 # Text returned if Latte does not understand a query at all.
 invalid_query_text: Come on, ask something reasonable
 # Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
@@ -21,4 +19,8 @@ authn_wait_max: 0.03
 latte_admin_group: TL-Latte-admin-test
 # set logging level.  Default is INFO.
 use_log_level: INFO
+# These two are used for the disk file based test provider.
+# The ESB provider is used by default so these are commented out.
+#data_provider_file_uniqname: test-throttle-courses
+#data_provider_file_directory: server/test-files
 ### end ###
