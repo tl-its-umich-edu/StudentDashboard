@@ -1,0 +1,42 @@
+<html>
+<body><h1>Hello World</h1>
+Welcome to a Vagrant server running Apache and Tomcat 7.
+<p></p>
+Apache and Tomcat are running separately.  Apache is not a proxy for Tomcat.
+<p></p>
+<h2> Ports </h2>
+Apache is running on port 80 on the vagrant vm and shows up on port 8080 on the host
+server.
+<p></p>
+Tomcat is running on 8080 on vagrant and shows up on port 9090 on the host
+server.
+
+<p/>
+The OPEN JDK version of Java is also installed.
+<p/>
+<h2>The /vagrant directory</h2>
+
+Vagrant VMs are setup to map the starting directory on the host server
+to the /vagrant directory in the Vagrant VM.  This makes files on the
+host server visible
+in the VM. Note that  permissions get complex so operations in the VM on files
+visible in /vagrant may require copying the file to a different VM
+directory.  Simply reading files seems to work fine.
+<p></p>
+On the vagrant server the /var/www directory is linked to /vagrant and is the
+document root for Apache.  Files you place in the starting 
+directory on the host server will be visible
+to Apache.
+<p/>
+The tomcat webapps directory on the Vagrant VM is at /var/lib/tomcat7/webapps.  Copying
+war files from /vagrant will install them.  Because of permissions
+issues the copy should be done from within the Vagrant VM.
+Use 'vagrant ssh' to log into the VM to manipulate the files.
+<h2> Student Dashboard</h2>
+<p/>
+The 
+<a href="http://localhost:9090/StudentDashboard" >Student Dashboard</a>
+application is available here.
+
+</body>
+</html>
