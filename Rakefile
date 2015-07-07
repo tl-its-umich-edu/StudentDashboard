@@ -4,27 +4,34 @@ require 'rake/testtask'
 # - add tests invocation.
 # - check that build has been done?  Invoke if necessary?
 
-
 ######################################################
 ## commands to setup and run vagrant VM with Dashboard
 
 namespace :vagrant do
-  desc "Starts Vagrant VM"
+  desc "Make the application build artifacts available for creating the VM"
+  task :get_artifacts do
+    sh "(cd vagrant; ./getArtifacts.sh)"
+  end
+  
+  desc "Starts the Vagrant VM, creating it if necessary"
   task :up do
     sh "(cd vagrant; vagrant up)"
   end
 
-  desc "destroys vagrant VM"
+  desc "Same as the halt task"
+  task :down => :halt
+
+  desc "Stop VM and destroy it"
   task :destroy do
     sh "(cd vagrant; vagrant destroy -f)"
   end
 
-  desc "halt vagrant VM"
+  desc "Halt (stop) the vagrant VM but do not delete it"
   task :halt do
     sh "(cd vagrant; vagrant halt)"
   end
   
-  desc "open xterm to the vagrant VM"
+  desc "Open a (debug) xterm to the vagrant VM, YMMV."
   task :xterm do
     sh "(cd vagrant; ./vagrantXterm.sh)"
   end
