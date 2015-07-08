@@ -54,9 +54,9 @@ URLS will require including the StudentDashboard context element.
 
 # Vagrant
 The vagrant directory contains configuration files to allow building
-and starting a VM to test a  vagrant build.  The commands are
+and starting a VM to test a  build.  The control commands are
 available via the Rakefile.  Run 'rake -T' to see the available
-tasks. The README.TXT in that directory has more details.
+tasks. The README.TXT in the vagrant directory has more details.
 
 #Application  Configuration and Deployment#
 
@@ -65,10 +65,20 @@ development testing but for any installation that is not simply for
 local testing two yaml configuration files should be provided.  See
 copies of those files in the application source for detailed
 information on the contents. 
-There are two configuration files for StudentDashboard.   The configuration
+The configuration
 files will be read from the directory
 */usr/local/ctools/app/ctools/tl/home* or, if a file isn't there,
 from the *server/local* directory in the expanded war file directory.
+
+The directory name used for configuration files  can be overridden by an
+environment variable.  The variable LATTE_OPTS will be checked and it
+is not nil then the contents will be parsed as command line options.
+Currently all values except for *--config_dir* will be ignored.  If it
+is required to set the environment variable then it can simply be set
+for develoment as an exported variable from the command line.  To set
+the value when running under Tomcat it needs to be set in the
+setenv.sh file.  See the vagrant directory for an example of how to
+do that.
 
 The file
 *security.yml* contains the ESB connection information.  There are no appropriate defaults and it must be 
