@@ -19,7 +19,6 @@ that will provide authentication.  The container must be configured to
 supply the REMOTE_USER environment variable value in the request.  An
 example server.xml file for Tomcat is included.
 
-
 # Building the project
 
 The application runs under Ruby 1.9.3.  After checking out the source
@@ -52,6 +51,12 @@ http://localhost:8080/StudentDashboard
 Note that the urls for a server run locally with a default Ruby server
 will not require a context name but when running the war package in a container the
 URLS will require including the StudentDashboard context element.
+
+# Vagrant
+The vagrant directory contains configuration files to allow building
+and starting a VM to test a  vagrant build.  The commands are
+available via the Rakefile.  Run 'rake -T' to see the available
+tasks. The README.TXT in that directory has more details.
 
 #Application  Configuration and Deployment#
 
