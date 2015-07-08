@@ -105,7 +105,7 @@ function makeVersion {
     last_commit=$(git rev-parse HEAD);
     echo "last_commit: $last_commit" >> $FILE
     echo -n "tag: " >> $FILE
-    echo $(git describe --tags) >> $FILE
+    echo $(git describe --all) >> $FILE
     echo >> $FILE
 }
 
