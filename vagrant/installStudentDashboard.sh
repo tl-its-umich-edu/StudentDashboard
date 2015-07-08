@@ -54,6 +54,14 @@ else
     echo "security file already installed"
 fi
 
+#### install a setenv.sh file if it exists.
+if [ -e /vagrant/setenv.sh ]; then
+   echo "installing setenv.sh file for tomcat"
+   mkdir /var/lib/tomcat7/bin
+   chown tomcat7:tomcat7 /var/lib/tomcat7/bin
+   sudo cp /vagrant/setenv.sh /var/lib/tomcat7/bin/setenv.sh
+   sudo /etc/init.d/tomcat7 restart
+fi
 
 # Install a Student Dashboard war file from /vagrant to the tomcat webapps directory.
 SRC=/vagrant/ARTIFACTS
@@ -71,6 +79,8 @@ function help {
 #     help;
 #     exit 1;
 # fi
+
+
 
 WAR=`ls $SRC/S*war`
 #ls -l $SRC/S*war
