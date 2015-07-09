@@ -47,9 +47,11 @@ class CourseList < Sinatra::Base
   # where needed.
   set :latte_config, config_hash
 
-  # print environment when debugging level.
-  ENV.each_pair do |key,value|
-    logger.debug "key: [#{key}] value: [#{value}]"
+  # print environment when at debugging level.
+  if logger.debug? then
+    ENV.each_pair do |key, value|
+      logger.debug "key: [#{key}] value: [#{value}]"
+    end
   end
 
   ## Allow override of the location of the studentdashboard.yml file.
@@ -700,7 +702,7 @@ END
   # If a response response from the provider is throttled then log that fact.
   SERVICE_UNAVAILABLE = "503"
 
-  def logIfUnavailable(response,msg)
+  def logIfUnavailable(response, msg)
     logger.warn("provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
   end
 
@@ -720,7 +722,7 @@ END
       courses = dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
     end
 
-    logIfUnavailable(courses,"courses: user: #{a} term:#{termid}")
+    logIfUnavailable(courses, "courses: user: #{a} term:#{termid}")
 
     courses
   end
@@ -737,7 +739,7 @@ END
       terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(terms,"terms: user: #{uniqname}")
+    logIfUnavailable(terms, "terms: user: #{uniqname}")
 
     terms
   end
@@ -750,12 +752,12 @@ END
     config_hash = settings.latte_config
 
     if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
+      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname], "#{config_hash[:data_provider_file_directory]}/terms")
     else
       check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(check,"verify the check url configuration")
+    logIfUnavailable(check, "verify the check url configuration")
 
     check
   end
