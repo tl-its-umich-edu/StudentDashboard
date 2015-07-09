@@ -42,7 +42,7 @@ fi
 
 # verify that security.yml is available from the host
 if [ ! -r "$HOST_SECURITY_FILE" ]; then
-    echo "ERROR: security file must be available: [$HOST_SECURITY_FILE]"
+    echo "ERROR: The security.yml file must be available from vagrant directory on the host where vagrant is started."
     exit 1;
 fi
 

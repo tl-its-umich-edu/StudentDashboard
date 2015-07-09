@@ -14,7 +14,7 @@ namespace :vagrant do
   end
   
   desc "Starts the Vagrant VM, creating it if necessary"
-  task :up do
+  task :up => :get_artifacts do
     sh "(cd vagrant; vagrant up)"
   end
 

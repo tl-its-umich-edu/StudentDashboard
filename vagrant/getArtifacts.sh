@@ -14,7 +14,14 @@ if [ -e ./ARTIFACTS ]; then
 fi
 
 echo "* copy artifacts"
+
 # copy fresh artifacts to the local installation directory.
+
+if [ ! -e $ARTIFACTS_SRC/ARTIFACTS ]; then
+    echo "** Can not find source ARTIFACTS directory.  Run a new build."
+    exit 1;
+fi
+
 cp -rfv $ARTIFACTS_SRC/ARTIFACTS .
 
 # Check that a copy of security.yml will be available to the VM.
