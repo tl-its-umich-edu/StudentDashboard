@@ -53,9 +53,11 @@ class CourseList < Sinatra::Base
   # where needed.
   set :latte_config, config_hash
 
-  # print environment when debugging level.
-  ENV.each_pair do |key,value|
-    logger.debug "key: [#{key}] value: [#{value}]"
+  # print environment when at debugging level.
+  if logger.debug? then
+    ENV.each_pair do |key, value|
+      logger.debug "key: [#{key}] value: [#{value}]"
+    end
   end
 
   ## Allow override of the location of the studentdashboard.yml file.
