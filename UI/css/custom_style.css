@@ -25,6 +25,11 @@
 .contentWrapper {
     margin-top: 45px;
     padding:0;
+    background:#eee;
+}
+.contentWrapper .dashMessage {
+    background: #fff;
+    margin-top:40px
 }
 
 #content {

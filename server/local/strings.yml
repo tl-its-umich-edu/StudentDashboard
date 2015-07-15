@@ -17,5 +17,5 @@ strings: {
   ctoolsUrl: "https://ctools.umich.edu/portal",
   noCourses: "You seem to have no courses this term",
   termFailure: "We are not able to access your term enrollment information at the moment. Please try again later.",
-  dashIntroMessage: "Lorem ipsum dolor sit amet, quam phasellus viverra, et malesuada, vivamus elit pede ligula amet cubilia, in eu. Pulvinar praesent nec vivamus arcu qui sodales. Commodo est tempus, sodales nisl lorem luctus maecenas. Aptent sapien lectus tincidunt volutpat pede luctus, eros libero, lacinia faucibus luctus integer netus. Sapien elit magna convallis, fringilla vestibulum, tincidunt morbi tortor. ",
+  dashIntroMessage: "Lorem ipsum dolor <strong>sit amet</strong>, quam phasellus viverra, et malesuada, vivamus elit pede ligula amet cubilia, in eu. Pulvinar praesent nec vivamus arcu qui sodales. Commodo est tempus, sodales nisl lorem luctus maecenas. Aptent sapien lectus tincidunt volutpat pede luctus, eros libero, lacinia faucibus luctus integer netus. Sapien elit magna convallis, fringilla vestibulum, tincidunt morbi tortor. ",
 }
