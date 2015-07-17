@@ -12,7 +12,7 @@
         <title><%= @strings['applicationTitle'] %></title>
     </head>
     <body>
-
+      <div id="lang" style="display:none"><%= @strings.to_json %></div>
       <nav class="navbar navbar-default navbar-fixed-top navHead" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -42,9 +42,12 @@
 
         <div class="container-fluid contentWrapper">
             <div class="row">
-                <div class ="col-md-12 col-xs-12 col-lg-12">
+                <div class ="col-md-12 col-xs-12 col-lg-12" ngcloak>
                     <div class="row well dashMessage">
-                        <div class ="col-md-12 col-xs-12 col-lg-12">
+                        <div class ="col-md-12 col-xs-12 col-lg-12 visible-md-block visible-lg-block">
+                            {{lang.dashIntroMessage}}
+                        </div>
+                        <div class ="col-md-12 col-xs-12 col-lg-12  visible-sm-block visible-xs-block" expand-text="50">
                             <%= @strings['dashIntroMessage'] %>
                         </div>
                     </div>
@@ -211,7 +214,6 @@
 
         <p class="footerInfo text-muted"><small style="font-size:75%"> User: [<span id="userId"><%= @remote_user %></span>] server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</small>
          </p>
-         <div id="lang" style="display:none"><%= @strings.to_json %></div>
 
         <script type="text/javascript" src="lib/jquery/jquery-1.11.0.min.js">
         </script>
@@ -233,9 +235,11 @@
         </script>
         <script type="text/javascript" src="js/factories/factories.js">
         </script>
-
         <script type="text/javascript" src="js/filters/filters.js">
         </script>
+        <script type="text/javascript" src="js/directives/directives.js">
+        </script>
+
         <!-- Modal -->
         <!--
         <div class="modal fade" id="newToDoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
