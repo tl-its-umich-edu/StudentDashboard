@@ -41,16 +41,14 @@
   
 
         <div class="container-fluid contentWrapper">
-            <div class="row">
-                <div class ="col-md-12 col-xs-12 col-lg-12" ngcloak>
-                    <div class="row well dashMessage">
-                        <div class ="col-md-12 col-xs-12 col-lg-12 visible-md-block visible-lg-block">
-                            {{lang.dashIntroMessage}}
-                        </div>
-                        <div class ="col-md-12 col-xs-12 col-lg-12  visible-sm-block visible-xs-block" expand-text="50">
+            <div class="row dashMessageContainer">
+                <div class ="dashMessage alert alert-warning alert-plain alert-dismissible col-md-12 col-xs-12 col-lg-12" ngcloak>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <span class ="visible-lg-inline visible-md-inline">{{lang.dashIntroMessage}}</span>
+                    
+                        <span class ="visible-sm-inline visible-xs-inline" expand-text="50">
                             <%= @strings['dashIntroMessage'] %>
-                        </div>
-                    </div>
+                        </span>
                 </div>
             </div>    
             <div class="row row-eq-heigh" id="content">

@@ -27,9 +27,17 @@
     padding:0;
     background:#eee;
 }
+
+.contentWrapper .dashMessageContainer {
+    padding:0 20px;
+}
 .contentWrapper .dashMessage {
-    background: #fff;
-    margin-top:40px
+    margin:25px 0;
+}
+.alert-plain {
+    background:#fff;
+    color:#000;
+    border-color:#ccc;
 }
 
 #content {
@@ -149,5 +157,11 @@ ul {
     .colHeader {
         padding:0 10px;
         font-size:150%;
+    }
+    .contentWrapper .dashMessage {
+        margin:5px 0;
+    } 
+    .contentWrapper .dashMessageContainer {
+        padding:5px;
     }
 }
