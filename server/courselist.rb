@@ -19,6 +19,7 @@ require_relative 'stopwatch'
 require_relative 'WAPI'
 require_relative 'WAPI_result_wrapper'
 require_relative 'ldap_check'
+require_relative 'external_resources_file'
 
 include Logging
 
@@ -39,7 +40,12 @@ class CourseList < Sinatra::Base
   ## separate jira.
 
   #### Setup default values.
-  ## Will store configuration settings in this hash.
+
+  ## Setup hash to hold dynamic / environment objects.
+  dynamic_hash = Hash.new
+  set :dynamic_config, dynamic_hash
+
+  ## Will store static configuration settings in this hash.
   config_hash = Hash.new
 
   # Will store the hash in the Sinatra settings object so it is available
@@ -207,6 +213,15 @@ END
 
   end
 
+
+  ##### Some configuration is static and the values are specified in configuration files
+  ##### Other configuration is dynamic and needs to be created on the fly.  E.g. provider
+  ##### implementations.  There are two startup methods for these.  "configureStatic" deals
+  ##### with reading configuration properties.  "configureDynamic" deals with creation of
+  ##### configured objects.
+
+
+
   def self.configureStatic
 
     f = File.dirname(__FILE__)+"/../UI"
@@ -287,6 +302,18 @@ END
       config_hash[:strings] = Hash.new()
     end
 
+    ################################
+    ## Some configuration requires creating long lived object instances.
+    ## Those are created here.  The Dashboard static properties will have been read in by this point.
+    def self.configureDynamic
+      dynamic_hash = settings.dynamic_config
+      #resources_dir = "./test-files/resources/"
+      resources_dir = Dir.pwd+"/server/test-files/resources/"
+      ext_resources = ExternalResourcesFile.new(resources_dir)
+      puts "ext_resources: #{ext_resources}"
+      dynamic_hash[:external_resources] = ext_resources
+    end
+
   end
 
   #set :threaded true
@@ -301,6 +328,7 @@ END
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
     configureStatic
+    configureDynamic
     #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
   end
@@ -311,6 +339,7 @@ END
     #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
+    configureDynamic
 
   end
 
@@ -322,6 +351,7 @@ END
     #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
+    configureDynamic
 
   end
 
@@ -638,6 +668,26 @@ END
     termList.value_as_json
   end
 
+  #################################################
+  ############### Supply static external resources
+  # External resource request expects to get request for a resource at or under /external.
+  # Processing is passed to an external resource provider.
+  # If request is to directory then return a json list of the objects in directory.
+  # If request is for a specific file then return that file.
+  # If there isn't a list of file or there isn't a file then return nil.
+  # Definition of contents of /external and sub-directories and files is application
+  # dependent.
+
+  get '/external/?:directory?/?:file_name?' do |directory,file_name|
+    er = dynamic_hash[:external_resources]
+    logger.debug "request: external/#{directory}/#{file_name}"
+    result = er.get_resource(directory,file_name)
+    halt 404 if result.nil?
+    result
+  end
+
+  ################# end of external resources
+  ###########################################
 
   ############ check out the esb course call and time the performance.
   check_esb = lambda do
