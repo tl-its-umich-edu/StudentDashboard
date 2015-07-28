@@ -672,12 +672,13 @@ END
   ############### Supply static external resources
   # External resource request expects to get request for a resource at or under /external.
   # Processing is passed to an external resource provider.
-  # If request is to directory then return a json list of the objects in directory.
+  # If request is to directory (if the file_name is nil) then return a json list of the objects in directory.
   # If request is for a specific file then return that file.
-  # If there isn't a list of file or there isn't a file then return nil.
+  # If there isn't a list of items in the directory or there isn't a file then return nil / 404.
   # Definition of contents of /external and sub-directories and files is application
-  # dependent.
+  # dependent.  For Student Dashboard the directories are images and text.
 
+  # This recognizes only 1 level of directory and file.
   get '/external/?:directory?/?:file_name?' do |directory,file_name|
     er = dynamic_hash[:external_resources]
     logger.debug "request: external/#{directory}/#{file_name}"
@@ -685,7 +686,6 @@ END
     halt 404 if result.nil?
     result
   end
-
   ################# end of external resources
   ###########################################
 
