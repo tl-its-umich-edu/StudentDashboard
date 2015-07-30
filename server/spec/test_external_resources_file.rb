@@ -5,7 +5,7 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
 
-require '../external_resources_file'
+require_relative '../external_resources_file'
 
 # require 'webmock/minitest'
 

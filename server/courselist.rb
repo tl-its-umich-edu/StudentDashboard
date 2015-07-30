@@ -307,10 +307,8 @@ END
     ## Those are created here.  The Dashboard static properties will have been read in by this point.
     def self.configureDynamic
       dynamic_hash = settings.dynamic_config
-      #resources_dir = "./test-files/resources/"
-      resources_dir = Dir.pwd+"/server/test-files/resources/"
+      resources_dir = Dir.pwd+"/server/test-files/resources"
       ext_resources = ExternalResourcesFile.new(resources_dir)
-      puts "ext_resources: #{ext_resources}"
       dynamic_hash[:external_resources] = ext_resources
     end
 
