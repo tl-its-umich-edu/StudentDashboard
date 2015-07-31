@@ -122,7 +122,11 @@ HOST://terms/{uniqname}.json - return a list of terms for the specified user.
 <p/>
 HOST://settings - dump data to the log.
 <p/>
-
+HOST://external - list directories with available external static resources.
+<p/>
+HOST://external/<directory> - list available files within this directory.
+<p/>
+HOST://external/<directory>/<file> - return an available static file.
 END
 
   ## This method will return the contents of the requested (or default) configuration file.
@@ -221,7 +225,6 @@ END
   ##### configured objects.
 
 
-
   def self.configureStatic
 
     f = File.dirname(__FILE__)+"/../UI"
@@ -259,14 +262,19 @@ END
     config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
     config_hash[:data_provider_file_uniqname] = external_config['data_provider_file_uniqname'] || nil
 
-    config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
-    logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
-
     ## If the full path to the provider directory was specified then use it.
     ## Otherwise append what was provided to the local base directory
     if !(config_hash[:data_provider_file_directory].nil? || config_hash[:data_provider_file_directory].start_with?('/'))
       config_hash[:data_provider_file_directory] = "#{config_hash[:BASE_DIR]}/#{config_hash[:data_provider_file_directory]}"
     end
+
+    ## Default the external resources to be the test values in the build if not otherwise specified.
+    config_hash[:external_resources_file_directory] = external_config['external_resources_file_directory'] || nil
+    config_hash[:external_resources_valid_directories] = external_config['external_resources_valid_directories'] || nil
+
+    # default for the group controlling admin membership.
+    config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
+    logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
 
     ##### setup information for authn override
     ## If there is an authn wait specified then setup a random number generator.
@@ -301,18 +309,24 @@ END
       logger.warn "No strings yml configuration file found"
       config_hash[:strings] = Hash.new()
     end
-
-    ################################
-    ## Some configuration requires creating long lived object instances.
-    ## Those are created here.  The Dashboard static properties will have been read in by this point.
-    def self.configureDynamic
-      dynamic_hash = settings.dynamic_config
-      resources_dir = Dir.pwd+"/server/test-files/resources"
-      ext_resources = ExternalResourcesFile.new(resources_dir)
-      dynamic_hash[:external_resources] = ext_resources
-    end
-
   end
+
+  ################################
+  ## Some configuration requires creating long lived object instances.
+  ## Those are created here.  The Dashboard static properties will have been read in by this point.
+  def self.configureDynamic
+    config_hash = settings.latte_config
+    dynamic_hash = settings.dynamic_config
+    #resources_dir = Dir.pwd+"/server/test-files/resources"
+    if config_hash[:external_resources_file_directory].nil?
+      config_hash[:external_resources_file_directory] = Dir.pwd+"/server/test-files/resources"
+    end
+    resources_dir = config_hash[:external_resources_file_directory]
+    ext_resources = ExternalResourcesFile.new(resources_dir)
+    dynamic_hash[:external_resources] = ext_resources
+  end
+
+  #end
 
   #set :threaded true
   ## make sure logging is available
@@ -674,13 +688,23 @@ END
   # If request is for a specific file then return that file.
   # If there isn't a list of items in the directory or there isn't a file then return nil / 404.
   # Definition of contents of /external and sub-directories and files is application
-  # dependent.  For Student Dashboard the directories are images and text.
+  # dependent.  For Student Dashboard the sub-directories are image and text.  The list of
+  # the valid sub-directories is configurable.
 
-  # This recognizes only 1 level of directory and file.
-  get '/external/?:directory?/?:file_name?' do |directory,file_name|
+  # This recognizes only 1 level of directory and optional file under /external
+  get '/external/?:directory?/?:file_name?' do |directory, file_name|
     er = dynamic_hash[:external_resources]
     logger.debug "request: external/#{directory}/#{file_name}"
-    result = er.get_resource(directory,file_name)
+
+    config_hash = settings.latte_config
+    valid_directories = config_hash[:external_resources_valid_directories]
+
+    # forbid looking at any non-valid directories.
+    halt 403 unless directory.nil? || valid_directories.include?(directory)
+
+    result = er.get_resource(directory, file_name)
+
+    # if not found say so.
     halt 404 if result.nil?
     result
   end
@@ -732,7 +756,7 @@ END
   # If a response response from the provider is throttled then log that fact.
   SERVICE_UNAVAILABLE = "503"
 
-  def logIfUnavailable(response,msg)
+  def logIfUnavailable(response, msg)
     logger.warn("provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
   end
 
@@ -752,7 +776,7 @@ END
       courses = dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
     end
 
-    logIfUnavailable(courses,"courses: user: #{a} term:#{termid}")
+    logIfUnavailable(courses, "courses: user: #{a} term:#{termid}")
 
     courses
   end
@@ -769,7 +793,7 @@ END
       terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(terms,"terms: user: #{uniqname}")
+    logIfUnavailable(terms, "terms: user: #{uniqname}")
 
     terms
   end
@@ -782,12 +806,12 @@ END
     config_hash = settings.latte_config
 
     if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
+      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname], "#{config_hash[:data_provider_file_directory]}/terms")
     else
       check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(check,"verify the check url configuration")
+    logIfUnavailable(check, "verify the check url configuration")
 
     check
   end
