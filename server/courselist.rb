@@ -19,6 +19,7 @@ require_relative 'stopwatch'
 require_relative 'WAPI'
 require_relative 'WAPI_result_wrapper'
 require_relative 'ldap_check'
+require_relative 'OptionsParse'
 
 include Logging
 
@@ -46,9 +47,25 @@ class CourseList < Sinatra::Base
   # where needed.
   set :latte_config, config_hash
 
-  # Location to find the configuration files.  This can't be overridden by values
-  # in the configuration file because this is what identifies the location
-  # of the file to read.
+  # print environment when at debugging level.
+  if logger.debug? then
+    ENV.each_pair do |key, value|
+      logger.debug "key: [#{key}] value: [#{value}]"
+    end
+  end
+
+  ## Allow override of the location of the studentdashboard.yml file.
+  if ENV['LATTE_OPTS'] then
+    env_options = OptionsParse.parseEnvironment('LATTE_OPTS')
+
+    unless env_options.config_base.nil?
+      config_base = env_options.config_base
+    end
+  end
+
+  # Location to find the configuration files if not specified by an environment variable.
+  # This can't be overridden by value in a configuration file because is the location
+  # of the configuration file.
   config_base ||= '/usr/local/ctools/app/ctools/tl/home'
 
   # forbid/allow specifying a different user on request url
@@ -136,7 +153,7 @@ END
         return nil
       end
 
-      logger.info "config: use file: [#{file_name}]"
+      logger.info "local_config_yml: found file: [#{file_name}]"
       YAML.load_file(file_name)
 
     end
@@ -222,6 +239,7 @@ END
     ## separate jira.
 
     # read in yml configuration into a class variable
+    logger.info "requested configuration file is: #{config_hash[:studentdashboard]}"
     external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml", true)
 
     config_hash[:use_log_level] = external_config['use_log_level'] || "INFO"
@@ -684,7 +702,7 @@ END
   # If a response response from the provider is throttled then log that fact.
   SERVICE_UNAVAILABLE = "503"
 
-  def logIfUnavailable(response,msg)
+  def logIfUnavailable(response, msg)
     logger.warn("provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
   end
 
@@ -704,7 +722,7 @@ END
       courses = dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
     end
 
-    logIfUnavailable(courses,"courses: user: #{a} term:#{termid}")
+    logIfUnavailable(courses, "courses: user: #{a} term:#{termid}")
 
     courses
   end
@@ -721,7 +739,7 @@ END
       terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(terms,"terms: user: #{uniqname}")
+    logIfUnavailable(terms, "terms: user: #{uniqname}")
 
     terms
   end
@@ -734,12 +752,12 @@ END
     config_hash = settings.latte_config
 
     if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
+      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname], "#{config_hash[:data_provider_file_directory]}/terms")
     else
       check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(check,"verify the check url configuration")
+    logIfUnavailable(check, "verify the check url configuration")
 
     check
   end
