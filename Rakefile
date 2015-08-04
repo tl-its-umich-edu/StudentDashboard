@@ -57,9 +57,8 @@ end
 Rake::TestTask.new do |t|
   t.libs << "test"
   t.name = "test_resources"
-  t.test_files = FileList['**/test_*resources.rb']
+  t.test_files = FileList['**/test_*resources*.rb']
   t.verbose = true
 end
-
 
 ## end

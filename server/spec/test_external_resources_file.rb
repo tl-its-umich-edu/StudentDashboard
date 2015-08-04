@@ -5,6 +5,7 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
 
+require 'logger'
 require_relative '../external_resources_file'
 
 # require 'webmock/minitest'
@@ -17,8 +18,10 @@ class TestExternalResourcesFile < Minitest::Test
   # to set up fixture information.
 
   def setup
-    @resources_dir = "../test-files/resources"
+    #@resources_dir = "../test-files/resources"
+    @resources_dir = TestHelper.findTestFileDirectory()+"/resources"
     @erf = ExternalResourcesFile.new(@resources_dir)
+    #logger.level=Logger::ERROR
   end
 
   # Called after every test method runs. Can be used to tear
@@ -41,7 +44,7 @@ class TestExternalResourcesFile < Minitest::Test
   end
 
   def test_list_resources_images
-    parsed_file_list = JSON.parse(@erf.get_resource "images")
+    parsed_file_list = JSON.parse(@erf.get_resource "image")
     assert_equal 7,parsed_file_list.length,"list resources in images directory"
   end
 
@@ -56,7 +59,7 @@ class TestExternalResourcesFile < Minitest::Test
   end
 
   def test_get_resources_image
-    body = @erf.get_resource "images","blue.png"
+    body = @erf.get_resource "image","blue.png"
     assert body.length > 10000 ,"get resource from image directory"
   end
 

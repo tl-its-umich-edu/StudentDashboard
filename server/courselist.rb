@@ -317,10 +317,13 @@ END
   def self.configureDynamic
     config_hash = settings.latte_config
     dynamic_hash = settings.dynamic_config
-    #resources_dir = Dir.pwd+"/server/test-files/resources"
+    logger.debug "configure dynamic dir: "+Dir.pwd.to_s
+    logger.debug "external resource config initial: "+config_hash[:external_resources_file_directory].to_s
+
     if config_hash[:external_resources_file_directory].nil?
-      config_hash[:external_resources_file_directory] = Dir.pwd+"/server/test-files/resources"
+      config_hash[:external_resources_file_directory] = config_hash[:BASE_DIR]+"/server/test-files/resources"
     end
+    logger.debug "external resource config final: "+config_hash[:external_resources_file_directory]
     resources_dir = config_hash[:external_resources_file_directory]
     ext_resources = ExternalResourcesFile.new(resources_dir)
     dynamic_hash[:external_resources] = ext_resources

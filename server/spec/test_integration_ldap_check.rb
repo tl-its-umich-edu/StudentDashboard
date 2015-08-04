@@ -46,6 +46,7 @@ class LdapTest < MiniTest::Test
   end
 
   def test_throw_error_missing_config_files
+    puts "### NOTE: An E level log message during testing is expected. ###"
     assert_raises(LdapCheckError) do
       lc = LdapCheck.new({'config_file' => 'MamaAndPappasMakeDinner'})
     end

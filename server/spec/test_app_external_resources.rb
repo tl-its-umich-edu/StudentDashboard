@@ -7,7 +7,7 @@ require 'minitest/unit'
 require 'minitest/autorun'
 require 'rack/test'
 
-class HelloWorldTest < Minitest::Test
+class AppExternalResourcesTest < Minitest::Test
   include Rack::Test::Methods
 
   # Test course list application
