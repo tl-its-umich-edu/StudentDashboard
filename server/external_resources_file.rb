@@ -39,6 +39,7 @@ class ExternalResourcesFile
       return getExternalResource(use_directory, resource_name)
     rescue => exp
       logger.warn "External resource error: #{exp}"
+      logger.warn "current directory: "+Dir.pwd.to_s
     end
     return nil
   end
