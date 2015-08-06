@@ -116,7 +116,7 @@ ul {
 .itemPanel {
     padding: 5px 10px;
     background-color:#666;
-    background-color:rgba(10, 10, 10, 0.8);
+    background-color:rgba(10, 10, 10, 0.5);
     border-radius: 3px;
 
 }

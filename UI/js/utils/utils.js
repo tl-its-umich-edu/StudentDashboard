@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $*/
+/* global $, _*/
 
 /**
  * get the strings from a hidden DOM element and
@@ -73,19 +73,17 @@ $(document).ready(function(){
   var is_mobile = false;
   if( $('#isMobile').css('display')=='none') {
         is_mobile = true;
-    }
+  }
   if(!is_mobile){
     var getImage = $.getJSON( "/data/images/back/list.json", function(data) {
-    var ramdomImage = data[Math.floor(Math.random() * data.length) + 1  ];
-
-    console.log(Math.random() * data.length + 1);
-    console.log(ramdomImage);
-
-    $('body').css('background-image','url("/data/images/back/' + ramdomImage);
+    })
+    .done(function(data){
+      var ramdomImage = _.sample(data);
+      $('body').css('background-image','url("/data/images/back/' + ramdomImage);
     })
     .fail(function() {
-      console.log(':(');
       // do nothing or load predetermined local image
+      $('body').css('background-image','url("/data/images/back/default.jpg');
     })
     .always(function() {
       // what
