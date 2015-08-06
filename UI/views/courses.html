@@ -1,6 +1,6 @@
-<div  ng-controller = "termsController" ng-cloak>
+<div ng-controller = "termsController" ng-cloak>
   <div id="courses" class="itemPanel">
-    <h3 class="colHeader">{{lang.panelTitle}} <small>{{term}}</small>
+    <h3 class="colHeader">{{lang.panelTitle}}
       <div class="btn-group pull-right" id="termMenu" ng-hide="terms.length===0">
         <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
           Terms <span class="caret"></span>
@@ -65,7 +65,7 @@
         </div>
       </li>
     </ul>
-    <div ng-hide="loading">
+    <div ng-hide="loading" class="itemPanelFooter">
       <p> {{lang.lookAtOtherDashes}} 
         <span><a href="{{lang.ctoolsUrl}}">{{lang.ctoolsName}}</a></span>
         <span>or</span> <a href="{{lang.canvasUrl}}">{{lang.canvasName}}.</a></span>

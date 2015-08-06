@@ -1,5 +1,12 @@
+body {
+    background-color:#eee;
+    background-image: none;
+    background-position: 0 45px;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
 .mastHead {
-    
     color:#fff;
 }
 .mastHead h1{
@@ -25,8 +32,8 @@
 .contentWrapper {
     margin-top: 45px;
     padding:0;
-    background:#eee;
 }
+
 
 .contentWrapper .dashMessageContainer {
     padding:0 20px;
@@ -41,7 +48,6 @@
 }
 
 #content {
-    background: #eee;
     border-width:0 1px;
     border-style: solid;
     border-color: #ccc;
@@ -70,6 +76,17 @@ ul {
 
 }
 
+.colHeader {
+    margin:10px 0;
+    color:#fff;
+}
+
+.colHeader small {
+    color:#fff;
+}
+.itemPanelFooter {
+    color:#fff;
+}
 .iconContainer {
 
     height: 20px;
@@ -97,7 +114,10 @@ ul {
 }
 
 .itemPanel {
-    padding: 0 5px;
+    padding: 5px 10px;
+    background-color:#666;
+    background-color:rgba(10, 10, 10, 0.8);
+    border-radius: 3px;
 
 }
 
@@ -149,6 +169,7 @@ ul {
 }
 .footerInfo {
     padding:10px;
+    display:none;
 }
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
@@ -163,5 +184,21 @@ ul {
     } 
     .contentWrapper .dashMessageContainer {
         padding:5px;
+    }
+    .itemPanel {
+        background:none;
+    }
+    .itemPanel .colHeader, .itemPanel .colHeader small  {
+        color:#000;
+    }
+    .itemPanel .itemPanelFooter {
+        color:#000;
+    }
+    body {
+        background-image:none !important;
+        background-color: #eee
+    }
+    .isMobile {
+        display:none;
     }
 }
