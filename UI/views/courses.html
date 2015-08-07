@@ -6,7 +6,7 @@
           Terms <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li ng-repeat="term in terms"><a href='' ng-click="getTerm(term.TermCode, term.TermDescr)" data-term-id="{{term.TermCode}}">{{term.TermDescr}}</a></li>
+          <li role="menuitem" ng-repeat="term in terms"><a href='' ng-click="getTerm(term.TermCode, term.TermDescr)" data-term-id="{{term.TermCode}}">{{term.TermDescr}}</a></li>
         </ul>
       </div>
       <div class="spinner pull-right" ng-show="loading"></div>

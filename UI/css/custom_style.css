@@ -6,6 +6,10 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
+
+a {
+    color:#75b9ff;
+}
 .mastHead {
     color:#fff;
 }
@@ -87,6 +91,11 @@ ul {
 .itemPanelFooter {
     color:#fff;
 }
+.itemPanelFooter a{
+    color:#fff;
+    text-decoration: underline
+}
+
 .iconContainer {
 
     height: 20px;
@@ -115,8 +124,7 @@ ul {
 
 .itemPanel {
     padding: 5px 10px;
-    background-color:#666;
-    background-color:rgba(10, 10, 10, 0.5);
+    background-color:rgba(51, 51, 51, 0.8);
     border-radius: 3px;
 
 }
@@ -201,4 +209,10 @@ ul {
     .isMobile {
         display:none;
     }
+    .itemPanelFooter a {
+        color:#000;
+        text-decoration: underline
+    }
+}
+
 }

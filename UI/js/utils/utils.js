@@ -72,10 +72,16 @@ $(document).ready(function(){
 
   var is_mobile = false;
   if( $('#isMobile').css('display')=='none') {
-        is_mobile = true;
+    is_mobile = true;
   }
+
   if(!is_mobile){
-    var getImage = $.getJSON( "/data/images/back/list.json", function(data) {
+    //$.getJSON( "/data/images/back/list.json", function(data) {
+    $.ajax({
+      url: '/data/images/back/list.json',
+      cache: true,
+      dataType: 'json',
+      method: 'GET'
     })
     .done(function(data){
       var ramdomImage = _.sample(data);
@@ -89,5 +95,4 @@ $(document).ready(function(){
       // what
     });
   }
-
-})
+});
