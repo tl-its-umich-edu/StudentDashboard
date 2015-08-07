@@ -13,7 +13,7 @@
     </head>
     <body>
       <div id="lang" style="display:none"><%= @strings.to_json %></div>
-      <nav class="navbar navbar-default navbar-fixed-top navHead" role="navigation">
+      <nav class="navbar navbar-default navHead" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header mastHead">
@@ -27,9 +27,12 @@
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling  -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="print">
-                            <a href="#" class="collapse-nav" data-toggle="modal" data-target="#serverInfoModal"></i>About</a>
+                    <ul class="nav navbar-nav navbar-right login-container">
+                        <li>
+                            <a href="/portal/login" id="ctoolsLogin">CTools Login</a>
+                        </li>
+                        <li>
+                            <a href="https://umich.beta.instructure.com" id="canvasLogin">Canvas Login</a>
                         </li>
                     </ul>
                 </div>

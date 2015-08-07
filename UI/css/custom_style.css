@@ -1,30 +1,28 @@
 body {
     background-color:#eee;
     background-image: none;
-    background-position: 0 45px;
+    background-position: 0 50px;
     background-repeat:  no-repeat;
-    background-attachment: fixed;
     background-size: cover;
 }
 
 a {
-    color:#75b9ff;
+    color:#039;
 }
 .mastHead {
     color:#fff;
 }
-.mastHead h1{
-    background: transparent url("../images/block-m.png") 10px 5px no-repeat;
-    color:#aaa;
-    margin-top:10px;
-    margin:0;
-    padding:15px 5px 15px 90px;
-    font-size:24px;
-
+.mastHead h1 {
+    background: transparent url("../images/dash.png") no-repeat scroll 11px 9px;
+    margin: 0;
+    width: 150px;
 }
 
 .navHead {
     background-color: #09274c;
+    margin-bottom:10px;
+    border-width:0;
+    border-radius: 0    
 }
 .navbar-default .navbar-nav > li > a { 
     color:#ddd;
@@ -34,10 +32,8 @@ a {
 }
 
 .contentWrapper {
-    margin-top: 45px;
     padding:0;
 }
-
 
 .contentWrapper .dashMessageContainer {
     padding:0 20px;
@@ -52,9 +48,6 @@ a {
 }
 
 #content {
-    border-width:0 1px;
-    border-style: solid;
-    border-color: #ccc;
  }
 
 ul {
@@ -212,6 +205,11 @@ ul {
     .itemPanelFooter a {
         color:#000;
         text-decoration: underline
+    }
+    .mastHead h1 {
+        background: transparent url("../images/dash-sm.png") no-repeat scroll 10px 10px;
+        margin: 0;
+        width: 70px;
     }
 }
 
