@@ -70,13 +70,14 @@ $(document).on('click', '.showMoreInstructors', function (e) {
 
 $(document).ready(function(){
 
-  var is_mobile = false;
-  if( $('#isMobile').css('display')=='none') {
+  var is_mobile = true;
+  if( $('#isMobile').is(":visible") === false) {
     is_mobile = true;
   }
-
+  else {
+    is_mobile = false;
+  }
   if(!is_mobile){
-    //$.getJSON( "/data/images/back/list.json", function(data) {
     $.ajax({
       url: '/data/images/back/list.json',
       cache: true,

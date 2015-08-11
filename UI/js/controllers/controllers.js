@@ -28,6 +28,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
         $scope.terms = data.Result;
         $scope.$parent.term = data.Result[0].TermDescr;
+        $scope.$parent.shortDescription = data.Result[0].TermShortDescr;
         $scope.$parent.termId = data.Result[0].TermCode;
 
         $scope.courses = [];
@@ -54,10 +55,11 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
   //Handler to change the term and retrieve the term's courses, using Course factory as a promise
 
-  $scope.getTerm = function (termId, termName) {
+  $scope.getTerm = function (termId, termName, shortDescription) {
     $scope.loading = true;
     $scope.courses = [];
     $scope.$parent.term = termName;
+    $scope.$parent.shortDescription = shortDescription;
     
     var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 
