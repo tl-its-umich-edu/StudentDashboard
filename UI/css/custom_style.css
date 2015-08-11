@@ -180,11 +180,8 @@ ul {
 .footerInfo {
     padding:10px;
     display: block;
+    color:#fff;
     text-align: center;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 @media (max-width: 480px) {
     .col1, .col2, .col3 {
