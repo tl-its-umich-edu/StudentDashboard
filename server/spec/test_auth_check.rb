@@ -13,7 +13,7 @@ require 'yaml'
 ## set the environment for testing
 #ENV['RACK_ENV'] = 'test'
 
-require '../courselist'
+require_relative '../courselist'
 
 #email_regex: !ruby/regexp '/^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i'
 

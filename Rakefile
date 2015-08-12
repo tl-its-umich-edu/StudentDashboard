@@ -38,19 +38,28 @@ namespace :vagrant do
 end
 
 
-# ## default unit tests
-# Rake::TestTask.new do |t|
-#   t.libs << "test"
-#   t.test_files = FileList['**/test_*.rb'].exclude('**/test_integration*rb')
-#   t.verbose = true
-# end
+## default unit tests
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['**/test_*.rb'].exclude('**/test_integration*rb')
+  t.verbose = true
+end
 
-# ## integration tests, only done on request.
-# Rake::TestTask.new do |t|
-#   t.libs << "test"
-#   t.name = "test_integration"
-#   t.test_files = FileList['**/test_integration*.rb']
-#   t.verbose = true
-# end
+## integration tests, only done on request.
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.name = "test_integration"
+  t.test_files = FileList['**/test_integration*.rb']
+  t.verbose = true
+end
+
+## specific tests
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.name = "test_resources"
+  t.test_files = FileList['**/test_*resources.rb']
+  t.verbose = true
+end
+
 
 ## end

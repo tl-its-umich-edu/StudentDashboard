@@ -12,7 +12,7 @@ require 'logger'
 require 'yaml'
 require_relative '../courselist'
 ## set the environment for testing
-#ENV['RACK_ENV'] = 'unit'
+ENV['RACK_ENV'] = 'TEST'
 
 class TestCourseList < MiniTest::Test
 
