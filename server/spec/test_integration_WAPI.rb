@@ -6,7 +6,7 @@ require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
-require '../WAPI'
+require_relative '../WAPI'
 require_relative '../data_provider_esb'
 require 'rest-client'
 require 'logger'
@@ -23,6 +23,7 @@ class TestIntegrationWAPI < Minitest::Test
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
+  #@@yml_file = "./server/spec/security.yml"
   @@yml_file = "./security.yml"
   @@application = "test"
   @@yml = nil
@@ -49,9 +50,9 @@ class TestIntegrationWAPI < Minitest::Test
     # by default assume that the tests will run well and don't
     # need detailed log messages.
     logger.level=Logger::ERROR
-    #logger.level=Logger::DEBUG
+#    logger.level=Logger::DEBUG
 
-    @default_application_name = 'SD-TEST-DLH'
+    @default_application_name = 'SD-QA'
     load_yml
     #load_application 'ESB-QA'
     #load_application 'SD-TEST-DLH'
@@ -137,7 +138,8 @@ class TestIntegrationWAPI < Minitest::Test
 
   def test_course_request
 
-    #default_term = 2010
+
+    @default_term = 2060
     r = @w.get_request("/Students/#{@uniqname}/Terms/#{@default_term}/Schedule")
     logger.info "#{__LINE__}: tcr: r "+r.inspect
 
