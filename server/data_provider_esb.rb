@@ -39,7 +39,7 @@ module DataProviderESB
 
   def ensure_ESB(app_name, security_file)
     if @@w.nil?
-      logger.debug "@@w is nil"
+      logger.debug "@@w is nil security_file: #{security_file}"
       @@w = initESB(security_file, app_name)
     end
   end
