@@ -24,12 +24,12 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
     ## values for testing
 
-    @esb_application = "SD-TEST-DLH"
+    @esb_application = "SD-QA"
     @security_file = "./security.yml"
 
     # may need to change this depending on the current state of the db.
     @known_uniqname = "ststvii"
-    @default_term = "2020"
+    @default_term = "2060"
 
   end
 
@@ -116,11 +116,9 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
     refute_nil(m,"create provider object")
     terms = m.dataProviderESBTerms("xxx", @security_file,@esb_application)
-    puts "terms: "+terms.inspect
     assert_equal(WAPI::UNKNOWN_ERROR,terms.meta_status,'get bad result for missing uniqname')
     logger.debug "terms: "+terms.inspect
     t = terms.result
-    puts "t: "+t.inspect
     assert(t.length == 0,"get empty array when no terms")
 
   end

@@ -69,5 +69,16 @@
 # the directory /usr/latte/really/good/directory or locally within the expanded war file.
 #data_provider_file_directory: server/test-files
 
+############ external resources provider
+## Allows access to static image and text files.
+
+## limit valid sub-directories under /external to prevent fishing.
+external_resources_valid_directories: [ image, text ]
+
+### local file resources provider
+# Path to the directory with the file resources.  It defaults to
+# a test directory in the build.
+#external_resources_file_directory: /usr/local/ctools/app/ctools/tl/home
+
 ########## end #########
 

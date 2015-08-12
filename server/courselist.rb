@@ -19,6 +19,7 @@ require_relative 'stopwatch'
 require_relative 'WAPI'
 require_relative 'WAPI_result_wrapper'
 require_relative 'ldap_check'
+require_relative 'external_resources_file'
 
 include Logging
 
@@ -39,7 +40,12 @@ class CourseList < Sinatra::Base
   ## separate jira.
 
   #### Setup default values.
-  ## Will store configuration settings in this hash.
+
+  ## Setup hash to hold dynamic / environment objects.
+  dynamic_hash = Hash.new
+  set :dynamic_config, dynamic_hash
+
+  ## Will store static configuration settings in this hash.
   config_hash = Hash.new
 
   # Will store the hash in the Sinatra settings object so it is available
@@ -116,7 +122,11 @@ HOST://terms/{uniqname}.json - return a list of terms for the specified user.
 <p/>
 HOST://settings - dump data to the log.
 <p/>
-
+HOST://external - list directories with available external static resources.
+<p/>
+HOST://external/<directory> - list available files within this directory.
+<p/>
+HOST://external/<directory>/<file> - return an available static file.
 END
 
   ## This method will return the contents of the requested (or default) configuration file.
@@ -207,6 +217,14 @@ END
 
   end
 
+
+  ##### Some configuration is static and the values are specified in configuration files
+  ##### Other configuration is dynamic and needs to be created on the fly.  E.g. provider
+  ##### implementations.  There are two startup methods for these.  "configureStatic" deals
+  ##### with reading configuration properties.  "configureDynamic" deals with creation of
+  ##### configured objects.
+
+
   def self.configureStatic
 
     f = File.dirname(__FILE__)+"/../UI"
@@ -244,14 +262,19 @@ END
     config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
     config_hash[:data_provider_file_uniqname] = external_config['data_provider_file_uniqname'] || nil
 
-    config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
-    logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
-
     ## If the full path to the provider directory was specified then use it.
     ## Otherwise append what was provided to the local base directory
     if !(config_hash[:data_provider_file_directory].nil? || config_hash[:data_provider_file_directory].start_with?('/'))
       config_hash[:data_provider_file_directory] = "#{config_hash[:BASE_DIR]}/#{config_hash[:data_provider_file_directory]}"
     end
+
+    ## Default the external resources to be the test values in the build if not otherwise specified.
+    config_hash[:external_resources_file_directory] = external_config['external_resources_file_directory'] || nil
+    config_hash[:external_resources_valid_directories] = external_config['external_resources_valid_directories'] || nil
+
+    # default for the group controlling admin membership.
+    config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
+    logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
 
     ##### setup information for authn override
     ## If there is an authn wait specified then setup a random number generator.
@@ -286,8 +309,24 @@ END
       logger.warn "No strings yml configuration file found"
       config_hash[:strings] = Hash.new()
     end
-
   end
+
+  ################################
+  ## Some configuration requires creating long lived object instances.
+  ## Those are created here.  The Dashboard static properties will have been read in by this point.
+  def self.configureDynamic
+    config_hash = settings.latte_config
+    dynamic_hash = settings.dynamic_config
+    #resources_dir = Dir.pwd+"/server/test-files/resources"
+    if config_hash[:external_resources_file_directory].nil?
+      config_hash[:external_resources_file_directory] = Dir.pwd+"/server/test-files/resources"
+    end
+    resources_dir = config_hash[:external_resources_file_directory]
+    ext_resources = ExternalResourcesFile.new(resources_dir)
+    dynamic_hash[:external_resources] = ext_resources
+  end
+
+  #end
 
   #set :threaded true
   ## make sure logging is available
@@ -301,6 +340,7 @@ END
     ## look for the UI files in a parallel directory.
     ## this may not be necessary.
     configureStatic
+    configureDynamic
     #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
   end
@@ -311,6 +351,7 @@ END
     #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
+    configureDynamic
 
   end
 
@@ -322,6 +363,7 @@ END
     #set :logging, Logger::INFO
     #set :logging, Logger::DEBUG
     configureStatic
+    configureDynamic
 
   end
 
@@ -638,6 +680,45 @@ END
     termList.value_as_json
   end
 
+  #################################################
+  ############### Supply static external resources
+  # External resource request expects to get request for a resource at or under /external.
+  # Processing is passed to an external resource provider.
+  # If request is to directory (if the file_name is nil) then return a json list of the objects in directory.
+  # If request is for a specific file then return that file.
+  # If there isn't a list of items in the directory or there isn't a file then return nil / 404.
+  # Definition of contents of /external and sub-directories and files is application
+  # dependent.  For Student Dashboard the sub-directories are image and text.  The list of
+  # the valid sub-directories is configurable.
+
+  # This recognizes only 1 level of directory and optional file under /external
+  get '/external/?:directory?/?:file_name?' do |directory, file_name|
+    er = dynamic_hash[:external_resources]
+    logger.debug "request: external/#{directory}/#{file_name}"
+
+    config_hash = settings.latte_config
+    valid_directories = config_hash[:external_resources_valid_directories]
+
+    # forbid looking at any non-valid directories.
+    halt 403 unless directory.nil? || valid_directories.include?(directory)
+
+    result = er.get_resource(directory, file_name)
+
+    # if not found say so.
+    halt 404 if result.nil?
+
+    # if returning a file set the type type explicitly.
+    unless file_name.nil?
+      # by default it is text.
+      content_type 'text/plain'
+      # We also recognize png files.
+      content_type 'image/png' if file_name =~ /\.png$/
+    end
+
+    result
+  end
+  ################# end of external resources
+  ###########################################
 
   ############ check out the esb course call and time the performance.
   check_esb = lambda do
@@ -684,7 +765,7 @@ END
   # If a response response from the provider is throttled then log that fact.
   SERVICE_UNAVAILABLE = "503"
 
-  def logIfUnavailable(response,msg)
+  def logIfUnavailable(response, msg)
     logger.warn("provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
   end
 
@@ -704,7 +785,7 @@ END
       courses = dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
     end
 
-    logIfUnavailable(courses,"courses: user: #{a} term:#{termid}")
+    logIfUnavailable(courses, "courses: user: #{a} term:#{termid}")
 
     courses
   end
@@ -721,7 +802,7 @@ END
       terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(terms,"terms: user: #{uniqname}")
+    logIfUnavailable(terms, "terms: user: #{uniqname}")
 
     terms
   end
@@ -734,12 +815,12 @@ END
     config_hash = settings.latte_config
 
     if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname],"#{config_hash[:data_provider_file_directory]}/terms")
+      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname], "#{config_hash[:data_provider_file_directory]}/terms")
     else
       check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
     end
 
-    logIfUnavailable(check,"verify the check url configuration")
+    logIfUnavailable(check, "verify the check url configuration")
 
     check
   end
