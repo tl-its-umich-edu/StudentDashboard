@@ -35,6 +35,11 @@ namespace :vagrant do
   task :xterm do
     sh "(cd vagrant; ./vagrantXterm.sh)"
   end
+
+  desc "Open a ssh terminal connection to the vagrant VM."
+  task :ssh do
+    sh "(cd vagrant; vagrant ssh)"
+  end
 end
 
 task :test => [:test_local, :test_integration, :test_resources ]
