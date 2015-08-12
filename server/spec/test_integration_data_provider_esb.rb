@@ -6,6 +6,7 @@ require 'minitest/unit'
 require 'yaml'
 require_relative '../data_provider_esb'
 require_relative '../WAPI_result_wrapper'
+
 require_relative '../Logging'
 require_relative 'test_helper'
 
@@ -26,7 +27,6 @@ class TestIntegrationDataProviderESB < Minitest::Test
     #logger.level = Logger::DEBUG
 
     @esb_application = "SD-QA"
-
     @security_file = TestHelper.findSecurityFile "security.yml"
 
     # may need to change this depending on the current state of the db.
@@ -42,7 +42,6 @@ class TestIntegrationDataProviderESB < Minitest::Test
     # Do nothing
   end
 
-  #security_file = "./security.yml"
   security_file = TestHelper.findSecurityFile("security.yml")
 
   def test_esb_with_good_uniqname

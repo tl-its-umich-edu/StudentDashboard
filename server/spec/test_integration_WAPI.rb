@@ -25,8 +25,8 @@ class TestIntegrationWAPI < Minitest::Test
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-  @@yml_file = TestHelper.findSecurityFile "security.yml"
 
+  @@yml_file = TestHelper.findSecurityFile "security.yml"
   @@application = "SD-QA"
 
   @@yml = nil
@@ -55,8 +55,9 @@ class TestIntegrationWAPI < Minitest::Test
     # need detailed log messages.
 
     logger.level=TestHelper.getCommonLogLevel
-    # logger.level=Logger::ERROR
-    # logger.level=Logger::DEBUG
+
+    #logger.level=Logger::ERROR
+    #logger.level=Logger::DEBUG
 
     @default_application_name = 'SD-QA'
     load_yml
