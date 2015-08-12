@@ -15,29 +15,16 @@
       <div id="lang" style="display:none"><%= @strings.to_json %></div>
       <nav class="navbar navbar-default navHead" role="navigation">
             <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header mastHead">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <h1 class="navbar-brand collapse-nav"><span class="sr-only"><%= @strings['applicationTitle'] %></span></h1>
+                <div class="row">
+                    <div class="navbar-header mastHead col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <h1 class="navbar-brand"><span class="sr-only"><%= @strings['applicationTitle'] %></span></h1>
+                    </div>
+                    <div class="nav navbar-nav navbar-right loginContainer col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <a class="btn btn-link" href="https://ctools.umich.edu/portal/login" id="ctoolsLogin">CTools<span class="visible-lg-inline visible-md-inline visible-sm-inline"> Login</span></a>
+                        <a class="btn btn-link" href="https://umich.instructure.com" id="canvasLogin">Canvas<span class="visible-lg-inline visible-md-inline visible-sm-inline"> Login</span></a>
+                    </div>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling  -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right login-container">
-                        <li>
-                            <a href="https://ctools.umich.edu/portal/login" id="ctoolsLogin">CTools Login</a>
-                        </li>
-                        <li>
-                            <a href="https://umich.instructure.com" id="canvasLogin">Canvas Login</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
+            </div>    
             <!-- /.container-fluid -->
         </nav>
         <div class="container-fluid contentWrapper">

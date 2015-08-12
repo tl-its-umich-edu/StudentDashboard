@@ -29,13 +29,23 @@ a {
     border-width:0;
     border-radius: 0    
 }
+.navbar .container-fluid {
+    padding:0;
+}
+
 .navbar-default .navbar-nav > li > a { 
     color:#ddd;
 }
 .navbar-default .navbar-nav > li > a:hover,.navbar-default .navbar-nav > li > a:focus { 
     color:#fff;
 }
-
+.loginContainer {
+    text-align:right;
+    padding-top:8px;
+}
+.loginContainer .btn-link, .loginContainer .btn-link:hover, .loginContainer  .btn-link:focus, .loginContainer .btn-link:active {
+    color:#fff;
+}
 .contentWrapper {
     padding:0;
 }
@@ -182,7 +192,33 @@ ul {
     color:#fff;
     text-align: center;
 }
+@media (max-width: 768px) {
+    .loginContainer {
+        padding-top:0;
+        padding-right:0;
+    }
+    .mastHead {
+        padding-left:0;
+    }
+    .navHead .row {
+        padding-left:0;
+        margin:0;
+        padding-right:0;   
+    }
+}
 @media (max-width: 480px) {
+    .loginContainer {
+        padding-top:0;
+        padding-right:0;
+    }
+    .mastHead {
+        padding-left:0;
+    }
+    .navHead .row {
+        padding-left:0;
+        margin:0;
+        padding-right:0;
+    }
     .col1, .col2, .col3 {
         padding:0
     }
