@@ -1,21 +1,23 @@
 ## Unit tests for WAPI module
 
-require_relative 'test_helper'
-
-require 'rubygems'
 
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
 require 'webmock/minitest'
+
 require_relative '../WAPI'
 require_relative '../WAPI_result_wrapper'
+
+require_relative 'test_helper'
+
 require 'rest-client'
-require 'logger'
 require 'base64'
 
 # Standalone test for WAPI.  Uses webmock to allow running web requests without a real web server.
 # See end of file for a bit more on webmock.
+
+include Logging
 
 class TestWAPI < Minitest::Test
 
@@ -24,6 +26,7 @@ class TestWAPI < Minitest::Test
     # need detailed log messages.
     logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
+    logger.level=TestHelper.getCommonLogLevel
 
     @token_server="http://tokenserver.micky.edu"
     @api_prefix = "PREFIX"
@@ -70,7 +73,7 @@ class TestWAPI < Minitest::Test
   ## Check the result wrapping method
   def test_wrapResultSimple
     r = WAPIResultWrapper.new(200, "OK", "good cheese")
-    assert_equal(200, r.meta_status,"incorrect meta status")
+    assert_equal(200, r.meta_status, "incorrect meta status")
     assert_equal("OK", r.meta_message, "incorrect message")
     assert_equal("good cheese", r.result, "incorrect result")
   end
