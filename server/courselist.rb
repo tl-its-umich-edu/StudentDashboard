@@ -706,6 +706,15 @@ END
 
     # if not found say so.
     halt 404 if result.nil?
+
+    # if returning a file set the type type explicitly.
+    unless file_name.nil?
+      # by default it is text.
+      content_type 'text/plain'
+      # We also recognize png files.
+      content_type 'image/png' if file_name =~ /\.png$/
+    end
+
     result
   end
   ################# end of external resources
