@@ -25,9 +25,11 @@ class LdapTest < MiniTest::Test
   def setup
     # by default assume the tests will run well and don't need
     # to have detailed log messages.
-    logger.level = Logger::ERROR
+    logger.level = TestHelper.getCommonLogLevel
+    #logger.level = Logger::ERROR
     #logger.level = Logger::INFO
     #logger.level = Logger::DEBUG
+
     @group = "TL-Latte-admin-test"
     # a group with no visible members
     @group_private = "TL-Latte-private"
@@ -65,9 +67,9 @@ class LdapTest < MiniTest::Test
 
   def test_constructor_config_file_value_override
     @x = LdapCheck.new('group' => @group, 'config_file' => @config_file, 'cache_seconds' => 10)
-    assert_equal(10,@x.configuration['cache_seconds'],"override value in config file")
+    assert_equal(10, @x.configuration['cache_seconds'], "override value in config file")
     @x = LdapCheck.new('group' => @group, 'config_file' => @config_file, 'cache_seconds' => 7)
-    assert_equal(7,@x.configuration['cache_seconds'],"override value in config file")
+    assert_equal(7, @x.configuration['cache_seconds'], "override value in config file")
   end
 
   def test_constructor_bad_group_name
@@ -95,10 +97,10 @@ class LdapTest < MiniTest::Test
     assert @x, "have ldap check object"
     found = @x.is_user_in_admin_hash REAL_USER
     assert found, "checking member in group"
-    assert_equal 1,@x.updateCount,"one request is one update"
+    assert_equal 1, @x.updateCount, "one request is one update"
     found = @x.is_user_in_admin_hash REAL_USER
     found = @x.is_user_in_admin_hash REAL_USER
-    assert_equal 1,@x.updateCount,"three requests in one cache interval"
+    assert_equal 1, @x.updateCount, "three requests in one cache interval"
     assert found, "checking member in group"
   end
 
@@ -109,16 +111,16 @@ class LdapTest < MiniTest::Test
     assert @x, "have ldap check object"
     found = @x.is_user_in_admin_hash REAL_USER
     assert found, "checking member in group"
-    assert_equal 1,@x.updateCount,"one request is one update"
+    assert_equal 1, @x.updateCount, "one request is one update"
     sleep 2
     found = @x.is_user_in_admin_hash REAL_USER
-    assert_equal 2,@x.updateCount,"request longer than interval A"
+    assert_equal 2, @x.updateCount, "request longer than interval A"
     sleep 2
     found = @x.is_user_in_admin_hash REAL_USER
-    assert_equal 3,@x.updateCount,"request longer than interval B"
+    assert_equal 3, @x.updateCount, "request longer than interval B"
     sleep 2
     found = @x.is_user_in_admin_hash REAL_USER
-    assert_equal 4,@x.updateCount,"request longer than interval C"
+    assert_equal 4, @x.updateCount, "request longer than interval C"
     assert found, "checking member in group"
   end
 

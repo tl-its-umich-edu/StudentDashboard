@@ -50,9 +50,8 @@ module DataProviderESB
 
     data = @@w.get_request(url)
     logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl:  #{url}: data: "+data.inspect)
-    result = data.result
-    logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl: result: "+result.inspect)
-    result
+
+    data
   end
 
   # Run over a JSON compatible Ruby data structure and change any list containing just a single nil to be an empty list.
@@ -76,10 +75,13 @@ module DataProviderESB
   def parseESBData(result, query_key, detail_key)
     begin
       logger.debug("dataProviderESB parseESBData: #{__LINE__}:  input: #{result}: #{query_key}:#{detail_key}")
+
       # If it doesn't parse then it is a problem addressed in the rescue.
       parsed = JSON.parse(result)
       logger.debug("dataProviderESB parseESBData: #{__LINE__}:  parsed:"+parsed.inspect)
       query_key_value = parsed[query_key]
+
+      logger.debug "dpesb: #{__LINE__} pESBD: parsed A: #{parsed}"
 
       ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen,
       ## for example, a user has no term data at all.
@@ -90,12 +92,14 @@ module DataProviderESB
       # fix up any empty lists that only contain a nil.
       fixArrayWithNilInPlace! parsed
 
+      logger.debug "dpesb: #{__LINE__} pESBD: parsed B: #{parsed}"
+
       parsed_value = parsed[query_key][detail_key]
 
       # if there is a detail_key but no data that's an error.
       raise "ESBInvalidData: input: #{result}" if parsed_value.nil?
       # we have data.
-      return WAPIResultWrapper.new(WAPI::SUCCESS, "found value #{query_key}:#{detail_key} from ESB", parsed_value)
+      return WAPIResultWrapper.new(WAPI::SUCCESS, "found value [#{query_key}][:#{detail_key}] from ESB", parsed_value)
     rescue => excpt
       return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "bad data for key: #{query_key}:#{detail_key}: ",
                                    excpt.message+ " "+Logging.trimBackTraceRVM(excpt.backtrace).join("/n"))
@@ -115,7 +119,13 @@ module DataProviderESB
 
     url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
     result = callDataUrl(url)
-    parseESBData(result, CLS_SCHEDULE_KEY, REGISTERED_CLASSES_KEY)
+
+    if result.meta_status == WAPI::HTTP_NOT_FOUND
+      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "resource not found", url)
+    end
+
+    logger.debug "dPESBC: #{__LINE__}: result: #{result}"
+    parseESBData(result.result, CLS_SCHEDULE_KEY, REGISTERED_CLASSES_KEY)
   end
 
 
@@ -126,7 +136,14 @@ module DataProviderESB
 
     url = "/Students/#{uniqname}/Terms"
     result = callDataUrl(url)
-    parseESBData(result, TERM_REG_KEY, TERM_KEY)
+
+    logger.debug "dPESBT: #{__LINE__}: result: #{result}"
+
+    if result.meta_status == WAPI::HTTP_NOT_FOUND
+      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "resource not found", url)
+    end
+
+    parseESBData(result.result, TERM_REG_KEY, TERM_KEY)
   end
 
   # get courses for a predefined user / term to allow non-authenticated performance check.

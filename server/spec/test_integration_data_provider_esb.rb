@@ -1,15 +1,17 @@
-
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
 # require 'webmock/minitest'
 
+
 require 'yaml'
 require_relative '../data_provider_esb'
 require_relative '../WAPI_result_wrapper'
 #require_relative '../WAPI'
-require_relative '../Logging'
 
+require_relative 'test_helper'
+
+include Logging
 
 #######################################
 ## Create the test class
@@ -19,13 +21,18 @@ class TestIntegrationDataProviderESB < Minitest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    logger.level = Logger::ERROR
+
+
+    logger.level = TestHelper.getCommonLogLevel
+    #logger.level = Logger::ERROR
     #logger.level = Logger::DEBUG
 
     ## values for testing
 
-    @esb_application = "SD-TEST-DLH"
-    @security_file = "./security.yml"
+    #@esb_application = "SD-TEST-DLH"
+    @esb_application = "SD-QA"
+    #@security_file = "./security.yml"
+    @security_file = TestHelper.findSecurityFile("security.yml")
 
     # may need to change this depending on the current state of the db.
     @known_uniqname = "ststvii"
@@ -40,7 +47,8 @@ class TestIntegrationDataProviderESB < Minitest::Test
     # Do nothing
   end
 
-  security_file = "./security.yml"
+  #security_file = "./security.yml"
+  security_file = TestHelper.findSecurityFile("security.yml")
 
   def test_esb_with_good_uniqname
 
@@ -54,9 +62,10 @@ class TestIntegrationDataProviderESB < Minitest::Test
       @@yml = nil
     end.new
 
-    refute_nil(m,"create provider object")
-    classes = m.dataProviderESBCourse(@known_uniqname, @default_term, @security_file,@esb_application,@default_term)
-    assert_equal(200,classes.meta_status,'find classes for good uniqname')
+    @default_term = 2060
+    refute_nil(m, "create provider object")
+    classes = m.dataProviderESBCourse(@known_uniqname, @default_term, @security_file, @esb_application, @default_term)
+    assert_equal(200, classes.meta_status, "find classes for good uniqname uniqname: #{@known_uniqname} term: #{@default_term}")
 
   end
 
@@ -73,11 +82,11 @@ class TestIntegrationDataProviderESB < Minitest::Test
     end.new
 
     skip("KNOWN TO FAIL: TLPORTAL-176")
-    refute_nil(m,"create provider object")
-    classes = m.dataProviderESBCourse(@known_uniqname+"XXX", @default_term, @security_file,@esb_application,@default_term)
+    refute_nil(m, "create provider object")
+    classes = m.dataProviderESBCourse(@known_uniqname+"XXX", @default_term, @security_file, @esb_application, @default_term)
 
-    assert_equal(404,classes.meta_status,'response not completed (will fail when stubbed)')
-    assert_equal(404,JSON.parse(classes.result)['responseCode'],'should not find (missing) user.')
+    assert_equal(404, classes.meta_status, 'response not completed (will fail when stubbed)')
+    assert_equal(404, JSON.parse(classes.result)['responseCode'], 'should not find (missing) user.')
 
   end
 
@@ -92,19 +101,19 @@ class TestIntegrationDataProviderESB < Minitest::Test
       @@yml = nil
     end.new
 
-    refute_nil(m,"create provider object")
-    terms = m.dataProviderESBTerms(@known_uniqname, @security_file,@esb_application)
-    assert_equal(200,terms.meta_status,'find terms json meta status')
+    refute_nil(m, "create provider object")
+    terms = m.dataProviderESBTerms(@known_uniqname, @security_file, @esb_application)
+    assert_equal(200, terms.meta_status, 'find terms json meta status')
     t = terms.result
 
-    assert(t.length > 0,"found some terms")
+    assert(t.length > 0, "found some terms")
 
   end
 
 
   def test_esb_no_terms
 
-    skip("known to fail for 208 merge address with another jira")
+    #skip("known to fail for 208 merge address with another jira")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -114,14 +123,15 @@ class TestIntegrationDataProviderESB < Minitest::Test
       @@yml = nil
     end.new
 
-    refute_nil(m,"create provider object")
-    terms = m.dataProviderESBTerms("xxx", @security_file,@esb_application)
-    puts "terms: "+terms.inspect
-    assert_equal(WAPI::UNKNOWN_ERROR,terms.meta_status,'get bad result for missing uniqname')
-    logger.debug "terms: "+terms.inspect
-    t = terms.result
-    puts "t: "+t.inspect
-    assert(t.length == 0,"get empty array when no terms")
+    refute_nil(m, "create provider object")
+    terms = m.dataProviderESBTerms("xxx", @security_file, @esb_application)
+    #puts "terms: "+terms.inspect
+    #puts "meta_status: "+terms.meta_status.to_s
+    assert_equal(WAPI::HTTP_NOT_FOUND, terms.meta_status, 'get bad result for missing uniqname')
+    # logger.debug "terms: "+terms.inspect
+    # t = terms.result
+    # puts "t: "+t.inspect
+    # assert(t.length == 0,"get empty array when no terms")
 
   end
 
