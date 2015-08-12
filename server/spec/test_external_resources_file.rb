@@ -8,7 +8,7 @@ require 'minitest/unit'
 require 'logger'
 require_relative '../external_resources_file'
 
-# require 'webmock/minitest'
+include Logging
 
 class TestExternalResourcesFile < Minitest::Test
 
@@ -21,7 +21,7 @@ class TestExternalResourcesFile < Minitest::Test
     #@resources_dir = "../test-files/resources"
     @resources_dir = TestHelper.findTestFileDirectory()+"/resources"
     @erf = ExternalResourcesFile.new(@resources_dir)
-    #logger.level=Logger::ERROR
+    logger.level=Logger::ERROR
   end
 
   # Called after every test method runs. Can be used to tear

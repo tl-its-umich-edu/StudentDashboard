@@ -23,5 +23,23 @@ SimpleCov.start do
       puts "CAN NOT FILE TEST FILE DIRECTORY: ";
       exit 1
     end
+
+    ## return a fully qualified path to the directory with the security file.
+    ## It assumes standard locations of current directory, or sub directory
+    ## starting with '/server/spec/'
+    def self.findSecurityFile(file_name)
+      currentDirectory = Dir.pwd()
+
+      checkDir = "#{currentDirectory}/#{file_name}"
+      return checkDir if File.exist?(checkDir);
+
+      checkDir = currentDirectory+"/server/spec/#{file_name}"
+      return checkDir if File.exist?(checkDir);
+
+      puts "CAN NOT FIND SECURITY FILE: #{file_name}";
+      exit 1
+    end
+
+
   end
 end

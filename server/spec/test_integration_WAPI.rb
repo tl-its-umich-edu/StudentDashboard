@@ -23,8 +23,8 @@ class TestIntegrationWAPI < Minitest::Test
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-  #@@yml_file = "./server/spec/security.yml"
-  @@yml_file = "./security.yml"
+  @@yml_file = TestHelper.findSecurityFile "security.yml"
+
   @@application = "test"
   @@yml = nil
   @@config = nil

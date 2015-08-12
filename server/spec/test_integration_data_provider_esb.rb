@@ -2,13 +2,12 @@
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
-# require 'webmock/minitest'
 
 require 'yaml'
 require_relative '../data_provider_esb'
 require_relative '../WAPI_result_wrapper'
-#require_relative '../WAPI'
 require_relative '../Logging'
+require_relative 'test_helper'
 
 
 #######################################
@@ -22,10 +21,9 @@ class TestIntegrationDataProviderESB < Minitest::Test
     logger.level = Logger::ERROR
     #logger.level = Logger::DEBUG
 
-    ## values for testing
-
     @esb_application = "SD-QA"
-    @security_file = "./security.yml"
+
+    @security_file = TestHelper.findSecurityFile "security.yml"
 
     # may need to change this depending on the current state of the db.
     @known_uniqname = "ststvii"
@@ -40,11 +38,8 @@ class TestIntegrationDataProviderESB < Minitest::Test
     # Do nothing
   end
 
-  security_file = "./security.yml"
-
   def test_esb_with_good_uniqname
 
-    #skip("can not test with stubs")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -62,7 +57,6 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def test_esb_with_bad_uniqname
 
-    #skip("can not test with stubs")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB

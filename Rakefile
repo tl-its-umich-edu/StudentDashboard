@@ -37,10 +37,12 @@ namespace :vagrant do
   end
 end
 
+task :test => [:test_local, :test_integration, :test_resources ]
 
 ## default unit tests
 Rake::TestTask.new do |t|
   t.libs << "test"
+  t.name = "test_local"
   t.test_files = FileList['**/test_*.rb'].exclude('**/test_integration*rb')
   t.verbose = true
 end
