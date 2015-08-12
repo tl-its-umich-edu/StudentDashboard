@@ -1,7 +1,5 @@
 ## Test WAPI module using real WSO2 API.
 
-require_relative 'test_helper'
-
 require 'rubygems'
 require 'minitest'
 require 'minitest/autorun'
@@ -13,6 +11,10 @@ require 'logger'
 require 'yaml'
 require 'base64'
 
+require_relative 'test_helper'
+
+#require 'logger'
+include Logging
 
 ### Test WAPI with real server
 
@@ -23,9 +25,10 @@ class TestIntegrationWAPI < Minitest::Test
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-  @@yml_file = TestHelper.findSecurityFile "security.yml"
 
-  @@application = "test"
+  @@yml_file = TestHelper.findSecurityFile "security.yml"
+  @@application = "SD-QA"
+
   @@yml = nil
   @@config = nil
 
@@ -44,13 +47,16 @@ class TestIntegrationWAPI < Minitest::Test
     @token = application['token']
     ## special uniqname is supplied for testing
     @uniqname = application['uniqname']
+    @default_term = application['default_term']
   end
 
   def setup
     # by default assume that the tests will run well and don't
     # need detailed log messages.
-    logger.level=Logger::ERROR
-#    logger.level=Logger::DEBUG
+
+    logger.level=TestHelper.getCommonLogLevel
+    #logger.level=Logger::ERROR
+    #logger.level=Logger::DEBUG
 
     @default_application_name = 'SD-QA'
     load_yml
@@ -90,7 +96,7 @@ class TestIntegrationWAPI < Minitest::Test
     # check that unknown errors are passed on.
     r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
     logger.debug "#{__LINE__}: toepo: r "+r.inspect
-    assert_equal 666, r.meta_status, "missed capturing exception"
+    assert_equal 400, r.meta_status, "missed capturing exception"
   end
 
   # check that try to renew token if get a not-authorized response
@@ -110,6 +116,7 @@ class TestIntegrationWAPI < Minitest::Test
 
     ## use a request that will work but know token is bad
     r = w.get_request("/Students/#{@uniqname}/Terms")
+    #r = r.response
     logger.info "#{__LINE__}: ttiair: r "+r.inspect
     httpStatus = r.meta_status
     assert_equal 200, httpStatus
@@ -138,7 +145,6 @@ class TestIntegrationWAPI < Minitest::Test
 
   def test_course_request
 
-
     @default_term = 2060
     r = @w.get_request("/Students/#{@uniqname}/Terms/#{@default_term}/Schedule")
     logger.info "#{__LINE__}: tcr: r "+r.inspect
@@ -151,6 +157,7 @@ class TestIntegrationWAPI < Minitest::Test
     res = r.result
     ## note result is returned verbatim so likely needs to be parsed.
     res = JSON.parse(res)
+
     cls = res['getMyClsScheduleResponse']['RegisteredClasses']
 
     refute_nil(cls[0], "There should be at least one class")
