@@ -69,31 +69,30 @@ $(document).on('click', '.showMoreInstructors', function (e) {
 });
 
 $(document).ready(function(){
-
-  var is_mobile = true;
-  if( $('#isMobile').is(":visible") === false) {
+  // determine size of viewport
+  var is_mobile;
+  if( $('#isMobile').is(':visible') === false) {
     is_mobile = true;
   }
   else {
     is_mobile = false;
   }
+  // if not a small viewport fetch a list of the available background images
   if(!is_mobile){
     $.ajax({
-      url: '/data/images/back/list.json',
+      url: '/external/image',
       cache: true,
       dataType: 'json',
       method: 'GET'
     })
     .done(function(data){
+      // pick a random image and assign it to the body element
       var ramdomImage = _.sample(data);
-      $('body').css('background-image','url("/data/images/back/' + ramdomImage);
+      $('body').css('background-image','url("/external/image/' + ramdomImage);
     })
     .fail(function() {
-      // do nothing or load predetermined local image
+      // select a default image and assign it to the body element
       $('body').css('background-image','url("/data/images/back/default.jpg');
-    })
-    .always(function() {
-      // what
     });
   }
 });

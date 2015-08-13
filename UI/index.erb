@@ -28,14 +28,11 @@
             <!-- /.container-fluid -->
         </nav>
         <div class="container-fluid contentWrapper">
-            <div class="row dashMessageContainer">
+            <div class="row dashMessageContainer" id="dashMessageContainer" ng-show="dashMessage" ng-controller = "dashMessageController">
                 <div class ="dashMessage alert alert-warning alert-plain alert-dismissible col-md-12 col-xs-12 col-lg-12" ngcloak>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <span class ="visible-lg-inline visible-md-inline">{{lang.dashIntroMessage}}</span>
-                    
-                        <span class ="visible-sm-inline visible-xs-inline" expand-text="200">
-                            <%= @strings['dashIntroMessage'] %>
-                        </span>
+                        <span class ="dashMessageInner">{{dashMessage}}</span>
+                        
                 </div>
             </div>    
             <div class="row row-eq-heigh" id="content">
