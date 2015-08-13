@@ -25,7 +25,6 @@ class TestIntegrationWAPI < Minitest::Test
   ## Configurations are grouped by an arbitrary Application name and can
   ## be loaded separately.
 
-
   @@yml_file = TestHelper.findSecurityFile "security.yml"
   @@application = "SD-QA"
 
@@ -97,6 +96,7 @@ class TestIntegrationWAPI < Minitest::Test
     r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
     logger.debug "#{__LINE__}: toepo: r "+r.inspect
     assert_equal 400, r.meta_status, "missed capturing exception: status returned: #{r.meta_status}"
+
   end
 
   # check that try to renew token if get a not-authorized response
