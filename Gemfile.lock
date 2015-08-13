@@ -33,7 +33,7 @@ GEM
     lumberjack (1.0.9)
     method_source (0.8.2)
     mime-types (2.6.1)
-    minitest (5.7.0)
+    minitest (5.8.0)
     multi_json (1.11.2)
     nenv (0.2.0)
     net-ldap (0.11)
