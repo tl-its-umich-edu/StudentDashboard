@@ -97,7 +97,7 @@ class TestIntegrationWAPI < Minitest::Test
     # check that unknown errors are passed on.
     r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
     logger.debug "#{__LINE__}: toepo: r "+r.inspect
-    assert_equal 400, r.meta_status, "missed capturing exception"
+    assert_equal 400, r.meta_status, "missed capturing exception: status returned: #{r.meta_status}"
   end
 
   # check that try to renew token if get a not-authorized response
@@ -134,7 +134,7 @@ class TestIntegrationWAPI < Minitest::Test
   end
 
   def test_term_request_unknown_user
-    skip "does not work with stubs"
+    #skip "does not work with stubs"
     logger.info 'test_term_request_unknown_user'
 
     r = @w.get_request("/Students/FeelingGroovy/Terms")
