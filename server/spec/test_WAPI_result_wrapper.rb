@@ -1,7 +1,5 @@
 #require 'rubygems'
 
-require_relative 'test_helper'
-
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
@@ -9,7 +7,8 @@ require 'minitest/unit'
 
 require_relative '../WAPI_result_wrapper'
 require 'logger'
-
+require_relative '../Logging'
+require_relative 'test_helper'
 
 class TestWAPIResultWrapper < Minitest::Test
 
