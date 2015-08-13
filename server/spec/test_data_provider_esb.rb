@@ -1,6 +1,6 @@
 ## Unit tests for provider esb module
 
-require_relative 'test_helper'
+
 
 require 'rubygems'
 
@@ -13,7 +13,9 @@ require 'logger'
 require_relative '../../server/Logging'
 require_relative '../WAPI'
 
+require_relative '../Logging'
 
+require_relative 'test_helper'
 # Test parsing of potential results from ESB.  Tests concentrate
 # on parsing the JSON.
 
