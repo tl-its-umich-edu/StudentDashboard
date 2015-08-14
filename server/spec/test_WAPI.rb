@@ -30,7 +30,6 @@ class TestWAPI < Minitest::Test
 
     a = Hash[
         'api_prefix' => @api_prefix,
-        'token_server' => @token_server,
         'key' => 'A',
         'secret' => 'B',
         'token_server' => @token_server,

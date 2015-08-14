@@ -8,6 +8,7 @@ require 'minitest/unit'
 require_relative '../data_provider_file'
 require_relative '../WAPI_result_wrapper'
 require_relative '../Logging'
+require_relative 'test_helper'
 
 
 #######################################
@@ -15,11 +16,23 @@ require_relative '../Logging'
 #######################################
 class TestDataProviderFile < Minitest::Test
 
+  attr_accessor :resources_dir
+  attr_accessor :terms_dir
+  attr_accessor :courses_dir
+
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
     logger.level = Logger::ERROR
     #logger.level = Logger::DEBUG
+
+    ## Resolve test directory regardless of where the tests
+    ## are started.
+    test_file_dir = TestHelper.findTestFileDirectory()
+    @resources_dir = test_file_dir+"/resources"
+    @terms_dir = test_file_dir+ "/terms"
+    @courses_dir = test_file_dir+"/courses"
+
   end
 
   # Called after every test method runs. Can be used to tear
@@ -39,7 +52,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    classes = m.dataProviderFileCourse("unitTestA", 2010, '../test-files/courses')
+    classes = m.dataProviderFileCourse("unitTestA", 2010, @courses_dir)
     assert_equal(200, classes.meta_status, '200 for existing class')
 
   end
@@ -52,7 +65,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    classes = m.dataProviderFileCourse("nofile at all", 2010, '../test-files/courses')
+    classes = m.dataProviderFileCourse("nofile at all", 2010, @courses_dir)
     assert_equal(404, classes.meta_status, '404 for missing class')
 
   end
@@ -65,7 +78,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    response = m.dataProviderFileCourse("gsilver", 2020, '../test-files/courses')
+    response = m.dataProviderFileCourse("gsilver", 2020, @courses_dir)
     assert_equal(200, response.meta_status, '404 for missing class')
     result = response.result
     classes = JSON.parse(result)
@@ -82,7 +95,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    terms = m.dataProviderFileTerms("nofilehere", '../test-files/terms')
+    terms = m.dataProviderFileTerms("nofilehere", @terms_dir)
     assert_equal(200, terms.meta_status, '200 for missing default term file')
 
   end
@@ -95,7 +108,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    terms = m.dataProviderFileTerms("default", '../test-files/terms')
+    terms = m.dataProviderFileTerms("default", @terms_dir)
     assert_equal(200, terms.meta_status, '200 for missing default term file')
 
   end
@@ -123,7 +136,7 @@ class TestDataProviderFile < Minitest::Test
       include Logging
     end.new
 
-    classes = m.dataProviderFileCourse("tiny", 2010, '../test-files/courses')
+    classes = m.dataProviderFileCourse("tiny", 2010, @courses_dir)
     assert_equal(200, classes.meta_status, '200 for finding class')
   end
 
@@ -189,7 +202,7 @@ class TestDataProviderFile < Minitest::Test
       include Logging
     end.new
 
-    classes = m.dataProviderFileCourse("meta200", 2010, '../test-files/courses')
+    classes = m.dataProviderFileCourse("meta200", 2010, @courses_dir)
     assert_equal(200, classes.meta_status, '200 for finding class')
   end
 

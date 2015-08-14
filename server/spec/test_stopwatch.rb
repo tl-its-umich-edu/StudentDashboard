@@ -33,7 +33,7 @@ class TestStopwatch < Minitest::Test
     @s.start
     sleep 1
     e = @s.stop
-    puts "e: "+e.inspect
+#    puts "e: "+e.inspect
     assert_in_delta(1,e,0.05,"one second wait")
 
   end
@@ -54,7 +54,7 @@ class TestStopwatch < Minitest::Test
 
     @s.newEvent
     summary = @s.summary
-    puts "summary:" +summary.inspect
+ #   puts "summary:" +summary.inspect
     assert_equal(1,summary[1])
     @s.newEvent
     summary = @s.summary
@@ -64,7 +64,7 @@ class TestStopwatch < Minitest::Test
 
   def test_summary
     s = Stopwatch.new("test_me")
-    puts "ts: summary:" + s.summary.to_s
+  #  puts "ts: summary:" + s.summary.to_s
     sum = s.summary
     assert_equal(0,sum[0])
     assert_equal(0,sum[1])

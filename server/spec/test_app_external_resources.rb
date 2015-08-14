@@ -6,14 +6,18 @@ require 'minitest'
 require 'minitest/unit'
 require 'minitest/autorun'
 require 'rack/test'
+require 'logger'
 
-class HelloWorldTest < Minitest::Test
+require_relative 'test_helper'
+
+class AppExternalResourcesTest < Minitest::Test
   include Rack::Test::Methods
+  include Logging
 
   # Test course list application
   def app
     # TODO: set logging level shouldn't be a class method.
-    CourseList.setLoggingLevel "WARN"
+    CourseList.setLoggingLevel "ERROR"
     CourseList.new
   end
 
