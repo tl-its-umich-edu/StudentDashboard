@@ -1,11 +1,12 @@
 require 'rake/testtask'
 
 ### TTD
-# - add tests invocation.
-# - check that build has been done?  Invoke if necessary?
+# - vagrant: check that build has been done?  Invoke if necessary?
 
 ######################################################
 ## commands to setup and run vagrant VM with Dashboard
+desc "### Commands to setup and run Vagrant VM for Dashboard testing"
+task :vagrant
 
 namespace :vagrant do
   desc "Make the application build artifacts available for creating the VM"
@@ -51,7 +52,7 @@ end
 
 namespace :test do
 
-  desc "available tests are: [:test:local, :test:integration, :test:resources]"
+  desc "available tests are: [:test:all, :test:local, :test_integration, :test_resources]"
   task :all => [:local, :integration, :resources]
 
 ## default unit tests
@@ -81,6 +82,5 @@ namespace :test do
     t.verbose = true
   end
 end
-
 
 ## end
