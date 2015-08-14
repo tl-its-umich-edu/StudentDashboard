@@ -47,11 +47,11 @@ class TestHelper < Object
   def self.findSecurityFile(file_name)
     currentDirectory = Dir.pwd()
 
-    checkDir = "#{currentDirectory}/#{file_name}"
-    return checkDir if File.exist?(checkDir);
+    checkFile = "#{currentDirectory}/#{file_name}"
+    return checkFile if File.exist?(checkFile);
 
-    checkDir = currentDirectory+"/server/spec/#{file_name}"
-    return checkDir if File.exist?(checkDir);
+    checkFile = currentDirectory+"/server/spec/#{file_name}"
+    return checkFile if File.exist?(checkFile);
 
     puts "CAN NOT FIND SECURITY FILE: #{file_name}";
     exit 1
