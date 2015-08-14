@@ -24,7 +24,7 @@ class TestWAPI < Minitest::Test
   def setup
     # by default assume the tests will run well and don't
     # need detailed log messages.
-    logger.level=Logger::ERROR
+    #logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
     logger.level=TestHelper.getCommonLogLevel
 
