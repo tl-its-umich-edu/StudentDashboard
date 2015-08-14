@@ -52,7 +52,7 @@ end
 
 namespace :test do
 
-  desc "available tests are: [:test:local, :test:integration, :test:resources]"
+  desc "available tests are: [:test:all, :test:local, :test_integration, :test_resources]"
   task :all => [:local, :integration, :resources]
 
 ## default unit tests
