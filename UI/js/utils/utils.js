@@ -48,6 +48,7 @@ var errorHandler = function (url, result) {
 
 
 $('.dashMessage').bind('closed.bs.alert', function () {
+  //console.log ('hiding!')
   //here is where we do some localStorage or sessionStorage thing to make the dismissable stick
 });
 
