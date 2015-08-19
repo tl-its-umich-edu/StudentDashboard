@@ -44,6 +44,10 @@ a {
     text-align:right;
     padding-top:8px;
 }
+
+.navbar-nav.navbar-right:last-child {
+    margin-right:0;
+}
 .loginContainer .btn-link, .loginContainer .btn-link:hover, .loginContainer  .btn-link:focus, .loginContainer .btn-link:active {
     color:#fff;
 }
