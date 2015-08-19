@@ -46,11 +46,19 @@ var errorHandler = function (url, result) {
 
 };
 
+/**
+ * Manage dismissing alert
+ */
 
 $('.dashMessage').bind('closed.bs.alert', function () {
-  //console.log ('hiding!')
-  //here is where we do some localStorage or sessionStorage thing to make the dismissable stick
+  dashMessageSeenUpdate();
 });
+
+
+var dashMessageSeenUpdate = function() {
+  // on closing the alert, set a sessionStorage value
+  sessionStorage.setItem('dashMessageSeen', true);
+};
 
 /**
  *
