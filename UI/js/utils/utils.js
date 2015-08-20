@@ -89,7 +89,7 @@ $(document).ready(function(){
   // if not a small viewport fetch a list of the available background images
   if(!is_mobile){
     $.ajax({
-      url: '/external/image',
+      url: '/external/imagexxx',
       cache: true,
       dataType: 'json',
       method: 'GET'
@@ -99,11 +99,11 @@ $(document).ready(function(){
       var ramdomImage = _.sample(data);
 
       //need to get absolute path to deal with Chrome/Safari
-      document.body.style.backgroundImage = 'url(' + window.location + '/external/image/' + ramdomImage + ')';
+      document.body.style.backgroundImage = 'url(' + window.location + 'external/image/' + ramdomImage + ')';
     })
     .fail(function() {
       // select a default image and assign it to the body element
-      document.body.style.backgroundImage = 'url(' + window.location + '/data/images/back/default.jpg' + ')';
+      document.body.style.backgroundImage = 'url(' + window.location + 'data/images/back/default.jpg' + ')';
     });
   }
 });
