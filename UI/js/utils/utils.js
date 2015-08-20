@@ -97,11 +97,13 @@ $(document).ready(function(){
     .done(function(data){
       // pick a random image and assign it to the body element
       var ramdomImage = _.sample(data);
-      $('body').css('background-image','url("/external/image/' + ramdomImage);
+
+      //need to get absolute path to deal with Chrome/Safari
+      document.body.style.backgroundImage = 'url(' + window.location + '/external/image/' + ramdomImage + ')';
     })
     .fail(function() {
       // select a default image and assign it to the body element
-      $('body').css('background-image','url("/data/images/back/default.jpg');
+      document.body.style.backgroundImage = 'url(' + window.location + '/data/images/back/default.jpg' + ')';
     });
   }
 });
