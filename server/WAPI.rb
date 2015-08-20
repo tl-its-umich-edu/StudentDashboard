@@ -18,6 +18,8 @@ require_relative './Logging'
 require_relative './WAPI_result_wrapper'
 require_relative './stopwatch'
 
+## For detailed tracing set this to anything but FalseClass
+TRACE=FalseClass
 
 include Logging
 
@@ -93,6 +95,9 @@ class WAPI
   end
 
   def do_request(request)
+
+    RestClient.log = logger if (logger.debug? and TRACE != FalseClass)
+
     url=format_url(request)
     logger.debug "WAPI: #{__LINE__}: do_request: url: #{url}"
     msg = Thread.current.to_s+": "+url
@@ -104,32 +109,33 @@ class WAPI
                                       :accept => :json,
                                       :verify_ssl => true}
 
-      logger.debug "WAPI: #{__LINE__}: do_request: esb response "+response.inspect
-      ## try to parse as json or send back a wrapped error
-      j = JSON.parse(response)
-      logger.debug "WAPI: #{__LINE__}: do_request: esb parsed response "+j.inspect
+      ## try to parse as json.  If can't do that generate an error
+      json_response = JSON.parse(response)
 
-      ## convert response code to integer if comes as a string
-      begin
-        # convert the response code to an integer
-        if j.has_key?('responseCode')
-          j['responseCode'] = j['responseCode'].to_i
-        end
-      rescue => err
-        logger.info "WAPI: #{__LINE__}: do_request: conversion error "+j.inspect
-        ## because of the error reset back to the original response.
-        j = JSON.parse(response)
-      end
-      ## get response code from nested response or from the original response
-      rc = j['responseCode'] || response.code
-      j = JSON.generate(j)
-      wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", j)
+      ## json_response is a JSON object
+      logger.debug "WAPI: #{__LINE__}: do_request: esb parsed response "+json_response.inspect
+
+      # fix up the json a bit.
+      json_response = standardize_json(json_response, response)
+
+      ####### Now we have a parsed json object
+      dump_json_object(json_response, response) if logger.debug;
+
+      # figure out the overall response code for the request.
+      rc = compute_response_code_to_return(json_response, response)
+
+      ## We have parsed JSON, now make it a json string so it can be returned
+      json_response = JSON.generate(json_response)
+      wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", json_response)
+
+        ### handle error conditions explicitly.
     rescue URI::InvalidURIError => exp
       logger.debug "WAPI: #{__LINE__}: invalid URI: "+exp.to_s
       wrapped_response = WAPIResultWrapper.new(WAPI::BAD_REQUEST, "INVALID URL", exp.to_s)
-    rescue Exception => exp
 
+    rescue Exception => exp
       logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
+      logger.debug "WAPI: #{__LINE__}: do_request: exception: st: "+exp.backtrace.to_s
 
       if exp.response.code == WAPI::HTTP_NOT_FOUND
         wrapped_response = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "NOT FOUND", exp)
@@ -139,16 +145,54 @@ class WAPI
     end
 
     r.stop
-    logger.info "WAPI: do_request: stopwatch: "+ r.pretty_summary
+    logger.info "WAPI: #{__LINE__}: do_request: stopwatch: "+ r.pretty_summary
     wrapped_response
   end
+
+  ## detailed dump of response object
+  def dump_json_object(json_response, response)
+    logger.debug "WAPI: #{__LINE__}: after initial parse"
+    logger.info "WAPI: #{__LINE__}: response.code: "+json_response[response.code].to_s
+    json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
+  end
+
+  ## Figure out the response status code to return.  It might be from the response body or from the RestClient response.
+  def compute_response_code_to_return(j, response)
+    if Hash.try_convert(j)
+      # if there is a nested response code then use that.
+      if j.has_key?('responseCode')
+        rc = j['responseCode']
+      else
+        # use the one from the request to the esb.
+        rc = response.code
+      end
+    end
+    rc
+  end
+
+  ## Fix up the json a bit.
+  def standardize_json(j, response)
+    # if there is a nested response code then make sure it is an integer.
+    begin
+      if  ( !j.kind_of?(Array) && j.has_key?('responseCode') )
+        # returned value may have a response code element that needs to be converted to an integer
+          j['responseCode'] = j['responseCode'].to_i
+      end
+    rescue => err
+      logger.info "WAPI: #{__LINE__}: do_request: conversion error "+j.inspect
+      ## because of the error reset j back to the original json response.
+      j = JSON.parse(response)
+    end
+    j
+  end
+
 
   ## Run the request.  If the result is unauthorized then renew the token and try again.
   ## In any case will return a wrapped result.
 
   def get_request(request)
     wrapped_response = do_request(request)
-    logger.debug "WAPI: get_request: "+request.to_s
+    logger.debug "WAPI: #{__LINE__}: get_request: "+request.to_s
 
     ## If appropriate try to renew the token.
     if wrapped_response.meta_status == WAPI::UNKNOWN_ERROR &&
