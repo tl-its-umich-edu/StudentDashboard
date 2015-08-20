@@ -33,6 +33,11 @@
             <small>
               {{item.Subtitle}} {{item.SectionNumber}}
             </small>
+            <br>
+            <small>
+              <span ng-repeat="meeting in item.Meeting">{{meeting.Days}} {{meeting.Times}}<em ng-show="!$last">, </em></span>
+            </small>
+
             <div ng-show="item.Instructor" class="instructorsInfo">
               <div ng-if="item.Instructor.length">
                 <div ng-repeat="instructor in item.Instructor | orderBy:'RoleCode' | limitTo:1">
