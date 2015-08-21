@@ -65,32 +65,33 @@ development testing but for any installation that is not simply for
 local testing two yaml configuration files should be provided.  See
 copies of those files in the application source for detailed
 information on the contents. 
-The configuration
-files will be read from the directory
-*/usr/local/ctools/app/ctools/tl/home* or, if a file isn't there,
-from the *server/local* directory in the expanded war file directory.
+The configuration files will be read from the directory
+**/usr/local/ctools/app/ctools/tl/home** or, if a file isn't there,
+from the **server/local** directory under the current directory or, if running under Tomcat, in the expanded war file directory.
 
 The directory name used for configuration files  can be overridden by an
-environment variable.  The variable LATTE_OPTS will be checked and it
+environment variable.  The variable **LATTE_OPTS** will be checked and it
 is not nil then the contents will be parsed as command line options.
-Currently all values except for *--config_dir* will be ignored.  If it
-is required to set the environment variable then it can simply be set
-for develoment as an exported variable from the command line.  To set
+Currently all command line values except for **--config_dir** will be ignored.  If it
+is required to set the environment variable then, when running from the command line, it can simply be set
+as an exported variable on the command line.  To set
 the value when running under Tomcat it needs to be set in the
 setenv.sh file.  See the vagrant directory for an example of how to
 do that.
 
 The file
-*security.yml* contains the ESB connection information.  There are no appropriate defaults and it must be 
-configured for each installation.  Copy the file *security.yaml.TEMPLATE* and
-fill in values appropriate for your installation.  Note that the *security.yml* file must have restricted read permissions.
+**security.yml** contains the ESB connection information.  There are no appropriate defaults and it must be 
+configured for each installation.  Copy the file **security.yaml.TEMPLATE** and
+fill in values appropriate for your installation.  Note that the **security.yml** file 
+must have restricted read permissions.
 
-The file *studentdashboard.yml* contains values that may change from instance
+The file **studentdashboard.yml** contains values that may change from instance
 to instance but don't contain sensitive information.  The values in it 
 that are most likely to change change are the ESB application id and the
 auth settings.  The first identifies the information in the security file that
 will be used to connect to the ESB.  The auth values are for load testing
-and allow using a stub authentication service. See the sample file for details.  Suggested configuration files for QA, Load testing and Production deployments are included.
+and allow using a stub authentication service. See the sample file for details.  
+Suggested configuration files for QA, Load testing and Production deployments are included.
 
 
 
