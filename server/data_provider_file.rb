@@ -43,6 +43,19 @@ module DataProviderFile
     return getWrappedDiskFile(data_file)
   end
 
+# List of the events for a user.
+
+  def dataProviderFileToDoLMS(uniqname, data_provider_file_directory)
+    logger.debug "data provider is DataProviderFileCourse.\n"
+
+    # get a file name to the data file
+    data_file = "#{data_provider_file_directory}/#{uniqname}.json"
+    # use a default file if specific one doesn't exist.
+    data_file = "#{data_provider_file_directory}/default.json" unless File.exists?(data_file)
+
+    return getWrappedDiskFile(data_file)
+  end
+
 # The check call will return the results for a request that is done with a single
 # configured user and term.  This allows safely running the check via URL for external monitoring
 # without requiring authentication.

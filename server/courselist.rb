@@ -651,7 +651,7 @@ END
     course_data.value_as_json
   end
 
-  #### get the terms
+  ################# get the terms
 
   ## ask for terms from the current user.
   get "/terms/?" do
@@ -682,6 +682,45 @@ END
     termList = dataProviderTerms(userid)
     termList.value_as_json
   end
+
+
+  ################## todolms information about things to do from the lms #############
+
+
+  ## can only ask for specific users
+  get "/todolms/?" do
+    logger.debug "requested todolms with no qualifier"
+    response.status = 403
+    return "must request specific user"
+  end
+
+  ## ask for the LMS to get information for a specific person.
+  get "/todolms/:userid.?:format?" do |userid, format|
+
+    logger.debug "todolms"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoLMS(userid)
+    todolmsList.value_as_json
+  end
+
+  get "/todolms/:userid.?:format?" do |userid, format|
+    puts "todolms userid: #{userid} format: #{format}"
+    logger.debug "todolms userid: #{userid} format: #{format}"
+    todolmsUser.call(userid, format)
+  end
+
 
   #################################################
   ############### Supply static external resources
@@ -806,6 +845,23 @@ END
     end
 
     logIfUnavailable(terms, "terms: user: #{uniqname}")
+
+    terms
+  end
+
+  def dataProviderToDoLMS(uniqname)
+
+    logger.debug "DataProviderToDoLMS uniqname: #{uniqname}"
+
+    config_hash = settings.latte_config
+
+    if !config_hash[:data_provider_file_directory].nil?
+      terms = dataProviderFileToDoLMS(uniqname, "#{config_hash[:data_provider_file_directory]}/todolms")
+    else
+      terms = dataProviderESBToDoLMS(uniqname, config_hash[:security_file], config_hash[:application_name])
+    end
+
+    logIfUnavailable(terms, "todolms: user: #{uniqname}")
 
     terms
   end
