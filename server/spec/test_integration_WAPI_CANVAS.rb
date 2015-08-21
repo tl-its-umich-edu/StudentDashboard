@@ -60,7 +60,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     #logger.level=Logger::DEBUG
 
     #@default_application_name = 'SD-QA-CANVAS'
-    @default_application_name = 'DLH-Canvas-TL'
+    @default_application_name = 'Canvas-TL-TEST'
     #@default_application_name = 'CANVAS-ADMIN-DEV'
     load_yml
     load_application @default_application_name
