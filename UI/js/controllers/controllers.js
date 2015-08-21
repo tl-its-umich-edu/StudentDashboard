@@ -1,6 +1,31 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, dashboardApp */
+/* global $, dashboardApp, _ */
+
+
+/**
+ * Dashboard Message Controller: determines what if anything to display in the mesage panel
+ */
+
+dashboardApp.controller('dashMessageController', ['DashMessage','$rootScope', '$scope',  function (DashMessage, $rootScope, $scope) {
+    //use factory to fetch list of available text files if the user has not dismissed the alert that displays them
+    //in this session
+    if (!sessionStorage.getItem('dashMessageSeen')) {
+      DashMessage.getMessageIndex('/external/text/').then(function (data) {
+        if (data.length === 0) {
+          // make sure text container remains hidden, as there is nothing to show
+          $scope.dashMessage = false;
+        } else {
+          // use underscore to select one element from the array
+          var dashMessageRandom = _.sample(data);
+          // use factory to retrieve text of this random file, and assign the contents to the scope
+          DashMessage.getMessage('/external/text/' + dashMessageRandom).then(function (data) {
+            $scope.dashMessage = data;
+          });
+        }
+      });
+    }
+}]);
 
 /**
  * Terms controller - Angular dependencies are injected.
@@ -28,6 +53,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
         $scope.terms = data.Result;
         $scope.$parent.term = data.Result[0].TermDescr;
+        $scope.$parent.shortDescription = data.Result[0].TermShortDescr;
         $scope.$parent.termId = data.Result[0].TermCode;
 
         $scope.courses = [];
@@ -50,14 +76,15 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
         $scope.$parent.term  = 'You do not seem to have courses in any terms we know of.';
       }
     }    
-  });  
+  });
 
   //Handler to change the term and retrieve the term's courses, using Course factory as a promise
 
-  $scope.getTerm = function (termId, termName) {
+  $scope.getTerm = function (termId, termName, shortDescription) {
     $scope.loading = true;
     $scope.courses = [];
     $scope.$parent.term = termName;
+    $scope.$parent.shortDescription = shortDescription;
     
     var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 

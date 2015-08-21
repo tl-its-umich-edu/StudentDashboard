@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="dashboardApp">
     <head>
+        <title><%= @strings['applicationTitle'] %></title>
         <meta http-equiv="X-UA-Compatible" content="IE=EDGE" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css">
@@ -9,38 +10,32 @@
         <link rel="icon" href="images/favicon-196x196.png">
         <link rel="stylesheet" href="css/custom_style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title><%= @strings['applicationTitle'] %></title>
     </head>
     <body>
-
-      <nav class="navbar navbar-default navbar-fixed-top navHead" role="navigation">
+      <div id="lang" style="display:none"><%= @strings.to_json %></div>
+      <a href="#" id="footerReveal" class="footerReveal" ng-click="showFooter=!showFooter"> </a>
+      <nav class="navbar navbar-default navHead" role="navigation">
             <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header mastHead">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <h1 class="navbar-brand collapse-nav"></h1>
+                <div class="row">
+                    <div class="navbar-header mastHead col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <h1 class="navbar-brand"><span class="sr-only"><%= @strings['applicationTitle'] %></span></h1>
+                    </div>
+                    <div class="nav navbar-nav navbar-right loginContainer col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <a class="btn btn-link" href="https://ctools.umich.edu/portal/login" id="ctoolsLogin">CTools<span class="visible-lg-inline visible-md-inline visible-sm-inline"> Login</span></a>
+                        <a class="btn btn-link" href="https://umich.instructure.com" id="canvasLogin">Canvas<span class="visible-lg-inline visible-md-inline visible-sm-inline"> Login</span></a>
+                    </div>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling  -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="print">
-                            <a href="#" class="collapse-nav" data-toggle="modal" data-target="#serverInfoModal"></i>About</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
+            </div>    
             <!-- /.container-fluid -->
         </nav>
-
-  
-
         <div class="container-fluid contentWrapper">
+            <div class="row dashMessageContainer" id="dashMessageContainer" ng-show="dashMessage" ng-controller = "dashMessageController">
+                <div class ="dashMessage alert alert-warning alert-plain alert-dismissible col-md-12 col-xs-12 col-lg-12" ngcloak>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <span class ="dashMessageInner">{{dashMessage}}</span>
+                        
+                </div>
+            </div>    
             <div class="row row-eq-heigh" id="content">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
                     <!--
@@ -200,9 +195,8 @@
         <div id="spinner" style="display:none">
         </div>
 
-        <p class="footerInfo text-muted"><small style="font-size:75%"> User: [<span id="userId"><%= @remote_user %></span>] server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</small>
+        <p class="footerInfo text-muted" ng-show="showFooter"><small style="font-size:75%"> User: [<span id="userId"><%= @remote_user %></span>] server: [<%= @server %>] build time: [<%= @build_time %>] build_id: [<%= @build_id %>]</small>
          </p>
-         <div id="lang" style="display:none"><%= @strings.to_json %></div>
 
         <script type="text/javascript" src="lib/jquery/jquery-1.11.0.min.js">
         </script>
@@ -224,9 +218,9 @@
         </script>
         <script type="text/javascript" src="js/factories/factories.js">
         </script>
-
         <script type="text/javascript" src="js/filters/filters.js">
         </script>
+
         <!-- Modal -->
         <!--
         <div class="modal fade" id="newToDoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -289,5 +283,6 @@
                 </div>
             </div>
         </div>
+        <div id="isMobile"></div>
     </body>
 </html>

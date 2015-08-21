@@ -1,12 +1,14 @@
-<div  ng-controller = "termsController" ng-cloak>
+<div ng-controller = "termsController" ng-cloak>
   <div id="courses" class="itemPanel">
-    <h3 class="colHeader">{{lang.panelTitle}} <small>{{term}}</small>
+    <h3 class="colHeader"> <span class="sr-only">{{lang.panelTitle}}</span>
       <div class="btn-group pull-right" id="termMenu" ng-hide="terms.length===0">
+        <small class="visible-xs-inline visible-lg-inline">{{shortDescription}}&nbsp;&nbsp;</small>
+        <small class="visible-sm-inline visible-md-inline">{{term}}&nbsp;&nbsp;</small>
         <button type="button" class="btn btn-sm btn-default dropdown-toggle pull-right" data-toggle="dropdown">
           Terms <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li ng-repeat="term in terms"><a href='' ng-click="getTerm(term.TermCode, term.TermDescr)" data-term-id="{{term.TermCode}}">{{term.TermDescr}}</a></li>
+          <li role="menuitem" ng-repeat="term in terms"><a href='' ng-click="getTerm(term.TermCode, term.TermDescr, term.TermShortDescr)" data-term-id="{{term.TermCode}}">{{term.TermDescr}}</a></li>
         </ul>
       </div>
       <div class="spinner pull-right" ng-show="loading"></div>
@@ -70,7 +72,7 @@
         </div>
       </li>
     </ul>
-    <div ng-hide="loading">
+    <div ng-hide="loading" class="itemPanelFooter">
       <p> {{lang.lookAtOtherDashes}} 
         <span><a href="{{lang.ctoolsUrl}}">{{lang.ctoolsName}}</a></span>
         <span>or</span> <a href="{{lang.canvasUrl}}">{{lang.canvasName}}.</a></span>

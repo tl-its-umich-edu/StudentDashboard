@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $*/
+/* global $, _*/
 
 /**
  * get the strings from a hidden DOM element and
@@ -46,7 +46,19 @@ var errorHandler = function (url, result) {
 
 };
 
+/**
+ * Manage dismissing alert
+ */
 
+$('.dashMessage').bind('closed.bs.alert', function () {
+  dashMessageSeenUpdate();
+});
+
+
+var dashMessageSeenUpdate = function() {
+  // on closing the alert, set a sessionStorage value
+  sessionStorage.setItem('dashMessageSeen', true);
+};
 
 /**
  *
@@ -63,4 +75,35 @@ $(document).on('click', '.showMoreInstructors', function (e) {
   $(this).text(txt);
   $(this).closest('div.instructorsInfo').find('.moreInstructors').fadeToggle();
   return null;
+});
+
+$(document).ready(function(){
+  // determine size of viewport
+  var is_mobile;
+  if( $('#isMobile').is(':visible') === false) {
+    is_mobile = true;
+  }
+  else {
+    is_mobile = false;
+  }
+  // if not a small viewport fetch a list of the available background images
+  if(!is_mobile){
+    $.ajax({
+      url: '/external/image',
+      cache: true,
+      dataType: 'json',
+      method: 'GET'
+    })
+    .done(function(data){
+      // pick a random image and assign it to the body element
+      var ramdomImage = _.sample(data);
+
+      //need to get absolute path to deal with Chrome/Safari
+      document.body.style.backgroundImage = 'url(' + window.location + 'external/image/' + ramdomImage + ')';
+    })
+    .fail(function() {
+      // select a default image and assign it to the body element
+      document.body.style.backgroundImage = 'url(' + window.location + 'data/images/back/default.jpg' + ')';
+    });
+  }
 });
