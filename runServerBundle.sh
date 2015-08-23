@@ -25,6 +25,7 @@ set -x
 # Sample of how to set latte options for command line ruby run.
 # LATTE_OPTS can also be set and exported separately.
 #LATTE_OPTS="--config_dir=/Users/dlhaines/dev/GITHUB/dlh-umich.edu/FORKS/StudentDashboard/tmp" bundle exec rackup -p $PORT
-#echo "LATTE_OPTS: [$LATTE_OPTS]"
+#LATTE_OPTS="--config_dir=/etc/"
+echo "LATTE_OPTS: [$LATTE_OPTS]"
 bundle exec rackup -p $PORT
 #end
