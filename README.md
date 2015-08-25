@@ -72,7 +72,7 @@ from the **server/local** directory under the current directory or, if running u
 The directory name used for configuration files  can be overridden by an
 environment variable.  The variable **LATTE_OPTS** will be checked and it
 is not nil then the contents will be parsed as command line options.
-Currently all command line values except for **--config_dir** will be ignored.  If it
+Currently all command line values except for **--config_dir** will be ignored.  The value for **--config_dir** needs to be a directory - the file name expected in that directory is **studentdashboard.yml**. If it
 is required to set the environment variable then, when running from the command line, it can simply be set
 as an exported variable on the command line.  To set
 the value when running under Tomcat it needs to be set in the
