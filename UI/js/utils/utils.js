@@ -89,7 +89,7 @@ $(document).ready(function(){
   // if not a small viewport fetch a list of the available background images
   if(!is_mobile){
     $.ajax({
-      url: '/external/image',
+      url: 'external/image',
       cache: true,
       dataType: 'json',
       method: 'GET'
