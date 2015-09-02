@@ -37,4 +37,22 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
       return input.replace(',', ', ');
     }
   };
+}).filter('fixMeetingDays', function () {
+  return function (input) {
+    if (input) {
+      var strDays='';
+      var arrayDays=[];
+      var mapDays = {
+         Mo:'Monday',
+         Tu:'Tuesday',
+         We:'Wednesday',
+         Th:'Thursday',
+         Fr: 'Friday'
+      };
+      strDays = input.replace(/Mo|Tu|We|Th|Fr/gi, function(matched){
+        arrayDays.push(mapDays[matched]);
+      });
+      return arrayDays.join(', ');
+    }
+  };
 });
