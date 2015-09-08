@@ -2,11 +2,7 @@ body {
     background-color:#eee;
     background-position: 0 50px;
     background-repeat:  no-repeat;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
+ }
 
 a {
     color:#039;
