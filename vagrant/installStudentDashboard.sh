@@ -51,22 +51,27 @@ if [ ! -e "$LOCAL_SECURITY_FILE" ]; then
     echo "linking up local security file";
     ln -s $HOST_SECURITY_FILE $LOCAL_SECURITY_FILE
 else
-    echo "security file already installed"
+    echo "security file already linked."
 fi
 
 #### install a setenv.sh file if it exists.
 if [ -e /vagrant/setenv.sh ]; then
    echo "installing setenv.sh file for tomcat"
-   mkdir /var/lib/tomcat7/bin
+   [ -d /var/lib/tomcat7/bin ] || mkdir /var/lib/tomcat7/bin
    chown tomcat7:tomcat7 /var/lib/tomcat7/bin
    sudo cp /vagrant/setenv.sh /var/lib/tomcat7/bin/setenv.sh
    sudo /etc/init.d/tomcat7 restart
 fi
 
 # Install a Student Dashboard war file from /vagrant to the tomcat webapps directory.
+# May change name during install.
 SRC=/vagrant/ARTIFACTS
 WEBAPPS_DIR=/var/lib/tomcat7/webapps
-DEST_FILE=$WEBAPPS_DIR/StudentDashboard.war
+WARFILENAME=ROOT
+WEBAPPNAME=StudentDashboard
+#DEST_FILE=$WEBAPPS_DIR/StudentDashboard.war
+DEST_NAME=$WEBAPPS_DIR/$WARFILENAME
+DEST_FILE=$DEST_NAME.war
 
 function help {
     echo "  Copy war file into a vagrant VM Tomcat from /vagrant."
@@ -82,7 +87,7 @@ function help {
 
 
 
-WAR=`ls $SRC/S*war`
+WAR=`ls $SRC/$WEBAPPNAME*war`
 #ls -l $SRC/S*war
 #ls -l $WAR
 
@@ -96,6 +101,9 @@ echo "** list available war file"
 ls -l $WAR
 echo "** list installed webapps"
 ls -l $WEBAPPS_DIR
+# clean up webapp directory
+rm -rf $DEST_NAME
+rm -rf $DEST_FILE
 echo "copying over war file"
 cp -f $WAR $DEST_FILE ||  { echo "error copying $WAR rc: $?"; exit 1; }
 
@@ -105,4 +113,17 @@ ls -l $WEBAPPS_DIR
 
 echo "StudentDashboard has been installed.  Log files are available on the VM"
 echo "at /var/lib/tomcat7/logs."
+echo "On Mac you can go straight to this installation with the command 'open http://localhost:9090/'"
 #end
+## for reference these are the values supplied for production installs.
+# WEBRELSRC=http://limpkin.dsc.umich.edu:6660/job/
+# JOBNAME=LATTE-SD2-MASTER
+# BUILD=3
+# ARTIFACT_DIRECTORY=artifact/ARTIFACTS
+# TIMESTAMP=2015-09-08-16-25
+# VERSION=StudentDashboard
+# WEBAPPNAME=StudentDashboard
+# WARFILENAME=ROOT
+# IMAGE_INSTALL_TYPE=war
+# IMAGE_NAME=${WEBAPPNAME}.${TIMESTAMP}.war
+# CONFIGURATION_NAME=configuration-files.${TIMESTAMP}.tar
