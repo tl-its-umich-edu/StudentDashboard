@@ -103,7 +103,7 @@ $(document).ready(function(){
     })
     .fail(function() {
       // select a default image and assign it to the body element
-      document.body.style.backgroundImage = 'url(data/images/back/default.jpg' + ')';
+      document.body.style.backgroundImage = 'url(data/images/back/default.jpg)';
     });
   }
 });
