@@ -18,10 +18,9 @@ module DataProviderFile
   @@default_term=2010
 
   def dataProviderFileCourse(uniqname, termid, data_provider_file_directory)
-    logger.debug "data provider is DataProviderFileCourse.\n"
+    logger.debug "#{__method__}: #{__LINE__}: data provider is DataProviderFileCourse uniqname: #{uniqname} termid: #{termid}."
 
     data_file = "#{data_provider_file_directory}/#{uniqname}.#{termid}.json"
-
     data_file = "#{data_provider_file_directory}/#{uniqname}.json" unless File.exists?(data_file)
 
     return getWrappedDiskFile(data_file)
@@ -32,8 +31,9 @@ module DataProviderFile
 # check the uniqname but will have a default file since usually the terms will be
 # the same for the majority of students.
 
-  def dataProviderFileTerms(uniqname, data_provider_file_directory)
-    logger.debug "data provider is DataProviderFileCourse.\n"
+  #def dataProviderFileTerms(uniqname, data_provider_file_directory)
+  def dataProviderFileTerms(data_provider_file_directory, uniqname)
+    logger.debug "#{__method__}: #{__LINE__}: data provider is DataProviderFile. uniqname: #{uniqname} directory: #{data_provider_file_directory}"
 
     # get a file name to the data file
     data_file = "#{data_provider_file_directory}/#{uniqname}.json"
@@ -46,7 +46,7 @@ module DataProviderFile
 # List of the events for a user.
 
   def dataProviderFileToDoLMS(uniqname, data_provider_file_directory)
-    logger.debug "data provider is DataProviderFileCourse.\n"
+    logger.debug "#{__method__}: #{__LINE__}: data provider is DataProviderFile. uniqname: #{uniqname} directory: #{data_provider_file_directory}"
 
     # get a file name to the data file
     data_file = "#{data_provider_file_directory}/#{uniqname}.json"
@@ -67,9 +67,9 @@ module DataProviderFile
 
 
   def getWrappedDiskFile(data_file)
-    logger.debug "#{__LINE__}: DPFC: data file string: "+data_file
+    logger.debug "#{__method__}: #{__LINE__}: DPFC: data file string: "+data_file
     if File.exists?(data_file)
-      logger.debug "#{__LINE__}: DPFC: file exists: #{data_file}"
+      logger.debug "#{__method__}: #{__LINE__}: DPFC: file exists: #{data_file}"
       classes = File.read(data_file)
 
       wrapped = WAPIResultWrapper.value_from_json(classes);
@@ -80,11 +80,11 @@ module DataProviderFile
       end
 
     else
-      logger.debug "#{__LINE__}: DPFC: file does not exist: #{data_file}"
+      logger.debug "#{__method__}: #{__LINE__}: DPFC: file does not exist: #{data_file}"
       wrapped = WAPIResultWrapper.new(404, "File not found", "Data provider from files did not find a matching file for #{data_file}")
     end
 
-    logger.debug "#{__LINE__}: DPFC: returning: "+wrapped.to_s
+    logger.debug "#{__method__}: #{__LINE__}: DPFC: returning: "+wrapped.to_s
     return wrapped
   end
 
