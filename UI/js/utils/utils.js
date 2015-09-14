@@ -98,13 +98,12 @@ $(document).ready(function(){
       // pick a random image and assign it to the body element
       var ramdomImage = _.sample(data);
 
-      //need to get absolute path to deal with Chrome/Safari
-      document.body.style.backgroundImage = 'url(' + window.location + 'external/image/' + ramdomImage + ')';
+      document.body.style.backgroundImage = 'url(external/image/' + ramdomImage + ')';
       document.body.style.backgroundColor = '#444444';
     })
     .fail(function() {
       // select a default image and assign it to the body element
-      document.body.style.backgroundImage = 'url(' + window.location + 'data/images/back/default.jpg' + ')';
+      document.body.style.backgroundImage = 'url(data/images/back/default.jpg)';
       document.body.style.backgroundColor = '#444444';
     });
   }
