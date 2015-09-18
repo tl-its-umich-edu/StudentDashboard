@@ -81,9 +81,8 @@ class ChannelCToolsDirectHttp
   def do_request(request)
     ## This will fail as soon as other query parameters are added.  We can fix it if that happens.
     url = format_url(request)+"?_sessionId=#{session_id}"
-    #puts "d_r: url: #{url}"
     response = RestClient.get url, :verify_ssl => true
-    #puts "d_r: response: "+response.inspect
+    logger.info "#{self.class.to_s}:#{__method__}: response: "+response.inspect
     response
   end
 
