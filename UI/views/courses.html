@@ -13,7 +13,7 @@
       </div>
       <div class="spinner pull-right" ng-show="loading"></div>
     </h3>
-
+    <div class="alert alert-info" ng-show="error">{{error}}</div>
     <div>{{courses.message}}</div>
     <img class="errorImg" ng-show="courses.errors.message" src="images/error-small.png">
     <div>{{courses.errors.message}}</div>

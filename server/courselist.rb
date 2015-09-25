@@ -86,8 +86,11 @@ class CourseList < Sinatra::Base
   ## build.
   config_hash[:BASE_DIR] = File.dirname(File.dirname(__FILE__))
 
-  # name of application to use for information
+  # name of application to use for ESB information
   config_hash[:application_name] = "SD-QA"
+
+  # name of application to use for CTools HTTP direct information
+  config_hash[:ctools_http_application_name] = "CTQA-DIRECT"
 
   # default name of default user
   config_hash[:default_user] = "default"
@@ -576,12 +579,16 @@ END
     logger.debug "remote_user: #{request.env['REMOTE_USER']} computed user: #{user}"
     request.env['REMOTE_USER'] = user
 
-    # store a stopwatch in the session with the current thread id
+    # Store a stack of stopwatches in the session with the current thread id.
+    # The stack is required as Dash calls back to itself.
     msg = Thread.current.to_s + "\t"+request.url.to_s
     sd = Stopwatch.new(msg)
     sd.start
-    session[:thread] = sd
 
+    session[:thread] = Array.new if session[:thread].nil?
+    session[:thread].push(sd)
+
+    #session[:thread] = sd
     logger.debug "REQUEST: end initial processing"
   end
 
@@ -717,7 +724,32 @@ END
   ## ask for the LMS to get information for a specific person.
   get "/todolms/:userid.?:format?" do |userid, format|
 
-    logger.debug "todolms"
+    logger.debug "/todolms/#{userid}"
+
+    # Call to the ctools REST source url in this application.
+    status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
+
+    # call to the canvas source (someday)
+
+    # return the combined info after calling ctools and canvas.
+    # TODO: move the WAPI wrapper to the canvas only provider.
+    results = {
+        'ctools' => ctools_body,
+        'canvas' => WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "Canvas data source is not implemented", "{}").value_as_json
+    }
+
+    results.to_json
+  end
+
+  # get '/foo' do
+  #   status, headers, body = call env.merge("PATH_INFO" => '/bar')
+  #   [status, headers, body.map(&:upcase)]
+  # end
+
+  ## ask for the LMS to get information for a specific person.
+  get "/todolms/:userid/ctools.?:format?" do |userid, format|
+
+    logger.debug "/todolms/#{userid}/ctools"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -732,15 +764,9 @@ END
     end
 
     todolmsList = dataProviderToDoLMS(userid)
+    logger.debug "/todolms/#{userid}/ctools: "+todolmsList.value_as_json
     todolmsList.value_as_json
   end
-
-  get "/todolms/:userid.?:format?" do |userid, format|
-    puts "todolms userid: #{userid} format: #{format}"
-    logger.debug "todolms userid: #{userid} format: #{format}"
-    todolmsUser.call(userid, format)
-  end
-
 
   #################################################
   ############### Supply static external resources
@@ -817,7 +843,7 @@ END
 
   # At end of request print the elapsed time for the request.
   after do
-    request_sd = session[:thread]
+    request_sd = session[:thread].pop
     request_sd.stop
     logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
   end
