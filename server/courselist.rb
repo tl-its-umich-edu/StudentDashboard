@@ -767,13 +767,11 @@ END
     # if not found say so.
     halt 404 if result.nil?
 
-    # if returning a file set the type type explicitly.
-    unless file_name.nil?
-      # by default it is text.
-      content_type 'text/plain'
-      # We also recognize png files.
-      content_type 'image/png' if file_name =~ /\.png$/
-    end
+    # get the return content type based on the file extension.
+    file_name =~ /\.([^.]+)$/
+    file_extension = $1
+    logger.debug "external file request: file extension: [#{file_extension}]"
+    content_type file_extension
 
     result
   end

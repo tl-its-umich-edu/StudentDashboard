@@ -45,7 +45,7 @@ class TestExternalResourcesFile < Minitest::Test
 
   def test_list_resources_images
     parsed_file_list = JSON.parse(@erf.get_resource "image")
-    assert_equal 7,parsed_file_list.length,"list resources in images directory"
+    assert_equal 8,parsed_file_list.length,"list resources in images directory"
   end
 
   def test_list_resources_text
@@ -54,12 +54,12 @@ class TestExternalResourcesFile < Minitest::Test
   end
 
   def test_get_resources_text
-    body = @erf.get_resource "text","howdy.txt"
+    body = @erf.get_resource "text","1.txt"
     assert body.length > 10 ,"get resource from text directory"
   end
 
   def test_get_resources_image
-    body = @erf.get_resource "image","blue.png"
+    body = @erf.get_resource "image",'UMIngallMallFountan_3253_5.jpg'
     assert body.length > 10000 ,"get resource from image directory"
   end
 

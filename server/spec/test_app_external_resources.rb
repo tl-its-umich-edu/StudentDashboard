@@ -1,6 +1,9 @@
+# Verify that can get external resources back from the application.
+
 ENV['RACK_ENV'] = 'test'
 
 require 'rest-client'
+require 'yaml'
 require_relative '../courselist'
 require 'minitest'
 require 'minitest/unit'
@@ -13,6 +16,10 @@ require_relative 'test_helper'
 class AppExternalResourcesTest < Minitest::Test
   include Rack::Test::Methods
   include Logging
+
+  # some resources files currently available for testing.
+  @@expected_image_file = 'UMIngallMallFountan_3253_5.jpg'
+  @@expected_text_file = "1.txt"
 
   # Test course list application
   def app
@@ -48,32 +55,37 @@ class AppExternalResourcesTest < Minitest::Test
   end
 
    def test_get_external_image_directory_list
-    correct_list = ["black.png", "blue.png", "green.png", "magenta.png", "miro.png", "red.png", "yellow.png"]
 
     get '/external/image'
 
     assert last_response.ok?
-    assert_equal  correct_list, JSON.parse(last_response.body),"list images"
+    # make sure we find a file we expect to find.
+    assert_includes  JSON.parse(last_response.body),@@expected_image_file,"find expected image"
   end
 
   def test_get_external_image_directory_list_trailing_slash
-    correct_list = ["black.png", "blue.png", "green.png", "magenta.png", "miro.png", "red.png", "yellow.png"]
 
     get '/external/image/'
 
     assert last_response.ok?
-    assert_equal  correct_list, JSON.parse(last_response.body),"list images"
+    # make sure we find a file we expect to find.
+    assert_includes  JSON.parse(last_response.body),@@expected_image_file,"find expected image"
   end
 
-  def test_get_external_image_file
+  def test_retrieve_external_image_file
 
-    get '/external/image/green.png'
+    use_file = "/external/image/#{@@expected_image_file}"
+    get use_file
 
     assert last_response.ok?
+    content_type = last_response.header['Content-Type']
+
     body = last_response.body
 
     # It would be hard and not worth it to verify that actually is an image.
     # We do check that it is a plausible image file.
+
+    assert_match "image/jpeg",content_type, "get jpg file type"
     assert_operator  15000, :<, body.length ,"get image file"
   end
 
@@ -81,25 +93,26 @@ class AppExternalResourcesTest < Minitest::Test
   #### that they are treated differently.
 
   def test_get_external_text_directory_list
-    correct_list = ["howdy.txt"]
+
 
     get '/external/text'
 
     assert last_response.ok?
-    assert_equal  correct_list, JSON.parse(last_response.body),"list text files"
+    assert_includes  JSON.parse(last_response.body),@@expected_text_file, "find expected text file"
   end
 
 
-  def test_get_external_text_file
+  def test_retrieve_external_text_file
 
-    get '/external/text/howdy.txt'
+    get '/external/text/1.txt'
 
-    assert last_response.ok?
+    assert last_response.ok?,"got response from request"
     body = last_response.body
+    content_type = last_response.header['Content-Type']
 
     # Check that is likely is a text file.
-    assert_operator  100, :>, body.length ,"get image files"
+    assert_match "text/plain",content_type, "get text file"
+    assert_operator  body.length, :>, 100 ,"get text file"
   end
-
 
 end
