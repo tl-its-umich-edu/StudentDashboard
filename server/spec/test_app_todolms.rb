@@ -38,6 +38,7 @@ class AppTodolmsTest < Minitest::Test
 
   def test_todolms_user
 
+    skip('must implement disk based provider')
     get '/todolms/bigbird.json'
     assert last_response.ok?, "get some result"
 
