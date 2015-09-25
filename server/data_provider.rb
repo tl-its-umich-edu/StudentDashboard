@@ -1,14 +1,16 @@
 require_relative './data_provider_file'
 require_relative './data_provider_esb'
+require_relative '../server/data_provider_ctools_direct'
 
 module DataProvider
 
   # Map from generic calls for data to call(s) to specific providers.
-  # TODO: Currently this only supports a single provider (file or esb).  This will change.
-  # TODO: current last active provider wins, that must change when use both ctools and canvas providers.
+  # TODO: Currently allows chosing between disk and esb providers for course data and
+  # only supports httd direct access for ctools data.
 
   include DataProviderFile
   include DataProviderESB
+  include DataProviderCToolsDirect
 
   attr_accessor :fileToDoLMS, :fileTerms, :fileCourses, :useFileProvider
 
@@ -18,6 +20,8 @@ module DataProvider
   # can be implementation agnostic.
 
   ## TODO: better to redo to have an init step per provider rather than to check this with every call.
+
+  ## Initialize all the providers as configured.
   def dataProviderInit
     # only init if required.  At the moment if anything is configured they are all configured.
     return unless @fileToDoLMS.nil?
@@ -25,15 +29,18 @@ module DataProvider
     config_hash = settings.latte_config
 
     !config_hash[:data_provider_file_directory].nil? ? configureFileProvider(config_hash) : configureEsbProvider(config_hash)
+    configureCToolsHTTPProvider(config_hash)
 
   end
+
+  ## Configuration binds implementation specific information to hide details and allow interchangable calling of
+  ## any implementation regardless of configuration details.
 
   def configureFileProvider(config_hash)
     dpf_dir = config_hash[:data_provider_file_directory]
     logger.debug "configure provider file: directory: #{dpf_dir}"
 
     @useFileProvider = true
-    @fileToDoLMS = Proc.new { |uniqname| dataProviderFileToDoLMS(uniqname, "#{dpf_dir}/todolms") }
     @fileTerms = Proc.new { |uniqname| dataProviderFileTerms("#{dpf_dir}/terms", uniqname) }
     @fileCourses = Proc.new { |uniqname, termid| dataProviderFileCourse(uniqname, termid, "#{dpf_dir}/courses") }
     @fileCheck = Proc.new { | | dataProviderFileCheck(config_hash[:data_provider_file_uniqname], "#{dpf_dir}/terms") }
@@ -45,13 +52,24 @@ module DataProvider
     logger.debug "configure provider esb: security_file: #{security_file} application_name: #{application_name}"
 
     @useEsbProvider = true
-    @esbToDoLMS = Proc.new { |uniqname| dataProviderESBToDoLMS(uniqname, security_file, application_name) }
     @esbTerms = Proc.new { |uniqname| dataProviderESBTerms(uniqname, security_file, application_name) }
     @esbCourses = Proc.new { |uniqname, termid| dataProviderESBCourse(uniqname, termid, security_file, application_name, config_hash[:default_term]) }
     @esbCheck = Proc.new { | | dataProviderESBCheck(security_file, application_name) }
   end
 
+  def configureCToolsHTTPProvider(config_hash)
+    security_file = config_hash[:security_file]
+    application_name = config_hash[:ctools_http_application_name]
+    logger.debug "#{__method__}: #{__LINE__}: configure provider CToolsHTTP: security_file: #{security_file} application_name: #{application_name}"
+
+    @useCtoolsHTTPToDoLMSProvider = true
+    @ctoolsHTTPDirectToDoLMS = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMS(uniqname, security_file, application_name) }
+  end
+
   ######################################
+
+  ## These map to specific implementation calls.  Should probably
+  ## pull them off a list of providers and return a list of results.
 
   def dataProviderCheck()
 
@@ -69,14 +87,18 @@ module DataProvider
 
   def dataProviderToDoLMS(uniqname)
 
-    logger.debug "DataProviderToDoLMS uniqname: #{uniqname}"
+    logger.debug "#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname}"
 
     dataProviderInit
 
-    todos = @fileToDoLMS.(uniqname) if @useFileProvider
-    todos = @esbToDoLMS.(uniqname) if @useEsbProvider
+    # TODO: add file based provider
+    # TODO: add ESB based provider
+    # TODO: add canvas information
 
-    logIfUnavailable(terms, "todolms: user: #{uniqname}")
+    todos = @ctoolsHTTPDirectToDoLMS.(uniqname) if @useCtoolsHTTPToDoLMSProvider
+
+    logger.debug "#{__method__}: #{__LINE__}: todos: #{todos}"
+    logIfUnavailable(todos, "todolms: user: #{uniqname}")
 
     todos
   end
@@ -87,21 +109,14 @@ module DataProvider
 
     dataProviderInit
 
-    #puts "@useFileProvider: #{@useFileProvider}"
     terms = @fileTerms.(uniqname) if @useFileProvider
-    #puts "dPTerms A: "+terms.to_s
-    #puts "@useEsbProvider: #{@useEsbProvider}"
     terms = @esbTerms.(uniqname) if @useEsbProvider
-    #puts "dPTerms B: "+terms.to_s
 
     logIfUnavailable(terms, "terms: user: #{uniqname}")
 
     terms
   end
 
-  ## Use the appropriate provider implementation.
-  ## This should be implemented to set the desired function upon configuration rather than
-  ## to look it up with each request.
   def dataProviderCourse(uniqname, termid)
 
     dataProviderInit
@@ -115,7 +130,7 @@ module DataProvider
   end
 
   def logIfUnavailable(response, msg)
-    logger.warn("the provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
+    logger.warn("#{__method__}: #{__LINE__}: The provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
   end
 
 end
