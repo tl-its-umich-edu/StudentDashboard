@@ -31,7 +31,7 @@ module DataProviderCToolsDirect
     end
 
     ctools_todos = http_channel.do_request("/dash/calendar.json")
-    logger.debug "#{__method__}: #{__LINE__}: calendar: todos: #{ctools_todos}"
+    logger.debug "#{__method__}: #{__LINE__}: calendar: todos: #{ctools_todos.to_json}"
 
     return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from ctools direct", ctools_todos)
   end
