@@ -90,7 +90,6 @@ function makeConfigTar {
 function makeWarFile {
     atStep "make war file"
     warble
-    cp StudentDashboard.war portal.$ts.war
     mv StudentDashboard.war StudentDashboard.$ts.war
     mv *.war ./ARTIFACTS
 }
@@ -107,6 +106,30 @@ function makeVersion {
     echo -n "tag: " >> $FILE
     echo $(git describe --all) >> $FILE
     echo >> $FILE
+}
+
+
+function writeEnvironmentVariables {
+    local TIMESTAMP_value=$(ls ARTIFACTS/StudentDashboard.*.war | perl -n -e 'm/.+\.(.+)\.war/ && print $1' )
+    local WEBAPPNAME_value=StudentDashboard
+    vars=`cat <<EOF
+########################
+# Environment variables for installation of this build.
+# $(date)
+WEBRELSRC=http://limpkin.dsc.umich.edu:6660/job/
+JOBNAME=${JOB_NAME:-LOCAL}
+BUILD=${BUILD_NUMBER:-imaginary}
+ARTIFACT_DIRECTORY=artifact/ARTIFACTS
+TIMESTAMP=${TIMESTAMP_value}
+VERSION=StudentDashboard
+WEBAPPNAME=${WEBAPPNAME_value}
+WARFILENAME=ROOT
+IMAGE_INSTALL_TYPE=war
+IMAGE_NAME=${WEBAPPNAME_value}.${TIMESTAMP_value}.war
+CONFIGURATION_NAME=configuration-files.${TIMESTAMP_value}.tar
+#######################
+EOF`
+    echo "${vars}"
 }
 
 ###################
@@ -130,6 +153,9 @@ checkRvm
 atStep "run unit tests"
 ./runTests.sh
 # ./runIntegrationTests.sh
+#rake test:local
+#rake test:resources
+
 
 # Create version information file before making the war so that the build.yml
 # can be included in the war file.
@@ -148,9 +174,15 @@ makeConfigTar
 # handled by back channels.
 chmod a+r ./ARTIFACTS/*
 
+# write a file with the install variables in it.
+writeEnvironmentVariables >| ./ARTIFACTS/installVariables.sh
+
 # Display the ARTIFACTS created for confirmation.
 atStep "display artifacts"
 ls -l ./ARTIFACTS
+
+# write the install variables to the log
+writeEnvironmentVariables
 
 echo "++++++++++++ NOTE: The unresolved specs error message seems to be harmless."
 #end
