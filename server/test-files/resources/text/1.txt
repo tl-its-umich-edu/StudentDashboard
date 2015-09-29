@@ -1,1 +1,1 @@
-Designed with input from U-M students, DASH is a personal dashboard to help manage your academic life. Use the My Courses panel to access your current Canvas and CTools course sites. Look for new DASH tools to roll-out in coming months with the launch of a personal schedule for due dates and an interactive tasks panel.
+Based on input from students, additional tools to help you manage your academic life will be added to Dash in the coming months.
