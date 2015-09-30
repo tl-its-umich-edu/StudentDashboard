@@ -14,7 +14,6 @@ require_relative './Logging'
 require 'rest-client'
 require_relative 'stopwatch'
 
-
 # TODO: I've not figured out how to use instance variables from a module yet, so this is implemented as a class.
 class ChannelCToolsDirectHTTP
 

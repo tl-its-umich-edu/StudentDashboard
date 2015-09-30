@@ -1,6 +1,7 @@
 require_relative './data_provider_file'
 require_relative './data_provider_esb'
 require_relative '../server/data_provider_ctools_direct'
+require_relative './ctools_direct_response'
 
 module DataProvider
 
@@ -95,7 +96,17 @@ module DataProvider
     # TODO: add ESB based provider
     # TODO: add canvas information
 
-    todos = @ctoolsHTTPDirectToDoLMS.(uniqname) if @useCtoolsHTTPToDoLMSProvider
+    unless @useCtoolsHTTPToDoLMSProvider.nil?
+      logger.error "#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
+      raw_todos = @ctoolsHTTPDirectToDoLMS.(uniqname)
+      # TODO: check if the wrapper status is ok
+      # now strip off the wrapper
+      result = raw_todos.result
+      # reformat the result for the Dash UI format.
+      todos = CToolsDirectResponse.new(result).toDoLms
+      # rewrap it.
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools direct result",todos)
+    end
 
     logger.debug "#{__method__}: #{__LINE__}: todos: #{todos}"
     logIfUnavailable(todos, "todolms: user: #{uniqname}")

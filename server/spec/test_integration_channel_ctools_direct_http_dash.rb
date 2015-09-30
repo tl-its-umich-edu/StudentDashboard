@@ -35,6 +35,12 @@ class TestIntegrationChannelCToolsDirectHttpDash < Minitest::Test
     @security_file = TestHelper.findSecurityFile "security.yml"
     @new_user = "dlhaines"
 
+    # create the class
+    #m = Class.new do
+    #      include ChannelCToolsDirectHttp
+    #      include Logging
+    #    end.new
+
     # Get a session setup with the specified application / account.  The
     # session user is specified in the account in the security file.
     # Change to a new specific user.
