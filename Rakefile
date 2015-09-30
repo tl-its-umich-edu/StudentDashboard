@@ -41,6 +41,11 @@ namespace :vagrant do
   task :ssh do
     sh "(cd vagrant; vagrant ssh)"
   end
+
+  desc "Reload changing into the existing VM.  Avoids redoing initial OS updates."
+  task :reload => :get_artifacts do
+    sh "(cd vagrant; vagrant reload --provision)"
+  end
 end
 
 ########## testing tasks #################
