@@ -113,7 +113,7 @@ ls -l $WEBAPPS_DIR
 
 echo "StudentDashboard has been installed.  Log files are available on the VM"
 echo "at /var/lib/tomcat7/logs."
-echo "On Mac you can go straight to this installation with the command 'open http://localhost:9090/'"
+echo "On Mac you can go straight to this installation with the command: open http://localhost:9090/"
 #end
 ## for reference these are the values supplied for production installs.
 # WEBRELSRC=http://limpkin.dsc.umich.edu:6660/job/
