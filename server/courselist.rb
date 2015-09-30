@@ -1,6 +1,6 @@
 ## These lines make the required modules available.
-require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
-require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
+#require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
+#require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
 
 ### Simple rest server for SD data.
 ### This version will also server up the HTML page if no
@@ -17,6 +17,7 @@ require 'slim'
 require 'yaml'
 require_relative 'stopwatch'
 require_relative 'WAPI'
+require_relative 'data_provider'
 require_relative 'WAPI_result_wrapper'
 require_relative 'ldap_check'
 require_relative 'external_resources_file'
@@ -26,8 +27,9 @@ include Logging
 
 class CourseList < Sinatra::Base
   ## mixin the providers functionality.
-  include DataProviderESB
-  include DataProviderFile
+  #include DataProviderESB
+  #include DataProviderFile
+  include DataProvider
 
   # To store persistent configuration values in Sinatra requires using the settings feature.
   # To make all our configuration values available we store a hash of all the
@@ -816,88 +818,6 @@ END
     request_sd = session[:thread]
     request_sd.stop
     logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
-  end
-
-  #################### Data provider functions #################
-
-  # If a response response from the provider is throttled then log that fact.
-  SERVICE_UNAVAILABLE = "503"
-
-  def logIfUnavailable(response, msg)
-    logger.warn("provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
-  end
-
-  ## Use the appropriate provider implementation.
-  ## This should be implemented to set the desired function upon configuration rather than
-  ## to look it up with each request.
-
-  def dataProviderCourse(a, termid)
-
-    config_hash = settings.latte_config
-    logger.debug "DataProviderCourse a: #{a} termid: #{termid}"
-    logger.debug "data_provider_file_director: #{config_hash[:data_provider_file_directory]}"
-
-    if !config_hash[:data_provider_file_directory].nil?
-      courses = dataProviderFileCourse(a, termid, "#{config_hash[:data_provider_file_directory]}/courses")
-    else
-      courses = dataProviderESBCourse(a, termid, config_hash[:security_file], config_hash[:application_name], config_hash[:default_term])
-    end
-
-    logIfUnavailable(courses, "courses: user: #{a} term:#{termid}")
-
-    courses
-  end
-
-  def dataProviderTerms(uniqname)
-
-    logger.debug "DataProviderTerms uniqname: #{uniqname}"
-
-    config_hash = settings.latte_config
-
-    if !config_hash[:data_provider_file_directory].nil?
-      terms = dataProviderFileTerms(uniqname, "#{config_hash[:data_provider_file_directory]}/terms")
-    else
-      terms = dataProviderESBTerms(uniqname, config_hash[:security_file], config_hash[:application_name])
-    end
-
-    logIfUnavailable(terms, "terms: user: #{uniqname}")
-
-    terms
-  end
-
-  def dataProviderToDoLMS(uniqname)
-
-    logger.debug "DataProviderToDoLMS uniqname: #{uniqname}"
-
-    config_hash = settings.latte_config
-
-    if !config_hash[:data_provider_file_directory].nil?
-      terms = dataProviderFileToDoLMS(uniqname, "#{config_hash[:data_provider_file_directory]}/todolms")
-    else
-      terms = dataProviderESBToDoLMS(uniqname, config_hash[:security_file], config_hash[:application_name])
-    end
-
-    logIfUnavailable(terms, "todolms: user: #{uniqname}")
-
-    terms
-  end
-
-
-  def dataProviderCheck()
-
-    logger.debug "DataProviderCheck"
-
-    config_hash = settings.latte_config
-
-    if !config_hash[:data_provider_file_directory].nil?
-      check = dataProviderFileCheck(config_hash[:data_provider_file_uniqname], "#{config_hash[:data_provider_file_directory]}/terms")
-    else
-      check = dataProviderESBCheck(config_hash[:security_file], config_hash[:application_name])
-    end
-
-    logIfUnavailable(check, "verify the check url configuration")
-
-    check
   end
 
 end
