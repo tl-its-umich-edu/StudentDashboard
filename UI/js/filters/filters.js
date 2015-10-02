@@ -37,4 +37,52 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
       return input.replace(',', ', ');
     }
   };
-});
+}).filter('cut', function () {
+  return function (value, wordwise, max, tail) {
+      if (!value) return '';
+
+      max = parseInt(max, 10);
+      if (!max) return value;
+      if (value.length <= max) return value;
+
+      value = value.substr(0, max);
+      if (wordwise) {
+          var lastspace = value.lastIndexOf(' ');
+          if (lastspace != -1) {
+              value = value.substr(0, lastspace);
+          }
+      }
+      return value + (tail || ' …');
+  };
+}).filter('headerText', function() {
+    return function(str) {
+      switch (str) {
+        case 'nodate':
+          return 'No Date';
+        case 'earlier':
+          return 'Due Earlier';
+        case 'later':
+          return 'Due Later';
+        case 'soon':
+          return 'Due Soon';
+        default:
+          return 'Default message.';
+      }
+
+    };
+}).filter('noItemsFoundForTime', function() {
+    return function(str) {
+      switch (str) {
+        case 'nodate':
+          return 'No items without date found.';
+        case 'earlier':
+          return 'No earlier items found.';
+        case 'later':
+          return 'No later items found.';
+        case 'soon':
+          return 'No items due soon found.';
+        default:
+          return 'Default message.';
+      }
+    };
+});;

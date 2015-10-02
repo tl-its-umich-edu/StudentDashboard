@@ -1,0 +1,50 @@
+<div ng-controller="todoController" ngcloak>
+    <div id="todo" class="itemPanel">
+      <h3 class="colHeader"><span class="sr-only">To Dos</span>
+        <div class="pull-right">
+          <small>{{showWhen | headerText}}</small>
+          <div class="btn-group">
+
+            <div class="btn-group btn-group-sm">
+              <div class="dropdown">
+                  <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                      Show
+                      <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                      <li ng-repeat="item in todo_time_options" role="presentation">
+                        <a ng-click="setWhen(item.value)" role="menuitem" tabindex="-1" href="#">{{item.name}}</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        </div>  
+      </h3>
+      <div class="row">
+      </div>
+      <div class="alert alert-info" ng-hide="filteredItems.length" ng-show="!filteredItems.length">{{showWhen | noItemsFoundForTime}}</div>
+      <ul class="itemList">
+          <li ng-repeat="item in filteredItems  = (todos | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid">
+              <div class="row">
+                  <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
+                  </div>
+                  <div class="col-lg-7 col-md-7 col-xs-7">
+                    <a target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
+                    <br>
+                    <small>
+                      <a class="courseLink" target="_blank" href="{{item.contextUrl}}">
+                        <span class="sr-only">View {{item.title}} in course site</span>
+                        <span aria-hidden="true">Go to course site</span>
+                      </a>
+                    </small>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date {{item.when}}">
+                      <small class="dateSpan">
+                         <span  ng-show="item.due_date_sort">{{item.due_date_sort | dateUntil}}</span>
+                      </small>
+                  </div>
+              </div>
+          </li>
+      </ul>
+    </div>
+</div>

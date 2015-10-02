@@ -101,3 +101,31 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   };
 
 }]);
+
+
+ /**
+  * Todo controller, using fake data for now
+  */
+
+dashboardApp.controller('todoController', ['ToDos', '$scope', function(ToDos, $scope) {
+  ToDos.getToDos('data/todolms/data-canvas-and-ctools.json').then(function(data) {
+    $scope.todos = data;
+    $scope.todo_time_options = [{
+       name: 'Earlier',
+       value: 'earlier'
+    }, {
+       name: 'Soon',
+       value: 'soon'
+    }, {
+       name: 'Later',
+       value: 'later'
+    }];
+
+    $scope.showWhen = 'soon';
+
+    $scope.setWhen = function(when) {
+       $scope.showWhen = when;
+       $('#todo .itemList').attr('tabindex',-1).focus();
+    };
+  });
+}]);

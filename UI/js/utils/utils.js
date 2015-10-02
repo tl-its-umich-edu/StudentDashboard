@@ -60,6 +60,35 @@ var dashMessageSeenUpdate = function() {
   sessionStorage.setItem('dashMessageSeen', true);
 };
 
+var prepareToDos = function(result){
+  var combinedTodos = result.data.ctools.Result.concat(result.data.canvas.Result);
+  $.each(combinedTodos, function() {
+    this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
+    this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
+    
+    var now = moment().valueOf();
+    var nowAnd4 = moment().add(4, 'days').valueOf();
+    var due = this.due_date_sort * '1000';
+
+    if(due < now) { 
+      this.when = 'earlier';
+    }
+    else {
+      if(due > nowAnd4) { 
+        this.when = 'later';
+      }
+      else {
+        this.when = 'soon';
+      }
+    }
+
+
+    console.log (now + ' | ' + nowAnd4 + ' | ' + due + ' | ' + this.due_date_long + ' | ' + this.when) ;
+  });
+  return combinedTodos;  
+}
+
+
 /**
  *
  * event watchers
