@@ -108,8 +108,9 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   */
 
 dashboardApp.controller('todoController', ['ToDos', '$scope', function(ToDos, $scope) {
-  ToDos.getToDos('data/todolms/data-canvas-and-ctools.json').then(function(data) {
-    $scope.todos = data;
+  ToDos.getToDos('data/todolms/data-ctools.json').then(function(data) {
+    $scope.todos = data.combinedToDos;
+    $scope.todoStatus = data.status;
     $scope.todo_time_options = [{
        name: 'Earlier',
        value: 'earlier'

@@ -22,7 +22,9 @@
       </h3>
       <div class="row">
       </div>
-      <div class="alert alert-info" ng-hide="filteredItems.length" ng-show="!filteredItems.length">{{showWhen | noItemsFoundForTime}}</div>
+      <div class="alert alert-info" ng-hide="filteredItems.length" ng-show="!filteredItems.length">
+        <p ng-if="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
+        <span ng-show="todoStatus.ctools.status ==200 || todoStatus.canvas.status ==200">{{showWhen | noItemsFoundForTime}}</div>
       <ul class="itemList">
           <li ng-repeat="item in filteredItems  = (todos | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid">
               <div class="row">
@@ -46,5 +48,16 @@
               </div>
           </li>
       </ul>
+      <div class="itemPanelFooter">
+        <p ng-show="todoStatus.ctools.status !==200 || todoStatus.canvas.status !==200">
+          <small ng-show="todoStatus.ctools.status !==200">CTools</small><small ng-show="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200"> and </small><small ng-show="todoStatus.canvas.status !==200"> Canvas</small><small> unreachable.</small>
+        </p>
+        <small> CTools: {{todoStatus.ctools.status}}, {{todoStatus.ctools.message}}, {{todoStatus.ctools.count}} items<br>Canvas: {{todoStatus.canvas.status}}, {{todoStatus.canvas.message}}, {{todoStatus.canvas.count}} items
+        </small>
+      </div>
+
+
+
+
     </div>
 </div>
