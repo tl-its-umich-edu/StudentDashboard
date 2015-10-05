@@ -66,7 +66,7 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
         case 'soon':
           return 'Due Soon';
         default:
-          return 'Default message.';
+          return '';
       }
 
     };

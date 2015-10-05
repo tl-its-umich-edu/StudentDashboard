@@ -108,7 +108,14 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   */
 
 dashboardApp.controller('todoController', ['ToDos', '$scope', function(ToDos, $scope) {
-  ToDos.getToDos('data/todolms/data-ctools.json').then(function(data) {
+  ToDos.getToDos('data/todolms/data-canvas-and-ctools.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/data-canvas.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/data-ctools.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/data-no-data-canvas-and-ctools.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/out-canvas.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/out-ctools.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/out-canvas-and-ctools.json').then(function(data) {
+  //ToDos.getToDos('data/todolms/out-dash.json').then(function(data) {
     $scope.todos = data.combinedToDos;
     $scope.todoStatus = data.status;
     $scope.todo_time_options = [{
