@@ -34,6 +34,12 @@ class CToolsDirectResponse
 
   def extractAssignment(assignment)
 
+    # Verify that data can be accessed.  This doesn't / shouldn't check that
+    # value is not nil, just that it is possible to get the value.
+    return nil if (assignment.nil?)
+    return nil if (assignment['calendarItem'].nil?)
+    return nil if (assignment['calendarItem']['context'].nil?)
+
     # create a single assignment object in known format for UI.
     assign = Hash.new()
 
