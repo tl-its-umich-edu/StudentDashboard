@@ -65,34 +65,34 @@ var statusResolver = function(status, count) {
  
  switch (status) {
   case 200:
-    message = "All is well";
+    message = "- all is well";
     break;
   case 400:
-    message = "Bad request";
+    message = "- bad request";
     break;
   case 401:
-    message = "Not authorized";
+    message = "- not authorized";
     break;
   case 403:
-    message = "Forbidden";
+    message = "- forbidden";
     break;
   case 404:
-    message = "Not found";
+    message = "- not found";
     break;
   case 408:
-    message = "Request timeout";
+    message = "- request timeout";
     break;
   case 500:
-    message = "Internal Server Error";
+    message = "- internal Server Error";
     break;
   case 504:
-    message = "Gateway Timeout";
+    message = "- gateway Timeout";
     break;
   case 666:
-    message = "Demonic possession";
+    message = "- demonic possession";
     break;
   default:
-    message = "What now!";
+    message = "- status not accounted for";
   }
   return {
     "status": status,

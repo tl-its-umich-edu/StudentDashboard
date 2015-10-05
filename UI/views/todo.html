@@ -53,7 +53,7 @@
               <p ng-show="todoStatus.ctools.status !==200 || todoStatus.canvas.status !==200">
                 <small ng-show="todoStatus.ctools.status !==200">CTools</small><small ng-show="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200"> and </small><small ng-show="todoStatus.canvas.status !==200"> Canvas</small><small> unreachable.</small>
               </p>
-              <small> CTools: {{todoStatus.ctools.status}}, {{todoStatus.ctools.message}}, {{todoStatus.ctools.count}} items - Canvas: {{todoStatus.canvas.status}}, {{todoStatus.canvas.message}}, {{todoStatus.canvas.count}} items
+              <small> CTools: {{todoStatus.ctools.status}} {{todoStatus.ctools.message}}, {{todoStatus.ctools.count}} items | Canvas: {{todoStatus.canvas.status}} {{todoStatus.canvas.message}}, {{todoStatus.canvas.count}} items
               </small>
             </div>
           </div>
