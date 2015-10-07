@@ -5,7 +5,7 @@ require_relative '../server/data_provider_ctools_direct'
 module DataProvider
 
   # Map from generic calls for data to call(s) to specific providers.
-  # TODO: Currently allows chosing between disk and esb providers for course data and
+  # TODO: Currently allows choosing between disk and esb providers for course data and
   # only supports httd direct access for ctools data.
 
   include DataProviderFile
@@ -85,23 +85,55 @@ module DataProvider
     check
   end
 
-  def dataProviderToDoLMS(uniqname)
+  def dataProviderToDoCToolsLMS(uniqname)
 
-    logger.debug "#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname}"
+    logger.debug "#{__method__}: #{__LINE__}: DataProviderToDoCToolsLMS uniqname: #{uniqname}"
 
     dataProviderInit
 
-    # TODO: add file based provider
-    # TODO: add ESB based provider
-    # TODO: add canvas information
+    unless @useCtoolsHTTPToDoLMSProvider.nil?
+      logger.error "#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
+      raw_todos = @ctoolsHTTPDirectToDoLMS.(uniqname)
+      # TODO: check if the wrapper status is ok
+      # now strip off the wrapper
+      result = raw_todos.result
+      # reformat the result for the Dash UI format.
+      todos = CToolsDirectResponse.new(result).toDoLms
+      # rewrap it.
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools direct result",todos)
+    end
 
-    todos = @ctoolsHTTPDirectToDoLMS.(uniqname) if @useCtoolsHTTPToDoLMSProvider
-
-    logger.debug "#{__method__}: #{__LINE__}: todos: #{todos}"
+    logger.debug "#{__method__}: #{__LINE__}: todos: #{todos.value_as_json}"
     logIfUnavailable(todos, "todolms: user: #{uniqname}")
 
-    todos
+    todos.value_as_json
   end
+
+  def dataProviderToDoCanvasLMS(uniqname)
+
+    # actually implement canvas retrieval at some point.
+    logger.debug "#{__method__}: #{__LINE__}: DataProviderToDoCanvasLMS uniqname: #{uniqname}"
+
+    dataProviderInit
+
+    canvas_body = "{}"
+    canvas_body_ruby = JSON.parse canvas_body
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{uniqname}/canvas: canvas_body_ruby: #{canvas_body_ruby.inspect}"
+
+    WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "Canvas data source is not implemented", canvas_body_ruby).value_as_json
+
+  end
+
+
+  ## return the data from the right source.
+  def dataProviderToDoLMS(uniqname,lms)
+
+    logger.debug "#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}]"
+
+    return dataProviderToDoCToolsLMS(uniqname) if lms == 'ctools'
+    return dataProviderToDoCanvasLMS(uniqname) if lms == 'canvas'
+  end
+
 
   def dataProviderTerms(uniqname)
 

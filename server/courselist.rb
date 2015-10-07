@@ -724,29 +724,66 @@ END
   ## ask for the LMS to get information for a specific person.
   get "/todolms/:userid.?:format?" do |userid, format|
 
-    logger.debug "/todolms/#{userid}"
+    ### TODO: have this loop through the configured set of providers
+    ### TODO: and assemble the results of the URL REST calls into the object to return.
+    ### TODO: Each configured provider should have a url route.  Maybe able to
+    ### TODO: use generic one that recoginzes the source from url.
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
+
 
     # Call to the ctools REST source url in this application.
     status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: ctools_body[0].inspect: +++#{ctools_body[0].inspect}+++"
+    ctools_body_ruby = JSON.parse ctools_body[0]
 
-    # call to the canvas source (someday)
+    ############# get canvas data ####
+    # Call to get ctools data from via ctools REST source url in this application.
+    status, headers, canvas_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/canvas")
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body[0].inspect: +++#{canvas_body[0].inspect}+++"
+    canvas_body_ruby = JSON.parse canvas_body[0]
+    # someday really call to the canvas source and not just dummy the value.
+    # canvas_body = "{}"
+    # canvas_body_ruby = JSON.parse canvas_body
+    # logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body_ruby: #{canvas_body_ruby}"
 
-    # return the combined info after calling ctools and canvas.
-    # TODO: move the WAPI wrapper to the canvas only provider.
+    ############## Compose the different values together.
     results = {
-        'ctools' => ctools_body,
-        'canvas' => WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "Canvas data source is not implemented", "{}").value_as_json
+        'ctools' => ctools_body_ruby,
+        'canvas' => canvas_body_ruby
     }
 
     results.to_json
   end
 
-  # get '/foo' do
-  #   status, headers, body = call env.merge("PATH_INFO" => '/bar')
-  #   [status, headers, body.map(&:upcase)]
-  # end
+  ### generic version?
+  get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
 
-  ## ask for the LMS to get information for a specific person.
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoLMS(userid,lms)
+    #logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList.value_as_json
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
+    #todolmsList.value_as_json
+    todolmsList
+  end
+
+
+  ### maybe this can be generic enough to call single data provider with variable lms value
+  ## ask for the LMS to get ctools information for a specific person.
+
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
 
     logger.debug "/todolms/#{userid}/ctools"
@@ -763,8 +800,31 @@ END
       return "format not supported: [#{format}]"
     end
 
-    todolmsList = dataProviderToDoLMS(userid)
-    logger.debug "/todolms/#{userid}/ctools: "+todolmsList.value_as_json
+    todolmsList = dataProviderToDoCToolsLMS(userid)
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
+
+    todolmsList.value_as_json
+  end
+
+  ## ask for the LMS to get canvas information for a specific person.
+  get "/todolms/:userid/canvas.?:format?" do |userid, format|
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoCanvasLMS(userid)
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
     todolmsList.value_as_json
   end
 
