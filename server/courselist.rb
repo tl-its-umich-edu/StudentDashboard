@@ -731,32 +731,65 @@ END
   # get all the results into ruby data structures then convert the whole thing to json
   get "/todolms/:userid.?:format?" do |userid, format|
 
+    ### TODO: have this loop through the configured set of providers
+    ### TODO: and assemble the results of the URL REST calls into the object to return.
+    ### TODO: Each configured provider should have a url route.  Maybe able to
+    ### TODO: use generic one that recoginzes the source from url.
+
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
 
-    ############## get ctools data ####
-    # Call to get ctools data from via ctools REST source url in this application.
+
+    # Call to the ctools REST source url in this application.
     status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
     logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: ctools_body[0].inspect: +++#{ctools_body[0].inspect}+++"
     ctools_body_ruby = JSON.parse ctools_body[0]
 
     ############# get canvas data ####
-
+    # Call to get ctools data from via ctools REST source url in this application.
+    status, headers, canvas_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/canvas")
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body[0].inspect: +++#{canvas_body[0].inspect}+++"
+    canvas_body_ruby = JSON.parse canvas_body[0]
     # someday really call to the canvas source and not just dummy the value.
-    canvas_body = "{}"
-    canvas_body_ruby = JSON.parse canvas_body
-    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body_ruby: #{canvas_body_ruby}"
+    # canvas_body = "{}"
+    # canvas_body_ruby = JSON.parse canvas_body
+    # logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body_ruby: #{canvas_body_ruby}"
 
     ############## Compose the different values together.
-    # TODO: move the WAPI wrapper to the canvas only provider when it exists.
     results = {
         'ctools' => ctools_body_ruby,
-        'canvas' => WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "Canvas data source is not implemented", canvas_body_ruby).value
+        'canvas' => canvas_body_ruby
     }
 
     # Make it all json
     results.to_json
   end
 
+  ### generic version?
+  get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoLMS(userid,lms)
+    #logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList.value_as_json
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
+    #todolmsList.value_as_json
+    todolmsList
+  end
+
+
+  ### maybe this can be generic enough to call single data provider with variable lms value
   ## ask for the LMS to get ctools information for a specific person.
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
 
@@ -774,8 +807,30 @@ END
       return "format not supported: [#{format}]"
     end
 
-    todolmsList = dataProviderToDoLMS(userid)
+    todolmsList = dataProviderToDoCToolsLMS(userid)
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
+    todolmsList.value_as_json
+  end
+
+  ## ask for the LMS to get canvas information for a specific person.
+  get "/todolms/:userid/canvas.?:format?" do |userid, format|
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoCanvasLMS(userid)
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
     todolmsList.value_as_json
   end
 
