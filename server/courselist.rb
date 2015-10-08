@@ -86,8 +86,11 @@ class CourseList < Sinatra::Base
   ## build.
   config_hash[:BASE_DIR] = File.dirname(File.dirname(__FILE__))
 
-  # name of application to use for information
+  # name of application to use for ESB information
   config_hash[:application_name] = "SD-QA"
+
+  # name of application to use for CTools HTTP direct information
+  config_hash[:ctools_http_application_name] = "CTQA-DIRECT"
 
   # default name of default user
   config_hash[:default_user] = "default"
@@ -542,6 +545,12 @@ END
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
 
+  ### NOTE ON REST CALLS TO SELF
+  # It's easy to call back to this app to get data. See the todolms section for an example.
+  # BUT note that should convert the json data retrieved back to Ruby and convert the final
+  # structure returned as a whole.  If you stick the json string return from a call back to the app it
+  # into a bigger structure it will end up as an escaped string in the return value.
+
   before "*" do
 
     # Need to set session user and remote user.
@@ -576,12 +585,16 @@ END
     logger.debug "remote_user: #{request.env['REMOTE_USER']} computed user: #{user}"
     request.env['REMOTE_USER'] = user
 
-    # store a stopwatch in the session with the current thread id
+    # Store a stack of stopwatches in the session with the current thread id.
+    # The stack is required as Dash calls back to itself.
     msg = Thread.current.to_s + "\t"+request.url.to_s
     sd = Stopwatch.new(msg)
     sd.start
-    session[:thread] = sd
 
+    session[:thread] = Array.new if session[:thread].nil?
+    session[:thread].push(sd)
+
+    #session[:thread] = sd
     logger.debug "REQUEST: end initial processing"
   end
 
@@ -707,17 +720,54 @@ END
   ################## todolms information about things to do from the lms #############
 
 
-  ## can only ask for specific users
+  ## can only ask for data for specific users
   get "/todolms/?" do
-    logger.debug "requested todolms with no qualifier"
+    logger.debug "invalid request for todolms data with no qualifier"
     response.status = 403
     return "must request specific user"
   end
 
-  ## ask for the LMS to get information for a specific person.
+  ## Here is the request for a specific user.
+  # get all the results into ruby data structures then convert the whole thing to json
   get "/todolms/:userid.?:format?" do |userid, format|
 
-    logger.debug "todolms"
+    ### TODO: have this loop through the configured set of providers
+    ### TODO: and assemble the results of the URL REST calls into the object to return.
+    ### TODO: Each configured provider should have a url route.  Maybe able to
+    ### TODO: use generic one that recoginzes the source from url.
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
+
+
+    # Call to the ctools REST source url in this application.
+    status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: ctools_body[0].inspect: +++#{ctools_body[0].inspect}+++"
+    ctools_body_ruby = JSON.parse ctools_body[0]
+
+    ############# get canvas data ####
+    # Call to get ctools data from via ctools REST source url in this application.
+    status, headers, canvas_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/canvas")
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body[0].inspect: +++#{canvas_body[0].inspect}+++"
+    canvas_body_ruby = JSON.parse canvas_body[0]
+    # someday really call to the canvas source and not just dummy the value.
+    # canvas_body = "{}"
+    # canvas_body_ruby = JSON.parse canvas_body
+    # logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body_ruby: #{canvas_body_ruby}"
+
+    ############## Compose the different values together.
+    results = {
+        'ctools' => ctools_body_ruby,
+        'canvas' => canvas_body_ruby
+    }
+
+    # Make it all json
+    results.to_json
+  end
+
+  ### generic version?
+  get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -731,16 +781,59 @@ END
       return "format not supported: [#{format}]"
     end
 
-    todolmsList = dataProviderToDoLMS(userid)
+    todolmsList = dataProviderToDoLMS(userid,lms)
+    #logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList.value_as_json
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
+    #todolmsList.value_as_json
+    todolmsList
+  end
+
+
+  ### maybe this can be generic enough to call single data provider with variable lms value
+  ## ask for the LMS to get ctools information for a specific person.
+  get "/todolms/:userid/ctools.?:format?" do |userid, format|
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoCToolsLMS(userid)
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
+
     todolmsList.value_as_json
   end
 
-  get "/todolms/:userid.?:format?" do |userid, format|
-    puts "todolms userid: #{userid} format: #{format}"
-    logger.debug "todolms userid: #{userid} format: #{format}"
-    todolmsUser.call(userid, format)
-  end
+  ## ask for the LMS to get canvas information for a specific person.
+  get "/todolms/:userid/canvas.?:format?" do |userid, format|
 
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoCanvasLMS(userid)
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
+    todolmsList.value_as_json
+  end
 
   #################################################
   ############### Supply static external resources
@@ -815,7 +908,7 @@ END
 
   # At end of request print the elapsed time for the request.
   after do
-    request_sd = session[:thread]
+    request_sd = session[:thread].pop
     request_sd.stop
     logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
   end

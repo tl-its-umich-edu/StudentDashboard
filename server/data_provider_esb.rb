@@ -55,7 +55,7 @@ module DataProviderESB
   end
 
   # Run over a JSON compatible Ruby data structure and change any list containing just a single nil to be an empty list.
-  # The object is changed in place.
+  # The object is changed in place (as indicated by the !).
   def fixArrayWithNilInPlace! (obj)
     case
       when obj.is_a?(Hash)
