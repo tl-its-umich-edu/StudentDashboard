@@ -545,6 +545,12 @@ END
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
 
+  ### NOTE ON REST CALLS TO SELF
+  # It's easy to call back to this app to get data. See the todolms section for an example.
+  # BUT note that should convert the json data retrieved back to Ruby and convert the final
+  # structure returned as a whole.  If you stick the json string return from a call back to the app it
+  # into a bigger structure it will end up as an escaped string in the return value.
+
   before "*" do
 
     # Need to set session user and remote user.
@@ -714,14 +720,15 @@ END
   ################## todolms information about things to do from the lms #############
 
 
-  ## can only ask for specific users
+  ## can only ask for data for specific users
   get "/todolms/?" do
-    logger.debug "requested todolms with no qualifier"
+    logger.debug "invalid request for todolms data with no qualifier"
     response.status = 403
     return "must request specific user"
   end
 
-  ## ask for the LMS to get information for a specific person.
+  ## Here is the request for a specific user.
+  # get all the results into ruby data structures then convert the whole thing to json
   get "/todolms/:userid.?:format?" do |userid, format|
 
     ### TODO: have this loop through the configured set of providers
@@ -753,6 +760,7 @@ END
         'canvas' => canvas_body_ruby
     }
 
+    # Make it all json
     results.to_json
   end
 
@@ -783,10 +791,9 @@ END
 
   ### maybe this can be generic enough to call single data provider with variable lms value
   ## ask for the LMS to get ctools information for a specific person.
-
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
 
-    logger.debug "/todolms/#{userid}/ctools"
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 

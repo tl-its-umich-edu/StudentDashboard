@@ -1,6 +1,7 @@
 require_relative './data_provider_file'
 require_relative './data_provider_esb'
 require_relative '../server/data_provider_ctools_direct'
+require_relative './ctools_direct_response'
 
 module DataProvider
 
