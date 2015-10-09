@@ -117,19 +117,19 @@ var prepareToDos = function(result) {
     this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
     this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
 
-    var now = moment().valueOf();
-    var nowAnd1 = now + 86400000;
-    var due = this.due_date_sort * '1000';
+    var now = moment();
+    var due = moment(this.due_date_sort * 1000);
+    //var due = this.due_date_sort;
 
     if (due < now) {
       this.when = 'overdue';
     }
-    // need a better comparison for today and this week
-    if (due > now && due < nowAnd1) {
+    
+    if (now.diff(due, 'days') === 0) {
      this.when = 'today'; 
     }
-
-    if (due > nowAnd1) {
+    // better for week - but still needs to incorporate todays items
+    if (now.diff(due, 'days') > 0 && now.diff(due, 'days') < 7 && due > now) {
       this.when = 'week';
     }
   });
