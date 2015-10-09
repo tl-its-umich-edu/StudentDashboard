@@ -124,17 +124,17 @@ dashboardApp.controller('todoController', ['ToDos', '$scope', function(ToDos, $s
     $scope.todos = data.combinedToDos;
     $scope.todoStatus = data.status;
     $scope.todo_time_options = [{
-       name: 'Earlier',
-       value: 'earlier'
+       name: 'Overdue',
+       value: 'overdue'
     }, {
-       name: 'Soon',
-       value: 'soon'
+       name: 'Today',
+       value: 'today'
     }, {
-       name: 'Later',
-       value: 'later'
+       name: 'This week',
+       value: 'week'
     }];
 
-    $scope.showWhen = 'soon';
+    $scope.showWhen = 'today';
 
     $scope.setWhen = function(when) {
        $scope.showWhen = when;

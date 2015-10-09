@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, _*/
+/* global $, _, moment*/
 
 /**
  * get the strings from a hidden DOM element and
@@ -61,45 +61,45 @@ var dashMessageSeenUpdate = function() {
 };
 
 var statusResolver = function(status, count) {
-  var status, message, count;
+  var message;
  
  switch (status) {
   case 200:
-    message = "- all is well";
+    message = '- all is well';
     break;
   case 400:
-    message = "- bad request";
+    message = '- bad request';
     break;
   case 401:
-    message = "- not authorized";
+    message = '- not authorized';
     break;
   case 403:
-    message = "- forbidden";
+    message = '- forbidden';
     break;
   case 404:
-    message = "- not found";
+    message = '- not found';
     break;
   case 408:
-    message = "- request timeout";
+    message = '- request timeout';
     break;
   case 500:
-    message = "- internal Server Error";
+    message = '- internal Server Error';
     break;
   case 504:
-    message = "- gateway Timeout";
+    message = '- gateway Timeout';
     break;
   case 666:
-    message = "- demonic possession";
+    message = '- demonic possession';
     break;
   default:
-    message = "- status not accounted for";
+    message = '- status not accounted for';
   }
   return {
-    "status": status,
-    "message": message,
-    "count": count
-  }
-}
+    'status': status,
+    'message': message,
+    'count': count
+  };
+};
 
 
 var prepareToDos = function(result) {
@@ -109,32 +109,33 @@ var prepareToDos = function(result) {
       'canvas': statusResolver(result.data.canvas.Meta.httpStatus, result.data.canvas.Result.length)
     },
     'combinedToDos': []
-  }
-  var status = {}
-  var statusCTools = result.data.ctools.Meta.httpStatus;
-  var statusCTools = result.data.ctools.Meta.httpStatus;
+  };
+
   var combinedTodos = result.data.ctools.Result.concat(result.data.canvas.Result);
+
   $.each(combinedTodos, function() {
     this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
     this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
 
     var now = moment().valueOf();
-    var nowAnd4 = moment().add(4, 'days').valueOf();
+    var nowAnd1 = now + 86400000;
     var due = this.due_date_sort * '1000';
 
     if (due < now) {
-      this.when = 'earlier';
-    } else {
-      if (due > nowAnd4) {
-        this.when = 'later';
-      } else {
-        this.when = 'soon';
-      }
+      this.when = 'overdue';
+    }
+    // need a better comparison for today and this week
+    if (due > now && due < nowAnd1) {
+     this.when = 'today'; 
+    }
+
+    if (due > nowAnd1) {
+      this.when = 'week';
     }
   });
   combinedTodosAndStatus.combinedToDos = combinedTodos;
   return combinedTodosAndStatus;
-}
+};
 
 
 /**

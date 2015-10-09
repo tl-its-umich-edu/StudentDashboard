@@ -57,14 +57,12 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
 }).filter('headerText', function() {
     return function(str) {
       switch (str) {
-        case 'nodate':
-          return 'No Date';
-        case 'earlier':
-          return 'Due Earlier';
-        case 'later':
-          return 'Due Later';
-        case 'soon':
-          return 'Due Soon';
+        case 'overdue':
+          return 'Overdue';
+        case 'week':
+          return 'Due This Week';
+        case 'today':
+          return 'Today';
         default:
           return '';
       }
@@ -73,16 +71,14 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
 }).filter('noItemsFoundForTime', function() {
     return function(str) {
       switch (str) {
-        case 'nodate':
-          return 'No items without date found.';
-        case 'earlier':
-          return 'No earlier items found.';
-        case 'later':
-          return 'No later items found.';
-        case 'soon':
-          return 'No items due soon found.';
+        case 'overdue':
+          return 'No overdue items.';
+        case 'week':
+          return 'No items due this week.';
+        case 'today':
+          return 'No items due today.';
         default:
-          return 'Default message.';
+          return '';
       }
     };
 });;

@@ -165,7 +165,7 @@ ul {
 }
 
 
-#todo .earlier .dateSpan{
+#todo .overdue .dateSpan{
     color:#c00
 }
 .footerInfo {
