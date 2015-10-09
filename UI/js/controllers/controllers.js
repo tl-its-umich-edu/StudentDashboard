@@ -127,10 +127,10 @@ dashboardApp.controller('todoController', ['ToDos', '$scope', function(ToDos, $s
        name: 'Overdue',
        value: 'overdue'
     }, {
-       name: 'Today',
+       name: 'Due today',
        value: 'today'
     }, {
-       name: 'This week',
+       name: 'Due this week',
        value: 'week'
     }];
 

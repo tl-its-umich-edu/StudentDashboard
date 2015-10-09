@@ -119,7 +119,6 @@ var prepareToDos = function(result) {
 
     var now = moment();
     var due = moment(this.due_date_sort * 1000);
-    //var due = this.due_date_sort;
 
     if (due < now) {
       this.when = 'overdue';

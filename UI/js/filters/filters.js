@@ -62,7 +62,7 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
         case 'week':
           return 'Due This Week';
         case 'today':
-          return 'Today';
+          return 'Due Today';
         default:
           return '';
       }
