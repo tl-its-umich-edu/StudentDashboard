@@ -1,0 +1,31 @@
+{
+  "Meta": {
+    "httpStatus": 200,
+    "Message": "got todos from canvas API"
+  },
+  "Result": [
+    {
+      "all_day": false,
+      "all_day_date": null,
+      "comments": null,
+      "created_at": "2015-08-24T22:00:50Z",
+      "end_at": "2015-10-19T20:00:00Z",
+      "id": 9321,
+      "location_address": "",
+      "location_name": "G378",
+      "start_at": "2015-10-19T17:00:00Z",
+      "title": "DENT 524 Pathways Class",
+      "updated_at": "2015-09-09T15:39:20Z",
+      "workflow_state": "active",
+      "description": "<p>“Panel Discussion” – Dr. Darnell Kaigler</p>\n<p>“Specialties Search” – Dr. Howard Hamerink</p>",
+      "context_code": "course_15572",
+      "child_events_count": 0,
+      "parent_event_id": null,
+      "hidden": false,
+      "child_events": [],
+      "url": "https://api-qa-gw.its.umich.edu/api/v1/calendar_events/9321",
+      "html_url": "https://api-qa-gw.its.umich.edu/calendar?event_id=9321&include_contexts=course_15572",
+      "duplicates": []
+    }
+  ]
+}

@@ -14,6 +14,21 @@ module DataProviderCToolsDirect
   #curl $CURL_STD -X DELETE $P://$HOST/direct/session/$SESSION?$SES
   #$P://$HOST/direct/session.json?$SES
 
+  def initConfigureCToolsHTTPProvider(config_hash)
+    security_file = config_hash[:security_file]
+    application_name = config_hash[:ctools_http_application_name]
+    logger.debug "#{__method__}: #{__LINE__}: configure provider CToolsHTTP: security_file: #{security_file} application_name: #{application_name}"
+
+    @ctoolsHash = Hash.new if @ctoolsHash.nil?
+
+    #@ctoolsHash[:useHTTPToDoLMSProvider] = true
+    #@ctoolsHash[:HTTPDirectToDoLMS] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMS(uniqname, security_file, application_name) }
+    @ctoolsHash[:ToDoLMSProvider] = true
+    @ctoolsHash[:ToDoLMS] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMS(uniqname, security_file, application_name) }
+    @ctoolsHash
+  end
+
+
   def ctoolsHTTPDirectToDoLMS(uniqname, security_file, http_application)
     logger.debug "#{__method__}: #{__LINE__}: ############### call ctools http direct todolms http_application: #{http_application}"
 

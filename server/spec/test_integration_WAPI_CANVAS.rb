@@ -29,6 +29,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
   ## be loaded separately.
 
   @@yml_file = TestHelper.findSecurityFile("security.yml")
+  logger.debug "yml_file: #{@@yml_file}"
   @@yml = nil
   @@config = nil
 
@@ -38,9 +39,10 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   def load_application(app_name)
 
-    logger.debug "#{__LINE__}: la: application: #{app_name}"
+    logger.debug "#{__LINE__}: la: app_name: #{app_name}"
 
     application = @@yml[app_name]
+    logger.debug "#{__LINE__}: la: application.inspect: #{application.inspect}"
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -57,10 +59,11 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
     logger.level=TestHelper.getCommonLogLevel
     #logger.level=Logger::ERROR
-    #logger.level=Logger::DEBUG
+    logger.level=Logger::DEBUG
 
     #@default_application_name = 'SD-QA-CANVAS'
-    @default_application_name = 'Canvas-TL-TEST'
+    #@default_application_name = 'Canvas-TL-TEST'
+    @default_application_name = 'CANVAS-TL-QA'
     #@default_application_name = 'CANVAS-ADMIN-DEV'
     load_yml
     load_application @default_application_name
@@ -174,15 +177,5 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     result_as_json = run_and_get_json_result(request_url)
     assert_operator result_as_json.length, ">=",1,"got some upcoming events back"
   end
-
-  ## test for data about a (test) student.  This uses masquerade.
-  def test_canvas_api_dlhaines_self_todo
-    refute_nil @w
-    ## this requires self in url
-    request_url = "/users/self/todo?as_user_id=sis_login_id:dlhaines"
-    result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some upcoming events back"
-  end
-
 
 end

@@ -92,6 +92,9 @@ class CourseList < Sinatra::Base
   # name of application to use for CTools HTTP direct information
   config_hash[:ctools_http_application_name] = "CTQA-DIRECT"
 
+  # name of application to use for canvas esb
+  config_hash[:canvas_esb_application_name] = "CANVAS-TL-QA"
+
   # default name of default user
   config_hash[:default_user] = "default"
 
@@ -274,6 +277,9 @@ END
     config_hash[:invalid_query_text] = external_config['invalid_query_text'] || config_hash[:invalid_query_text]
     config_hash[:authn_uniqname_override] = external_config['authn_uniqname_override'] || config_hash[:authn_uniqname_override]
     config_hash[:application_name] = external_config['application_name'] || config_hash[:application_name]
+    config_hash[:ctools_http_application_name] = external_config['ctools_http_application_name'] || config_hash[:ctools_http_application_name]
+    config_hash[:canvas_esb_application_name] = external_config['canvas_esb_application_name'] || config_hash[:canvas_esb_application_name]
+
 
     ## See if wait times are set for authn stub wait.
     config_hash[:authn_wait_min] = external_config['authn_wait_min'] || 0
