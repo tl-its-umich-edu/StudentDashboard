@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, _*/
+/* global $, _, moment*/
 
 /**
  * get the strings from a hidden DOM element and
@@ -11,14 +11,14 @@ var lang = JSON.parse($('#lang').text());
 /**
  * Show spinner whenever ajax activity starts
  */
-$(document).ajaxStart(function () {
+$(document).ajaxStart(function() {
   $('#spinner').show();
 });
 
 /**
  * Hide spinner when ajax activity stops
  */
-$(document).ajaxStop(function () {
+$(document).ajaxStop(function() {
   $('#spinner').hide();
 });
 
@@ -34,7 +34,7 @@ $.ajaxSetup({
 /**
  * Generic error handler
  */
-var errorHandler = function (url, result) {
+var errorHandler = function(url, result) {
   var errorResponse = {};
   if (!result) {
     errorResponse.message = 'Something happened!';
@@ -50,7 +50,7 @@ var errorHandler = function (url, result) {
  * Manage dismissing alert
  */
 
-$('.dashMessage').bind('closed.bs.alert', function () {
+$('.dashMessage').bind('closed.bs.alert', function() {
   dashMessageSeenUpdate();
 });
 
@@ -59,6 +59,83 @@ var dashMessageSeenUpdate = function() {
   // on closing the alert, set a sessionStorage value
   sessionStorage.setItem('dashMessageSeen', true);
 };
+
+var statusResolver = function(status, count) {
+  var message;
+ 
+ switch (status) {
+  case 200:
+    message = '- all is well';
+    break;
+  case 400:
+    message = '- bad request';
+    break;
+  case 401:
+    message = '- not authorized';
+    break;
+  case 403:
+    message = '- forbidden';
+    break;
+  case 404:
+    message = '- not found';
+    break;
+  case 408:
+    message = '- request timeout';
+    break;
+  case 500:
+    message = '- internal Server Error';
+    break;
+  case 504:
+    message = '- gateway Timeout';
+    break;
+  case 666:
+    message = '- demonic possession';
+    break;
+  default:
+    message = '- status not accounted for';
+  }
+  return {
+    'status': status,
+    'message': message,
+    'count': count
+  };
+};
+
+
+var prepareToDos = function(result) {
+  var combinedTodosAndStatus = {
+    'status': {
+      'ctools': statusResolver(result.data.ctools.Meta.httpStatus, result.data.ctools.Result.length),
+      'canvas': statusResolver(result.data.canvas.Meta.httpStatus, result.data.canvas.Result.length)
+    },
+    'combinedToDos': []
+  };
+
+  var combinedTodos = result.data.ctools.Result.concat(result.data.canvas.Result);
+
+  $.each(combinedTodos, function() {
+    this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
+    this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
+
+    var now = moment();
+    var due = moment(this.due_date_sort * 1000);
+
+    if (due < now) {
+      this.when = 'overdue';
+    }
+    
+    if (now.diff(due, 'days') === 0) {
+     this.when = 'today'; 
+    }
+    // better for week - but still needs to incorporate todays items
+    if (now.diff(due, 'days') > 0 && now.diff(due, 'days') < 7 && due > now) {
+      this.when = 'week';
+    }
+  });
+  combinedTodosAndStatus.combinedToDos = combinedTodos;
+  return combinedTodosAndStatus;
+};
+
 
 /**
  *
@@ -69,7 +146,7 @@ var dashMessageSeenUpdate = function() {
  * All instructors are hidden save the first primary instructor (by alphanum), or the first alphanum.
  * Handler below toggles the complete list
  */
-$(document).on('click', '.showMoreInstructors', function (e) {
+$(document).on('click', '.showMoreInstructors', function(e) {
   e.preventDefault();
   var txt = $(this).closest('div.instructorsInfo').find('.moreInstructors').is(':visible') ? '(more)' : '(less)';
   $(this).text(txt);
@@ -77,17 +154,16 @@ $(document).on('click', '.showMoreInstructors', function (e) {
   return null;
 });
 
-$(document).ready(function(){
+$(document).ready(function() {
   // determine size of viewport
   var is_mobile;
-  if( $('#isMobile').is(':visible') === false) {
+  if ($('#isMobile').is(':visible') === false) {
     is_mobile = true;
-  }
-  else {
+  } else {
     is_mobile = false;
   }
   // if not a small viewport fetch a list of the available background images
-  if(!is_mobile){
+  if (!is_mobile) {
     $.ajax({
       url: 'external/image',
       cache: true,

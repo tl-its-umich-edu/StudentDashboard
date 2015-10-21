@@ -1,0 +1,16 @@
+{ 
+    "ctools": { 
+        "Meta": { 
+            "httpStatus": 403, 
+            "message": "some message" 
+        }, 
+        "Result": [] 
+    }, 
+    "canvas": { 
+        "Meta": { 
+            "httpStatus": 403, 
+            "message": "some message" 
+        }, 
+        "Result": [] 
+    } 
+} 

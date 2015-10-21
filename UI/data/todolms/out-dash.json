@@ -1,0 +1,7 @@
+{
+    "Meta": {
+        "httpStatus": 666,
+        "message": "some message"
+    },
+    "Result": []
+}

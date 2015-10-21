@@ -37,4 +37,48 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
       return input.replace(',', ', ');
     }
   };
-});
+}).filter('cut', function () {
+  return function (value, wordwise, max, tail) {
+      if (!value) return '';
+
+      max = parseInt(max, 10);
+      if (!max) return value;
+      if (value.length <= max) return value;
+
+      value = value.substr(0, max);
+      if (wordwise) {
+          var lastspace = value.lastIndexOf(' ');
+          if (lastspace != -1) {
+              value = value.substr(0, lastspace);
+          }
+      }
+      return value + (tail || ' …');
+  };
+}).filter('headerText', function() {
+    return function(str) {
+      switch (str) {
+        case 'overdue':
+          return 'Overdue';
+        case 'week':
+          return 'Due This Week';
+        case 'today':
+          return 'Due Today';
+        default:
+          return '';
+      }
+
+    };
+}).filter('noItemsFoundForTime', function() {
+    return function(str) {
+      switch (str) {
+        case 'overdue':
+          return 'No overdue items.';
+        case 'week':
+          return 'No items due this week.';
+        case 'today':
+          return 'No items due today.';
+        default:
+          return '';
+      }
+    };
+});;
