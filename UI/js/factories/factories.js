@@ -120,3 +120,23 @@ dashboardApp.factory('Terms', function ($http) {
     }
   };
 });
+
+
+/**
+ *  Factory to return  the Canvas/CTools todo data as promise
+ */
+
+dashboardApp.factory('ToDos', function ($http) {
+  return {
+    getToDos: function (url) {
+      return $http.get(url, {cache: true}).then(
+        function success(result) {
+          return prepareToDos(result);
+        },
+        function error() {
+          //console.log('errors');
+        }
+      );
+    }
+  };
+});
