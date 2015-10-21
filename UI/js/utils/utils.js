@@ -165,22 +165,19 @@ $(document).ready(function() {
   // if not a small viewport fetch a list of the available background images
   if (!is_mobile) {
     $.ajax({
-        url: 'external/image',
-        cache: true,
-        dataType: 'json',
-        method: 'GET'
-      })
-      .done(function(data) {
-        // pick a random image and assign it to the body element
-        var ramdomImage = _.sample(data);
-
-        document.body.style.backgroundImage = 'url(external/image/' + ramdomImage + ')';
-        document.body.style.backgroundColor = '#444444';
-      })
-      .fail(function() {
-        // select a default image and assign it to the body element
-        document.body.style.backgroundImage = 'url(data/images/back/default.jpg)';
-        document.body.style.backgroundColor = '#444444';
-      });
+      url: 'external/image',
+      cache: true,
+      dataType: 'json',
+      method: 'GET'
+    })
+    .done(function(data){
+      // pick a random image and assign it to the body element
+      var ramdomImage = _.sample(data);
+      document.body.style.backgroundImage = 'url(external/image/' + ramdomImage + ')';      
+    })
+    .fail(function() {
+      // select a default image and assign it to the body element
+      document.body.style.backgroundImage = 'url(data/images/back/default.jpg)';
+    });
   }
 });

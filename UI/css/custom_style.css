@@ -1,5 +1,5 @@
 body {
-    background-color:#eee;
+    background-color:#444;
     background-position: 0 50px;
     background-repeat:  no-repeat;
  }
@@ -41,7 +41,16 @@ a {
     text-align:right;
     padding-top:8px;
 }
-
+.loginContainer a strong {
+    background: #9d0000 none repeat scroll 0 0;
+    font-size: 12px;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0 8px;
+}
+.loginContainer a:focus strong, .loginContainer a:hover strong {
+    background: #c00 none repeat scroll 0 0;
+}
 .navbar-nav.navbar-right:last-child {
     margin-right:0;
 }
