@@ -13,14 +13,15 @@ module DataProviderESB
   @@w = nil
   @@yml = nil
 
-  def setupWAPI(app_name)
-    logger.info "setupWAPI: use ESB application: #{app_name}"
+  def setupCToolsWAPI(app_name)
+    logger.info "setupCToolsWAPI: use ESB application: #{app_name}"
+    logger.debug "setupCToolsWAPI:  app_name: #{app_name} @@yml: #{@@yml.inspect}"
     application = @@yml[app_name]
     @@w = WAPI.new application
   end
 
-  def initESB(security_file, app_name)
-
+  def initCToolsESB(security_file, app_name)
+    logger.debug "initCToolsESB:  security_file: #{security_file} app_name: #{app_name} @@w: #{@@w.inspect}"
     requested_file = security_file
 
     default_security_file = './server/local/security.yml'
@@ -34,13 +35,14 @@ module DataProviderESB
     logger.info "init_ESB: use security file_name: #{file_name}"
     @@yml = YAML.load_file(file_name)
 
-    setupWAPI(app_name)
+    setupCToolsWAPI(app_name)
   end
 
-  def ensure_ESB(app_name, security_file)
+  def ensureCToolsESB(app_name, security_file)
+    logger.debug "ensureCToolsESB:  security_file: #{security_file} app_name: #{app_name} @@w: #{@@w.inspect}"
     if @@w.nil?
       logger.debug "@@w is nil security_file: #{security_file}"
-      @@w = initESB(security_file, app_name)
+      @@w = initCToolsESB(security_file, app_name)
     end
   end
 
@@ -110,7 +112,7 @@ module DataProviderESB
   def dataProviderESBCourse(uniqname, termid, security_file, app_name, default_term)
     logger.info "data provider is DataProviderESB."
     ## if necessary initialize the ESB connection.
-    ensure_ESB(app_name, security_file)
+    ensureCToolsESB(app_name, security_file)
 
     if termid.nil?
       logger.debug "dPESBC: #{__LINE__}: defaulting term to #{default_term}"
@@ -131,8 +133,9 @@ module DataProviderESB
 
   def dataProviderESBTerms(uniqname, security_file, app_name)
     logger.info "data provider is DataProviderESB."
+    logger.debug "dPESBTerms: uniqname: #{uniqname} security_file: #{security_file} app_name: #{app_name}"
     ## if necessary initialize the ESB connection.
-    ensure_ESB(app_name, security_file)
+    ensureCToolsESB(app_name, security_file)
 
     url = "/Students/#{uniqname}/Terms"
     result = callDataUrl(url)
@@ -149,7 +152,7 @@ module DataProviderESB
   # get courses for a predefined user / term to allow non-authenticated performance check.
   def dataProviderESBCheck(security_file, app_name)
 
-    ensure_ESB(app_name, security_file)
+    ensureCToolsESB(app_name, security_file)
 
     # get the pre-defined check values
     check_uniqname = @@yml[app_name]['check_uniqname']

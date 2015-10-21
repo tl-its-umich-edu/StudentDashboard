@@ -1,0 +1,56 @@
+{
+  "Meta": {
+    "httpStatus": 200,
+    "Message": "got todos from canvas API"
+  },
+  "Result": [
+    {
+      "all_day": true,
+      "all_day_date": "2015-10-19",
+      "created_at": "2015-09-02T15:09:01Z",
+      "title": "ASSIGNMENT # 1  Learning Plan and Reflective Assessment",
+      "updated_at": "2015-10-10T15:41:07Z",
+      "workflow_state": "published",
+      "description": "<p> </p>\r\n<p class=\"p1\"><span class=\"s1\">Please submit your Reflective Practice and Learning Plan assignments directly to Canvas only. Do not submit to Foliotek at this time. The Learning Plan form on Foliotek does not correspond to the assignment.</span></p>\r\n<p> </p>",
+      "id": "assignment_23762",
+      "assignment": {
+        "anonymous_peer_reviews": false,
+        "assignment_group_id": 7520,
+        "automatic_peer_reviews": false,
+        "created_at": "2015-09-02T15:09:01Z",
+        "description": "<p> </p>\r\n<p class=\"p1\"><span class=\"s1\">Please submit your Reflective Practice and Learning Plan assignments directly to Canvas only. Do not submit to Foliotek at this time. The Learning Plan form on Foliotek does not correspond to the assignment.</span></p>\r\n<p> </p>",
+        "due_at": "2015-10-20T03:59:59Z",
+        "grade_group_students_individually": false,
+        "grading_standard_id": null,
+        "grading_type": "points",
+        "group_category_id": null,
+        "id": 23762,
+        "lock_at": "2015-10-20T03:59:00Z",
+        "moderated_grading": null,
+        "peer_reviews": false,
+        "points_possible": 5,
+        "position": 1,
+        "post_to_sis": null,
+        "unlock_at": "2015-09-21T04:00:00Z",
+        "updated_at": "2015-10-10T15:41:07Z",
+        "course_id": 15572,
+        "name": "ASSIGNMENT # 1  Learning Plan and Reflective Assessment",
+        "submission_types": [
+          "online_upload"
+        ],
+        "has_submitted_submissions": true,
+        "muted": false,
+        "html_url": "https://api-qa-gw.its.umich.edu/courses/15572/assignments/23762",
+        "published": true,
+        "only_visible_to_overrides": false,
+        "locked_for_user": false,
+        "submissions_download_url": "https://api-qa-gw.its.umich.edu/courses/15572/assignments/23762/submissions?zip=1"
+      },
+      "html_url": "https://api-qa-gw.its.umich.edu/courses/15572/assignments/23762",
+      "context_code": "course_15572",
+      "end_at": "2015-10-20T03:59:59Z",
+      "start_at": "2015-10-20T03:59:59Z",
+      "url": "https://api-qa-gw.its.umich.edu/api/v1/calendar_events/assignment_23762"
+    }
+  ]
+}
