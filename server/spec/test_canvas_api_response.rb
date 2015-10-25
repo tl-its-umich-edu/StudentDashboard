@@ -26,7 +26,7 @@ class TestCanvasAPIResponse < Minitest::Test
     logger.level=TestHelper.getCommonLogLevel
     # allow for file by file override
     #logger.level=Logger::ERROR
-    #logger.level=Logger::DEBUG
+    logger.level=Logger::DEBUG
 
   end
 
@@ -45,13 +45,13 @@ class TestCanvasAPIResponse < Minitest::Test
 
   # verify that processing the minimal string version works
   def test_new_creates_something
-    @response = CanvasAPIResponse.new(@@string_A)
+    @response = CanvasAPIResponse.new(@@string_A,Hash.new())
     refute_nil @response, "get object"
     refute_nil @@testFileDir, "locate test file directory"
   end
 
   def test_string_A_json_todolms
-    response = CanvasAPIResponse.new(@@string_A)
+    response = CanvasAPIResponse.new(@@string_A,Hash.new())
     tdl = response.toDoLms
     assert_equal 0, tdl.length,"verify length of empty response"
   end
@@ -77,7 +77,7 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string)
+    response = CanvasAPIResponse.new(file_data_as_string,Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -111,7 +111,7 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string)
+    response = CanvasAPIResponse.new(file_data_as_string,Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -146,7 +146,7 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string)
+    response = CanvasAPIResponse.new(file_data_as_string,Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -169,5 +169,43 @@ class TestCanvasAPIResponse < Minitest::Test
     logger.debug "#{__method__}: #{__LINE__}: C: dash_format: "+dash_format.inspect
   end
 
+
+  def test_get_canvas_assignment_replace_event
+
+    # Test single entry with an assignment
+    # The test files are full results, not unit test data, so:
+    # read it in, strip off the WAPI wrapper, stringify it and then process.
+
+    file_name = "assignment_A"
+    file_as_string = IO.read("#{@@testFileDir}/todolms/canvas/#{file_name}.json")
+
+    file_as_json = JSON.parse(file_as_string)
+    file_data = file_as_json['Result']
+    file_data_as_string = JSON.generate(file_data)
+    replace = Hash.new()
+    replace['link'] = ["https://api-qa-gw.its.umich.edu","https://umich.test.instructure.com"]
+    replace['contextUrl'] = ["CANVAS_INSTANCE_PREFIX","https://umich.test.instructure.com"]
+
+    logger.debug "#{__method__}: #{__LINE__}: input: "+file_data_as_string.inspect
+    response = CanvasAPIResponse.new(file_data_as_string,replace)
+
+    logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
+    dash_format = response.toDoLms
+    logger.debug "#{__method__}: #{__LINE__}: A: dash_format: "+dash_format.to_json
+
+    assert_equal 1,dash_format.length,"get multiple events"
+    assert_equal "https://umich.test.instructure.com/courses/15572/assignments/23762",dash_format[0][:link],"reset link url"
+
+    # extract out the single entry
+    event = dash_format.pop
+    verify_event event
+
+    # verify that some assignment specific processing took place.
+    assert_equal "points",event[:grade_type], "has grade type"
+
+    assert_equal "1445313599",event[:due_date_sort]
+
+    logger.debug "#{__method__}: #{__LINE__}: C: dash_format: "+dash_format.inspect
+  end
 
 end

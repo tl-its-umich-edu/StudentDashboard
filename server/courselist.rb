@@ -280,6 +280,8 @@ END
     config_hash[:ctools_http_application_name] = external_config['ctools_http_application_name'] || config_hash[:ctools_http_application_name]
     config_hash[:canvas_esb_application_name] = external_config['canvas_esb_application_name'] || config_hash[:canvas_esb_application_name]
 
+    # get the information for this application into the config hash under the explicit application name
+    config_hash[config_hash[:canvas_esb_application_name]] = external_config[config_hash[:canvas_esb_application_name]]
 
     ## See if wait times are set for authn stub wait.
     config_hash[:authn_wait_min] = external_config['authn_wait_min'] || 0
@@ -744,6 +746,7 @@ END
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
 
+    ##logger.debug "#{__method__}: #{__LINE__}: @@@@@@@@@@@ request: #{request.inspect}"
 
     # Call to the ctools REST source url in this application.
     status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")

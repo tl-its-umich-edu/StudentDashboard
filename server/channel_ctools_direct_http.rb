@@ -95,7 +95,7 @@ class ChannelCToolsDirectHTTP
     #  We can fix it if that happens.
     url = format_url(request)+"?_sessionId=#{@session_id}"
     response = RestClient.get url, :verify_ssl => true
-    logger.info "#{self.class.to_s}:#{__method__}: response: "+response.inspect
+   # logger.debug "#{self.class.to_s}:#{__method__}: response: "+response.inspect
     response
   end
 
