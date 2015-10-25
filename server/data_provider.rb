@@ -21,7 +21,6 @@ module DataProvider
   SERVICE_UNAVAILABLE = "503"
 
   def initialize
-    #logger.debug "#{__method__}: #{__LINE__}: ############# call super in initialize"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ####### call super from initialize (CanvasESB)"
     super()
   end
@@ -127,14 +126,14 @@ module DataProvider
 
     unless @ctoolsHash[:ToDoLMSProvider].nil?
       logger.error "#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-      #raw_todos = @ctoolsHTTPDirectToDoLMS.(uniqname)
+
       raw_todos = @ctoolsHash[:ToDoLMS].(uniqname)
       # TODO: check if the wrapper status is ok
       # now strip off the wrapper
       result = raw_todos.result
       # reformat the result for the Dash UI format.
       todos = CToolsDirectResponse.new(result).toDoLms
-      # rewrap it.
+      # Put a new WAPI wrapper around it.
       todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools direct result",todos)
     end
 
@@ -164,8 +163,7 @@ module DataProvider
       # TODO: do the reformatting
       # reformat the result for the Dash UI format.
 
-      todos = CanvasAPIResponse.new(result.to_json).toDoLms
-      #todos = result
+      todos = @canvasHash[:formatResponse].(result.to_json).toDoLms
       # rewrap the formatted result.
       todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap Canvas API result",todos)
     end

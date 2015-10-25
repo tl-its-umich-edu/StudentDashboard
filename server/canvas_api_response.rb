@@ -14,15 +14,13 @@ class CanvasAPIResponse
   # Store the body of the response.  All output from Canvas API goes through this class.
   attr_accessor :body_string, :body_json
 
-  ## TODO: allow input as string or json
-
-  # Input is in string format
-  def initialize(body)
+  # Input is in string format.  Some values (e.g. host names) may need to be changed.
+  def initialize(body,replace)
     @body_string = body
     @body_json = JSON.parse(body)
-    @canvas_instance_prefix = 'https://umich.test.instructure.com.dummy'
-
-    #dump
+    # specifies strings to be replaced.  The replacement is only done
+    # in specific elements.
+    @replace = replace
   end
 
   # return the body formatted as todolms json
@@ -37,11 +35,7 @@ class CanvasAPIResponse
 
   def extractEvent(event)
 
-    # Verify that data can be accessed.  This doesn't / shouldn't check that
-    # value is not nil, just that it is possible to get the value.
-
-   # logger.debug "#{__method__}: #{__LINE__}: canvas event: [#{event}]"
-
+    # Verify that data can be accessed.
     return nil if (event.nil?)
 
     # create a single assignment object in known format for UI.
@@ -53,15 +47,15 @@ class CanvasAPIResponse
     standard_event[:contextLMS] = 'canvas'
     standard_event[:description] = ''
     standard_event[:link] = event['html_url']
-    standard_event[:contextUrl] = "http://www.newsoftheweird.com/archive/index.html"
-    logger.debug "replace context url with fixed value"
+    standard_event[:contextUrl] = "CANVAS_INSTANCE_PREFIX"
     standard_event[:context] = event['context_code']
     standard_event[:id] = event['id']
 
     unless event['assignment'].nil?
 
       standard_event[:grade_type] = event['assignment']['grading_type']
-      standard_event[:contextUrl] = "#{@canvas_instance_prefix}/courses/#{event['assignment']['course_id']}"
+      ## the PREFIX will be replaced by the correct value in the replace below.
+      standard_event[:contextUrl] = "CANVAS_INSTANCE_PREFIX/courses/#{event['assignment']['course_id']}"
 
       # turn due date into standard format.  Canvas date will be in iso8601 format.
       assignment_date = event['assignment']['due_at']
@@ -69,24 +63,21 @@ class CanvasAPIResponse
 
     end
 
-    # # make sure the epoch date only has 10 characters.
-    # assign[:due_date_sort] = event['calendarItem']['calendarTime'].to_s[0..9]
-    #
-    # assign[:contextUrl] = event['calendarItem']['context']['contextUrl']
-    # server = assign[:contextUrl].sub(/\/portal.*/, '')
-    #
-    # entity_reference = event['calendarItem']['entityReference']
-    # assign[:link] = server.to_s+
-    #     '/direct/assignment/deepLink/' +
-    #     entity_reference.sub(/\/assignment\/a\//, '') +
-    #     '.json'.to_s
+    # Allow string replacement.  This is needed to ensure that host names are correct.
+    # See studentdashboard.yml.TXT for information.
+    @replace.each_pair do |key,value|
+      next if standard_event[key.to_sym].nil?
+      from_name = @replace[key][0]
+      to_name = @replace[key][1]
+      standard_event[key.to_sym].gsub!(from_name,to_name)
+      logger.debug "#{__FILE__}: #{__LINE__}: possible update for #{standard_event[key.to_sym]}"
+    end
 
-    #logger.debug "#{__FILE__}:#{__method__}: #{__LINE__}: canvas standard_event: [#{standard_event}]"
     standard_event
   end
 
   def dump
-    logger.debug "CanvasAPIResponse: #{__LINE__}: body_string: [#{@body_string}]"
+    logger.debug "#{__FILE__}: #{__LINE__}: body_string: [#{@body_string}]"
     logger.debug "#{__FILE__}: #{__LINE__}: body_json: [#{@body_json}]"
   end
 

@@ -15,6 +15,19 @@
 # canvas information application name
 #canvas_esb_application_name: CANVAS-TL-QA
 #
+
+# THIS IS NOT IMPLEMENTED FOR ALL DATA SOURCES.  It will be added to data
+# sources as necessary.
+# Some application data sources strings in the output retrieved must be
+# modified.  For each named data source the 'remap' section specifies
+# the element name in the UI hash that is affected, and then the
+# target and replacement strings.
+#CANVAS-TL-QA:
+#  remap:
+#     link: ['https://api-qa-gw.its.umich.edu', 'https://umich.test.instructure.com']
+#     contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.test.instructure.com']
+
+
 ##### These two values are used to configure a disk file based provider.
 ##### Not all data sources support a disk based provider.
 #data_provider_file_uniqname: test-throttling-terms
