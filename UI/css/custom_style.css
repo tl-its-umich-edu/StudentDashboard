@@ -81,7 +81,7 @@ ul {
     list-style: none;
 }
 
-.itemPanel .itemList li {
+.itemPanel .itemList li, .loadingBox {
     position:relative;
     margin: 5px 0;
     padding: 10px;

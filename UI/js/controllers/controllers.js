@@ -107,20 +107,10 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   * Todo controller, using fake data for now
   */
 
-dashboardApp.controller('todoController', ['ToDos', '$scope', function(ToDos, $scope) {
-  // NOTE: since this controller depends on dummy data at the moment, all the possible
-  // permutations (for data and errors returned by Canvas and CTools are listed bellow. 
-  // to exercise UI comment and uncomment to see the effects of the various permutations
-  // The default uncommented one returns 200 and sample data for both systems.
-
-  ToDos.getToDos('data/todolms/data-canvas-and-ctools.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/data-canvas.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/data-ctools.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/data-no-data-canvas-and-ctools.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/out-canvas.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/out-ctools.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/out-canvas-and-ctools.json').then(function(data) {
-  //ToDos.getToDos('data/todolms/out-dash.json').then(function(data) {
+dashboardApp.controller('todoController', ['ToDos', '$scope', '$rootScope', function(ToDos, $scope, $rootScope) {
+  $scope.loadingToDos = true;
+  ToDos.getToDos('/todolms/' + $rootScope.user).then(function(data) {
+    $scope.loadingToDos = false;
     $scope.todos = data.combinedToDos;
     $scope.todoStatus = data.status;
     $scope.todo_time_options = [{

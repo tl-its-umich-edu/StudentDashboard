@@ -18,11 +18,18 @@
               </div>
           </div>
         </div>  
-      </h3>
-      <div class="alert alert-info" ng-hide="filteredItems.length" ng-show="!filteredItems.length">
-        <p ng-if="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
-        <span ng-show="(todoStatus.ctools.status ==200 || todoStatus.canvas.status ==200) && todos.length!==0">{{showWhen | noItemsFoundForTime}}</span>
-        <span ng-show="todos.length===0 && (todoStatus.ctools.status ===200 || todoStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
+      </h3>    
+      <div ng-show="loadingToDos" class="row loadingBox">
+         <div class="spinner col-lg-2 col-md-2 col-xs-2">
+         </div>
+         <div class="col-lg-10 col-md-10 col-xs-10">
+          Getting schedule info from CTools and Canvas...
+         </div>
+      </div>
+      <div class="alert alert-info" ng-show="!filteredItems.length  && !loadingToDos">
+      <p ng-if="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
+      <span ng-show="(todoStatus.ctools.status ==200 || todoStatus.canvas.status ==200) && todos.length!==0">{{showWhen | noItemsFoundForTime}}</span>
+      <span ng-show="todos.length===0 && (todoStatus.ctools.status ===200 || todoStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
       <ul class="itemList">
           <li ng-repeat="item in filteredItems  = (todos | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid">
               <div class="row">

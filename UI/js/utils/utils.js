@@ -128,7 +128,7 @@ var prepareToDos = function(result) {
      this.when = 'today'; 
     }
     // better for week - but still needs to incorporate todays items
-    if (now.diff(due, 'days') > 0 && now.diff(due, 'days') < 7 && due > now) {
+    if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {  
       this.when = 'week';
     }
   });
