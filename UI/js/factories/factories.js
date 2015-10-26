@@ -3,36 +3,6 @@
 /* global $, errorHandler, _, dashboardApp */
 
 /**
- * Singleton that reads index of external messages and picks one
- */
-
-
-dashboardApp.factory('DashMessage', function ($http) {
-  return {
-    getMessageIndex: function (url) {
-      return $http.get(url, {cache: true}).then(
-        function success(result) {
-          return result.data;
-        },
-        function error(result) {
-          return result.errors;
-        }
-      );
-    },
-    getMessage: function (url) {
-      return $http.get(url, {cache: true}).then(
-        function success(result) {
-          return result.data;
-        },
-        function error(result) {
-          return result.errors;
-        }
-      );
-    }
-  };
-});
-
-/**
  * Singleton that does the requests for the courses
  * Inner function uses the URL passed to it
  */
