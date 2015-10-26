@@ -32,7 +32,7 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
         return when.from(now);
       }
       else {
-        return (when.format('dddd ha'))  
+        return (when.format('dddd h:mm a'))  
       }
       //return when.from(now);
       
