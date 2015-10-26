@@ -28,7 +28,14 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
     if (when.diff(now, 'days') < -3 || when.diff(now, 'days') > 7) {
       return moment(when).format('MM/D');
     } else {
-      return when.from(now);
+      if (when.diff(now, 'days') === 0){
+        return when.from(now);
+      }
+      else {
+        return (when.format('dddd ha'))  
+      }
+      //return when.from(now);
+      
     }
   };
 }).filter('fixInstructorName', function () {
