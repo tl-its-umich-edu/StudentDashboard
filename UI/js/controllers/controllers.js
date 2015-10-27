@@ -104,16 +104,16 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 
  /**
-  * Todo controller, using fake data for now
+  * Schedule controller
   */
 
-dashboardApp.controller('todoController', ['ToDos', '$scope', '$rootScope', function(ToDos, $scope, $rootScope) {
-  $scope.loadingToDos = true;
-  ToDos.getToDos('/todolms/' + $rootScope.user).then(function(data) {
-    $scope.loadingToDos = false;
-    $scope.todos = data.combinedToDos;
-    $scope.todoStatus = data.status;
-    $scope.todo_time_options = [{
+dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope', function(Schedule, $scope, $rootScope) {
+  $scope.loadingSchedule = true;
+  Schedule.getSchedule('/todolms/' + $rootScope.user).then(function(data) {
+    $scope.loadingSchedule = false;
+    $scope.schedule = data.combinedSchedule;
+    $scope.scheduleStatus = data.status;
+    $scope.schedule_time_options = [{
        name: 'Overdue',
        value: 'overdue'
     }, {
@@ -128,7 +128,7 @@ dashboardApp.controller('todoController', ['ToDos', '$scope', '$rootScope', func
 
     $scope.setWhen = function(when) {
        $scope.showWhen = when;
-       $('#todo .itemList').attr('tabindex',-1).focus();
+       $('#schedule .itemList').attr('tabindex',-1).focus();
     };
   });
 }]);
