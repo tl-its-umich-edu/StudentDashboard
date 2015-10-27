@@ -111,8 +111,8 @@ var prepareSchedule = function(result) {
     'combinedSchedule': []
   };
 
-  var combinedShedule = result.data.ctools.Result.concat(result.data.canvas.Result);
-  if(combinedShedule.length){
+  var combinedSchedule = result.data.ctools.Result.concat(result.data.canvas.Result);
+  if(combinedSchedule.length){
     $.each(combinedSchedule, function() {
       this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
       this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
