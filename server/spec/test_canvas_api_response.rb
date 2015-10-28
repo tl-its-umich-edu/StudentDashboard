@@ -182,12 +182,12 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    replace = Hash.new()
-    replace['link'] = ["https://api-qa-gw.its.umich.edu","https://umich.test.instructure.com"]
-    replace['contextUrl'] = ["CANVAS_INSTANCE_PREFIX","https://umich.test.instructure.com"]
+    stringReplace = Hash.new()
+    stringReplace['link'] = ["https://api-qa-gw.its.umich.edu","https://umich.test.instructure.com"]
+    stringReplace['contextUrl'] = ["CANVAS_INSTANCE_PREFIX","https://umich.test.instructure.com"]
 
     logger.debug "#{__method__}: #{__LINE__}: input: "+file_data_as_string.inspect
-    response = CanvasAPIResponse.new(file_data_as_string,replace)
+    response = CanvasAPIResponse.new(file_data_as_string,stringReplace)
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms

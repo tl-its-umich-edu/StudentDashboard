@@ -52,7 +52,7 @@ module DataProviderCanvasESB
     security_file = config_hash[:security_file]
     application_name = config_hash[:canvas_esb_application_name]
     # This is hash with string replacement values.
-    replace = config_hash[application_name]['replace']
+    stringReplace = config_hash[application_name]['string-replace']
 
     logger.error "@@@@@@@@@@@@@@@@@@@@ need canvas_esb_application_name!" if application_name.nil?
     logger.debug "#{__method__}: #{__LINE__}: configure provider CanvasESB: security_file: [#{security_file}] application_name: [#{application_name}]"
@@ -61,7 +61,7 @@ module DataProviderCanvasESB
 
     @canvasHash[:useToDoLMSProvider] = true
     @canvasHash[:ToDoLMS] = Proc.new { |uniqname| canvasESBToDoLMS(uniqname, security_file, application_name) }
-    @canvasHash[:formatResponse] = Proc.new { |body| CanvasAPIResponse.new(body,replace) }
+    @canvasHash[:formatResponse] = Proc.new { |body| CanvasAPIResponse.new(body,stringReplace) }
 
     initCanvasESB security_file, application_name
     @canvasHash
