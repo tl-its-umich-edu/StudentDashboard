@@ -6,7 +6,7 @@ module DataProviderCanvasESB
   require 'yaml'
 
   # Implement calls for canvas data via ESB
-    #/users/self/upcoming_events?as_user_id=sis_login_id:studenta
+  # e.g. /users/self/upcoming_events?as_user_id=sis_login_id:studenta
 
   # initialize variables local to this access method
   def initialize
@@ -14,6 +14,7 @@ module DataProviderCanvasESB
     super()
     @canvasESB_w = ""
     @canvasESB_yml = ""
+    @canvasESB_response = ""
   end
 
   ## Make a WAPI connection object.
@@ -41,7 +42,6 @@ module DataProviderCanvasESB
     end
 
     logger.info "init_ESB: use security file_name: #{file_name}"
-    #@@yml = YAML.load_file(file_name)
     @canvasESB_yml = YAML.load_file(file_name)
     setupCanvasWAPI(app_name)
   end
@@ -51,6 +51,9 @@ module DataProviderCanvasESB
   def initConfigureCanvasESBProvider(config_hash)
     security_file = config_hash[:security_file]
     application_name = config_hash[:canvas_esb_application_name]
+    # This is hash with string replacement values.
+    stringReplace = config_hash[application_name]['string-replace']
+
     logger.error "@@@@@@@@@@@@@@@@@@@@ need canvas_esb_application_name!" if application_name.nil?
     logger.debug "#{__method__}: #{__LINE__}: configure provider CanvasESB: security_file: [#{security_file}] application_name: [#{application_name}]"
 
@@ -58,6 +61,8 @@ module DataProviderCanvasESB
 
     @canvasHash[:useToDoLMSProvider] = true
     @canvasHash[:ToDoLMS] = Proc.new { |uniqname| canvasESBToDoLMS(uniqname, security_file, application_name) }
+    @canvasHash[:formatResponse] = Proc.new { |body| CanvasAPIResponse.new(body,stringReplace) }
+
     initCanvasESB security_file, application_name
     @canvasHash
   end
@@ -68,12 +73,10 @@ module DataProviderCanvasESB
     logger.debug "#{__method__}: #{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
     logger.debug "#{__method__}: #{__LINE__}: canvas ESB: @w: [#{@w}]"
 
-    logger.error "#{__method__}: #{__LINE__}: ############## canvas ESB: use real user"
     r = @canvasESB_w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:#{uniqname}"
-    logger.debug "#{self.class.name.to_s}:#{__method__}: #{__LINE__}: canvas ESB: r.inspect: [#{r.inspect}]"
+
     canvas_body = r.result
     canvas_body_ruby = JSON.parse canvas_body
-    logger.debug "#{__method__}: #{__LINE__}: calendar: todos: #{canvas_body_ruby}"
 
     return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from canvas esb", canvas_body_ruby)
   end

@@ -1,7 +1,6 @@
 module DataProviderCanvasDirect
 
   require_relative 'WAPI_result_wrapper'
-  #require_relative 'channel_canvas_direct_http'
   require 'json'
   require 'rest-client'
   require 'yaml'

@@ -102,38 +102,42 @@ var statusResolver = function(status, count) {
 };
 
 
-var prepareToDos = function(result) {
-  var combinedTodosAndStatus = {
+var prepareSchedule = function(result) {
+  var combinedScheduleAndStatus = {
     'status': {
       'ctools': statusResolver(result.data.ctools.Meta.httpStatus, result.data.ctools.Result.length),
       'canvas': statusResolver(result.data.canvas.Meta.httpStatus, result.data.canvas.Result.length)
     },
-    'combinedToDos': []
+    'combinedSchedule': []
   };
 
-  var combinedTodos = result.data.ctools.Result.concat(result.data.canvas.Result);
+  var combinedSchedule = result.data.ctools.Result.concat(result.data.canvas.Result);
+  if(combinedSchedule.length){
+    $.each(combinedSchedule, function() {
+      this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
+      this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
 
-  $.each(combinedTodos, function() {
-    this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
-    this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
+      var now = moment();
+      var due = moment(this.due_date_sort * 1000);
 
-    var now = moment();
-    var due = moment(this.due_date_sort * 1000);
+      if (due < now) {
+        this.when = 'overdue';
+      }
+      
+      if (now.diff(due, 'days') === 0) {
+       this.when = 'today'; 
+      }
+      // better for week - but still needs to incorporate todays items
+      if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {  
+        this.when = 'week';
+      }
+    });
+    combinedScheduleAndStatus.combinedSchedule = combinedSchedule;
+  } else {
+    combinedScheduleAndStatus.combinedSchedule = [];
+  } 
 
-    if (due < now) {
-      this.when = 'overdue';
-    }
-    
-    if (now.diff(due, 'days') === 0) {
-     this.when = 'today'; 
-    }
-    // better for week - but still needs to incorporate todays items
-    if (now.diff(due, 'days') > 0 && now.diff(due, 'days') < 7 && due > now) {
-      this.when = 'week';
-    }
-  });
-  combinedTodosAndStatus.combinedToDos = combinedTodos;
-  return combinedTodosAndStatus;
+  return combinedScheduleAndStatus;
 };
 
 

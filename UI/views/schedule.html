@@ -1,30 +1,37 @@
-<div ng-controller="todoController" ngcloak>
-    <div id="todo" class="itemPanel">
-      <h3 class="colHeader"><span class="sr-only">To Dos</span>
-        <div class="pull-right" ng-hide="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200">
+<div ng-controller="scheduleController" ngcloak>
+    <div id="schedule" class="itemPanel">
+      <h3 class="colHeader"><span class="sr-only">Schedule</span>
+        <div class="pull-right" ng-hide="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">
           <small>{{showWhen | headerText}}</small>
           <div class="btn-group">
             <div class="btn-group btn-group-sm">
-              <div class="dropdown">
+              <div class="dropdown pull-right">
                   <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                       Show
                       <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                      <li ng-repeat="item in todo_time_options" role="presentation">
+                      <li ng-repeat="item in schedule_time_options" role="presentation">
                         <a ng-click="setWhen(item.value)" role="menuitem" tabindex="-1" href="#">{{item.name}}</a>
                       </li>
                   </ul>
               </div>
           </div>
         </div>  
-      </h3>
-      <div class="alert alert-info" ng-hide="filteredItems.length" ng-show="!filteredItems.length">
-        <p ng-if="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
-        <span ng-show="(todoStatus.ctools.status ==200 || todoStatus.canvas.status ==200) && todos.length!==0">{{showWhen | noItemsFoundForTime}}</span>
-        <span ng-show="todos.length===0 && (todoStatus.ctools.status ===200 || todoStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
+      </h3>    
+      <div ng-show="loadingSchedule" class="row loadingBox">
+         <div class="spinner col-lg-2 col-md-2 col-xs-2">
+         </div>
+         <div class="col-lg-10 col-md-10 col-xs-10">
+          Getting schedule info from CTools and Canvas...
+         </div>
+      </div>
+      <div class="alert alert-info" ng-show="!filteredItems.length  && !loadingSchedule">
+      <p ng-if="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
+      <span ng-show="(scheduleStatus.ctools.status ==200 || scheduleStatus.canvas.status ==200) && schedule.length!==0">{{showWhen | noItemsFoundForTime}}</span>
+      <span ng-show="schedule.length===0 && (scheduleStatus.ctools.status ===200 || scheduleStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
       <ul class="itemList">
-          <li ng-repeat="item in filteredItems  = (todos | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid">
+          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid">
               <div class="row">
                   <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
                   </div>
@@ -49,11 +56,11 @@
       <div class="itemPanelFooter">
         <div style="text-align:right"><a style="text-decoration:none" href="" ng-click="toggleFooter = !toggleFooter">?</a></div>
           <div ng-show="toggleFooter">
-            <div ng-hide="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200">
-              <p ng-show="todoStatus.ctools.status !==200 || todoStatus.canvas.status !==200">
-                <small ng-show="todoStatus.ctools.status !==200">CTools</small><small ng-show="todoStatus.ctools.status !==200 && todoStatus.canvas.status !==200"> and </small><small ng-show="todoStatus.canvas.status !==200"> Canvas</small><small> unreachable.</small>
+            <div ng-hide="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">
+              <p ng-show="scheduleStatus.ctools.status !==200 || scheduleStatus.canvas.status !==200">
+                <small ng-show="scheduleStatus.ctools.status !==200">CTools</small><small ng-show="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200"> and </small><small ng-show="scheduleStatus.canvas.status !==200"> Canvas</small><small> unreachable.</small>
               </p>
-              <small> CTools: {{todoStatus.ctools.status}} {{todoStatus.ctools.message}}, {{todoStatus.ctools.count}} items | Canvas: {{todoStatus.canvas.status}} {{todoStatus.canvas.message}}, {{todoStatus.canvas.count}} items
+              <small> CTools: {{scheduleStatus.ctools.status}} {{scheduleStatus.ctools.message}}, {{scheduleStatus.ctools.count}} items | Canvas: {{scheduleStatus.canvas.status}} {{scheduleStatus.canvas.message}}, {{scheduleStatus.canvas.count}} items
               </small>
             </div>
           </div>
