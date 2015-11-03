@@ -51,17 +51,23 @@ module DataProviderCanvasESB
   def initConfigureCanvasESBProvider(config_hash)
     security_file = config_hash[:security_file]
     application_name = config_hash[:canvas_esb_application_name]
-    # This is hash with string replacement values.
-    stringReplace = config_hash[application_name]['string-replace']
-
     logger.error "@@@@@@@@@@@@@@@@@@@@ need canvas_esb_application_name!" if application_name.nil?
+    # This is hash with string replacement values.
+    if !config_hash[application_name].nil? && !config_hash[application_name]['string-replace'].nil? then
+      stringReplace = config_hash[application_name]['string-replace']
+      logger.debug "#{__method__}: #{__LINE__}: stringReplace [#{stringReplace.inspect}]"
+    else
+      logger.info "No string-replace specified for canvas esb application: [#{application_name}].  Supplying empty one."
+      stringReplace = Hash.new()
+    end
+
     logger.debug "#{__method__}: #{__LINE__}: configure provider CanvasESB: security_file: [#{security_file}] application_name: [#{application_name}]"
 
     @canvasHash = Hash.new if @canvasHash.nil?
 
     @canvasHash[:useToDoLMSProvider] = true
     @canvasHash[:ToDoLMS] = Proc.new { |uniqname| canvasESBToDoLMS(uniqname, security_file, application_name) }
-    @canvasHash[:formatResponse] = Proc.new { |body| CanvasAPIResponse.new(body,stringReplace) }
+    @canvasHash[:formatResponse] = Proc.new { |body| CanvasAPIResponse.new(body, stringReplace) }
 
     initCanvasESB security_file, application_name
     @canvasHash
@@ -71,7 +77,7 @@ module DataProviderCanvasESB
   # actually call out to canvas and return the value.  Caller will reformat if necessary.
   def canvasESBToDoLMS(uniqname, security_file, esb_application)
     logger.debug "#{__method__}: #{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
-    logger.debug "#{__method__}: #{__LINE__}: canvas ESB: @w: [#{@w}]"
+    logger.debug "#{__method__}: #{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
 
     r = @canvasESB_w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:#{uniqname}"
 

@@ -77,22 +77,22 @@ class LdapCheck
   def is_user_in_admin_hash user
 
     return nil unless configuration['group']
-    logger.debug "admin user check: user: #{user}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: admin user check: user: #{user}"
 
     # if the cache has expired then update the group members.
     timeFromLastUpdate = Time.now() - @lastUpdate
     if timeFromLastUpdate > configuration['cache_seconds']
-      logger.info "updating ldap_check admin hash"
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: updating ldap_check admin hash"
       @updateCount += 1
       @lastUpdate = Time.now()
       # if resetting the values get rid of the set of members.
       @admin_hash = nil;
       save_group_members configuration['group']
       # Might get a group with no members or that doesn't exist.
-      @admin_hash = Hash.new unless(@admin_hash)
+      @admin_hash = Hash.new unless (@admin_hash)
     end
 
-    logger.debug @admin_hash.inspect
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: admin_hash: " +@admin_hash.inspect
 
     @admin_hash.has_key? user
   end

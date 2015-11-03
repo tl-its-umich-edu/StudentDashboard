@@ -46,8 +46,16 @@ class TestCourseList < MiniTest::Test
 
   ###################### test getURLUniqname
 
+  puts "make checks ignore extension"
+
   def test_getURLUniqname_courses
     s = "/StudentDashboard/courses/maggie.json"
+    r = CourseList.getURLUniqname(s)
+    assert_equal "maggie", r, "extract from courses url"
+  end
+
+  def test_getURLUniqname_courses_nojson
+    s = "/StudentDashboard/courses/maggie"
     r = CourseList.getURLUniqname(s)
     assert_equal "maggie", r, "extract from courses url"
   end
@@ -74,6 +82,30 @@ class TestCourseList < MiniTest::Test
     s = "/StudentDashboard/courses/goby.json?TERMID=2010"
     r = CourseList.getURLUniqname(s)
     assert_equal "goby", r, "extract from courses with TERMID"
+  end
+
+  def test_getURLUniqname_todolms_json
+    s = "/StudentDashboard/todolms/goby.json"
+    r = CourseList.getURLUniqname(s)
+    assert_equal "goby", r, "extract todolms with json"
+  end
+
+  def test_getURLUniqname_todolms_nojson
+    s = "/StudentDashboard/todolms/goby"
+    r = CourseList.getURLUniqname(s)
+    assert_equal "goby", r, "extract todolms no json"
+  end
+
+  def test_getURLUniqname_todolms_ctools_nojson
+    s = "/StudentDashboard/todolms/goby/ctools"
+    r = CourseList.getURLUniqname(s)
+    assert_equal "goby", r, "extract todolms ctools subsource no json"
+  end
+
+  def test_getURLUniqname_todolms_ctools_json
+    s = "/StudentDashboard/todolms/goby/ctools.json"
+    r = CourseList.getURLUniqname(s)
+    assert_equal "goby", r, "extract todolms ctools subsource with .json"
   end
 
   ############################### test veto request
