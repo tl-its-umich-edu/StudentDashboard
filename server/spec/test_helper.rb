@@ -1,5 +1,5 @@
 require 'simplecov'
-
+require_relative '../Logging'
 ## The SD Logger class must be required before including this TestHelper class.
 ## It should NOT be included directly in a test class itself.  It should be included
 ## by including the class under test.

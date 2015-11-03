@@ -418,7 +418,8 @@ END
   helpers do
 
     def allow_uniqname_override user
-
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: authn_uniqname_override: #{settings.latte_config[:authn_uniqname_override]}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: admin_user(#{user}): #{admin_user(user)}"
       settings.latte_config[:authn_uniqname_override] == true || admin_user(user)
     end
 
@@ -438,7 +439,7 @@ END
       pass if request.env['REMOTE_USER'].eql? uniqname
 
       # now reset the name
-      logger.debug "#{__LINE__}:now switching REMOTE_USER to #{uniqname}."
+      logger.debug "#{__LINE__}:now switching REMOTE_USER to [#{uniqname}]."
 
       logger.debug "resetting remote user"
       # put in session to be available for internal calls to REST api
@@ -485,6 +486,7 @@ END
 
     def self.vetoRequest(user, request_url)
 
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: user: [#{user}] request_url: [#{request_url}]"
       # This does the cheap internal checks first since it requires
       # an external call to see if the user is a latte admin.
 
@@ -493,7 +495,7 @@ END
 
       # find any user explicitly mentioned in the url.
       url_user = self.getURLUniqname(request_url)
-
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: url_user: [#{url_user}]"
       # It's fine as long as no user is explicitly named in the url.
       # It can only return information on the current user then.
       return nil if url_user.nil?
@@ -509,22 +511,27 @@ END
       # This could be shorter but putting the yield in first clause of ternary operator didn't work.
       is_admin = yield user
       veto = is_admin ? nil : true
-      logger.warn "vetoed request by #{user} for information url: #{request_url}" unless veto.nil?
-      logger.debug "#{__LINE__}: vR: user: #{user} is_admin: #{is_admin} veto: #{veto}"
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: vetoed request by [#{user}] for information url: [#{request_url}]" unless veto.nil?
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: vR: user: [#{user}] is_admin: [#{is_admin}] veto: [#{veto}]"
 
       veto
     end
 
-    ## extract any uniqname mentioned in this url
-    ## Patterns to match are:
-    ## /StudentDashboard/courses/ststvii.json
-    ## /StudentDashboard/?UNIQNAME=ststvii
-    ## /StudentDashboard/terms/ststvii.json
+    # extract a a uniqname in this url
+    # It must come after a known data source. Any elements
+    # after that element are ignored.
+    # /StudentDashboard/courses/ststvii.json
+    # /StudentDashboard/?UNIQNAME=ststvii
+    # /StudentDashboard/terms/ststvii.json
+    # /todolms/ralt.json
+    # /todolms/ralt/ctools.json
+    # TODO: could get the regexs from a list, which would make adding more easier.
     def self.getURLUniqname(url)
 
-      regex_courses = /courses\/(.*).json/;
-      regex_terms = /terms\/(.*).json/;
-      regex_UNIQUNAME = /\?UNIQNAME=(.+)/;
+      regex_courses = /courses\/([^.\/]+)/
+      regex_terms = /terms\/([^.\/]+)/
+      regex_todolms = /todolms\/([^.\/]+)/
+      regex_UNIQUNAME = /\?UNIQNAME=(.+)/
 
       r = regex_courses.match(url)
       return r[1] unless r.nil?
@@ -532,9 +539,11 @@ END
       r = regex_terms.match(url)
       return r[1] unless r.nil?
 
-      r = regex_UNIQUNAME.match(url)
+      r = regex_todolms.match(url)
       return r[1] unless r.nil?
 
+      r = regex_UNIQUNAME.match(url)
+      return r[1] unless r.nil?
 
       # if didn't match anything then nothing to return.
       nil
@@ -553,6 +562,21 @@ END
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
 
+  before "*" do
+    logger.debug "upfront request: "+request.inspect
+  end
+
+  # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
+  before /\/self(\Z|(\/|\/[\w\/]+)?(\.\w+)?)$/ do
+    original = String.new(request.env['PATH_INFO'])
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: self: session user: [#{session[:remote_user]}] env REMOTE_USER: [#{request.env['REMOTE_USER']}]"
+    self_user = session[:remote_user]
+    request.env['PATH_INFO'] = request.env['PATH_INFO'].gsub('/self', "/#{self_user}")
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: modified request [#{original}] to be: [#{request.env['PATH_INFO']}] and redirecting"
+    redirect to(request.env['PATH_INFO'])
+  end
+
+
   ### NOTE ON REST CALLS TO SELF
   # It's easy to call back to this app to get data. See the todolms section for an example.
   # BUT note that should convert the json data retrieved back to Ruby and convert the final
@@ -566,7 +590,7 @@ END
     # the effective user.  It is kept so that UI calls know who the
     # person of interest is.
 
-    logger.debug "REQUEST: * start processing (user, session, stopwatch)"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: * start processing (user, session, stopwatch)"
     config_hash = settings.latte_config
 
     ## Get a user name.
@@ -580,17 +604,17 @@ END
     ## Now check to see if allowed to override the user.
     if allow_uniqname_override user
 
-      logger.debug "allowed to override user"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check if allowed to override user"
       ## If allowed and there is an user in the session then use that.
       session_user = session[:remote_user]
       if !session_user.nil? && session_user.length > 0
         user = session_user
-        logger.debug "#{__LINE__}: authn filter: take user from session: #{user}"
+        logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  authn filter: take user from session: #{user}"
       end
     end
 
     ## Set that remote user to the computed user.
-    logger.debug "remote_user: #{request.env['REMOTE_USER']} computed user: #{user}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: remote_user: [#{request.env['REMOTE_USER']}] computed user: [#{user}]"
     request.env['REMOTE_USER'] = user
 
     # Store a stack of stopwatches in the session with the current thread id.
@@ -602,9 +626,9 @@ END
     session[:thread] = Array.new if session[:thread].nil?
     session[:thread].push(sd)
 
-    #session[:thread] = sd
-    logger.debug "REQUEST: end initial processing"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: end initial processing"
   end
+
 
   ## For testing allow specifying the userid identity to be used on the URL.
   ## This is particularly useful for load testing.  The switch in userid name
@@ -619,8 +643,10 @@ END
   before "*" do
 
     # NOTE: the {} block on the end is passed in and used to see if this is an admin user.
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto: REQUEST: #{request.env.inspect}"
     vetoResult = CourseList.vetoRequest(request.env['REMOTE_USER'], request.env['REQUEST_URI']) { admin_user request.env['REMOTE_USER'] }
-    logger.debug "REQUEST: * end veto check: [#{vetoResult}]"
+    logger.debug "#{__method__}: #{__LINE__}: REQUEST: * end veto check: [#{vetoResult}]"
     halt 403 if vetoResult == true
   end
 
@@ -790,7 +816,7 @@ END
       return "format not supported: [#{format}]"
     end
 
-    todolmsList = dataProviderToDoLMS(userid,lms)
+    todolmsList = dataProviderToDoLMS(userid, lms)
     #logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList.value_as_json
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
     #todolmsList.value_as_json
@@ -918,8 +944,11 @@ END
   # At end of request print the elapsed time for the request.
   after do
     request_sd = session[:thread].pop
-    request_sd.stop
-    logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
+    ## if redirect from self then the stopwatch doesn't get setup.
+    unless request_sd.nil?
+      request_sd.stop
+      logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
+    end
   end
 
 end
