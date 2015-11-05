@@ -20,10 +20,10 @@ module DataProviderCanvasESB
   ## Make a WAPI connection object.
   def setupCanvasWAPI(app_name)
 
-    logger.info "setupCanvasAPI: canvasESB: use ESB application: #{app_name}"
-    logger.debug "#{__method__}: #{__LINE__}: @canvasESB_yml: [#{@canvasESB_yml.to_json}]"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: setupCanvasAPI: canvasESB: use ESB application: #{app_name}"
+    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvasESB_yml: [#{@canvasESB_yml.to_json}]"
     application = @canvasESB_yml[app_name]
-    logger.debug "#{__method__}: #{__LINE__}: canvasESB: use ESB application: #{application.to_json}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvasESB: use ESB application: #{application.to_json}"
     @canvasESB_w = WAPI.new application
 
   end
@@ -41,7 +41,7 @@ module DataProviderCanvasESB
       file_name = default_security_file
     end
 
-    logger.info "init_ESB: use security file_name: #{file_name}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: init_ESB: use security file_name: #{file_name}"
     @canvasESB_yml = YAML.load_file(file_name)
     setupCanvasWAPI(app_name)
   end
@@ -55,13 +55,13 @@ module DataProviderCanvasESB
     # This is hash with string replacement values.
     if !config_hash[application_name].nil? && !config_hash[application_name]['string-replace'].nil? then
       stringReplace = config_hash[application_name]['string-replace']
-      logger.debug "#{__method__}: #{__LINE__}: stringReplace [#{stringReplace.inspect}]"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: stringReplace [#{stringReplace.inspect}]"
     else
-      logger.info "No string-replace specified for canvas esb application: [#{application_name}].  Supplying empty one."
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: No string-replace specified for canvas esb application: [#{application_name}].  Supplying empty one."
       stringReplace = Hash.new()
     end
 
-    logger.debug "#{__method__}: #{__LINE__}: configure provider CanvasESB: security_file: [#{security_file}] application_name: [#{application_name}]"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: configure provider CanvasESB: security_file: [#{security_file}] application_name: [#{application_name}]"
 
     @canvasHash = Hash.new if @canvasHash.nil?
 
@@ -76,8 +76,8 @@ module DataProviderCanvasESB
   #  <canvas server>/api/v1/users/self/upcoming_events
   # actually call out to canvas and return the value.  Caller will reformat if necessary.
   def canvasESBToDoLMS(uniqname, security_file, esb_application)
-    logger.debug "#{__method__}: #{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
-    logger.debug "#{__method__}: #{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
+    logger.debug "##{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
 
     r = @canvasESB_w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:#{uniqname}"
 
