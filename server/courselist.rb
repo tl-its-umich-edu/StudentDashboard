@@ -801,7 +801,7 @@ END
     ctools_merged_ruby = mergeCtoolsDashMneme(canvas_body_ruby, mneme_body_ruby)
     results = {
         'ctools' => ctools_merged_ruby,
-        'canvas' => canvas_body_ruby,
+        'canvas' => canvas_body_ruby
     }
 
     # Make it all json
