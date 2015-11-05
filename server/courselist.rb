@@ -568,7 +568,7 @@ END
   # allows overrides to work for calls from the UI to the REST API.
 
   #before "*" do
-    #logger.debug "upfront request: "+request.inspect
+  #logger.debug "upfront request: "+request.inspect
   #end
 
   # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
@@ -649,7 +649,7 @@ END
 
     # NOTE: the {} block on the end is passed in and used to see if this is an admin user.
 
-#    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto: REQUEST: #{request.env.inspect}"
+    #    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto: REQUEST: #{request.env.inspect}"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto"
     vetoResult = CourseList.vetoRequest(request.env['REMOTE_USER'], request.env['REQUEST_URI']) { admin_user request.env['REMOTE_USER'] }
     logger.debug "#{__method__}: #{__LINE__}: REQUEST: * end veto check: [#{vetoResult}]"
@@ -778,8 +778,6 @@ END
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
 
-    ##logger.debug "#{__method__}: #{__LINE__}: @@@@@@@@@@@ request: #{request.inspect}"
-
     # Call to the ctools dashboard REST source url in this application.
     status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
     logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: ctools_body[0].inspect: +++#{ctools_body[0].inspect}+++"
@@ -794,15 +792,16 @@ END
     ############# get canvas data ####
     # Call to get ctools mneme data from via ctools REST source url in this application.
     status, headers, mneme_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/mneme")
-    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body[0].inspect: +++#{mneme_body[0].inspect}+++"
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body.inspect: +++#{mneme_body.inspect}+++"
     mneme_body_ruby = JSON.parse mneme_body[0]
 
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body_ruby.inspect: +++#{mneme_body_ruby.inspect}+++"
 
-    ############## Compose the different values together.
+    ############## Compose the different ctools feeds together.  We keep them separate by the source LMS.
+    ctools_merged_ruby = mergeCtoolsDashMneme(canvas_body_ruby, mneme_body_ruby)
     results = {
-        'ctools' => ctools_body_ruby,
+        'ctools' => ctools_merged_ruby,
         'canvas' => canvas_body_ruby,
-        'mneme'  => mneme_body_ruby
     }
 
     # Make it all json

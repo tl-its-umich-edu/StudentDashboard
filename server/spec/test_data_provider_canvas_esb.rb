@@ -44,7 +44,7 @@ class TestDataProviderCanvasESB < MiniTest::Test
     # need detailed log messages.
     logger.level=TestHelper.getCommonLogLevel
     #logger.level=Logger::ERROR
-    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
     @@yml_file = TestHelper.findSecurityFile("security.yml")
     logger.debug "yml_file: #{@@yml_file}"
@@ -90,15 +90,15 @@ class TestDataProviderCanvasESB < MiniTest::Test
     #logger.debug "test_upcoming_events_studenta: "+result_as_json.inspect
     logger.debug "test_upcoming_events_studenta: result_as_ruby: "+result_as_ruby.inspect
 
-    assert_equal(9,result_as_ruby.length,"find some upcoming events")
+    assert_equal(9, result_as_ruby.length, "find some upcoming events")
 
     id_0 = result_as_ruby[0]['id']
-    refute_nil id_0,"have id"
-    assert_operator id_0,'>',0,"id is positive"
+    refute_nil id_0, "have id"
+    assert_operator id_0, '>', 0, "id is positive"
 
     title_0 = result_as_ruby[0]['title']
-    refute_nil title_0,"have title"
-    assert_operator title_0.length,'>',0,"title has length"
+    refute_nil title_0, "have title"
+    assert_operator title_0.length, '>', 0, "title has length"
   end
 
 end

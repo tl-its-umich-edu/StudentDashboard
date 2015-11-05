@@ -26,7 +26,7 @@ class TestCanvasAPIResponse < Minitest::Test
     logger.level=TestHelper.getCommonLogLevel
     # allow for file by file override
     #logger.level=Logger::ERROR
-    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
   end
 
@@ -45,15 +45,15 @@ class TestCanvasAPIResponse < Minitest::Test
 
   # verify that processing the minimal string version works
   def test_new_creates_something
-    @response = CanvasAPIResponse.new(@@string_A,Hash.new())
+    @response = CanvasAPIResponse.new(@@string_A, Hash.new())
     refute_nil @response, "get object"
     refute_nil @@testFileDir, "locate test file directory"
   end
 
   def test_string_A_json_todolms
-    response = CanvasAPIResponse.new(@@string_A,Hash.new())
+    response = CanvasAPIResponse.new(@@string_A, Hash.new())
     tdl = response.toDoLms
-    assert_equal 0, tdl.length,"verify length of empty response"
+    assert_equal 0, tdl.length, "verify length of empty response"
   end
 
   # verify can read json from a file.
@@ -77,25 +77,25 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string,Hash.new())
+    response = CanvasAPIResponse.new(file_data_as_string, Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: dash_format: "+dash_format.to_json
 
-    assert_equal 9,dash_format.length,"get multiple events"
+    assert_equal 9, dash_format.length, "get multiple events"
 
     # get the first entry
     verify_event(dash_format[0])
 
-    dash_format.map {|event| verify_event event}
+    dash_format.map { |event| verify_event event }
 
     # TODO:
     # test due date of some sort
     # test assignment information
     # test grade and grade_type
 
-      logger.debug "#{__method__}: #{__LINE__}: C: dash_format: "+dash_format.inspect
+    logger.debug "#{__method__}: #{__LINE__}: C: dash_format: "+dash_format.inspect
   end
 
 
@@ -111,22 +111,22 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string,Hash.new())
+    response = CanvasAPIResponse.new(file_data_as_string, Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: dash_format: "+dash_format.to_json
 
-    assert_equal 1,dash_format.length,"get multiple events"
+    assert_equal 1, dash_format.length, "get multiple events"
 
     # extract out the single entry
     event = dash_format.pop
     verify_event event
 
     # verify that some assignment specific processing took place.
-    assert_equal "points",event[:grade_type], "has grade type"
+    assert_equal "points", event[:grade_type], "has grade type"
 
-    assert_equal "1445313599",event[:due_date_sort]
+    assert_equal "1445313599", event[:due_date_sort]
 
     # TODO:
     # test due date of some sort
@@ -146,13 +146,13 @@ class TestCanvasAPIResponse < Minitest::Test
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string,Hash.new())
+    response = CanvasAPIResponse.new(file_data_as_string, Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: dash_format: "+dash_format.to_json
 
-    assert_equal 1,dash_format.length,"get multiple events"
+    assert_equal 1, dash_format.length, "get multiple events"
 
     # extract out the single entry
     event = dash_format.pop
@@ -160,7 +160,7 @@ class TestCanvasAPIResponse < Minitest::Test
 
 
     #assert_equal 123,event[:]
-    assert_nil event[:due_date_sort],"no due date"
+    assert_nil event[:due_date_sort], "no due date"
     #assert_equal 1445313599,event[:due_date_sort]
 
     # TODO:
@@ -183,27 +183,27 @@ class TestCanvasAPIResponse < Minitest::Test
     file_data = file_as_json['Result']
     file_data_as_string = JSON.generate(file_data)
     stringReplace = Hash.new()
-    stringReplace['link'] = ["https://api-qa-gw.its.umich.edu","https://umich.test.instructure.com"]
-    stringReplace['contextUrl'] = ["CANVAS_INSTANCE_PREFIX","https://umich.test.instructure.com"]
+    stringReplace['link'] = ["https://api-qa-gw.its.umich.edu", "https://umich.test.instructure.com"]
+    stringReplace['contextUrl'] = ["CANVAS_INSTANCE_PREFIX", "https://umich.test.instructure.com"]
 
     logger.debug "#{__method__}: #{__LINE__}: input: "+file_data_as_string.inspect
-    response = CanvasAPIResponse.new(file_data_as_string,stringReplace)
+    response = CanvasAPIResponse.new(file_data_as_string, stringReplace)
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: dash_format: "+dash_format.to_json
 
-    assert_equal 1,dash_format.length,"get multiple events"
-    assert_equal "https://umich.test.instructure.com/courses/15572/assignments/23762",dash_format[0][:link],"reset link url"
+    assert_equal 1, dash_format.length, "get multiple events"
+    assert_equal "https://umich.test.instructure.com/courses/15572/assignments/23762", dash_format[0][:link], "reset link url"
 
     # extract out the single entry
     event = dash_format.pop
     verify_event event
 
     # verify that some assignment specific processing took place.
-    assert_equal "points",event[:grade_type], "has grade type"
+    assert_equal "points", event[:grade_type], "has grade type"
 
-    assert_equal "1445313599",event[:due_date_sort]
+    assert_equal "1445313599", event[:due_date_sort]
 
     logger.debug "#{__method__}: #{__LINE__}: C: dash_format: "+dash_format.inspect
   end

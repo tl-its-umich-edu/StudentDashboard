@@ -26,7 +26,7 @@ class TestMnemeAPIResponse < Minitest::Test
     logger.level=TestHelper.getCommonLogLevel
     # allow for file by file override
     #logger.level=Logger::ERROR
-    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
   end
 
@@ -53,7 +53,7 @@ class TestMnemeAPIResponse < Minitest::Test
   def test_string_A_json_todolms
     response = MnemeAPIResponse.new(@@string_A)
     tdl = response.toDoLms
-    assert_equal 0, tdl.length,"verify length of empty response"
+    assert_equal 0, tdl.length, "verify length of empty response"
   end
 
   # verify can read json from a file.
@@ -76,7 +76,7 @@ class TestMnemeAPIResponse < Minitest::Test
 
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
-    puts "file_data: #{file_data}"
+
     file_data_as_string = JSON.generate(file_data)
     response = MnemeAPIResponse.new(file_data_as_string)
 
@@ -84,19 +84,19 @@ class TestMnemeAPIResponse < Minitest::Test
     mneme_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: mneme_format: "+mneme_format.to_json
 
-    assert_operator 1, "<",mneme_format.length,"get multiple events"
+    assert_operator 1, "<", mneme_format.length, "get multiple events"
 
     # get the first entry
     verify_event(mneme_format[0])
 
-    mneme_format.map {|event| verify_event event}
+    mneme_format.map { |event| verify_event event }
 
     # TODO:
     # test due date of some sort
     # test assignment information
     # test grade and grade_type
 
-      logger.debug "#{__method__}: #{__LINE__}: C: mneme_format: "+mneme_format.inspect
+    logger.debug "#{__method__}: #{__LINE__}: C: mneme_format: "+mneme_format.inspect
   end
 
 
@@ -118,13 +118,13 @@ class TestMnemeAPIResponse < Minitest::Test
     mneme_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: mneme_format: "+mneme_format.to_json
 
-    assert_equal 1,mneme_format.length,"get one event"
+    assert_equal 1, mneme_format.length, "get one event"
 
     # extract out the single entry
     event = mneme_format.pop
     verify_event event
 
-    assert_equal "1417150740",event[:due_date_sort]
+    assert_equal "1417150740", event[:due_date_sort]
 
     logger.debug "#{__method__}: #{__LINE__}: C: mneme_format: "+mneme_format.inspect
   end

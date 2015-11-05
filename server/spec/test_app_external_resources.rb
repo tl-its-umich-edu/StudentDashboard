@@ -19,7 +19,7 @@ class AppExternalResourcesTest < Minitest::Test
 
   # some resources files currently available for testing.
   @@expected_image_file = 'UMIngallMallFountan_3253_5.jpg'
-  @@expected_text_file = "1.txt"
+  #@@expected_text_file = "1.txt"
 
   # Test course list application
   def app
@@ -34,7 +34,7 @@ class AppExternalResourcesTest < Minitest::Test
     get '/external'
 
     assert last_response.ok?, "show two directories"
-    assert_equal  correct_list, JSON.parse(last_response.body),"list external subdirectories"
+    assert_equal correct_list, JSON.parse(last_response.body), "list external subdirectories"
   end
 
 
@@ -44,7 +44,7 @@ class AppExternalResourcesTest < Minitest::Test
     get '/external/'
 
     assert last_response.ok?, "show two directories"
-    assert_equal  correct_list, JSON.parse(last_response.body),"list external subdirectories"
+    assert_equal correct_list, JSON.parse(last_response.body), "list external subdirectories"
   end
 
   def test_get_external_directory_list_invalid_directory
@@ -54,13 +54,13 @@ class AppExternalResourcesTest < Minitest::Test
     assert last_response.forbidden?
   end
 
-   def test_get_external_image_directory_list
+  def test_get_external_image_directory_list
 
     get '/external/image'
 
     assert last_response.ok?
     # make sure we find a file we expect to find.
-    assert_includes  JSON.parse(last_response.body),@@expected_image_file,"find expected image"
+    assert_includes JSON.parse(last_response.body), @@expected_image_file, "find expected image"
   end
 
   def test_get_external_image_directory_list_trailing_slash
@@ -69,7 +69,7 @@ class AppExternalResourcesTest < Minitest::Test
 
     assert last_response.ok?
     # make sure we find a file we expect to find.
-    assert_includes  JSON.parse(last_response.body),@@expected_image_file,"find expected image"
+    assert_includes JSON.parse(last_response.body), @@expected_image_file, "find expected image"
   end
 
   def test_retrieve_external_image_file
@@ -85,34 +85,34 @@ class AppExternalResourcesTest < Minitest::Test
     # It would be hard and not worth it to verify that actually is an image.
     # We do check that it is a plausible image file.
 
-    assert_match "image/jpeg",content_type, "get jpg file type"
-    assert_operator  15000, :<, body.length ,"get image file"
+    assert_match "image/jpeg", content_type, "get jpg file type"
+    assert_operator 15000, :<, body.length, "get image file"
   end
 
   #### We're testing both text and image directories / files so we can know
   #### that they are treated differently.
 
-  def test_get_external_text_directory_list
+  # def test_get_external_text_directory_list
+  #
+  #
+  #   get '/external/text'
+  #
+  #   assert last_response.ok?
+  #   assert_includes  JSON.parse(last_response.body),@@expected_text_file, "find expected text file"
+  # end
 
 
-    get '/external/text'
-
-    assert last_response.ok?
-    assert_includes  JSON.parse(last_response.body),@@expected_text_file, "find expected text file"
-  end
-
-
-  def test_retrieve_external_text_file
-
-    get '/external/text/1.txt'
-
-    assert last_response.ok?,"got response from request"
-    body = last_response.body
-    content_type = last_response.header['Content-Type']
-
-    # Check that is likely is a text file.
-    assert_match "text/plain",content_type, "get text file"
-    assert_operator  body.length, :>, 100 ,"get text file"
-  end
+  # def test_retrieve_external_text_file
+  #
+  #   get '/external/text/1.txt'
+  #
+  #   assert last_response.ok?,"got response from request"
+  #   body = last_response.body
+  #   content_type = last_response.header['Content-Type']
+  #
+  #   # Check that is likely is a text file.
+  #   assert_match "text/plain",content_type, "get text file"
+  #   assert_operator  body.length, :>, 100 ,"get text file"
+  # end
 
 end
