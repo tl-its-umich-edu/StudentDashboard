@@ -14,14 +14,14 @@ module DataProviderESB
   @@yml = nil
 
   def setupCToolsWAPI(app_name)
-    logger.info "setupCToolsWAPI: use ESB application: #{app_name}"
-    logger.debug "setupCToolsWAPI:  app_name: #{app_name} @@yml: #{@@yml.inspect}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: setupCToolsWAPI: use ESB application: #{app_name}"
+    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: setupCToolsWAPI:  app_name: #{app_name} @@yml: #{@@yml.inspect}"
     application = @@yml[app_name]
     @@w = WAPI.new application
   end
 
   def initCToolsESB(security_file, app_name)
-    logger.debug "initCToolsESB:  security_file: #{security_file} app_name: #{app_name} @@w: #{@@w.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: initCToolsESB:  security_file: #{security_file} app_name: #{app_name} @@w: #{@@w.inspect}"
     requested_file = security_file
 
     default_security_file = './server/local/security.yml'
@@ -32,26 +32,26 @@ module DataProviderESB
       file_name = default_security_file
     end
 
-    logger.info "init_ESB: use security file_name: #{file_name}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: init_ESB: use security file_name: #{file_name}"
     @@yml = YAML.load_file(file_name)
 
     setupCToolsWAPI(app_name)
   end
 
   def ensureCToolsESB(app_name, security_file)
-    logger.debug "ensureCToolsESB:  security_file: #{security_file} app_name: #{app_name} @@w: #{@@w.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ensureCToolsESB:  security_file: #{security_file} app_name: #{app_name} @@w: #{@@w.inspect}"
     if @@w.nil?
-      logger.debug "@@w is nil security_file: #{security_file}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @@w is nil security_file: #{security_file}"
       @@w = initCToolsESB(security_file, app_name)
     end
   end
 
   # Run the request and return the resulting data.
   def callDataUrl(url)
-    logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl: #{__LINE__}: url: "+url)
+    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: dataProviderESB  #{__LINE__}: CallDataUrl: #{__LINE__}: url: "+url)
 
     data = @@w.get_request(url)
-    logger.debug("dataProviderESB  #{__LINE__}: CallDataUrl:  #{url}: data: "+data.inspect)
+    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: dataProviderESB  #{__LINE__}: CallDataUrl:  #{url}: data: "+data.inspect)
 
     data
   end
@@ -76,14 +76,14 @@ module DataProviderESB
   # is the part of the returned information we want to get.
   def parseESBData(result, query_key, detail_key)
     begin
-      logger.debug("dataProviderESB parseESBData: #{__LINE__}:  input: #{result}: #{query_key}:#{detail_key}")
+      logger.debug(" #{self.class.to_s}:#{__method__}:#{__LINE__}:dataProviderESB parseESBData: #{__LINE__}:  input: #{result}: #{query_key}:#{detail_key}")
 
       # If it doesn't parse then it is a problem addressed in the rescue.
       parsed = JSON.parse(result)
-      logger.debug("dataProviderESB parseESBData: #{__LINE__}:  parsed:"+parsed.inspect)
+      logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: dataProviderESB parseESBData: #{__LINE__}:  parsed:"+parsed.inspect)
       query_key_value = parsed[query_key]
 
-      logger.debug "dpesb: #{__LINE__} pESBD: parsed A: #{parsed}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__} pESBD: parsed A: #{parsed}"
 
       ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen,
       ## for example, a user has no term data at all.
@@ -94,7 +94,7 @@ module DataProviderESB
       # fix up any empty lists that only contain a nil.
       fixArrayWithNilInPlace! parsed
 
-      logger.debug "dpesb: #{__LINE__} pESBD: parsed B: #{parsed}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__} pESBD: parsed B: #{parsed}"
 
       parsed_value = parsed[query_key][detail_key]
 
@@ -115,7 +115,7 @@ module DataProviderESB
     ensureCToolsESB(app_name, security_file)
 
     if termid.nil?
-      logger.debug "dPESBC: #{__LINE__}: defaulting term to #{default_term}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__}: defaulting term to #{default_term}"
       termid = default_term
     end
 
@@ -126,21 +126,21 @@ module DataProviderESB
       return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "resource not found", url)
     end
 
-    logger.debug "dPESBC: #{__LINE__}: result: #{result}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__}: result: #{result}"
     parseESBData(result.result, CLS_SCHEDULE_KEY, REGISTERED_CLASSES_KEY)
   end
 
 
   def dataProviderESBTerms(uniqname, security_file, app_name)
-    logger.info "data provider is DataProviderESB."
-    logger.debug "dPESBTerms: uniqname: #{uniqname} security_file: #{security_file} app_name: #{app_name}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: data provider is DataProviderESB."
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: uniqname: #{uniqname} security_file: #{security_file} app_name: #{app_name}"
     ## if necessary initialize the ESB connection.
     ensureCToolsESB(app_name, security_file)
 
     url = "/Students/#{uniqname}/Terms"
     result = callDataUrl(url)
 
-    logger.debug "dPESBT: #{__LINE__}: result: #{result}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__}: result: #{result}"
 
     if result.meta_status == WAPI::HTTP_NOT_FOUND
       return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "resource not found", url)

@@ -39,7 +39,7 @@ class WAPIResultWrapper
     begin
       return true if @value.has_key?("Meta")
     rescue
-      logger.warn "invalid WAPI wrapper:  " +self.to_s
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid WAPI wrapper:  " +self.to_s
     end
     nil
   end
@@ -60,7 +60,7 @@ class WAPIResultWrapper
       wr.setValue(JSON.parse(json_string))
     rescue
       wr = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "dummy msg", "error json parsing #{json_string}")
-      logger.debug "WAPI_wrapper: #{__LINE__}: error parsing as json: #{json_string}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: WAPI_wrapper: #{__LINE__}: error parsing as json: #{json_string}"
     end
 
     wr
@@ -68,7 +68,7 @@ class WAPIResultWrapper
 
   # Turn the value of the result field into json if it is parseable as json
   def value_as_json
-    logger.debug "WAPI_wrapper: #{__LINE__}: value_as_json: " + @value.inspect
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: WAPI_wrapper: #{__LINE__}: value_as_json: " + @value.inspect
     c = @value.dup
     # Make sure Result has a non-nil value
     c['Result'] = "" unless c['Result']
