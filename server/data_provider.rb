@@ -109,12 +109,6 @@ module DataProvider
     @mnemeHash = initConfigureMnemeFileProvider(config_hash)
   end
 
-  # def configureMnemeHTTPProvider(config_hash)
-  #   logger.debug "#{__method__}: #{__LINE__}: call configure"
-  #   return @mnemeHash unless @mnemeHash.nil?
-  #   @mnemeHash = initConfigureMnemeHTTPProvider(config_hash)
-  # end
-
   def configureCanvasHTTPProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
     return @canvasHash unless @canvasHash.nil?
@@ -283,22 +277,6 @@ module DataProvider
     combined_w = WAPIResultWrapper.new("200",
                                        "combined the ctools dash and mneme feeds",
                                        dash_w.result+mneme_w.result)
-
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: #{dash_w}")
-    #
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: status: #{dash_w.meta_status}")
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme_w: status: #{mneme_w.meta_status}")
-    #
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: result: #{dash_w.result}")
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: result: length: #{dash_w.result.length}")
-    #
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme_w: result: #{mneme_w.result}")
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme_w: result: length: #{mneme_w.result.length}")
-    #
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: combined_w: result: #{combined_w.result}")
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: combined_w: result: length: #{combined_w.result.length}")
-    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: combined_w: status: #{combined_w.meta_status}")
-
     combined_w.value
   end
 
