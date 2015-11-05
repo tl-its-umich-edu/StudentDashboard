@@ -37,7 +37,7 @@ module DataProvider
     return unless @fileToDoLMS.nil?
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: init"
     config_hash = settings.latte_config
-   # logger.debug "#{__method__}: #{__LINE__}: config_hash: #{config_hash.to_json}"
+    # logger.debug "#{__method__}: #{__LINE__}: config_hash: #{config_hash.to_json}"
     !config_hash[:data_provider_file_directory].nil? ? configureFileProvider(config_hash) : configureEsbProvider(config_hash)
 
     configureCToolsProvider(config_hash)
@@ -48,15 +48,15 @@ module DataProvider
   ### Hide any decisions about which ctools provider to use.  Mneme data is from CTools also, so
   ### no need to have a different configure method.
   def configureCToolsProvider(config_hash)
-    configureCToolsHTTPProvider(config_hash) unless(config_hash[:ctools_http_application_name].nil?)
+    configureCToolsHTTPProvider(config_hash) unless (config_hash[:ctools_http_application_name].nil?)
     logger.error "#{self.class.to_s}:#{__method__}:#{__LINE__}: using hardwired Mneme file provider"
     configureMnemeFileProvider(config_hash);
   end
 
   ### Hide any decisions about which canvas provider to use.
   def configureCanvasProvider(config_hash)
-    configureCanvasESBProvider(config_hash) unless(config_hash[:canvas_esb_application_name].nil?)
-    configureCanvasHTTPProvider(config_hash) unless(config_hash[:canvas_http_application_name].nil?)
+    configureCanvasESBProvider(config_hash) unless (config_hash[:canvas_esb_application_name].nil?)
+    configureCanvasHTTPProvider(config_hash) unless (config_hash[:canvas_http_application_name].nil?)
   end
 
   ## Configuration binds implementation specific information to hide details and allow interchangable calling of
@@ -163,7 +163,7 @@ module DataProvider
       # reformat the result for the Dash UI format.
       todos = CToolsDirectResponse.new(result).toDoLms
       # Put a new WAPI wrapper around it.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools direct result",todos)
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools direct result", todos)
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools: todos: [#{todos}]"
@@ -194,7 +194,7 @@ module DataProvider
 
       todos = @canvasHash[:formatResponse].(result.to_json).toDoLms
       # rewrap the formatted result.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap Canvas API result",todos)
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap Canvas API result", todos)
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas: todos.value_as_json: #{todos.value_as_json}"
@@ -220,7 +220,7 @@ module DataProvider
       todos = MnemeAPIResponse.new(result.to_json).toDoLms
       #todos = result
       # Put a new WAPI wrapper around it.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap mneme result",todos)
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap mneme result", todos)
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme: todos: [#{todos}]"
@@ -232,13 +232,13 @@ module DataProvider
 
   #
   ## return the data from the right source.
-  def dataProviderToDoLMS(uniqname,lms)
+  def dataProviderToDoLMS(uniqname, lms)
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}]"
 
     return dataProviderToDoCToolsLMS(uniqname) if lms == 'ctools'
     return dataProviderToDoCanvasLMS(uniqname) if lms == 'canvas'
-    return dataProviderToDoMnemeLMS(uniqname)  if lms == 'mneme'
+    return dataProviderToDoMnemeLMS(uniqname) if lms == 'mneme'
   end
 
 
@@ -266,6 +266,40 @@ module DataProvider
     logIfUnavailable(courses, "courses: user: #{uniqname} term:#{termid}")
 
     courses
+  end
+
+  # Merge results of separate feeds of ctools data.
+  def mergeCtoolsDashMneme(dash_result, mneme_result)
+
+    # Reconstitute the WAPI wrapper for the feed results.  The data came from recursive calls to this
+    # servlet so they are in string format here.
+
+    dash_w = WAPIResultWrapper.new("status", "msg", "result")
+    dash_w.setValue(dash_result)
+
+    mneme_w = WAPIResultWrapper.new("status", "msg", "result")
+    mneme_w.setValue(mneme_result)
+
+    combined_w = WAPIResultWrapper.new("200",
+                                       "combined the ctools dash and mneme feeds",
+                                       dash_w.result+mneme_w.result)
+
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: #{dash_w}")
+    #
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: status: #{dash_w.meta_status}")
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme_w: status: #{mneme_w.meta_status}")
+    #
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: result: #{dash_w.result}")
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: dash_w: result: length: #{dash_w.result.length}")
+    #
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme_w: result: #{mneme_w.result}")
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme_w: result: length: #{mneme_w.result.length}")
+    #
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: combined_w: result: #{combined_w.result}")
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: combined_w: result: length: #{combined_w.result.length}")
+    # logger.debug("#{self.class.to_s}:#{__method__}: #{__LINE__}: combined_w: status: #{combined_w.meta_status}")
+
+    combined_w.value
   end
 
   def logIfUnavailable(response, msg)

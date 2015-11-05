@@ -26,7 +26,7 @@ class TestCtoolsDirectResponse < Minitest::Test
     logger.level=TestHelper.getCommonLogLevel
     # allow for file by file override
     #logger.level=Logger::ERROR
-    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
   end
 
@@ -40,7 +40,7 @@ class TestCtoolsDirectResponse < Minitest::Test
   def test_string_A_json_todolms
     response = CToolsDirectResponse.new(@@string_A)
     tdl = response.toDoLms
-    assert_equal 0, tdl.length,"verify length of empty response"
+    assert_equal 0, tdl.length, "verify length of empty response"
   end
 
   # verify can read json from a file.
@@ -68,7 +68,7 @@ class TestCtoolsDirectResponse < Minitest::Test
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
 
-    assert_equal 3,dash_format.length,'got multiple assignments'
+    assert_equal 3, dash_format.length, 'got multiple assignments'
     assert_equal 10, dash_format[0][:due_date_sort].length
     logger.debug "#{__method__}: #{__LINE__}: dash_format: "+dash_format.inspect
   end
