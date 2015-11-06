@@ -14,23 +14,50 @@ module DataProviderCToolsDirect
   #curl $CURL_STD -X DELETE $P://$HOST/direct/session/$SESSION?$SES
   #$P://$HOST/direct/session.json?$SES
 
+  ### Setup to call CTools direct api via HTTP
   def initConfigureCToolsHTTPProvider(config_hash)
     security_file = config_hash[:security_file]
     application_name = config_hash[:ctools_http_application_name]
-    logger.debug "#{__method__}: #{__LINE__}: configure provider CToolsHTTP: security_file: #{security_file} application_name: #{application_name}"
+
+    # This is hash with string replacement values.
+    if !config_hash[application_name].nil? && !config_hash[application_name]['string-replace'].nil? then
+      stringReplace = config_hash[application_name]['string-replace']
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: stringReplace [#{stringReplace.inspect}]"
+    else
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: No string-replace specified for ctools direct application: [#{application_name}].  Supplying empty one."
+      stringReplace = Hash.new()
+    end
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: configure provider CToolsHTTP: security_file: #{security_file} application_name: #{application_name}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: configure provider CToolsHTTP: string-replace: #{stringReplace.inspect}"
+
 
     @ctoolsHash = Hash.new if @ctoolsHash.nil?
 
-    #@ctoolsHash[:useHTTPToDoLMSProvider] = true
-    #@ctoolsHash[:HTTPDirectToDoLMS] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMS(uniqname, security_file, application_name) }
-    @ctoolsHash[:ToDoLMSProvider] = true
-    @ctoolsHash[:ToDoLMS] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMS(uniqname, security_file, application_name) }
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
+    return @ctoolsHash unless @ctoolsHash[:ToDoLMSProviderDash].nil?
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
+
+    ## setup the dashboard query
+    @ctoolsHash[:ToDoLMSProviderDash] = true
+    @ctoolsHash[:ToDoLMSDash] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSDash(uniqname, security_file, application_name) }
+    @ctoolsHash[:formatResponseCToolsDash] = Proc.new { |body| CToolsDirectResponse.new(body,stringReplace) }
+
+    ## setup the mneme query
+    @ctoolsHash[:ToDoLMSProviderMneme] = true
+    @ctoolsHash[:ToDoLMSMneme] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSMneme(uniqname, security_file, application_name) }
+    @ctoolsHash[:formatResponseCToolsMneme] = Proc.new { |body| MnemeAPIResponse.new(body,stringReplace) }
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
+
     @ctoolsHash
   end
 
+  ### Method to get result from the CTools direct Dashboard calendar
 
-  def ctoolsHTTPDirectToDoLMS(uniqname, security_file, http_application)
-    logger.debug "#{__method__}: #{__LINE__}: ############### call ctools http direct todolms http_application: #{http_application}"
+  def ctoolsHTTPDirectToDoLMSDash(uniqname, security_file, http_application)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call ctools http direct Dash todolms http_application: #{http_application}"
 
     http_channel = ChannelCToolsDirectHTTP.new(security_file, http_application)
     http_channel.runGetCToolsSession
@@ -41,14 +68,37 @@ module DataProviderCToolsDirect
     logger.debug "#{__method__}: #{__LINE__}: becomeuser: response: "+become_user.inspect
 
     if /failure/i =~ become_user.to_s
-      logger.debug "#{__method__}: #{__LINE__}: become user failed for user: #{uniqname}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: become user failed for user: #{uniqname}"
       return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
     end
 
     ctools_todos = http_channel.do_request("/dash/calendar.json")
-    # logger.debug "#{__method__}: #{__LINE__}: calendar: todos: #{ctools_todos}"
 
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from ctools direct", ctools_todos)
+    return WAPIResultWrapper.new(WAPI::SUCCESS, "got dash todos from ctools direct", ctools_todos)
+  end
+
+
+  ## Method to get result from CTools direct mneme feed.
+  def ctoolsHTTPDirectToDoLMSMneme(uniqname, security_file, http_application)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call ctools http direct Mneme todolms http_application: #{http_application}"
+
+    http_channel = ChannelCToolsDirectHTTP.new(security_file, http_application)
+    http_channel.runGetCToolsSession
+
+    become_user = http_channel.do_request("/session/becomeuser/#{uniqname}.json")
+
+    logger.debug "#{__method__}: #{__LINE__}: becomeuser: [#{become_user}]"
+    logger.debug "#{__method__}: #{__LINE__}: becomeuser: response: "+become_user.inspect
+
+    if /failure/i =~ become_user.to_s
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: become user failed for user: #{uniqname}"
+      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
+    end
+
+    #/direct/mneme/my
+    ctools_todos = http_channel.do_request("/mneme/my.json")
+
+    return WAPIResultWrapper.new(WAPI::SUCCESS, "got mneme todos from ctools direct", ctools_todos)
   end
 
 end
