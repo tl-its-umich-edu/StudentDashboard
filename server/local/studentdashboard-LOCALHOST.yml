@@ -3,20 +3,25 @@
 # PURPOSE: default settings for running Latte on a local laptop.
 #
 ################## Data source configuration
-# course / term information application name (mpathways)
-application_name: SD-QA
-# ctools information application name
-ctools_http_application_name: CTQA-DIRECT
-# canvas information application name
-canvas_esb_application_name: CANVAS-TL-QA
-#canvas_esb_application_name: DLH-Canvas-TL-QA
+# If data_provider_file_directory is specified then all will use the file provider
+# and no other provider may be specified.
+#data_provider_file_directory: server/test-files
+#data_provider_file_directory_mneme: server/test-files
 # disk file provider for testing
 #data_provider_file_uniqname: test-throttling-terms
-#data_provider_file_directory: server/test-files
 
-data_provider_file_directory_mneme: server/test-files
-#
-############ external resources provider
+# For non-disk providers specify a provider name that is defined later in this file.
+
+# Mpathways term / course information provider
+application_name: SD-QA
+
+# CTools data provider for dashboard and mneme assignment data
+ctools_http_application_name: CTQA-DIRECT
+
+### Canvas data via the ESB
+canvas_esb_application_name: CANVAS-TL-QA
+
+########### external resources provider
 external_resources_valid_directories: [ image, text ]
 
 ### local file resources provider
@@ -38,14 +43,21 @@ latte_admin_group: TL-Latte-admin-test
 # set logging level.  Default is INFO.
 use_log_level: DEBUG
 
+# Specify information required for each provider.  Details may vary by provider.
+# Secure information for the provider is kept in the security.yml file.
 
-# For this data source list the remappings required
-# The name matches that in the security.yml file.
+# string-replace allows modifying results in the output.  Required to fix up
+# host names.
+
 CANVAS-TL-QA:
   string-replace:
      link: ['https://api-qa-gw.its.umich.edu', 'https://umich.test.instructure.com']
      contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.test.instructure.com']
 
+CTQA-DIRECT:
+  string-replace:
+      link: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
+      contextUrl: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
 
 #DLH-Canvas-TL-QA:
 #  string-replace:

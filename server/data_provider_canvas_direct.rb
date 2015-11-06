@@ -6,6 +6,7 @@ module DataProviderCanvasDirect
   require 'yaml'
 
   # Implement calls for canvas direct data via the HTTP channel.
+  # CURRENTLY UNIMPLEMENTED
   # TODO: example data URLs for canvas direct calls.
 
   def initConfigureCanvasHTTPProvider(config_hash)
