@@ -66,7 +66,7 @@ class WAPI
     @uniqname = application['uniqname']
 
     @renewal = WAPI.build_renewal(@key, @secret)
-    logger.info("WAPI: #{__LINE__}: initialize WAPI with #{@api_prefix}")
+    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
 
 
@@ -99,12 +99,12 @@ class WAPI
     RestClient.log = logger if (logger.debug? and TRACE != FalseClass)
 
     url=format_url(request)
-    logger.debug "WAPI: #{__LINE__}: do_request: url: #{url}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: url: #{url}"
     msg = Thread.current.to_s+": "+url
     r = Stopwatch.new(msg)
     r.start
     begin
-      logger.debug "WAPI: #{__LINE__}: do_request: get url: #{url}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: get url: #{url}"
       response = RestClient.get url, {:Authorization => "Bearer #{@token}",
                                       :accept => :json,
                                       :verify_ssl => true}
@@ -113,7 +113,7 @@ class WAPI
       json_response = JSON.parse(response)
 
       ## json_response is a JSON object
-      logger.debug "WAPI: #{__LINE__}: do_request: esb parsed response "+json_response.inspect
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb parsed response "+json_response.inspect
 
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
@@ -130,12 +130,12 @@ class WAPI
 
         ### handle error conditions explicitly.
     rescue URI::InvalidURIError => exp
-      logger.debug "WAPI: #{__LINE__}: invalid URI: "+exp.to_s
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid URI: "+exp.to_s
       wrapped_response = WAPIResultWrapper.new(WAPI::BAD_REQUEST, "INVALID URL", exp.to_s)
 
     rescue Exception => exp
-      logger.debug "WAPI: #{__LINE__}: do_request: exception: "+exp.inspect
-      logger.debug "WAPI: #{__LINE__}: do_request: exception: st: "+exp.backtrace.to_s
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: "+exp.inspect
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: st: "+exp.backtrace.to_s
 
       if exp.response.code == WAPI::HTTP_NOT_FOUND
         wrapped_response = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "NOT FOUND", exp)
@@ -145,14 +145,14 @@ class WAPI
     end
 
     r.stop
-    logger.info "WAPI: #{__LINE__}: do_request: stopwatch: "+ r.pretty_summary
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}:do_request: stopwatch: "+ r.pretty_summary
     wrapped_response
   end
 
   ## detailed dump of response object
   def dump_json_object(json_response, response)
-    logger.debug "WAPI: #{__LINE__}: after initial parse"
-    logger.info "WAPI: #{__LINE__}: response.code: "+json_response[response.code].to_s
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: after initial parse"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: response.code: "+json_response[response.code].to_s
     json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
   end
 
@@ -179,7 +179,7 @@ class WAPI
           j['responseCode'] = j['responseCode'].to_i
       end
     rescue => err
-      logger.info "WAPI: #{__LINE__}: do_request: conversion error "+j.inspect
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: conversion error "+j.inspect
       ## because of the error reset j back to the original json response.
       j = JSON.parse(response)
     end
@@ -192,7 +192,7 @@ class WAPI
 
   def get_request(request)
     wrapped_response = do_request(request)
-    logger.debug "WAPI: #{__LINE__}: get_request: "+request.to_s
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: get_request: "+request.to_s
 
     ## If appropriate try to renew the token.
     if wrapped_response.meta_status == WAPI::UNKNOWN_ERROR &&
@@ -211,7 +211,7 @@ class WAPI
   def renew_token
 
     begin
-      logger.info("WAPI: #{__LINE__}: token_server: #{@token_server}")
+      logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: token_server: #{@token_server}")
       response = runTokenRenewalPost
       ## If it worked then parse the result as json.  This is here to capture any JSON parsing exceptions.
       if response.code == HTTP_SUCCESS
@@ -221,25 +221,25 @@ class WAPI
       end
     rescue Exception => exp
       # If got an exception for the renewal then wrap that up to be returned.
-      logger.info("WAPI: #{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
+      logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       return WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
     end
 
     ## got no response so say that.
     if response.nil?
-      logger.warn("WAPI: #{__LINE__}: error renewing token: nil response ")
+      logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: error renewing token: nil response ")
       return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "error renewing token: nil response", response)
     end
 
     # if got an error so say that.
     if response.code != HTTP_SUCCESS
-      logger.warn("WAPI: #{__LINE__}: error renewing token: response code: "+response.code)
+      logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: error renewing token: response code: "+response.code)
       return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "error renewing token: response code", response)
     end
 
     # all ok
     print_token = sprintf "%5s", @token
-    logger.debug("WAPI: #{__LINE__}: renewed token: #{print_token}")
+    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewed token: #{print_token}")
     return WAPIResultWrapper.new(WAPI::SUCCESS, "token renewed", response)
   end
 

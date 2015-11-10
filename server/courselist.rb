@@ -127,6 +127,8 @@ class CourseList < Sinatra::Base
   config_hash[:data_provider_file_directory] = nil
   config_hash[:data_provider_file_uniqname] = nil
 
+  config_hash[:data_provider_file_directory_mneme] = nil
+
   config_hash[:latte_admin_group] = nil
 
   # initial default
@@ -292,6 +294,9 @@ END
     ## provider will be used.
     config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
     config_hash[:data_provider_file_uniqname] = external_config['data_provider_file_uniqname'] || nil
+
+    config_hash[:data_provider_file_directory_mneme] = external_config['data_provider_file_directory_mneme'] || nil
+
 
     ## If the full path to the provider directory was specified then use it.
     ## Otherwise append what was provided to the local base directory
@@ -562,9 +567,9 @@ END
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
 
-  before "*" do
-    logger.debug "upfront request: "+request.inspect
-  end
+  #before "*" do
+  #logger.debug "upfront request: "+request.inspect
+  #end
 
   # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
   before /\/self(\Z|(\/|\/[\w\/]+)?(\.\w+)?)$/ do
@@ -644,7 +649,8 @@ END
 
     # NOTE: the {} block on the end is passed in and used to see if this is an admin user.
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto: REQUEST: #{request.env.inspect}"
+    #    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto: REQUEST: #{request.env.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto"
     vetoResult = CourseList.vetoRequest(request.env['REMOTE_USER'], request.env['REQUEST_URI']) { admin_user request.env['REMOTE_USER'] }
     logger.debug "#{__method__}: #{__LINE__}: REQUEST: * end veto check: [#{vetoResult}]"
     halt 403 if vetoResult == true
@@ -772,26 +778,29 @@ END
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
 
-    ##logger.debug "#{__method__}: #{__LINE__}: @@@@@@@@@@@ request: #{request.inspect}"
-
-    # Call to the ctools REST source url in this application.
+    # Call to the ctools dashboard REST source url in this application.
     status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
     logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: ctools_body[0].inspect: +++#{ctools_body[0].inspect}+++"
     ctools_body_ruby = JSON.parse ctools_body[0]
 
     ############# get canvas data ####
-    # Call to get ctools data from via ctools REST source url in this application.
+    # Call to get canvas REST source url in this application.
     status, headers, canvas_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/canvas")
     logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body[0].inspect: +++#{canvas_body[0].inspect}+++"
     canvas_body_ruby = JSON.parse canvas_body[0]
-    # someday really call to the canvas source and not just dummy the value.
-    # canvas_body = "{}"
-    # canvas_body_ruby = JSON.parse canvas_body
-    # logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body_ruby: #{canvas_body_ruby}"
 
-    ############## Compose the different values together.
+    ############# get canvas data ####
+    # Call to get ctools mneme data from via ctools REST source url in this application.
+    status, headers, mneme_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/mneme")
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body.inspect: +++#{mneme_body.inspect}+++"
+    mneme_body_ruby = JSON.parse mneme_body[0]
+
+    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body_ruby.inspect: +++#{mneme_body_ruby.inspect}+++"
+
+    ############## Compose the different ctools feeds together.  We keep them separate by the source LMS.
+    ctools_merged_ruby = mergeCtoolsDashMneme(canvas_body_ruby, mneme_body_ruby)
     results = {
-        'ctools' => ctools_body_ruby,
+        'ctools' => ctools_merged_ruby,
         'canvas' => canvas_body_ruby
     }
 
@@ -817,9 +826,8 @@ END
     end
 
     todolmsList = dataProviderToDoLMS(userid, lms)
-    #logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList.value_as_json
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
-    #todolmsList.value_as_json
+
     todolmsList
   end
 
@@ -867,6 +875,28 @@ END
 
     todolmsList = dataProviderToDoCanvasLMS(userid)
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
+    todolmsList.value_as_json
+  end
+
+  ## ask for the LMS to get mneme information for a specific person.
+  get "/todolms/:userid/mneme.?:format?" do |userid, format|
+
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoMnemeLMS(userid)
+    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme: "+todolmsList.value_as_json
     todolmsList.value_as_json
   end
 
