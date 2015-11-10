@@ -128,6 +128,9 @@ IMAGE_INSTALL_TYPE=war
 IMAGE_NAME=${WEBAPPNAME_value}.${TIMESTAMP_value}.war
 CONFIGURATION_NAME=configuration-files.${TIMESTAMP_value}.tar
 #######################
+#######################
+ARTIFACTFILE=${WEBRELSRC}/${JOBNAME}/${BUILD}/${ARTIFACT_DIRECTORY}/${IMAGE_NAME}
+CONFIGFILE=${WEBRELSRC}/${JOBNAME}/${BUILD}/${ARTIFACT_DIRECTORY}/${CONFIGURATION_NAME} 
 EOF`
     echo "${vars}"
 }
@@ -175,7 +178,7 @@ makeConfigTar
 chmod a+r ./ARTIFACTS/*
 
 # write a file with the install variables in it.
-writeEnvironmentVariables >| ./ARTIFACTS/installVariables.sh
+writeEnvironmentVariables >| ./ARTIFACTS/VERSION.Makefile
 
 # Display the ARTIFACTS created for confirmation.
 atStep "display artifacts"
