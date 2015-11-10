@@ -13,6 +13,8 @@ canvas_esb_application_name: CANVAS-TL-QA
 # disk file provider for testing
 #data_provider_file_uniqname: test-throttling-terms
 #data_provider_file_directory: server/test-files
+
+data_provider_file_directory_mneme: server/test-files
 #
 ############ external resources provider
 external_resources_valid_directories: [ image, text ]

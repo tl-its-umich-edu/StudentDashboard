@@ -25,7 +25,7 @@ class CanvasAPIResponse
 
   # return the body formatted as todolms json
   def toDoLms
-    dump
+    #dump
     collection = @body_json
     return Array.new() if collection.nil?
 

@@ -1,0 +1,35 @@
+{
+  "Meta": {
+    "httpStatus": 200,
+    "Message": "got todos from mneme"
+  },
+  "Result": {
+    "entityPrefix": "mneme",
+    "mneme_collection": [
+      {
+        "allowUntillDate": 1417409940000,
+        "allowUntillDateString": "11-30-2014 23:59:00",
+        "closeDate": 1417150740000,
+        "closeDateString": "11-27-2014 23:59:00",
+        "context": {
+          "contextId": "021ad7c0-f9ae-43ef-bbf7-7450b575ab18",
+          "contextTitle": "CANVAS 101 100 F14",
+          "contextUrl": "https:\/\/ctqa.dsc.umich.edu\/portal\/site\/021ad7c0-f9ae-43ef-bbf7-7450b575ab18",
+          "directToolUrl": "https:\/\/ctqa.dsc.umich.edu\/portal\/site\/021ad7c0-f9ae-43ef-bbf7-7450b575ab18\/page\/3f0e1a80-28a6-4857-a3ab-9236f7fd69ff"
+        },
+        "gradebookItemExternalId": null,
+        "gradebookItemId": null,
+        "id": "1007",
+        "openDate": 1415192400000,
+        "openDateString": "11-05-2014 08:00:00",
+        "published": true,
+        "title": "Test 1",
+        "entityReference": "\/mneme\/1007",
+        "entityURL": "https:\/\/ctqa.dsc.umich.edu\/direct\/mneme\/1007",
+        "entityId": "1007",
+        "entityTitle": "Test 1"
+      }
+    ]
+  }
+}
+

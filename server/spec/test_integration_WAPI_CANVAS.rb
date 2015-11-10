@@ -59,7 +59,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
     logger.level=TestHelper.getCommonLogLevel
     #logger.level=Logger::ERROR
-    logger.level=Logger::DEBUG
+    #logger.level=Logger::DEBUG
 
     #@default_application_name = 'SD-QA-CANVAS'
     #@default_application_name = 'Canvas-TL-TEST'
@@ -107,15 +107,15 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     request_url = "/users/self"
     result_as_json = run_and_get_json_result(request_url)
-    assert_equal "api-esb-poweruser",result_as_json['sis_login_id'],"found tl poweruser"
+    assert_equal "api-esb-poweruser", result_as_json['sis_login_id'], "found tl poweruser"
   end
 
- ## test for explicit self profile request
+  ## test for explicit self profile request
   def test_canvas_api_self_profile
     refute_nil @w
     request_url = "/users/self/profile"
     result_as_json = run_and_get_json_result(request_url)
-    assert_equal "api-esb-poweruser",result_as_json['sis_login_id'],"found tl poweruser"
+    assert_equal "api-esb-poweruser", result_as_json['sis_login_id'], "found tl poweruser"
   end
 
   ## test for data about another user.
@@ -123,7 +123,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     request_url = "/users/sis_login_id:gsilver/profile"
     result_as_json = run_and_get_json_result(request_url)
-    assert_equal "gsilver",result_as_json['sis_login_id'],"find tl gsilver"
+    assert_equal "gsilver", result_as_json['sis_login_id'], "find tl gsilver"
   end
 
   ## test for course data about a (test) student.  This uses masquerade.
@@ -131,7 +131,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     request_url = "/courses?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some classes back"
+    assert_operator result_as_json.length, ">=", 1, "got some classes back"
   end
 
   ## test for activity_stream data about a (test) student.  This uses masquerade.
@@ -139,7 +139,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     request_url = "/users/activity_stream?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some activities back"
+    assert_operator result_as_json.length, ">=", 1, "got some activities back"
   end
 
   ## test for data about a (test) student.  This uses masquerade.
@@ -148,7 +148,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     ## this works with or without self in url
     request_url = "/users/self/activity_stream?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some activities back"
+    assert_operator result_as_json.length, ">=", 1, "got some activities back"
   end
 
   ## test for data about a (test) student.  This uses masquerade.
@@ -157,7 +157,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     ## this requires self in url
     request_url = "/users/self/activity_stream/summary?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some activities back"
+    assert_operator result_as_json.length, ">=", 1, "got some activities back"
   end
 
   ## test for data about a (test) student.  This uses masquerade.
@@ -166,7 +166,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     ## this requires self in url
     request_url = "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some upcoming events back"
+    assert_operator result_as_json.length, ">=", 1, "got some upcoming events back"
   end
 
   ## test for data about a (test) student.  This uses masquerade.
@@ -175,7 +175,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     ## this requires self in url
     request_url = "/users/self/todo?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_json_result(request_url)
-    assert_operator result_as_json.length, ">=",1,"got some upcoming events back"
+    assert_operator result_as_json.length, ">=", 1, "got some upcoming events back"
   end
 
 end
