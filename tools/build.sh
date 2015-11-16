@@ -128,9 +128,9 @@ IMAGE_INSTALL_TYPE=war
 IMAGE_NAME=${WEBAPPNAME_value}.${TIMESTAMP_value}.war
 CONFIGURATION_NAME=configuration-files.${TIMESTAMP_value}.tar
 #######################
+ARTIFACTFILE=\\\${WEBRELSRC}/\\\${JOBNAME}/\\\${BUILD}/\\\${ARTIFACT_DIRECTORY}/\\\${IMAGE_NAME}
+CONFIGFILE=\\\${WEBRELSRC}/\\\${JOBNAME}/\\\${BUILD}/\\\${ARTIFACT_DIRECTORY}/\\\${CONFIGURATION_NAME}
 #######################
-ARTIFACTFILE=${WEBRELSRC}/${JOBNAME}/${BUILD}/${ARTIFACT_DIRECTORY}/${IMAGE_NAME}
-CONFIGFILE=${WEBRELSRC}/${JOBNAME}/${BUILD}/${ARTIFACT_DIRECTORY}/${CONFIGURATION_NAME} 
 EOF`
     echo "${vars}"
 }
@@ -154,7 +154,7 @@ checkRvm
 
 #Run unit tests, don't run integration tests by default.
 atStep "run unit tests"
-./runTests.sh
+./tools/runTests.sh
 # ./runIntegrationTests.sh
 #rake test:local
 #rake test:resources
