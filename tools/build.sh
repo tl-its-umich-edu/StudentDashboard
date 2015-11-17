@@ -88,6 +88,7 @@ function makeConfigTar {
 
 ## create the war file
 function makeWarFile {
+    set -e
     atStep "make war file"
     warble
     mv StudentDashboard.war StudentDashboard.$ts.war
@@ -152,9 +153,11 @@ updateRuby
 
 checkRvm
 
+# turn on failure on error after RVM scripts
+set -e
 #Run unit tests, don't run integration tests by default.
 atStep "run unit tests"
-./runTests.sh
+./tools/runTests.sh
 # ./runIntegrationTests.sh
 #rake test:local
 #rake test:resources
@@ -188,4 +191,6 @@ ls -l ./ARTIFACTS
 writeEnvironmentVariables
 
 echo "++++++++++++ NOTE: The unresolved specs error message seems to be harmless."
+
+exit 1;
 #end
