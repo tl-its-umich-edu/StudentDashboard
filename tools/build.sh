@@ -192,5 +192,4 @@ writeEnvironmentVariables
 
 echo "++++++++++++ NOTE: The unresolved specs error message seems to be harmless."
 
-exit 1;
 #end
