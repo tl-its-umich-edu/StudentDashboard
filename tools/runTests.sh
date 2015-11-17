@@ -3,6 +3,8 @@
 ## run specified ruby test files in the server/spec directory under here.
 
 function runTest {
+    # The 'set -e' will make build fail if there is a failing test.
+    set -e
     local file=$1
     echo "=================== running test file: $file"
     (
