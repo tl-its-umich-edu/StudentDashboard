@@ -23,8 +23,8 @@ group :test do
   gem 'minitest'
   gem 'webmock'
   gem 'selenium-webdriver'
-  gem 'ruby-debug-base19x'
-  gem 'ruby-debug-ide'
+#  gem 'ruby-debug-base19x'
+#  gem 'ruby-debug-ide'
 end
 
 #gem 'newrelic_rpm'
