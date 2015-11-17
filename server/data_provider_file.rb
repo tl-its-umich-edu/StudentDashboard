@@ -22,6 +22,7 @@ module DataProviderFile
 
     data_file = "#{data_provider_file_directory}/#{uniqname}.#{termid}.json"
     data_file = "#{data_provider_file_directory}/#{uniqname}.json" unless File.exists?(data_file)
+    data_file = "#{data_provider_file_directory}/default.json" unless File.exists?(data_file)
 
     return getWrappedDiskFile(data_file)
   end

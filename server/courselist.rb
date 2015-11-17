@@ -87,13 +87,13 @@ class CourseList < Sinatra::Base
   config_hash[:BASE_DIR] = File.dirname(File.dirname(__FILE__))
 
   # name of application to use for ESB information
-  config_hash[:application_name] = "SD-QA"
+  #config_hash[:application_name] = "SD-QA"
 
   # name of application to use for CTools HTTP direct information
-  config_hash[:ctools_http_application_name] = "CTQA-DIRECT"
+  #config_hash[:ctools_http_application_name] = "CTQA-DIRECT"
 
   # name of application to use for canvas esb
-  config_hash[:canvas_esb_application_name] = "CANVAS-TL-QA"
+  #config_hash[:canvas_esb_application_name] = "CANVAS-TL-QA"
 
   # default name of default user
   config_hash[:default_user] = "default"
@@ -126,8 +126,6 @@ class CourseList < Sinatra::Base
   ## location of the data files.
   config_hash[:data_provider_file_directory] = nil
   config_hash[:data_provider_file_uniqname] = nil
-
-  config_hash[:data_provider_file_directory_mneme] = nil
 
   config_hash[:latte_admin_group] = nil
 
@@ -284,6 +282,7 @@ END
 
     # get the information for this application into the config hash under the explicit application name
     config_hash[config_hash[:canvas_esb_application_name]] = external_config[config_hash[:canvas_esb_application_name]]
+    config_hash[config_hash[:ctools_http_application_name]] = external_config[config_hash[:ctools_http_application_name]]
 
     ## See if wait times are set for authn stub wait.
     config_hash[:authn_wait_min] = external_config['authn_wait_min'] || 0
@@ -294,9 +293,6 @@ END
     ## provider will be used.
     config_hash[:data_provider_file_directory] = external_config['data_provider_file_directory'] || nil
     config_hash[:data_provider_file_uniqname] = external_config['data_provider_file_uniqname'] || nil
-
-    config_hash[:data_provider_file_directory_mneme] = external_config['data_provider_file_directory_mneme'] || nil
-
 
     ## If the full path to the provider directory was specified then use it.
     ## Otherwise append what was provided to the local base directory
@@ -345,6 +341,8 @@ END
       logger.warn "No strings yml configuration file found"
       config_hash[:strings] = Hash.new()
     end
+
+    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: config_hash: #{config_hash.inspect}"
   end
 
   ################################

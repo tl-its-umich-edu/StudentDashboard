@@ -12,14 +12,15 @@ require 'rest-client'
 class MnemeAPIResponse
 
   # Store the body of the response.  All output from CTools direct goes through this class.
-  attr_accessor :body_string, :body_json
+  attr_accessor :body_string, :body_json, :stringReplace
 
   ## TODO: allow input as string or json
 
   # Input is in string format
-  def initialize(body)
+  def initialize(body,stringReplace)
     @body_string = body
     @body_json = JSON.parse(body)
+    @stringReplace = stringReplace
     #dump
   end
 
@@ -62,6 +63,16 @@ class MnemeAPIResponse
       assign[:context] = assignment['context']['contextTitle']
       assign[:link] = assignment['context']['directToolUrl']
       assign[:contextUrl] = assignment['context']['contextUrl']
+    end
+
+   # Allow string replacement.  This is needed to ensure that host names are correct.
+   # See studentdashboard.yml.TXT for information.
+    @stringReplace.each_pair do |key,value|
+      next if assign[key.to_sym].nil?
+      from_name = @stringReplace[key][0]
+      to_name = @stringReplace[key][1]
+      assign[key.to_sym].gsub!(from_name,to_name)
+      logger.debug "#{__FILE__}: #{__LINE__}: possible update for #{assign[key.to_sym]}"
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: assign: [#{assign.inspect}]"
