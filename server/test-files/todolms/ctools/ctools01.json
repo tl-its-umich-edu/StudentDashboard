@@ -130,7 +130,7 @@
       {
         "calendarItem": {
           "calendarTime": 1443733200000,
-          "calendarTimeLabelKey": "assignment.due.date",
+          "calendarTimeLabelKey": "",
           "context": {
             "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
             "contextTitle": "AAS 103 004 W13",
