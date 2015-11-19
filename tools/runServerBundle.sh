@@ -21,6 +21,7 @@ if [ $LINES != 0 ]; then
 fi
 
 set -x
+export LANG=en_US.UTF-8
 
 # Sample of how to set latte options for command line ruby run.
 # LATTE_OPTS can also be set and exported separately.
