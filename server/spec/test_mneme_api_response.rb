@@ -1,6 +1,7 @@
 ## Unit tests for mneme API feed class
 
 require 'minitest'
+require 'minitest/mock'
 require 'minitest/autorun'
 require 'minitest/unit'
 require 'webmock/minitest'
@@ -15,10 +16,14 @@ include Logging
 # test that can process the data from the ctools mneme direct feed.
 # It should work with any channel for getting the data.
 
+# Using singleton method to mock out the now method for testing.
+# See the test_mock_time example.
+
 class TestMnemeAPIResponse < Minitest::Test
 
   @@string_A = '{"entityPrefix":"mneme"}'
   @@testFileDir = TestHelper.findTestFileDirectory
+
 
   def setup
     # by default assume the tests will run well and don't
@@ -27,6 +32,8 @@ class TestMnemeAPIResponse < Minitest::Test
     # allow for file by file override
     #logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
+    @mock_today_epoch = 1417409940
+    @seconds_per_day = 60*60*24
 
   end
 
@@ -124,9 +131,202 @@ class TestMnemeAPIResponse < Minitest::Test
     event = mneme_format.pop
     verify_event event
 
-    assert_equal "1417150740", event[:due_date_sort]
+    assert_equal 1417150740, event[:due_date_sort]
 
     logger.debug "#{__method__}: #{__LINE__}: C: mneme_format: "+mneme_format.inspect
   end
+
+  ################## FILTERING #########################
+  ########### filtering - check published ##############
+  # has been published
+  def test_filter_mneme_assignment_published_and_open
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch
+    }
+
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+
+    refute_nil r, "accepted published open assignment"
+  end
+
+  def test_filter_mneme_assignment_published_but_in_future
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 10}
+
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+
+    assert_nil r, "skipped published not open assignment"
+  end
+
+  def test_filter_mneme_assignment_published_is_bad_string
+
+    assign_hash = {
+        'published' => "HAPPYdance",
+        'openDate' => 0}
+
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+
+    assert_nil r, "skip bad published value"
+  end
+
+  # no published status
+  def test_filter_mneme_assignment_no_value
+    assign_hash = Hash.new()
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    assert_nil r, "skip no values"
+  end
+
+  # explicitly not published
+  def test_filter_mneme_assignment_not_published
+    assign_hash = {'published' => false}
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    assert_nil r, "skip unpublished"
+  end
+
+  ########### filtering - check open date ##############
+  def test_filter_mneme_assignment_open_in_past
+    assign_hash = {
+        'published' => true,
+        'openDate' => @mock_today_epoch - 1000,
+        'closeDate' => @mock_today_epoch
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep open date in past"
+  end
+
+  def test_filter_mneme_assignment_open_in_future
+    assign_hash = {
+        'published' => true,
+        'openDate' => @mock_today_epoch + 1000
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    assert_nil r, "skip open date in future"
+  end
+
+
+  #################### filtering - check close date #################
+
+  def test_filter_mneme_assignment_close_date_future
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch*2
+    }
+
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep close date in future"
+  end
+
+  def test_filter_mneme_assignment_close_date_yesterday
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch - @seconds_per_day
+    }
+
+    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep close date yesterday"
+  end
+
+  def test_filter_mneme_assignment_close_date_2weeks_ago
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch - (14 * @seconds_per_day)
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    assert_nil r, "skip if close date two weeks in past"
+  end
+
+
+  def test_filter_mneme_assignment_close_date_6days_ago
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch - (6 * @seconds_per_day)
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep if close date 6 days in past"
+  end
+
+  def test_filter_mneme_assignment_close_date_tomorrow
+
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch + (1 * @seconds_per_day)
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep if close date tomorrow"
+  end
+
+  def test_filter_mneme_assignment_close_date_7days_ago
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch - (7 * @seconds_per_day)
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep if close date  7 days ago"
+  end
+
+  def test_filter_mneme_assignment_close_date_7days_1sec_ago
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch - ((7 * @seconds_per_day) + 1)
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    assert_nil r, "skip if close date more than 7 days ago"
+  end
+
+  def test_filter_mneme_assignment_close_date_1sec_future
+    assign_hash = {
+        'published' => true,
+        'openDate' => 0,
+        'closeDate' => @mock_today_epoch + 1
+    }
+    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    refute_nil r, "keep if close date even 1 sec in future"
+  end
+
+  # def test_mock_time
+  #   r = MnemeAPIResponse.new("{}", Hash.new)
+  #
+  #   t = r.now
+  #   assert_operator 1447873123, '<', t.to_i
+  #
+  #   ## redefine now for this instance.
+  #   def r.now()
+  #     return "10101"
+  #   end
+  #
+  #   t = r.now
+  #   assert_equal '10101', t.to_s, "override now method"
+  # end
+  #
 
 end
