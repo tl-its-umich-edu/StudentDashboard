@@ -43,24 +43,24 @@ class TestIntegrationChannelCToolsDirectHttp < Minitest::Test
   end
 
   def test_http_direct_new_creates_session
-    hdn = ChannelCToolsDirectHttp.new(@security_file, @http_application)
+    hdn = ChannelCToolsDirectHTTP.new(@security_file, @http_application)
     refute_nil(hdn)
     assert_operator 0, "<", hdn.session_id.length, "get session id"
   end
 
   def test_http_direct_new_fails_on_bad_application_name
-    hdn = ChannelCToolsDirectHttp.new(@security_file, "KinkyBoots")
+    hdn = ChannelCToolsDirectHTTP.new(@security_file, "KinkyBoots")
     assert_nil hdn.session_id, "invalid application name"
   end
 
   def test_http_direct_new_fails_on_bad_security_file_name
     assert_raises Errno::ENOENT do
-      ChannelCToolsDirectHttp.new("badboys", "KinkyBoots")
+      ChannelCToolsDirectHTTP.new("badboys", "KinkyBoots")
     end
   end
 
   def test_http_direct_get_session_information
-    hdn = ChannelCToolsDirectHttp.new(@security_file, @http_application)
+    hdn = ChannelCToolsDirectHTTP.new(@security_file, @http_application)
     # get the response from the request
     response = hdn.do_request("/session.json")
     refute_nil response, "get session information"

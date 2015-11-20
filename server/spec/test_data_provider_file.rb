@@ -23,6 +23,9 @@ class TestDataProviderFile < Minitest::Test
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
+
+    #logger.level=TestHelper.getCommonLogLevel
+    # use error since we expect some warning messages
     logger.level = Logger::ERROR
     #logger.level = Logger::DEBUG
 
@@ -66,7 +69,7 @@ class TestDataProviderFile < Minitest::Test
 
     refute_nil(m, "create provider object")
     classes = m.dataProviderFileCourse("nofile at all", 2010, @courses_dir)
-    assert_equal(404, classes.meta_status, '404 for missing class')
+    assert_equal(200, classes.meta_status, '200 use default class')
 
   end
 
@@ -87,6 +90,8 @@ class TestDataProviderFile < Minitest::Test
   end
 
 
+
+  #data_provider_file_directory, uniqname
   def test_get_default_term_file_for_missing_term_file
 
     m = Class.new do
@@ -95,7 +100,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    terms = m.dataProviderFileTerms("nofilehere", @terms_dir)
+    terms = m.dataProviderFileTerms(@terms_dir,"nofilehere")
     assert_equal(200, terms.meta_status, '200 for missing default term file')
 
   end
@@ -108,7 +113,7 @@ class TestDataProviderFile < Minitest::Test
     end.new
 
     refute_nil(m, "create provider object")
-    terms = m.dataProviderFileTerms("default", @terms_dir)
+    terms = m.dataProviderFileTerms(@terms_dir,"default")
     assert_equal(200, terms.meta_status, '200 for missing default term file')
 
   end

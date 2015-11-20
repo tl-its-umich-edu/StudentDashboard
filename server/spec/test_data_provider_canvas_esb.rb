@@ -83,6 +83,7 @@ class TestDataProviderCanvasESB < MiniTest::Test
 
   # Assuming that studenta is kept up to date with some upcoming events
   def test_upcoming_events_studenta
+    skip ("verify is correct with current data")
     r = @w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
     result_as_string = r.result
     logger.debug "test_upcoming_events_studenta: result: "+result_as_string
