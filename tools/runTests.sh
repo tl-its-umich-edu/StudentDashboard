@@ -15,6 +15,6 @@ function runTest {
 
 runTest test_WAPI_result_wrapper.rb
 runTest test_WAPI.rb
-#runTest test_data_provider_file.rb
+runTest test_data_provider_file.rb
 runTest test_data_provider_esb.rb
 #end

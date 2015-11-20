@@ -21,7 +21,7 @@ class TestExternalResourcesFile < Minitest::Test
     #@resources_dir = "../test-files/resources"
     @resources_dir = TestHelper.findTestFileDirectory()+"/resources"
     @erf = ExternalResourcesFile.new(@resources_dir)
-    logger.level=Logger::ERROR
+    #logger.level=Logger::ERROR
   end
 
   # Called after every test method runs. Can be used to tear
@@ -48,15 +48,15 @@ class TestExternalResourcesFile < Minitest::Test
     assert_equal 8,parsed_file_list.length,"list resources in images directory"
   end
 
-  def test_list_resources_text
-    parsed_file_list = JSON.parse(@erf.get_resource "text")
-    assert_equal 1, parsed_file_list.length,"list resources in text directory"
-  end
-
-  def test_get_resources_text
-    body = @erf.get_resource "text","1.txt"
-    assert body.length > 10 ,"get resource from text directory"
-  end
+  # def test_list_resources_text
+  #   parsed_file_list = JSON.parse(@erf.get_resource "text")
+  #   assert_equal 1, parsed_file_list.length,"list resources in text directory"
+  # end
+  #
+  # def test_get_resources_text
+  #   body = @erf.get_resource "text","1.txt"
+  #   assert body.length > 10 ,"get resource from text directory"
+  # end
 
   def test_get_resources_image
     body = @erf.get_resource "image",'UMIngallMallFountan_3253_5.jpg'
