@@ -91,13 +91,13 @@ class MnemeAPIResponse
 
   # This is an instance method to bind the time used for filtering to the current time.
   def filter(assignment)
-    result = self.class.filter_two(assignment, Time.now().to_i)
+    result = self.class.filter_out_irrelevant_assignments(assignment, now().to_i)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: skipping assignment: [#{assignment.inspect}]" unless result
     return result
   end
 
   # This is a class method for easy testing.  The current time must be passed in
-  def self.filter_two(assignment, now)
+  def self.filter_out_irrelevant_assignments(assignment, now)
 
     #logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: assignment: [#{assignment.inspect}]"
 
@@ -111,12 +111,19 @@ class MnemeAPIResponse
     return nil unless openDate <= now
 
     return nil if closeDate.nil?
-    # set the interval that will still show after the close date
+
+    # Can see assignments for a while after the close date.  Calculate
+    # that cutoff.
     offset = 1*SECONDS_PER_WEEK
     closeSlack = closeDate + offset
     return nil if now > closeSlack
 
     assignment
+  end
+
+  # Allow overriding the current time.
+  def now
+    Time.now()
   end
 
   # convert epoch with milliseconds to epoch in seconds

@@ -107,7 +107,8 @@ class TestMnemeAPIResponse < Minitest::Test
   end
 
 
-  def test_get_mneme_assignment_event
+  # testing using the full class
+  def test_get_mneme_assignment_event_close_slack_ok
 
     # Test single entry with an assignment
     # The test files are full results, not unit test data, so:
@@ -122,6 +123,12 @@ class TestMnemeAPIResponse < Minitest::Test
     response = MnemeAPIResponse.new(file_data_as_string)
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
+
+    ## redefine now for this instance to be within the close date slack.
+    def response.now()
+      return 1417150740+3600
+    end
+
     mneme_format = response.toDoLms
     logger.debug "#{__method__}: #{__LINE__}: A: mneme_format: "+mneme_format.to_json
 
@@ -147,9 +154,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'closeDate' => @mock_today_epoch
     }
 
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
-    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
-
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     refute_nil r, "accepted published open assignment"
   end
 
@@ -159,7 +164,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'published' => true,
         'openDate' => 10}
 
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
 
     assert_nil r, "skipped published not open assignment"
@@ -169,26 +174,23 @@ class TestMnemeAPIResponse < Minitest::Test
 
     assign_hash = {
         'published' => "HAPPYdance",
-        'openDate' => 0}
+        'openDate' => 1}
 
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
-    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
-
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     assert_nil r, "skip bad published value"
   end
 
   # no published status
   def test_filter_mneme_assignment_no_value
     assign_hash = Hash.new()
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     assert_nil r, "skip no values"
   end
 
   # explicitly not published
   def test_filter_mneme_assignment_not_published
     assign_hash = {'published' => false}
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
-    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     assert_nil r, "skip unpublished"
   end
 
@@ -199,8 +201,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => @mock_today_epoch - 1000,
         'closeDate' => @mock_today_epoch
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
-    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     refute_nil r, "keep open date in past"
   end
 
@@ -209,9 +210,17 @@ class TestMnemeAPIResponse < Minitest::Test
         'published' => true,
         'openDate' => @mock_today_epoch + 1000
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
-    logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     assert_nil r, "skip open date in future"
+  end
+
+  def test_filter_mneme_assignment_open_is_nil
+    assign_hash = {
+        'published' => true,
+        'openDate' => nil
+    }
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
+    assert_nil r, "skip open date is nil"
   end
 
 
@@ -225,7 +234,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'closeDate' => @mock_today_epoch*2
     }
 
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     refute_nil r, "keep close date in future"
   end
@@ -238,7 +247,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'closeDate' => @mock_today_epoch - @seconds_per_day
     }
 
-    r = MnemeAPIResponse.filter_two(assign_hash, 0)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, 0)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     refute_nil r, "keep close date yesterday"
   end
@@ -250,7 +259,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => 0,
         'closeDate' => @mock_today_epoch - (14 * @seconds_per_day)
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     assert_nil r, "skip if close date two weeks in past"
   end
@@ -263,7 +272,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => 0,
         'closeDate' => @mock_today_epoch - (6 * @seconds_per_day)
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     refute_nil r, "keep if close date 6 days in past"
   end
@@ -275,7 +284,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => 0,
         'closeDate' => @mock_today_epoch + (1 * @seconds_per_day)
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     refute_nil r, "keep if close date tomorrow"
   end
@@ -286,7 +295,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => 0,
         'closeDate' => @mock_today_epoch - (7 * @seconds_per_day)
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     refute_nil r, "keep if close date  7 days ago"
   end
@@ -297,7 +306,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => 0,
         'closeDate' => @mock_today_epoch - ((7 * @seconds_per_day) + 1)
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     assert_nil r, "skip if close date more than 7 days ago"
   end
@@ -308,7 +317,7 @@ class TestMnemeAPIResponse < Minitest::Test
         'openDate' => 0,
         'closeDate' => @mock_today_epoch + 1
     }
-    r = MnemeAPIResponse.filter_two(assign_hash, @mock_today_epoch)
+    r = MnemeAPIResponse.filter_out_irrelevant_assignments(assign_hash, @mock_today_epoch)
     logger.debug "#{__method__}: #{__LINE__}: filter mneme: r "+r.inspect
     refute_nil r, "keep if close date even 1 sec in future"
   end
