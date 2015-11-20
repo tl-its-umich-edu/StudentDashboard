@@ -17,7 +17,7 @@ class CToolsDirectResponse
   ## TODO: allow input as string or json
 
   # Input is in string format
-  def initialize(body,stringReplace)
+  def initialize(body, stringReplace)
     @body_string = body
     @body_json = JSON.parse(body)
 
@@ -29,8 +29,9 @@ class CToolsDirectResponse
   def toDoLms
     collection = @body_json['dash_collection']
     return Array.new() if collection.nil?
-    # process all the assignments.
-    collection.map { |dash_entry| extractAssignment(dash_entry) }
+
+    # apply the extraction/reformat to each assignment and keep only those that generate some output.
+    collection.map { |entry| extractAssignment(entry) }.find_all { |entry| entry }
   end
 
   def extractAssignment(assignment)
@@ -40,6 +41,9 @@ class CToolsDirectResponse
     return nil if (assignment.nil?)
     return nil if (assignment['calendarItem'].nil?)
     return nil if (assignment['calendarItem']['context'].nil?)
+
+    # verify that this assignment is desired.
+    return nil if self.class.filter(assignment).nil?
 
     # create a single assignment object in known format for UI.
     assign = Hash.new()
@@ -65,15 +69,36 @@ class CToolsDirectResponse
 
     # Allow string replacement.  This is needed to ensure that host names are correct.
     # See studentdashboard.yml.TXT for information.
-    @stringReplace.each_pair do |key,value|
+    @stringReplace.each_pair do |key, value|
       next if assign[key.to_sym].nil?
       from_name = @stringReplace[key][0]
       to_name = @stringReplace[key][1]
-      assign[key.to_sym].gsub!(from_name,to_name)
+      assign[key.to_sym].gsub!(from_name, to_name)
       logger.debug "#{__FILE__}: #{__LINE__}: possible update for #{assign[key.to_sym]}"
     end
 
     assign
+  end
+
+  # Take the raw assignment value and check to see if it should be filtered out.  Return the
+  # assignment if acceptable and nil otherwise.
+  # only accept assignments with calendar item label key of assignment.due.date
+  #"calendarItem": {
+  #"calendarTimeLabelKey": "assignment.due.date"
+
+  # Make static method since it requires only local data and that's easier for testing.
+  def self.filter(assignment)
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: assignment: [#{assignment.inspect}]"
+    calendarItem = assignment['calendarItem']
+    return nil if calendarItem.nil?
+
+    calendarTimeLabelKey = calendarItem['calendarTimeLabelKey']
+    return nil if calendarTimeLabelKey.nil?
+
+    return nil unless calendarTimeLabelKey == 'assignment.due.date'
+    
+    return assignment
   end
 
   def dump

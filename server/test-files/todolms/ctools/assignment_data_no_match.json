@@ -1,0 +1,32 @@
+[
+  {
+    "calendarItem": {
+      "calendarTime": 1443733200000,
+      "calendarTimeLabelKey": "assignment.never"
+    }
+  },
+  {
+    "calendarItem": {
+      "calendarTime": 1443733200000,
+      "calendarTimeLabelKey": ""
+    }
+  },
+  {
+    "calendarItem": {
+      "calendarTime": 1443733200000,
+      "calendarTimeLabelKey": "assignment.final_never_due.date"
+    }
+  },
+  {
+    "calendarItem": {
+      "calendarTime": 1443733200000,
+      "calendarTimeLabelKey": "assignment.due.date.someday"
+    }
+  },
+  {
+    "calendarItem": {
+      "calendarTime": 1443733200000,
+      "calendarTimeLabelKey": "howdy.duty"
+    }
+  }
+]
