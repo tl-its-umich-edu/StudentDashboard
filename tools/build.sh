@@ -100,12 +100,20 @@ function makeWarFile {
 function makeVersion {
     atStep "makeVersion"
     FILE="./server/local/build.yml"
-    echo  "build: TLPORTAL" >| $FILE
-    echo  "time: $ts " >> $FILE
+    echo "build: " >| $FILE
+    echo  "  project: TLPORTAL" >> $FILE
+    echo  "  time: \"$ts\" " >> $FILE
     last_commit=$(git rev-parse HEAD);
-    echo "last_commit: $last_commit" >> $FILE
-    echo -n "tag: " >> $FILE
+    echo "  last_commit: $last_commit" >> $FILE
+    echo -n "  tag: " >> $FILE
     echo $(git describe --all) >> $FILE
+    echo -n "  repo: " >> $FILE
+    remote=$(git remote show -n origin | grep -i 'fetch' | perl -n -e '/URL:\s+(\S+.git)$/ && print $1')
+    if [[ -z "$remote" ]]; then
+        user=$(whoami)
+        remote=$(git remote show -n $user | grep -i 'fetch' | perl -n -e '/URL:\s+(\S+.git)$/ && print $1')
+    fi
+    echo $remote >> $FILE
     echo >> $FILE
 }
 
