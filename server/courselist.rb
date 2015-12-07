@@ -796,7 +796,7 @@ END
     logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body_ruby.inspect: +++#{mneme_body_ruby.inspect}+++"
 
     ############## Compose the different ctools feeds together.  We keep them separate by the source LMS.
-    ctools_merged_ruby = mergeCtoolsDashMneme(canvas_body_ruby, mneme_body_ruby)
+    ctools_merged_ruby = mergeCtoolsDashMneme(ctools_body_ruby, mneme_body_ruby)
     results = {
         'ctools' => ctools_merged_ruby,
         'canvas' => canvas_body_ruby
