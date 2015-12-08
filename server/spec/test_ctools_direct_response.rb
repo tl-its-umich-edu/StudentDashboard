@@ -103,7 +103,7 @@ class TestCtoolsDirectResponse < Minitest::Test
 
     file_data = JSON.parse(file_as_string)
 
-    assert_equal 5, file_data.length, 'got multiple assignments'
+    assert_equal 6, file_data.length, 'got multiple assignments'
 
     filtered = file_data.select { |a| CToolsDirectResponse.filter(a) }
     logger.debug "#{__method__}: #{__LINE__}: filtered: "+filtered.inspect

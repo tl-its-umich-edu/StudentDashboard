@@ -91,14 +91,24 @@ class CToolsDirectResponse
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: assignment: [#{assignment.inspect}]"
     calendarItem = assignment['calendarItem']
-    return nil if calendarItem.nil?
+
+    if calendarItem.nil?
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: assignment: fail for nil calendarItem"
+      return nil
+    end
 
     calendarTimeLabelKey = calendarItem['calendarTimeLabelKey']
-    return nil if calendarTimeLabelKey.nil?
+    if calendarTimeLabelKey.nil?
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: assignment: fail for nil calendarTimeLabelKey"
+      return nil
+    end
 
-    return nil unless calendarTimeLabelKey == 'assignment.due.date'
-    
-    return assignment
+    if 'assignment.due.date'.casecmp(calendarTimeLabelKey) != 0
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: assignment: fail for bad key: [#{calendarTimeLabelKey}]"
+      return nil
+    end
+
+    assignment
   end
 
   def dump

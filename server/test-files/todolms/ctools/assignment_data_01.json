@@ -8,6 +8,12 @@
   {
     "calendarItem": {
       "calendarTime": 1443733200000,
+      "calendarTimeLabelKey": "assignment.close.date"
+    }
+  },
+  {
+    "calendarItem": {
+      "calendarTime": 1443733200000,
       "calendarTimeLabelKey": ""
     }
   },
