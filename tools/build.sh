@@ -115,6 +115,15 @@ function makeVersion {
     fi
     echo $remote >> $FILE
     echo >> $FILE
+
+    ### for testing 
+    if [[ ! -z "$BUILD_URL" ]]; then
+        echo "JENKINS_BUILD_URL: ${BUILD_URL}" >> $FILE
+        echo "JENKINS_GIT_URL: ${GIT_URL}" >> $FILE
+        echo "JENKINS_GIT_BRANCH: ${GIT_BRANCH}" >> $FILE
+        echo "JENKINS_GIT_COMMIT: ${GIT_COMMIT}" >> $FILE
+    fi
+
 }
 
 
