@@ -490,7 +490,6 @@ END
       url_set = Hash.new()
       url_set['ping'] = url('/status/ping.EXT')
       url_set['check'] = url('/status/check.EXT')
-      url_set['status'] = url('/status.EXT')
 
       u = Hash.new()
       u['urls'] = url_set
