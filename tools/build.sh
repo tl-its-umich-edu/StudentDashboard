@@ -107,25 +107,25 @@ function makeVersion {
     echo "  last_commit: $last_commit" >> $FILE
     echo -n "  tag: " >> $FILE
     echo $(git describe --all) >> $FILE
-    echo -n "  repo: " >> $FILE
+
     remote=$(git remote show -n origin | grep -i 'fetch' | perl -n -e '/URL:\s+(\S+.git)$/ && print $1')
     if [[ -z "$remote" ]]; then
         user=$(whoami)
         remote=$(git remote show -n $user | grep -i 'fetch' | perl -n -e '/URL:\s+(\S+.git)$/ && print $1')
     fi
-    echo $remote >> $FILE
-    echo >> $FILE
 
-    ### for testing 
+    # print out jenkins build info or locally obtained info
     if [[ ! -z "$BUILD_URL" ]]; then
-        echo "JENKINS_BUILD_URL: ${BUILD_URL}" >> $FILE
-        echo "JENKINS_GIT_URL: ${GIT_URL}" >> $FILE
-        echo "JENKINS_GIT_BRANCH: ${GIT_BRANCH}" >> $FILE
-        echo "JENKINS_GIT_COMMIT: ${GIT_COMMIT}" >> $FILE
+        echo "  JENKINS_BUILD_URL: ${BUILD_URL}" >> $FILE
+        echo "  JENKINS_GIT_URL: ${GIT_URL}" >> $FILE
+        echo "  JENKINS_GIT_BRANCH: ${GIT_BRANCH}" >> $FILE
+        echo "  JENKINS_GIT_COMMIT: ${GIT_COMMIT}" >> $FILE
+    else
+        echo -n "  repo: " >> $FILE
+        echo $remote >> $FILE
+        echo >> $FILE
     fi
-
 }
-
 
 function writeEnvironmentVariables {
     local TIMESTAMP_value=$(ls ARTIFACTS/StudentDashboard.*.war | perl -n -e 'm/.+\.(.+)\.war/ && print $1' )
