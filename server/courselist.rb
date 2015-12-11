@@ -490,12 +490,13 @@ END
       url_set = Hash.new()
       url_set['ping'] = url('/status/ping.EXT')
       url_set['check'] = url('/status/check.EXT')
+      url_set['settings'] = url('/status/settings')
 
       u = Hash.new()
       u['urls'] = url_set
       u
     end
-end
+  end
 
   ## Add some class level helper methods.
   helpers do
@@ -770,6 +771,17 @@ end
     status, headers, body = call env.merge("PATH_INFO" => '/status/check')
   end
 
+  ## Dump configuration settings to log upon request
+  get '/status/settings' do
+    logger.info "PRINT CURRENT CONFIGURATION"
+    config_hash = settings.latte_config
+
+    config_hash.keys.sort_by { |k| k.to_s }.map do |key|
+      logger.info "KEY: #{key}\tVALUE: [#{config_hash[key]}]"
+    end
+    "settings dumped to log file"
+  end
+
   ######################################
   ########### URL ROUTERS ##############
   ######################################
@@ -805,16 +817,6 @@ end
   ### Print the API documentation.
   get '/api' do
     @@apidoc
-  end
-
-  ## Dump configuration settings to log upon request`
-  get '/settings' do
-    logger.info "PRINT CURRENT CONFIGURATION"
-    config_hash = settings.latte_config
-    config_hash.each.sort.each do |key, value|
-      logger.info "KEY: #{key}\tVALUE: [#{value}]"
-    end
-    "settings dumped to log file"
   end
 
   ### Return json array of the course objects for this user to the UI.  Currently if you don't
