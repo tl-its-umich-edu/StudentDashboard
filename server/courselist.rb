@@ -15,6 +15,7 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
+
 require_relative 'stopwatch'
 require_relative 'WAPI'
 require_relative 'data_provider'
@@ -26,9 +27,6 @@ require_relative 'OptionsParse'
 include Logging
 
 class CourseList < Sinatra::Base
-  ## mixin the providers functionality.
-  #include DataProviderESB
-  #include DataProviderFile
   include DataProvider
 
   # To store persistent configuration values in Sinatra requires using the settings feature.
@@ -320,6 +318,9 @@ END
 
     config_hash[:default_term] = external_config['default_term'] || config_hash[:default_term]
 
+    # set containing directory for (most of the) erb files
+    set :views, "#{config_hash[:BASE_DIR]}/UI/views"
+
     # read in yml for the build configuration into a class variable
     begin
       config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml", false)
@@ -478,6 +479,23 @@ END
 
     end
 
+    #### Return status information in arrays of data by topic
+    #TODO: make the file a configuration variable
+    def build_info
+      build_configuration_file = 'server/local/build.yml'
+      YAML.load_file(build_configuration_file)
+    end
+
+    def status_urls
+      url_set = Hash.new()
+      url_set['ping'] = url('/status/ping.EXT')
+      url_set['check'] = url('/status/check.EXT')
+      url_set['settings'] = url('/status/settings')
+
+      u = Hash.new()
+      u['urls'] = url_set
+      u
+    end
   end
 
   ## Add some class level helper methods.
@@ -554,7 +572,37 @@ END
 
   end
 
-  ############ Process requests
+  helpers do
+    # generate the check url information for formatting elsewhere.
+    def check_esb(format)
+
+      st = Stopwatch.new("timing of check url")
+      st.start
+      check_result = dataProviderCheck()
+      st.stop
+
+      logger.debug "status: "+check_result.inspect
+
+      if (check_result.meta_status == 200)
+        response.status = 200
+        maybe_ok = "OK"
+      else
+        response.status = check_result.meta_status
+        maybe_ok = "NOT OK"
+      end
+
+      config_hash = settings.latte_config
+
+      status = Hash.new
+      status['status'] = maybe_ok
+      status['elapsed'] = sprintf '%.3f', st.summary[0]
+      status['server'] = config_hash[:server]
+      status
+    end
+
+  end
+
+  ############ Process request URLs ##############
 
   ## Requests are matched and processed in the order matchers appear in the code.  Multiple matches may happen
   ## for a single request if the processing for one match uses pass to let matching code later in the chain process.
@@ -577,6 +625,15 @@ END
     request.env['PATH_INFO'] = request.env['PATH_INFO'].gsub('/self', "/#{self_user}")
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: modified request [#{original}] to be: [#{request.env['PATH_INFO']}] and redirecting"
     redirect to(request.env['PATH_INFO'])
+  end
+
+  #### content type configuration
+  ## Make sure that a URL with an explicit extension has the corresponding entry EARLY in the accept list.
+  ## There is probably a better way to do this.
+  before /.*/ do
+    request.accept.unshift('application/json') if request.url.match(/.json$/)
+    request.accept.unshift('text/html') if request.url.match(/.xml$/)
+    request.accept.unshift('text/plain') if request.url.match(/.txt$/)
   end
 
 
@@ -632,7 +689,6 @@ END
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: end initial processing"
   end
 
-
   ## For testing allow specifying the userid identity to be used on the URL.
   ## This is particularly useful for load testing.  The switch in userid name
   ## only applies to requests for the top level Dashboard page.  This processing
@@ -654,8 +710,83 @@ END
     halt 403 if vetoResult == true
   end
 
+  ######################################
+  ########### STATUS URLS ##############
+  ######################################
+  # top level request for status information and urls
+
+  get '/status.?:format?' do |format|
+    format = 'html' unless (format)
+    format.downcase!
+
+    logger.debug "#{__method__}: #{__LINE__}: status format [#{format}]"
+
+    # Assemble the raw top level of status information by merging hashs from
+    # different sources.  The @information instance variable will be available to the templates.
+    @information = build_info().merge(status_urls())
+
+    # set default template and content type
+    content_type :html
+    template = :'status.html'
+
+    # override default if appropriate
+    if ('json'.eql? format) then
+      content_type :json
+      template = :'status.json'
+    end
+
+    # render response
+    erb template
+  end
+
+  # Trivial request to verify that the server can respond.
+  get '/status/ping.?:format?' do |format|
+    format = 'html' unless (format)
+
+    if format && "json".casecmp(format) == 0 then
+      content_type :json
+      Hash['status', 'ok'].to_json
+    else
+      "ok"
+    end
+
+  end
+
+  # Verify that a simple round trip, using the ESB dependency, works.
+  get '/status/check.?:format?' do |format|
+    format = 'html' unless (format)
+    status_hash = check_esb(format)
+    if format && "json".casecmp(format) == 0 then
+      content_type :json
+      return_value = status_hash.to_json
+    else
+      return_value = sprintf "status=%s elapsed=%s server=%s",
+                             status_hash['status'], status_hash['elapsed'], status_hash['server']
+    end
+    return_value
+  end
+
+  # for backward compatibility forward to the new check implementation.
+  get '/check' do
+    status, headers, body = call env.merge("PATH_INFO" => '/status/check')
+  end
+
+  ## Dump configuration settings to log upon request
+  get '/status/settings' do
+    logger.info "PRINT CURRENT CONFIGURATION"
+    config_hash = settings.latte_config
+
+    config_hash.keys.sort_by { |k| k.to_s }.map do |key|
+      logger.info "KEY: #{key}\tVALUE: [#{config_hash[key]}]"
+    end
+    "settings dumped to log file"
+  end
+
+  ######################################
   ########### URL ROUTERS ##############
-  ## Process the requests based on the URL
+  ######################################
+
+  ## Process the user / data requests based on the URL
 
   ## If the request isn't for anything specific then return the UI page.
   get '/' do
@@ -686,16 +817,6 @@ END
   ### Print the API documentation.
   get '/api' do
     @@apidoc
-  end
-
-  ## Dump configuration settings to log upon request`
-  get '/settings' do
-    logger.info "PRINT CURRENT CONFIGURATION"
-    config_hash = settings.latte_config
-    config_hash.each.sort.each do |key, value|
-      logger.info "KEY: #{key}\tVALUE: [#{value}]"
-    end
-    "settings dumped to log file"
   end
 
   ### Return json array of the course objects for this user to the UI.  Currently if you don't
@@ -754,9 +875,7 @@ END
     termList.value_as_json
   end
 
-
   ################## todolms information about things to do from the lms #############
-
 
   ## can only ask for data for specific users
   get "/todolms/?" do
@@ -829,7 +948,6 @@ END
     todolmsList
   end
 
-
   ### maybe this can be generic enough to call single data provider with variable lms value
   ## ask for the LMS to get ctools information for a specific person.
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
@@ -900,6 +1018,7 @@ END
 
   #################################################
   ############### Supply static external resources
+  #################################################
   # External resource request expects to get request for a resource at or under /external.
   # Processing is passed to an external resource provider.
   # If request is to directory (if the file_name is nil) then return a json list of the objects in directory.
@@ -934,34 +1053,10 @@ END
     result
   end
   ################# end of external resources
-  ###########################################
 
-  ############ check out the esb course call and time the performance.
-  check_esb = lambda do
-
-    st = Stopwatch.new("timing of check url")
-    st.start
-    check_result = dataProviderCheck()
-    st.stop
-
-    logger.debug "status: "+check_result.inspect
-
-    if (check_result.meta_status == 200)
-      response.status = 200
-      maybe_ok = "OK"
-    else
-      response.status = check_result.meta_status
-      maybe_ok = "NOT OK"
-    end
-
-    config_hash = settings.latte_config
-    return sprintf "status=%s elapsed=%.3f server=%s", maybe_ok, st.summary[0], config_hash[:server]
-  end
-
-
-  get '/check', &check_esb
-
-  ## catch any request not matched and give an error.
+  #################################################
+  ## catch any un-matched requests.
+  #################################################
   get '*' do
     config_hash = settings.latte_config
     logger.debug "REQUEST: * bad query catch"
@@ -969,7 +1064,9 @@ END
     return "#{config_hash[:invalid_query_text]}"
   end
 
-  # At end of request print the elapsed time for the request.
+  #######################################################
+  # Post process requests to generate timing information.
+  #######################################################
   after do
     request_sd = session[:thread].pop
     ## if redirect from self then the stopwatch doesn't get setup.

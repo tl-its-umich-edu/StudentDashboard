@@ -1,0 +1,2 @@
+<% @information['urls'].each_value {|url| url.gsub!(/EXT$/,'json')}%>
+<%= @information.to_json %>

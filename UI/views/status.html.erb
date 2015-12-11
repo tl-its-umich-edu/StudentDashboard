@@ -1,0 +1,29 @@
+<% @information['urls'].each_value {|url| url.gsub!(/EXT$/,'html')}%>
+<!DOCTYPE html>
+<html>
+<body>
+Build Information:
+<div style="margin-left:20px;">
+  <table>
+    <% @information['build'].each do |k, v| %>
+        <tr>
+          <td><%= "<em>#{k}</em>: #{v}" %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+
+Status URL Links:
+<div style="margin-left:20px;">
+  <table>
+    <% @information['urls'].each do |k, v| %>
+        <tr>
+          <td><%= "<em>#{k}</em>: <a href=\"#{v}\">#{v}</a>" %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+
+</body>
+</html>
+
