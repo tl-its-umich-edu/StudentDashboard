@@ -100,7 +100,7 @@ class CourseList < Sinatra::Base
   config_hash[:studentdashboard] = "#{config_base}/studentdashboard.yml"
 
   # location for yml file describing the build.
-  config_hash[:build_file] = "#{config_base}/build.yml"
+  config_hash[:build_file] = "./server/local/build.yml"
 
   # default location for the security information
   config_hash[:security_file] = "#{config_base}/security.yml"
@@ -323,7 +323,8 @@ END
 
     # read in yml for the build configuration into a class variable
     begin
-      config_hash[:build] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml", false)
+      config_hash[:build_full] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml", false)
+      config_hash[:build] = config_hash[:build_full][:build]
       logger.info "build.yml file is optional"
       config_hash[:build_time] = config_hash[:build]['time']
       config_hash[:build_id] = config_hash[:build]['tag'] || config_hash[:build]['last_commit']
