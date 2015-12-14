@@ -63,6 +63,7 @@
                 Staff
               </small>
             </div>
+            <div ng-repeat="Meeting in item.Meeting | showMeetingIfNow"><small>{{Meeting.Days | fixMeetingDays}} {{Meeting.Times}} {{Meeting.Location}}</small></div>
           </div>
         </div>
       </li>

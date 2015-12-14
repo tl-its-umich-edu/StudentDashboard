@@ -88,4 +88,37 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
           return '';
       }
     };
-});;
+}).filter('showMeetingIfNow', function() {
+    return function (meetings) {
+    var filtered = [];
+    var now = moment();
+    for (var i = 0; i < meetings.length; i++) {
+      var meeting = meetings[i];
+      if (moment(meeting.StartDate).isBefore(now) && moment(meeting.EndDate).isAfter(now)){
+        
+        filtered.push(meeting);
+      }
+    }
+    return filtered;
+  };
+}).filter('fixMeetingDays', function () {
+  return function (input) {
+    if (input) {
+      var strDays='';
+      var arrayDays=[];
+      var mapDays = {
+         Mo:'Monday',
+         Tu:'Tuesday',
+         We:'Wednesday',
+         Th:'Thursday',
+         Fr: 'Friday',
+         Sa: 'Saturday',
+         Su: 'Sunday'
+      };
+      strDays = input.replace(/Mo|Tu|We|Th|Fr/gi, function(matched){
+        arrayDays.push(mapDays[matched]);
+      });
+      return arrayDays.join(', ');
+    }
+  };
+});
