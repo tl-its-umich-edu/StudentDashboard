@@ -123,10 +123,11 @@ var prepareSchedule = function(result) {
       if (due < now) {
         this.when = 'overdue';
       }
-      
-      if (now.diff(due, 'days') === 0) {
-       this.when = 'today'; 
+
+      if (now.isSame(due, 'd')) {
+        this.when = 'today'; 
       }
+
       // better for week - but still needs to incorporate todays items
       if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {  
         this.when = 'week';
