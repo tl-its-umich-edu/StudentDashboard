@@ -120,7 +120,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
        name: 'Due today',
        value: 'today'
     }, {
-       name: 'Due this week',
+       name: 'Next 7 days',
        value: 'week'
     }];
 
