@@ -115,7 +115,7 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
          Sa: 'Saturday',
          Su: 'Sunday'
       };
-      strDays = input.replace(/Mo|Tu|We|Th|Fr/gi, function(matched){
+      strDays = input.replace(/Mo|Tu|We|Th|Fr|Sa|Su/gi, function(matched){
         arrayDays.push(mapDays[matched]);
       });
       return arrayDays.join(', ');
