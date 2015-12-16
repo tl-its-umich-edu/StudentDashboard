@@ -114,7 +114,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
     $scope.schedule = data.combinedSchedule;
     $scope.scheduleStatus = data.status;
     $scope.schedule_time_options = [{
-       name: 'Overdue',
+       name: 'Due last 7 days',
        value: 'overdue'
     }, {
        name: 'Due today',
