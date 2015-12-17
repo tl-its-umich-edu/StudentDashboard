@@ -57,6 +57,33 @@ dashboardApp.factory('Courses', function ($http) {
               result.data.Result.message = 'You seem to have no courses this term.';
             }
             $.each(result.data.Result, function (i, l) {
+              $.each(l.Meeting, function (i, m) {
+                switch (m.Days.substring(0,2)) {
+                case 'Mo':
+                  m.DayCode = 1;
+                  break;
+                case 'Tu':
+                  m.DayCode = 2;
+                  break;
+                case 'We':
+                  m.DayCode = 3;
+                  break;
+                case 'Th':
+                  m.DayCode = 4;
+                  break;
+                case 'Fr':
+                  m.DayCode = 5;
+                  break;
+                case 'Sa':
+                  m.DayCode = 6;
+                  break;
+                case 'Su':
+                  m.DayCode = 7;
+                  break;
+                default:
+                  m.DayCode = 7;
+                }
+              });
               l.Instructor = _.filter(l.Instructor, function (instructor) {
                 return instructor.Role !== 'Dummy';
               });
