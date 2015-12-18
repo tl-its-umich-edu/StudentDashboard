@@ -95,7 +95,6 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
     for (var i = 0; i < meetings.length; i++) {
       var meeting = meetings[i];
       if (moment(meeting.StartDate).isBefore(now) && moment(meeting.EndDate).isAfter(now)){
-        
         filtered.push(meeting);
       }
     }
