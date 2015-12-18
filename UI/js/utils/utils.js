@@ -114,8 +114,11 @@ var prepareSchedule = function(result) {
   var combinedSchedule = result.data.ctools.Result.concat(result.data.canvas.Result);
   if(combinedSchedule.length){
     $.each(combinedSchedule, function() {
+      this.due_date_sort = parseInt(this.due_date_sort);
       this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
+      this.due_date_medium = moment.unix(this.due_date_sort).format('MM/DD/YY h:mm a');
       this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
+      this.due_date_time = moment.unix(this.due_date_sort).format('h:mm a');
 
       var now = moment();
       var due = moment(this.due_date_sort * 1000);
@@ -125,7 +128,7 @@ var prepareSchedule = function(result) {
       }
 
       if (now.isSame(due, 'd')) {
-        this.when = 'today'; 
+        this.when = 'today';
       }
 
       // better for week - but still needs to incorporate todays items
@@ -133,7 +136,7 @@ var prepareSchedule = function(result) {
         this.when = 'week';
       }
     });
-    combinedScheduleAndStatus.combinedSchedule = combinedSchedule;
+    combinedScheduleAndStatus.combinedSchedule = _.sortBy(combinedSchedule, 'due_date_sort');
   } else {
     combinedScheduleAndStatus.combinedSchedule = [];
   } 
