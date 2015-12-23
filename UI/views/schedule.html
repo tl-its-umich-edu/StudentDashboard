@@ -31,7 +31,7 @@
       <span ng-show="(scheduleStatus.ctools.status ==200 || scheduleStatus.canvas.status ==200) && schedule.length!==0">{{showWhen | noItemsFoundForTime}}</span>
       <span ng-show="schedule.length===0 && (scheduleStatus.ctools.status ===200 || scheduleStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
       <ul class="itemList">
-          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid">
+          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen)" class="container-fluid" ng-hide="item.when !== showWhen">
               <div class="row">
                   <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
                   </div>
@@ -47,7 +47,9 @@
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date {{item.when}}">
                       <small class="dateSpan">
-                         <span  ng-show="item.due_date_sort">{{item.due_date_sort | dateUntil}}</span>
+                        <span  ng-show="item.due_date_sort && item.when !=='today'">{{item.due_date_medium}}</span>
+                        <span  ng-show="item.due_date_sort && item.when ==='today'"><a href="" ng-click="showTime = !showTime">{{item.due_date_sort | dateUntil}} </a></span>
+                        <span  ng-show="item.due_date_sort && item.when ==='today'  && showTime"><br>{{item.due_date_time}} </span>
                       </small>
                   </div>
               </div>
