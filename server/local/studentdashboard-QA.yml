@@ -47,4 +47,9 @@ CTQA-DIRECT:
       link: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
       contextUrl: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
 
+CTDEV-DIRECT:
+  string-replace:
+      link: ['https://ctdevsearch.dsc.umich.edu', 'https://ctdev.dsc.umich.edu']
+      contextUrl: ['https://ctdevsearch.dsc.umich.edu', 'https://ctdev.dsc.umich.edu']
+
 ### end ###
