@@ -4,14 +4,12 @@
 
 function runTest {
     # The 'set -e' will make build fail if there is a failing test.
-    set -x
     set -e
     local file=$1
     echo "=================== running test file: $file"
     (
         pwd;
         cd server/spec;
-        which ruby
         ruby ./$file
     )
 }
