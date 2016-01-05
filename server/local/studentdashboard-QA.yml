@@ -1,6 +1,6 @@
 # See the studentdashboard.yml.TXT for details on this yaml configuration file.
 #
-# PURPOSE: default settings for running Latte in the QA instance
+# PURPOSE: settings for QA instance
 #
 ################## Data source configuration
 # course / term information application name (mpathways)
@@ -34,5 +34,17 @@ authn_wait_max: 0.03
 latte_admin_group: TL-Latte-admin-test
 # set logging level.  Default is INFO.
 use_log_level: DEBUG
+
+# For this data source list the remappings required
+# The name matches that in the security.yml file.
+CANVAS-TL-QA:
+  string-replace:
+     link: ['https://api-qa-gw.its.umich.edu', 'https://umich.test.instructure.com']
+     contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.test.instructure.com']
+
+CTQA-DIRECT:
+  string-replace:
+      link: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
+      contextUrl: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
 
 ### end ###
