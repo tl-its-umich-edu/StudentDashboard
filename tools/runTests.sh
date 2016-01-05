@@ -8,6 +8,7 @@ function runTest {
     local file=$1
     echo "=================== running test file: $file"
     (
+        pwd;
         cd server/spec;
         ruby ./$file
     )
