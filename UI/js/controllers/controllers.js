@@ -4,30 +4,6 @@
 
 
 /**
- * Dashboard Message Controller: determines what if anything to display in the mesage panel
- */
-
-dashboardApp.controller('dashMessageController', ['DashMessage','$rootScope', '$scope',  function (DashMessage, $rootScope, $scope) {
-    //use factory to fetch list of available text files if the user has not dismissed the alert that displays them
-    //in this session
-    if (!sessionStorage.getItem('dashMessageSeen')) {
-      DashMessage.getMessageIndex('external/text/').then(function (data) {
-        if (data.length === 0) {
-          // make sure text container remains hidden, as there is nothing to show
-          $scope.dashMessage = false;
-        } else {
-          // use underscore to select one element from the array
-          var dashMessageRandom = _.sample(data);
-          // use factory to retrieve text of this random file, and assign the contents to the scope
-          DashMessage.getMessage('external/text/' + dashMessageRandom).then(function (data) {
-            $scope.dashMessage = data;
-          });
-        }
-      });
-    }
-}]);
-
-/**
  * Terms controller - Angular dependencies are injected.
  * It adds the terms to the scope and binds them to the DOM
  * 
