@@ -46,20 +46,6 @@ var errorHandler = function(url, result) {
 
 };
 
-/**
- * Manage dismissing alert
- */
-
-$('.dashMessage').bind('closed.bs.alert', function() {
-  dashMessageSeenUpdate();
-});
-
-
-var dashMessageSeenUpdate = function() {
-  // on closing the alert, set a sessionStorage value
-  sessionStorage.setItem('dashMessageSeen', true);
-};
-
 var statusResolver = function(status, count) {
   var message;
  

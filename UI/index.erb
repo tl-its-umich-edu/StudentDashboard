@@ -29,13 +29,6 @@
             <!-- /.container-fluid -->
         </nav>
         <div class="container-fluid contentWrapper">
-            <div class="row dashMessageContainer" id="dashMessageContainer" ng-show="dashMessage" ng-controller = "dashMessageController">
-                <div class ="dashMessage alert alert-warning alert-plain alert-dismissible col-md-12 col-xs-12 col-lg-12" ngcloak>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <span class ="dashMessageInner">{{dashMessage}}</span>
-                        
-                </div>
-            </div>    
             <div class="row row-eq-heigh" id="content">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col1">
                     <div ng-include src="'views/courses.html'"></div>

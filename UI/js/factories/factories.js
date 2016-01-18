@@ -58,8 +58,10 @@ dashboardApp.factory('Courses', function ($http) {
             }
             $.each(result.data.Result, function (i, l) {
               $.each(l.Meeting, function (i, m) {
-                var dayCode = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].indexOf(m.Days.substring(0, 2)) + 1;
-                m.DayCode = (dayCode == 0) ? 7 : dayCode;
+                if(m.Days){
+                  var dayCode = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].indexOf(m.Days.substring(0, 2)) + 1;
+                  m.DayCode = (dayCode == 0) ? 7 : dayCode;
+                }
               });
               l.Instructor = _.filter(l.Instructor, function (instructor) {
                 return instructor.Role !== 'Dummy';
