@@ -3,41 +3,30 @@
 # PURPOSE: settings for dev instance
 #
 ################## Data source configuration
+
 # course / term information application name (mpathways)
 mpathways_application_name: SD-QA
 # ctools information application name
 ctools_http_application_name: CTQA-DIRECT
-# canvas information application name
 canvas_esb_application_name: CANVAS-TL-QA
-# disk file provider for testing
-#data_provider_file_uniqname: test-throttling-terms
-#data_provider_file_directory: server/test-files
-#
+
 ############ external resources provider
+
 external_resources_valid_directories: [ image, text ]
 
-### local file resources provider
-#external_resources_file_directory: /usr/local/ctools/app/ctools/tl/home
-
 ################### Application configuration
-# Text returned if Latte does not understand a query at all.
+
 invalid_query_text: Come on, ask something reasonable
-# Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
 default_user: gsilver
-# default term to use if none is specified.
 default_term: 2060
-# configure the stub authentication method for testing.  override should be false unless special testing is being done.
 authn_uniqname_override: false
 authn_wait_min: 0.01
 authn_wait_max: 0.03
-# public members of this MCommunity group have administrative privileges on Latte.
 latte_admin_group: TL-Latte-admin-test
-# set logging level.  Default is INFO.
 use_log_level: DEBUG
 
+################### String replacements
 
-# For this data source list the remappings required
-# The name matches that in the security.yml file.
 CANVAS-TL-QA:
   string-replace:
      link: ['https://api-qa-gw.its.umich.edu', 'https://umich.test.instructure.com']

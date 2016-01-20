@@ -3,51 +3,31 @@
 # PURPOSE: default settings for running Latte on a local laptop.
 #
 ################## Data source configuration
-# If data_provider_file_directory is specified then all will use the file provider
-# and no other provider may be specified.
-#data_provider_file_directory: server/test-files
-#data_provider_file_directory_mneme: server/test-files
-# disk file provider for testing
-#data_provider_file_uniqname: test-throttling-terms
 
 # For non-disk providers specify a provider name that is defined later in this file.
 
 # Mpathways term / course information provider
 mpathways_application_name: SD-QA
-
 # CTools data provider for dashboard and mneme assignment data
 ctools_http_application_name: CTQA-DIRECT
-
-### Canvas data via the ESB
 canvas_esb_application_name: CANVAS-TL-QA
 
-########### external resources provider
+############ external resources provider
+
 external_resources_valid_directories: [ image, text ]
 
-### local file resources provider
-#external_resources_file_directory: /usr/local/ctools/app/ctools/tl/home
-
 ################### Application configuration
-# Text returned if Latte does not understand a query at all.
+
 invalid_query_text: Come on, ask something reasonable
-# Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
 default_user: gsilver
-# default term to use if none is specified.
 default_term: 2060
-# configure the stub authentication method for testing.  override should be false unless special testing is being done.
 authn_uniqname_override: true
 authn_wait_min: 0.01
 authn_wait_max: 0.03
-# public members of this MCommunity group have administrative privileges on Latte.
 latte_admin_group: TL-Latte-admin-test
-# set logging level.  Default is INFO.
 use_log_level: DEBUG
 
-# Specify information required for each provider.  Details may vary by provider.
-# Secure information for the provider is kept in the security.yml file.
-
-# string-replace allows modifying results in the output.  Required to fix up
-# host names.
+################### String replacements
 
 CANVAS-TL-QA:
   string-replace:
