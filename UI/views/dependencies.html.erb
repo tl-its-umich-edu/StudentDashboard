@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+Dependency configuration names:
+<div style="margin-left:20px;">
+  <table>
+    <% @information.each do |k, v| %>
+        <tr>
+          <td><%= "<em>#{k}</em>: #{v}" %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+</body>
+</html>

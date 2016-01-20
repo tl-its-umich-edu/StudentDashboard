@@ -491,6 +491,7 @@ END
       url_set = Hash.new()
       url_set['ping'] = url('/status/ping.EXT')
       url_set['check'] = url('/status/check.EXT')
+      url_set['dependencies'] = url('/status/dependencies.EXT')
       url_set['settings'] = url('/status/settings')
 
       u = Hash.new()
@@ -716,7 +717,7 @@ END
   ######################################
   # top level request for status information and urls
 
-  get '/status.?:format?' do |format|
+  get '/status.?:format?/?' do |format|
     format = 'html' unless (format)
     format.downcase!
 
@@ -770,6 +771,21 @@ END
   # for backward compatibility forward to the new check implementation.
   get '/check' do
     status, headers, body = call env.merge("PATH_INFO" => '/status/check')
+  end
+
+  get '/status/dependencies.?:format?' do |format|
+    format = 'html' unless (format)
+    config_hash = settings.latte_config
+    app_hash = Hash.new
+    config_hash.keys.grep(/_name$/) { |name| app_hash[name] = config_hash[name] }
+    @information = app_hash
+    if format && "json".casecmp(format) == 0 then
+      content_type :json
+      template = :'dependencies.json'
+    else
+      template = :'dependencies.html'
+    end
+    erb template
   end
 
   ## Dump configuration settings to log upon request
