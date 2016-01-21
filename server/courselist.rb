@@ -85,7 +85,7 @@ class CourseList < Sinatra::Base
   config_hash[:BASE_DIR] = File.dirname(File.dirname(__FILE__))
 
   # name of application to use for ESB information
-  #config_hash[:application_name] = "SD-QA"
+  #config_hash[:mpathways_application_name] = "SD-QA"
 
   # name of application to use for CTools HTTP direct information
   #config_hash[:ctools_http_application_name] = "CTQA-DIRECT"
@@ -274,7 +274,7 @@ END
     config_hash[:default_user] = external_config['default_user'] || "anonymous"
     config_hash[:invalid_query_text] = external_config['invalid_query_text'] || config_hash[:invalid_query_text]
     config_hash[:authn_uniqname_override] = external_config['authn_uniqname_override'] || config_hash[:authn_uniqname_override]
-    config_hash[:application_name] = external_config['application_name'] || config_hash[:application_name]
+    config_hash[:mpathways_application_name] = external_config['mpathways_application_name'] || config_hash[:mpathways_application_name]
     config_hash[:ctools_http_application_name] = external_config['ctools_http_application_name'] || config_hash[:ctools_http_application_name]
     config_hash[:canvas_esb_application_name] = external_config['canvas_esb_application_name'] || config_hash[:canvas_esb_application_name]
 

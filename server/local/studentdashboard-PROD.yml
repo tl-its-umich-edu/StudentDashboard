@@ -4,7 +4,7 @@
 #
 ################## Data source configuration
 # course / term information application name (mpathways)
-application_name: SD-QA
+mpathways_application_name: SD-QA
 # ctools information application name
 ctools_http_application_name: CTQA-DIRECT
 # canvas information application name
