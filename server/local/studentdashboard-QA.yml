@@ -3,7 +3,6 @@
 # PURPOSE: settings for QA instance
 #
 ################## Data source configuration
-
 # course / term information application name (mpathways)
 mpathways_application_name: SD-QA
 # ctools information application name
