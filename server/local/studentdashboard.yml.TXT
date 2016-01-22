@@ -1,53 +1,74 @@
 Explanation of settings in studentdashboard***.yml files
 
-################## Data source configuration
+DATA SOURCE CONFIGURATION
+=========================
 
-# These names map to entries in the security.yml file that provide the required values.
-# The exact required values can vary from data source to data source.
-#
-# course / term information application name (mpathways)
-#application_name: SD-QA
-# ctools information application name
-#ctools_http_application_name: CTQA-DIRECT
-# canvas information application name
-#canvas_esb_application_name: CANVAS-TL-QA
+These names map to entries in the security.yml file that provide the required values (url, credentials) to connect to end points.
 
-##### These two values are used to configure a disk file based provider.
-##### Not all data sources support a disk based provider.
-#data_provider_file_uniqname: test-throttling-terms
-#data_provider_file_directory: server/test-files
+mpathways via esb end point for course / term information
+---------------------------------------------------------
+application_name: *****
 
-############ external resources provider
-## Allows access to static image and text files.
+ctools end point for assignment mnene information
+-------------------------------------------------
+ctools_http_application_name: *****
 
-## limit the visible sub-directories under the /external url
-## to prevent fishing around for hidden files.
-#external_resources_valid_directories: [ image, text ]
+canvas via esb end point for todo information
+-------------------------------------
+canvas_esb_application_name: *****
 
-### local file resources provider
-# Path to the directory with the file resources.  It defaults to
-# a test directory in the build.
-##external_resources_file_directory: /usr/local/ctools/app/ctools/tl/home
+Configure a disk file based provider. Used for testing
+------------------------------------------------------
+data_provider_file_uniqname: ******
+data_provider_file_directory: ******
 
-################### Application configuration
-# Text returned if Latte does not understand a query at all.
-#invalid_query_text: Come on, ask something reasonable
-# Default user assumed if no user is provided by container or URL parameter.  Only relevant for test instances.
-#default_user: gsilver
-# default term to use if none is specified.
-#default_term: 2060
-# configure the stub authentication method for testing.  override should be false unless special testing is being done.
-#authn_uniqname_override: true
-#authn_wait_min: 0.01
-#authn_wait_max: 0.03
-# public members of this MCommunity group have administrative privileges on Latte.
-#latte_admin_group: TL-Latte-admin-test
-# set logging level.  Default is INFO.
-#use_log_level: DEBUG
+EXTERNAL RESOURCES PROVIDER
+===========================
+Allows access to static image and text files. Used to get random images for backgrounds. May be used to get "MOTD" type texts.
 
-################### String replacements
-# For this data source list the remappings required
-# The name matches that in the security.yml file and above names
+limit the visible sub-directories under the /external url
+---------------------------------------------------------
+external_resources_valid_directories: [ image, text ]
+
+Path to the directory with the file resources.
+----------------------------------------------------------
+external_resources_file_directory: ******
+
+APPLICATION CONFIGURATION
+
+Text returned if Latte does not understand a query at all
+---------------------------------------------------------
+invalid_query_text: *****
+
+Default user assumed if no user is provided by container or URL parameter.
+Only relevant for test instances.
+--------------------------------------------------------------------------
+default_user: uniqname
+
+default term to use if none is specified
+----------------------------------------
+default_term: term id (2060, etc)
+
+configure the stub authentication method for testing
+override should be false unless special testing is being done
+-------------------------------------------------------------
+authn_uniqname_override: true/false
+authn_wait_min: 0.01
+authn_wait_max: 0.03
+
+public members of this MCommunity group have administrative privileges on Latte
+-------------------------------------------------------------------------------
+latte_admin_group: MComm group name
+set logging level.  Default is INFO
+-----------------------------------
+use_log_level: DEBUG
+
+STRING REPLACEMENTS
+The endpoints will provide URLs specific to the server, this translates the URLs to 
+URLs that the front end will use to provide links to the actual items listed
+The name matches that in the security.yml file and above names
+------------------------------------------------------------------------------------
+
 CANVAS-TL-QA:
   string-replace:
      link: ['https://api-qa-gw.its.umich.edu', 'https://umich.test.instructure.com']
