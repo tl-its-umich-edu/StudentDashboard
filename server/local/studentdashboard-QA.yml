@@ -3,8 +3,9 @@
 # PURPOSE: settings for QA instance
 #
 ################## Data source configuration
-
-application_name: SD-QA
+# course / term information application name (mpathways)
+mpathways_application_name: SD-QA
+# ctools information application name
 ctools_http_application_name: CTQA-DIRECT
 canvas_esb_application_name: CANVAS-TL-QA
 
