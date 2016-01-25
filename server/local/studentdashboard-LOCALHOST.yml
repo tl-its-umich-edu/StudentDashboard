@@ -4,7 +4,11 @@
 #
 ################## Data source configuration
 
-application_name: SD-QA
+# For non-disk providers specify a provider name that is defined later in this file.
+
+# Mpathways term / course information provider
+mpathways_application_name: SD-QA
+# CTools data provider for dashboard and mneme assignment data
 ctools_http_application_name: CTQA-DIRECT
 canvas_esb_application_name: CANVAS-TL-QA
 

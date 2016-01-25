@@ -201,9 +201,9 @@ module DataProvider
   end
 
   def configureMPathwaysProvider(config_hash)
-    logger.error "@@@@@@@@@@@@@ must specify one MPathways data provider" unless verifyExactlyOneProvider(config_hash,[:data_provider_file_directory,:application_name])
+    logger.error "@@@@@@@@@@@@@ must specify one MPathways data provider" unless verifyExactlyOneProvider(config_hash,[:data_provider_file_directory,:mpathways_application_name])
     configureFileProvider(config_hash) unless config_hash[:data_provider_file_directory].nil?
-    configureEsbProvider(config_hash) unless config_hash[:application_name].nil?
+    configureEsbProvider(config_hash) unless config_hash[:mpathways_application_name].nil?
     #!config_hash[:data_provider_file_directory].nil? ? configureFileProvider(config_hash) : configureEsbProvider(config_hash)
   end
 
@@ -255,7 +255,7 @@ module DataProvider
   # Use the ESB to get MPathways information
   def configureEsbProvider(config_hash)
     security_file = config_hash[:security_file]
-    application_name = config_hash[:application_name]
+    application_name = config_hash[:mpathways_application_name]
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: configure provider esb: security_file: [#{security_file}] application_name: [#{application_name}]"
 
     @useEsbProvider = true
