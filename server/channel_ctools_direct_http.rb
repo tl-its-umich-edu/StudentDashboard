@@ -26,9 +26,9 @@ class ChannelCToolsDirectHTTP
   # This requires the name of the security configuration file and the name of a specific section in that file.
   # If the application is not found the session_id will be nil.
   def initialize(security_file, app_name)
-    logger.info "#{self.class.to_s}:#{__method__}: use direct url application: #{app_name}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: use direct url application: #{app_name}"
     application = getApplication(security_file, app_name)
-    logger.info "#{self.class.to_s}:#{__method__}: application: #{application}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: application: #{application}"
 
     return nil if application.nil?
 
@@ -53,11 +53,11 @@ class ChannelCToolsDirectHTTP
       file_name = default_security_file
     end
 
-    logger.info "#{self.class.to_s}:#{__method__}: use security file_name: #{file_name}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: use security file_name: #{file_name}"
 
     security_info = YAML.load_file(file_name)
     app_info = security_info[app_name]
-    logger.debug "#{self.class.to_s}:#{__method__}: app_info: "+app_info.inspect
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: app_info: "+app_info.inspect
     if app_info.nil?
       logger.error "#{self.class.to_s}:#{__method__}: @@@@@@@@@@@@ NO SUCH APPLICATION NAME: security_file: #{file_name} application: #{app_name}"
     end
@@ -77,25 +77,27 @@ class ChannelCToolsDirectHTTP
     use_url = format_url "/session.json"
     post_body = "_username=#{@user}&_password=#{@password}"
 
-    msg = Thread.current.to_s
-    elapsed = Stopwatch.new(msg)
-    elapsed.start;
+    elapsed = Stopwatch.new(Thread.current.to_s+": "+use_url)
+    elapsed.start
 
     # It does not seem possible to turn off ssl check on osx :-(, so may need to use http or search server url for testing.
     @session_id = RestClient.post use_url, post_body,
                                   {:verify_ssl => true}
 
     # make sure to print the elapsed time for the renewal.
-    elapsed.stop;
-    logger.debug("#{self.class.to_s}:#{__method__}: get session id post: stopwatch: "+elapsed.pretty_summary)
+    elapsed.stop
+    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: get session id post: stopwatch: "+elapsed.pretty_summary)
   end
 
   def do_request(request)
     # This will fail as soon as other query parameters are added since teh session_id is blindly added.
     #  We can fix it if that happens.
     url = format_url(request)+"?_sessionId=#{@session_id}"
+    elapsed = Stopwatch.new(Thread.current.to_s+": "+url)
+    elapsed.start
     response = RestClient.get url, :verify_ssl => true
-   # logger.debug "#{self.class.to_s}:#{__method__}: response: "+response.inspect
+    elapsed.stop
+    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: response: stopwatch: "+elapsed.pretty_summary)
     response
   end
 
