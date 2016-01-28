@@ -1,0 +1,141 @@
+<!-- started with Google chart timeline example -->
+
+<!-- TTD: -->
+<!-- left justify url -->
+<!-- better url shortening -->
+<!-- hover to display full URL -->
+<!-- control to set same / separate line plotting  i.e. set singleLineDisplay via UI -->
+<!-- make bars narrower? -->
+<!-- figure out rounding unit based on the elapsed time span of data. -->
+<!-- read json from file and then process without use eval -->
+<!-- control to set display time range -->
+<!-- be able to point at different data files from UI -->
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="./data.js"></script>
+    <script type="text/javascript" src="./DateRound.js"></script>
+    <script type="text/javascript">
+        google.load('visualization', '1.1', {'packages': ['corechart', 'table', 'gauge', 'controls', 'timeline']});
+        google.setOnLoadCallback(drawChart);
+
+        // display all data for this url on a single line?
+        var singleLineDisplay;
+        singleLineDisplay = true;
+        //singleLineDisplay = false;
+
+        // Earliest timestamp in data.  Default to way, way, way in the future.
+        var first_starttime = new Date().setTime(8640000000000000);
+
+        options = {
+            hAxis: {
+                format: 'H:mm:ss\nM/d/yy',
+            },
+
+            timeline: {
+                groupByRowLabel: singleLineDisplay,
+                rowLabelStyle: {fontName: 'Helvetica', fontSize: 10, color: '#603913'},
+                barLabelStyle: {fontName: 'Helvetica', fontSize: 10, color: 'lightpink'},
+            },
+        };
+
+        // read data from file and evaluate it.
+        eData = eval(fileData);
+
+        function formatQuery(query, end_time, duration) {
+            var end_ts = new Date(end_time);
+            var start_ts = new Date();
+            start_ts.setTime(end_ts.getTime() - (duration * 1000));
+            // keep track of earliest time stamp
+            if (start_ts < first_starttime) {
+                first_starttime = new Date(start_ts.getTime());
+            }
+
+            //clean up the query url
+            query = query.replace(/https:\/\//g, '');
+            query = query.replace(/umich.edu/g, 'U.E');
+            query = query.replace(/\.dsc\./g, '.D.');
+            query = query.replace(/\.its\./g, '.I.');
+
+            // all done.
+            return [
+                query,
+                start_ts,
+                end_ts,
+            ]
+        }
+
+        // regex notes:
+        // regex to match first letter of dotted part of url => \.([^.])[^.]*\.
+        // code to do global replace => console.log("Borobudur".replace(/[ou]/g, "a"));
+
+
+        function drawChart() {
+
+            var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
+
+            var container = document.getElementById('dashboard');
+
+            var dateSlider = new google.visualization.ControlWrapper({
+                'controlType': 'DateRangeFilter',
+                'containerId': 'control_div2',
+                'options': {
+                    'filterColumnLabel': 'Start',
+                    'ui': {
+                        //'format': {'formatType': 'short'}
+                        'format': {'pattern': 'yyyy/M/d H:mm:ss'},
+                        'step': 'minute',
+                    },
+                },
+            });
+
+            var control = new google.visualization.ControlWrapper({
+                'controlType': 'StringFilter',
+                'containerId': 'control_div',
+                'options': {
+                    'filterColumnLabel': 'Query',
+                    'matchType': 'any',
+                    'ui': {
+                        'label': 'filter query url'
+                    }
+                }
+            });
+
+            var chart = new google.visualization.ChartWrapper({
+                'chartType': 'Timeline',
+                'containerId': 'timeline',
+                'options': options
+            });
+
+            var dataTable = new google.visualization.DataTable();
+
+            dataTable.addColumn({type: 'string', id: 'Query', label: 'Query'});
+            dataTable.addColumn({type: 'datetime', id: 'Start', label: 'Start'});
+            dataTable.addColumn({type: 'datetime', id: 'End', label: 'End'});
+
+            // figure out a nice round time to start the graph and add a start event to the data.
+            rounded_start = DateRound.roundMinute(first_starttime);
+            new_start = formatQuery("start", rounded_start.toISOString(), 0.0);
+            dataTable.addRow(new_start);
+
+            // add the data.
+            dataTable.addRows(eData);
+
+            dashboard.bind([dateSlider, control], chart);
+            dashboard.draw(dataTable);
+
+        }
+    </script>
+</head>
+<body>
+<div id="dashboard" style="border: 1px solid #ccc"></div>
+<div id="control_div"></div>
+<div id="control_div2"></div>
+<div id="timeline" style="height: 800px;"></div>
+</body>
+</html>
+

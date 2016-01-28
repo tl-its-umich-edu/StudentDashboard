@@ -116,6 +116,27 @@ messages and the log if xterm is available.
 * *runServerBundle.sh* - run server directly using bundle and rackup
 better visibility for startup errors.
 
+### Performance analysis :
+To make understanding performance of external dependencies easier there are a few scripts in the tools/data directory.
+
+* getDashLogs.sh - Copy, via scp, log files from a dash server to a local directory.
+* parseLogs.pl - Extract performance data from log files to a csv (tab separated) format.
+* formatjson.pl - Format csv data as JSON that can be used by the following web page.
+* Dash-Externals.html - Expects a file 'data.js' as formatted by formatjson.pl.  Displays url query times by 
+url.
+
+To look at performance data use these scripts to:
+
+* retrieve log data with getDashLogs.sh.
+* extract out the performance data from the logs with parseLogs.pl.
+* format the data for the display page with formatjson.pl.  This data needs to be put in the file 'data.js'.
+* Load the html page Dash-Externals.html.  This needs to load from the directory containing the 'data.js' file.
+
+The following line is an example of looking at all the logs in a directory, formatting them and putting them
+into a js file that can be used for input to the analysis html page.
+
+> ./parseLogs.pl durango.2016-02-04-10-24/* | ./formatJson.pl >| ./durango.2016-02-04-10-24.js
+
 ---------
 
 GitHub readme files are formated in Markdown:
