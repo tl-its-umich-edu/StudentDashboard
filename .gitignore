@@ -1,4 +1,5 @@
 *.log
+*.bkp
 *.pid
 **/logs/*log*
 **/log/*log*
@@ -11,4 +12,7 @@ ARTIFACTS
 **stderr
 server/spec/coverage/
 **/.#*
+**/*~
+**/*HIDE
+**/tmp/**
 coverage
