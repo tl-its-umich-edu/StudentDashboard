@@ -63,20 +63,20 @@
                 Staff
               </small>
             </div>
-            <div class="row" ng-repeat="Meeting in filteredDays = (item.Meeting | showMeetingIfNow) | orderBy:'DayCode'" ng-show="filteredDays.length > 0">
-              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="padding-left:0;"><small>{{Meeting.Days | fixMeetingDays}} {{Meeting.Times}}</small><small ng-show="!Meeting.Days">Days/Times not known</small></div>
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-right:0;text-align:right"><small>({{Meeting.Location}})</small></div>
+            <div ng-if="item.Meeting">
+              <div class="row" ng-repeat="Meeting in filteredDays = (item.Meeting | showMeetingIfNow) | orderBy:'DayCode'" ng-show="filteredDays.length > 0">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="padding-left:0;"><small>{{Meeting.Days | fixMeetingDays}} {{Meeting.Times}}</small><small ng-show="!Meeting.Days">Days/Times not known</small></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-right:0;text-align:right"><small>({{Meeting.Location}})</small></div>
+              </div>
+              <div class="row" ng-show="filteredDays.length === 0">
+                <div ng-hide="showAllMeetings" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0"><small><a href="" ng-click="showAllMeetings = true">No meetings now. Show all meetings for term?</a></small></div>
+                <div ng-hide="!showAllMeetings" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0"><small><a href="" ng-click="showAllMeetings = false">Hide all meetings?</a></small></div>
+              </div>
+              <div class="row" ng-repeat="Meeting in item.Meeting | orderBy:'Meeting.StartDate'" ng-show="filteredDays.length === 0 && showAllMeetings">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="padding-left:0;"><small>{{Meeting.StartDate | limitTo : 5}}-{{Meeting.EndDate | limitTo : 5}}: {{Meeting.Days | fixMeetingDays}} {{Meeting.Times}}</small><small ng-show="!Meeting.Days">Days/Times not known</small></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-right:0;text-align:right"><small>{{Meeting.Location}}</small></div>
+              </div>
             </div>
-            <div class="row" ng-show="filteredDays.length === 0">
-              <div ng-hide="showAllMeetings" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0"><small><a href="" ng-click="showAllMeetings = true">No meetings now. Show all meetings for term?</a></small></div>
-              <div ng-hide="!showAllMeetings" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0"><small><a href="" ng-click="showAllMeetings = false">Hide all meetings?</a></small></div>
-
-            </div>
-            <div class="row" ng-repeat="Meeting in item.Meeting | orderBy:'Meeting.StartDate'" ng-show="filteredDays.length === 0 && showAllMeetings">
-              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="padding-left:0;"><small>{{Meeting.StartDate | limitTo : 5}}-{{Meeting.EndDate | limitTo : 5}}: {{Meeting.Days | fixMeetingDays}} {{Meeting.Times}}</small><small ng-show="!Meeting.Days">Days/Times not known</small></div>
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-right:0;text-align:right"><small>{{Meeting.Location}}</small></div>
-            </div>
-
         </div>
       </li>
     </ul>
