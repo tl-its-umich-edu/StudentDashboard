@@ -59,11 +59,7 @@ class TestCtoolsDirectResponse < Minitest::Test
     # read it in, strip off the WAPI wrapper, stringify it and then process.
 
     file_name = "ctools01"
-    file_as_string = IO.read("#{@@testFileDir}/todolms/ctools/#{file_name}.json")
-
-    file_as_json = JSON.parse(file_as_string)
-    file_data = file_as_json['Result']
-    file_data_as_string = JSON.generate(file_data)
+    file_data_as_string = get_RESULT_json_from_file(file_name)
     response = CToolsDirectResponse.new(file_data_as_string, Hash.new)
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -82,11 +78,7 @@ class TestCtoolsDirectResponse < Minitest::Test
     # read it in, strip off the WAPI wrapper, stringify it and then process.
 
     file_name = "assignment_multiple_keys"
-    file_as_string = IO.read("#{@@testFileDir}/todolms/ctools/#{file_name}.json")
-
-    file_as_json = JSON.parse(file_as_string)
-    file_data = file_as_json['Result']
-    file_data_as_string = JSON.generate(file_data)
+    file_data_as_string = get_RESULT_json_from_file(file_name)
     response = CToolsDirectResponse.new(file_data_as_string, Hash.new)
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -133,9 +125,7 @@ class TestCtoolsDirectResponse < Minitest::Test
     file_as_string = IO.read("#{@@testFileDir}/todolms/ctools/#{file_name}.json")
 
     file_data = JSON.parse(file_as_string)
-    #puts "file_data: #{file_data.inspect}"
     file_data = file_data['Result']['dash_collection']
-    #puts "file_data: result #{file_data.inspect}"
 
     assert_equal 16, file_data.length, 'got multiple assignments'
 
@@ -158,6 +148,62 @@ class TestCtoolsDirectResponse < Minitest::Test
 
     assert_equal 0, filtered.length, 'filter out uninteresting assignments'
 
+  end
+
+  def test_get_ctools_collection_no_infoLinkURL
+
+    file_name = "ctools01-noInfoLinkURL"
+    file_data_as_string = get_RESULT_json_from_file(file_name)
+
+    response = CToolsDirectResponse.new(file_data_as_string, Hash.new)
+    logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
+    dash_format = response.toDoLms
+
+    logger.debug "#{__method__}: #{__LINE__}: dash_format: "+dash_format.inspect
+    dash_format.each do |a|
+      assert_nil(a[:link],"null link allowed")
+    end
+  end
+
+  def get_RESULT_json_from_file(file_name)
+    file_as_string = IO.read("#{@@testFileDir}/todolms/ctools/#{file_name}.json")
+
+    file_as_json = JSON.parse(file_as_string)
+    file_data = file_as_json['Result']
+    file_data_as_string = JSON.generate(file_data)
+  end
+
+  # file mulitple keys for doView_submission
+  # file studenta for doView_submission
+
+  def test_get_ctools_collection_view_submission_link_url
+
+    file_name = "unitTestAssignmentSubmission"
+    file_data_as_string = get_RESULT_json_from_file(file_name)
+    response = CToolsDirectResponse.new(file_data_as_string, Hash.new)
+    logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
+    dash_format = response.toDoLms
+
+    logger.debug "#{__method__}: #{__LINE__}: dash_format: "+dash_format.inspect
+    dash_format.each do |a|
+      assert_match /assignmentId/,a[:link],"url has expected value assignmentId"
+      assert_match /&sakai_action=doView_submission/,a[:link],"url has expected action parameter"
+    end
+  end
+
+  def test_get_ctools_collection_view_assignment_link_url_new
+
+    file_name = "unitTestAssignmentAssignment"
+    file_data_as_string = get_RESULT_json_from_file(file_name)
+    response = CToolsDirectResponse.new(file_data_as_string, Hash.new)
+    logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
+    dash_format = response.toDoLms
+
+    logger.debug "#{__method__}: #{__LINE__}: dash_format: "+dash_format.inspect
+    dash_format.each do |a|
+      assert_match /assignmentId/,a[:link],"url has expected value assignmentId"
+      assert_match /&sakai_action=doView_assignment/,a[:link],"url has expected action parameter"
+    end
   end
 
 end

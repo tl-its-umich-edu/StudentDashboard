@@ -1,0 +1,189 @@
+
+{
+  "Meta": {
+    "httpStatus": 200,
+    "Message": "got todos from ctools direct"
+  },
+  "Result": {
+    "entityPrefix": "dash",
+    "dash_collection": [
+      {
+        "calendarItem": {
+          "calendarTime": 1443733200000,
+          "calendarTimeLabelKey": "assignment.due.date",
+          "context": {
+            "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+            "contextTitle": "AAS 103 004 W13",
+            "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+            "id": 151
+          },
+          "entityReference": "/assignment/a/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153/3e9b43cf-70fd-4f81-bd83-0388924f9f1b",
+          "id": 6010,
+          "repeatingCalendarItem": {
+            "calendarTimeLabelKey": null,
+            "context": {
+              "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+              "contextTitle": "AAS 103 004 W13",
+              "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+              "id": 151
+            },
+            "entityReference": null,
+            "firstTime": null,
+            "frequency": null,
+            "id": 0,
+            "lastTime": null,
+            "maxCount": 0,
+            "sourceType": {
+              "id": 3,
+              "identifier": "assignment"
+            },
+            "subtype": null,
+            "title": null
+          },
+          "sequenceNumber": 0,
+          "sourceType": {
+            "id": 3,
+            "identifier": "assignment"
+          },
+          "subtype": null,
+          "title": "9/24/2015 A"
+        },
+        "context": {
+          "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+          "contextTitle": "AAS 103 004 W13",
+          "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+          "id": 151
+        },
+        "id": 7793,
+        "person": {
+          "id": 247,
+          "sakaiId": "dlhaines",
+          "userId": "dlhaines"
+        },
+        "hidden": false,
+        "sticky": false,
+        "entityReference": "/dash/7793",
+        "entityURL": "https://ctqasearch.dsc.umich.edu/direct/dash/7793",
+        "entityId": "7793"
+      },
+      {
+        "calendarItem": {
+          "calendarTime": 1443733200000,
+          "calendarTimeLabelKey": "assignment.due.date",
+          "context": {
+            "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+            "contextTitle": "AAS 103 004 W13",
+            "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+            "id": 151
+          },
+          "entityReference": "/assignment/a/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153/729aab5e-0162-4d2a-88ac-96d1e996d157",
+          "id": 6012,
+          "repeatingCalendarItem": {
+            "calendarTimeLabelKey": null,
+            "context": {
+              "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+              "contextTitle": "AAS 103 004 W13",
+              "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+              "id": 151
+            },
+            "entityReference": null,
+            "firstTime": null,
+            "frequency": null,
+            "id": 0,
+            "lastTime": null,
+            "maxCount": 0,
+            "sourceType": {
+              "id": 3,
+              "identifier": "assignment"
+            },
+            "subtype": null,
+            "title": null
+          },
+          "sequenceNumber": 0,
+          "sourceType": {
+            "id": 3,
+            "identifier": "assignment"
+          },
+          "subtype": null,
+          "title": "9/24/2015 C"
+        },
+        "context": {
+          "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+          "contextTitle": "AAS 103 004 W13",
+          "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+          "id": 151
+        },
+        "id": 7809,
+        "person": {
+          "id": 247,
+          "sakaiId": "dlhaines",
+          "userId": "dlhaines"
+        },
+        "hidden": false,
+        "sticky": false,
+        "entityReference": "/dash/7809",
+        "entityURL": "https://ctqasearch.dsc.umich.edu/direct/dash/7809",
+        "entityId": "7809"
+      },
+      {
+        "calendarItem": {
+          "calendarTime": 1443733200000,
+          "calendarTimeLabelKey": "",
+          "context": {
+            "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+            "contextTitle": "AAS 103 004 W13",
+            "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+            "id": 151
+          },
+          "entityReference": "/assignment/a/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153/0ff5fcab-5a5b-4e25-85ee-769225b0eb50",
+          "id": 6011,
+          "repeatingCalendarItem": {
+            "calendarTimeLabelKey": null,
+            "context": {
+              "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+              "contextTitle": "AAS 103 004 W13",
+              "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+              "id": 151
+            },
+            "entityReference": null,
+            "firstTime": null,
+            "frequency": null,
+            "id": 0,
+            "lastTime": null,
+            "maxCount": 0,
+            "sourceType": {
+              "id": 3,
+              "identifier": "assignment"
+            },
+            "subtype": null,
+            "title": null
+          },
+          "sequenceNumber": 0,
+          "sourceType": {
+            "id": 3,
+            "identifier": "assignment"
+          },
+          "subtype": null,
+          "title": "9/24/2015 B"
+        },
+        "context": {
+          "contextId": "3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+          "contextTitle": "AAS 103 004 W13",
+          "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/3a3fa4cf-9fc6-4b6f-ab36-bb8e34c81153",
+          "id": 151
+        },
+        "id": 7801,
+        "person": {
+          "id": 247,
+          "sakaiId": "dlhaines",
+          "userId": "dlhaines"
+        },
+        "hidden": false,
+        "sticky": false,
+        "entityReference": "/dash/7801",
+        "entityURL": "https://ctqasearch.dsc.umich.edu/direct/dash/7801",
+        "entityId": "7801"
+      }
+    ]
+  }
+}
