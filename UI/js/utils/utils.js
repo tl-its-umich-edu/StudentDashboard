@@ -131,6 +131,10 @@ var prepareSchedule = function(result) {
 };
 
 
+var extractIds = function(data){
+  
+}
+
 /**
  *
  * event watchers
@@ -175,3 +179,4 @@ $(document).ready(function() {
     });
   }
 });
+

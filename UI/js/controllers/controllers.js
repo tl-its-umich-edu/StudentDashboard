@@ -12,7 +12,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   $scope.selectedTerm = null;
   $scope.terms = [];
  
-  var termsUrl = 'terms';
+  var termsUrl = 'data/terms.json';
 
   //use the Terms factory as a promise. Add returned data to the scope
 
@@ -34,8 +34,8 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
         $scope.courses = [];
         $scope.loading = true;
-        var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
-
+        //var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
+        var url = 'data/courses/ralt.json';
       //use the Courses factory as a promise. Add returned data to the scope.
 
         Courses.getCourses(url).then(function (data) {
@@ -43,6 +43,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
             $scope.courses.errors = data;
             $scope.loading = false;
           } else {
+            $rootScope.courses=extractIds(data);
             $scope.courses = data;
             $scope.loading = false;
           }
@@ -62,7 +63,8 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
     $scope.$parent.term = termName;
     $scope.$parent.shortDescription = shortDescription;
     
-    var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
+    //var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
+    var url = 'data/courses/ralt.json';
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
@@ -85,7 +87,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope', function(Schedule, $scope, $rootScope) {
   $scope.loadingSchedule = true;
-  Schedule.getSchedule('/todolms/' + $rootScope.user).then(function(data) {
+  Schedule.getSchedule('data/todolms/ralt.json').then(function(data) {
     $scope.loadingSchedule = false;
     $scope.schedule = data.combinedSchedule;
     $scope.scheduleStatus = data.status;
