@@ -43,7 +43,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
             $scope.courses.errors = data;
             $scope.loading = false;
           } else {
-            $rootScope.courses=extractIds(data);
+            $rootScope.$broadcast('canvasCourses', extractIds(data));
             $scope.courses = data;
             $scope.loading = false;
           }
@@ -101,6 +101,18 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
        name: 'Next 7 days',
        value: 'week'
     }];
+
+   $scope.$on('canvasCourses', function (event, canvasCourses) {
+      $.each($scope.schedule, function() {
+        if(this.contextLMS === 'canvas'){
+          var thisId = _.last(this.contextUrl.split('/'));
+          var thisContext = _.findWhere(canvasCourses, {id: thisId});
+          if(thisContext){
+            this.context = thisContext.title;
+          }
+        }
+      });
+   });
 
     $scope.showWhen = 'today';
 
