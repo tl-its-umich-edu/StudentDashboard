@@ -62,10 +62,7 @@ class CToolsDirectResponse
     server = assign[:contextUrl].sub(/\/portal.*/, '')
 
     entity_reference = assignment['calendarItem']['entityReference']
-    assign[:link] = server.to_s+
-        '/direct/assignment/deepLink/' +
-        entity_reference.sub(/\/assignment\/a\//, '') +
-        '.json'.to_s
+    assign[:link] = assignment['calendarItem']['infoLinkURL']
 
     # Allow string replacement.  This is needed to ensure that host names are correct.
     # See studentdashboard.yml.TXT for information.
