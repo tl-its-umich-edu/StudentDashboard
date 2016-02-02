@@ -34,8 +34,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
         $scope.courses = [];
         $scope.loading = true;
-        //var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
-        var url = 'data/courses/ralt.json';
+        var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
       //use the Courses factory as a promise. Add returned data to the scope.
 
         Courses.getCourses(url).then(function (data) {
@@ -63,8 +62,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
     $scope.$parent.term = termName;
     $scope.$parent.shortDescription = shortDescription;
     
-    //var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
-    var url = 'data/courses/ralt.json';
+    var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 
     Courses.getCourses(url).then(function (data) {
       if (data.failure) {
@@ -87,7 +85,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope', function(Schedule, $scope, $rootScope) {
   $scope.loadingSchedule = true;
-  Schedule.getSchedule('data/todolms/ralt.json').then(function(data) {
+  Schedule.getSchedule('/todolms/' + $rootScope.user).then(function(data) {
     $scope.loadingSchedule = false;
     $scope.schedule = data.combinedSchedule;
     $scope.scheduleStatus = data.status;
@@ -109,7 +107,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
           var thisContext = _.findWhere(canvasCourses, {id: thisId});
           if(thisContext){
             this.context = thisContext.title;
-          }
+          }          
         }
       });
    });
