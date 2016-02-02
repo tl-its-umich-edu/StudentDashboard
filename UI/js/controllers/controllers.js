@@ -12,7 +12,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   $scope.selectedTerm = null;
   $scope.terms = [];
  
-  var termsUrl = 'data/terms.json';
+  var termsUrl = 'terms';
 
   //use the Terms factory as a promise. Add returned data to the scope
 
