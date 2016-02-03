@@ -86,6 +86,7 @@ module DataProvider
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}]"
 
     return dataProviderToDoCToolsLMS(uniqname) if lms == 'ctools'
+    return dataProviderToDoCToolsPastLMS(uniqname) if lms == 'ctoolspast'
     return dataProviderToDoCanvasLMS(uniqname) if lms == 'canvas'
     return dataProviderToDoMnemeLMS(uniqname) if lms == 'mneme'
   end
@@ -120,6 +121,36 @@ module DataProvider
 
     todos.value_as_json
   end
+
+  def dataProviderToDoCToolsPastLMS(uniqname)
+
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoCToolsPastLMS dash: uniqname: [#{uniqname}]"
+
+    dataProviderInit
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash: [#{@ctoolsHash.inspect}]"
+
+    unless @ctoolsHash[:ToDoLMSProviderDashPast].nil?
+      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
+
+      raw_todos = @ctoolsHash[:ToDoLMSDashPast].(uniqname)
+      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash past: [#{raw_todos.inspect}]"
+      # TODO: check if the wrapper status is ok
+      # now strip off the wrapper
+      result = raw_todos.result
+      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash past: result: [#{result.inspect}]"
+      # reformat the result for the Dash UI format.
+      todos = @ctoolsHash[:formatResponseCToolsDashPast].(result).toDoLms
+      # Put a new WAPI wrapper around it.
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools past Dash direct result", todos)
+    end
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools past: dash: todos: [#{todos}]"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools past: dash: todos.value_as_json: #{todos.value_as_json}"
+    logIfUnavailable(todos, "todolms: ctools past: dash: user: #{uniqname}")
+
+    todos.value_as_json
+  end
+
 
 
   def dataProviderToDoCanvasLMS(uniqname)
@@ -315,8 +346,11 @@ module DataProvider
     logger.warn("#{self.class.to_s}:#{__method__}: #{__LINE__}: The provider response throttled or unavailable for: #{msg}") if SERVICE_UNAVAILABLE.casecmp(response.meta_status.to_s).zero?
   end
 
+
   # Merge results of separate feeds of ctools data.
   def mergeCtoolsDashMneme(dash_result, mneme_result)
+
+    #modify so that can an array of entries and merge them all.
 
     # Reconstitute the WAPI wrapper for the feed results.  The data came from recursive calls to this
     # servlet so they are in string format here.
