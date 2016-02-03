@@ -90,9 +90,15 @@ class ChannelCToolsDirectHTTP
   end
 
   def do_request(request)
-    # This will fail as soon as other query parameters are added since teh session_id is blindly added.
-    #  We can fix it if that happens.
-    url = format_url(request)+"?_sessionId=#{@session_id}"
+    # If the request already has the query character '?' add session with a '&', otherwise use a '?'
+    glue_character = '?'
+
+    if request.include? '?'
+      glue_character = '&'
+    end
+
+    url = format_url(request)+"#{glue_character}_sessionId=#{@session_id}"
+    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: url: "+url)
     elapsed = Stopwatch.new(Thread.current.to_s+": "+url)
     elapsed.start
     response = RestClient.get url, :verify_ssl => true

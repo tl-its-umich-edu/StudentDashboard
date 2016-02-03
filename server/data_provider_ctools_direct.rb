@@ -31,7 +31,6 @@ module DataProviderCToolsDirect
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: configure provider CToolsHTTP: security_file: #{security_file} application_name: #{application_name}"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: configure provider CToolsHTTP: string-replace: #{stringReplace.inspect}"
 
-
     @ctoolsHash = Hash.new if @ctoolsHash.nil?
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
@@ -44,6 +43,11 @@ module DataProviderCToolsDirect
     @ctoolsHash[:ToDoLMSDash] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSDash(uniqname, security_file, application_name) }
     @ctoolsHash[:formatResponseCToolsDash] = Proc.new { |body| CToolsDirectResponse.new(body,stringReplace) }
 
+    ## setup the past dashboard query
+    @ctoolsHash[:ToDoLMSProviderDashPast] = true
+    @ctoolsHash[:ToDoLMSDashPast] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSPastDash(uniqname, security_file, application_name) }
+    @ctoolsHash[:formatResponseCToolsDashPast] = Proc.new { |body| CToolsDirectResponse.new(body,stringReplace) }
+
     ## setup the mneme query
     @ctoolsHash[:ToDoLMSProviderMneme] = true
     @ctoolsHash[:ToDoLMSMneme] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSMneme(uniqname, security_file, application_name) }
@@ -54,51 +58,62 @@ module DataProviderCToolsDirect
     @ctoolsHash
   end
 
-  ### Method to get result from the CTools direct Dashboard calendar
+  ### Method to become the appropriate CTools user.  If the becomeuser fails
+  ### it returns a WAPIResultWrapper object.
 
-  def ctoolsHTTPDirectToDoLMSDash(uniqname, security_file, http_application)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call ctools http direct Dash todolms http_application: #{http_application}"
+  def become_ctools_user(http_application, security_file, uniqname)
 
+    ## setup a session in ctools as admin.
     http_channel = ChannelCToolsDirectHTTP.new(security_file, http_application)
     http_channel.runGetCToolsSession
 
+    # become the specific user.
     become_user = http_channel.do_request("/session/becomeuser/#{uniqname}.json")
 
-    logger.debug "#{__method__}: #{__LINE__}: becomeuser: [#{become_user}]"
     logger.debug "#{__method__}: #{__LINE__}: becomeuser: response: "+become_user.inspect
 
+    # if it didn't work then return that information in a WAPI wrapper.
     if /failure/i =~ become_user.to_s
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: become user failed for user: #{uniqname}"
-      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
+      become_user = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
     end
 
-    ctools_todos = http_channel.do_request("/dash/calendar.json")
+    return become_user, http_channel
+  end
+
+  ### run a CTools request and return the wrapped result.
+  def run_ctools_direct_request(http_application, request_string, security_file, uniqname)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### dash: request_string: #{request_string}"
+
+    become_user, http_channel = become_ctools_user(http_application, security_file, uniqname)
+    # If the result is already wrapped it is an error.
+    return become_user if become_user.is_a? WAPIResultWrapper
+
+    ctools_todos = http_channel.do_request(request_string)
 
     return WAPIResultWrapper.new(WAPI::SUCCESS, "got dash todos from ctools direct", ctools_todos)
   end
 
+  ########################## get data from CTools.
+  ### get the Sakai dashboard future events.
+  def ctoolsHTTPDirectToDoLMSDash(uniqname, security_file, http_application)
+    request_string = "/dash/calendar.json"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: # ctools direct request: #{request_string}"
+    return run_ctools_direct_request(http_application, request_string, security_file, uniqname)
+  end
 
-  ## Method to get result from CTools direct mneme feed.
+  ### get the Sakai dashboard past events
+  def ctoolsHTTPDirectToDoLMSPastDash(uniqname, security_file, http_application)
+    request_string = "/dash/calendar.json?past=true"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: # ctools direct request: #{request_string}"
+    return run_ctools_direct_request(http_application, request_string, security_file, uniqname)
+  end
+
+  ### Get the CTools mneme events.
   def ctoolsHTTPDirectToDoLMSMneme(uniqname, security_file, http_application)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call ctools http direct Mneme todolms http_application: #{http_application}"
-
-    http_channel = ChannelCToolsDirectHTTP.new(security_file, http_application)
-    http_channel.runGetCToolsSession
-
-    become_user = http_channel.do_request("/session/becomeuser/#{uniqname}.json")
-
-    logger.debug "#{__method__}: #{__LINE__}: becomeuser: [#{become_user}]"
-    logger.debug "#{__method__}: #{__LINE__}: becomeuser: response: "+become_user.inspect
-
-    if /failure/i =~ become_user.to_s
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: become user failed for user: #{uniqname}"
-      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
-    end
-
-    #/direct/mneme/my
-    ctools_todos = http_channel.do_request("/mneme/my.json")
-
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "got mneme todos from ctools direct", ctools_todos)
+    request_string = "/mneme/my.json"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: # ctools direct request: #{request_string}"
+    return run_ctools_direct_request(http_application, request_string, security_file, uniqname)
   end
 
 end
