@@ -1,0 +1,128 @@
+{
+  "ctools": {
+    "Meta": {
+      "httpStatus": "200",
+      "Message": "combined the ctools dash and mneme feeds"
+    },
+    "Result": [{
+      "title": "SOC10020 due 02/01",
+      "grade": "",
+      "done": "",
+      "context": "SOC 100 020",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454364000",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/5eaa618e-be22-456f-99ee-06cb54c1120e",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/5eaa618e-be22-456f-99ee-06cb54c1120e/ef2c16d2-9749-4b9f-a708-e2a2e46538cd.json"
+    }, {
+      "title": "SOC10032 due 02/01",
+      "grade": "",
+      "done": "",
+      "context": "SOC 100 032",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454364000",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/a817c750-70c5-446c-9d8b-4fbfd575f914",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/a817c750-70c5-446c-9d8b-4fbfd575f914/0b1191c2-cabd-4d43-af71-6e4a68859e64.json"
+    }, {
+      "title": "CS200 due 02/01",
+      "grade": "",
+      "done": "",
+      "context": "COGSCI 200 001 W16",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454364000",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/8c822953-d619-4d6b-ac62-802ff69a3120",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/8c822953-d619-4d6b-ac62-802ff69a3120/1f1ddbc5-e1f6-42c3-b4d6-1521f7120876.json"
+    }, {
+      "title": "SOC10032 due 02/02",
+      "grade": "",
+      "done": "",
+      "context": "SOC 100 032",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454450400",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/a817c750-70c5-446c-9d8b-4fbfd575f914",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/a817c750-70c5-446c-9d8b-4fbfd575f914/e44059e1-3bc1-4357-8865-e67ac5c1a3bf.json"
+    }, {
+      "title": "CS200 due 02/02",
+      "grade": "",
+      "done": "",
+      "context": "COGSCI 200 001 W16",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454450400",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/8c822953-d619-4d6b-ac62-802ff69a3120",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/8c822953-d619-4d6b-ac62-802ff69a3120/cae8f813-cb51-4741-b703-879155ebdac8.json"
+    }, {
+      "title": "SOC10020 due 02/02",
+      "grade": "",
+      "done": "",
+      "context": "SOC 100 020",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454450400",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/5eaa618e-be22-456f-99ee-06cb54c1120e",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/5eaa618e-be22-456f-99ee-06cb54c1120e/13c64742-365e-4af7-87b1-28eab211fad2.json"
+    }, {
+      "title": "CS200 due 02/065",
+      "grade": "",
+      "done": "",
+      "context": "COGSCI 200 001 W16",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454709600",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/8c822953-d619-4d6b-ac62-802ff69a3120",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/8c822953-d619-4d6b-ac62-802ff69a3120/6a5d9752-7fa2-42a0-8bce-9f6574ba2cab.json"
+    }, {
+      "title": "SOC10032 due 02/05",
+      "grade": "",
+      "done": "",
+      "context": "SOC 100 032",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454709600",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/a817c750-70c5-446c-9d8b-4fbfd575f914",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/a817c750-70c5-446c-9d8b-4fbfd575f914/9451caf8-e887-4af1-a226-e7528a9d6f3e.json"
+    }, {
+      "title": "SOC10020 due 02/05",
+      "grade": "",
+      "done": "",
+      "context": "SOC 100 020",
+      "contextLMS": "ctools",
+      "description": "",
+      "due_date_sort": "1454709600",
+      "contextUrl": "https://ctqa.dsc.umich.edu/portal/site/5eaa618e-be22-456f-99ee-06cb54c1120e",
+      "link": "https://ctqa.dsc.umich.edu/direct/assignment/deepLink/5eaa618e-be22-456f-99ee-06cb54c1120e/77a828b4-7a00-42b6-8f2d-f74352071988.json"
+    }]
+  },
+  "canvas": {
+    "Meta": {
+      "httpStatus": 200,
+      "Message": "re-wrap Canvas API result"
+    },
+    "Result": [{
+      "title": "RR 5",
+      "grade": "",
+      "done": "",
+      "contextLMS": "canvas",
+      "description": "",
+      "link": "https://api-qa-gw.its.umich.edu/courses/48961/assignments/57680",
+      "contextUrl": "CANVAS_INSTANCE_PREFIX/courses/48961",
+      "context": "course_48961",
+      "id": "assignment_57680",
+      "grade_type": "points",
+      "due_date_sort": "1454475540"
+    }, {
+      "title": "Jonathan Obar, Preventing Big Data Discrimination: Addressing Flawed Notice and Choice Privacy Policy",
+      "grade": "",
+      "done": "",
+      "contextLMS": "canvas",
+      "description": "",
+      "link": "https://api-qa-gw.its.umich.edu/calendar?event_id=44563&include_contexts=course_52008",
+      "contextUrl": "CANVAS_INSTANCE_PREFIX",
+      "context": "course_52008",
+      "id": 44563
+    }]
+  }
+}

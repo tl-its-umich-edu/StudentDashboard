@@ -1,14 +1,2 @@
-[
-    {
-        "term": "Fall",
-        "year": "2014",
-        "term_id": "2010",
-        "current_term": true
-    },
-    {
-        "term": "Winter",
-        "year": "2015",
-        "term_id": "2030",
-        "current_term": false
-    }
-]
+{"Meta":{"httpStatus":200,"Message":"found value [getMyRegTermsResponse][:Term] from ESB"},"Result":
+[{"TermCode":2070,"TermDescr":"Winter 2016","TermShortDescr":"WN 2016"}]}
