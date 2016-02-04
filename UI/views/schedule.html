@@ -52,9 +52,9 @@
                   <small>
                     Go to
                     <a class="courseLink" target="_blank" href="{{item.contextUrl}}">
-                      {{item.context}}
+                      <span ng-if="item.context">{{item.context}}</span>
+                      <span ng-if="!item.context">course site</span>
                     </a>
-                    course site
                   </small>
                 </div>
                 <div class="col-lg-3 col-md-3 col-xs-3 date" style="text-align:right">

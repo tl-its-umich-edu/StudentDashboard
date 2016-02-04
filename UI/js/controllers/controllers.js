@@ -13,7 +13,6 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   $scope.terms = [];
  
   var termsUrl = 'terms';
-
   //use the Terms factory as a promise. Add returned data to the scope
 
   Terms.getTerms(termsUrl).then(function (data) {
@@ -101,13 +100,18 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
     }];
 
    $scope.$on('canvasCourses', function (event, canvasCourses) {
+      //listen for changes to the Canvas course array (created by the Courses controller)
+      // and match the course title of the Canvas assignments to the course title in the array
       $.each($scope.schedule, function() {
         if(this.contextLMS === 'canvas'){
           var thisId = _.last(this.contextUrl.split('/'));
           var thisContext = _.findWhere(canvasCourses, {id: thisId});
           if(thisContext){
             this.context = thisContext.title;
-          }          
+          }
+          else {
+            this.context = null;
+          }
         }
       });
    });
