@@ -130,6 +130,17 @@ var prepareSchedule = function(result) {
   return combinedScheduleAndStatus;
 };
 
+var extractIds = function(data){
+  var canvasCourses=[];
+  var thisObj ={}
+  $.each(data, function() {
+    if(this.Source ==='Canvas'){
+      thisObj= {'id': _.last(this.Link.split('/')),'title':this.Title + ' ' + this.SectionNumber}
+      canvasCourses.push(thisObj)
+    }
+  });
+  return canvasCourses;
+}
 
 /**
  *
@@ -175,3 +186,4 @@ $(document).ready(function() {
     });
   }
 });
+

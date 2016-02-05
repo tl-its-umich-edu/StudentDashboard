@@ -11,7 +11,7 @@ require 'logger'
 require 'yaml'
 
 ## set the environment for testing
-#ENV['RACK_ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 
 require_relative '../courselist'
 
