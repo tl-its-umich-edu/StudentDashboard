@@ -85,32 +85,64 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
 
 dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope', function(Schedule, $scope, $rootScope) {
   $scope.loadingSchedule = true;
-  Schedule.getSchedule('/todolms/' + $rootScope.user).then(function(data) {
-    $scope.loadingSchedule = false;
-    $scope.schedule = data.combinedSchedule;
-    $scope.scheduleStatus = data.status;
-    $scope.schedule_time_options = [{
-       name: 'Due last 7 days',
-       value: 'overdue'
-    }, {
-       name: 'Due today',
-       value: 'today'
-    }, {
-       name: 'Next 7 days',
-       value: 'week'
-    }];
+  $scope.schedule =[];
+  $scope.schedule_time_options = [{
+     name: 'Due last 7 days',
+     value: 'overdue'
+  }, {
+     name: 'Due today',
+     value: 'today'
+  }, {
+     name: 'Next 7 days',
+     value: 'week'
+  }];
 
-   $scope.$on('canvasCourses', function (event, canvasCourses) {
-      $.each($scope.schedule, function() {
-        if(this.contextLMS === 'canvas'){
-          var thisId = _.last(this.contextUrl.split('/'));
-          var thisContext = _.findWhere(canvasCourses, {id: thisId});
-          if(thisContext){
-            this.context = thisContext.title;
-          }          
+  $scope.scheduleErrors=[];
+
+  Schedule.getSchedule('/todolms/studenta/ctools').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'source':'ctools'});
+    }
+  });
+  Schedule.getSchedule('/todolms/studenta/ctoolspast').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'source':'ctoolspast'});
+    }
+  });
+  Schedule.getSchedule('/todolms/studenta/mneme').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'source':'mneme'});
+    }
+  });
+  Schedule.getSchedule('/todolms/studenta/canvas').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'source':'ctoolspast'});
+    }
+  });
+
+  $scope.$on('canvasCourses', function (event, canvasCourses) {
+    $.each($scope.schedule, function() {
+      if(this.contextLMS === 'canvas'){
+        var thisId = _.last(this.contextUrl.split('/'));
+        var thisContext = _.findWhere(canvasCourses, {id: thisId});
+        if(thisContext){
+          this.context = thisContext.title;
         }
-      });
-   });
+      }
+    });
+  });
 
     $scope.showWhen = 'today';
 
@@ -118,5 +150,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
        $scope.showWhen = when;
        $('#schedule .itemList').attr('tabindex',-1).focus();
     };
-  });
+
+
+
 }]);

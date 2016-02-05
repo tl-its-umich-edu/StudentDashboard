@@ -141,8 +141,8 @@ dashboardApp.factory('Schedule', function ($http) {
         function success(result) {
           return prepareSchedule(result);
         },
-        function error() {
-          //console.log('errors');
+        function error(result) {
+          return result
         }
       );
     }

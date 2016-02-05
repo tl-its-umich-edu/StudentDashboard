@@ -1,7 +1,7 @@
 <div ng-controller="scheduleController" ngcloak>
     <div id="schedule" class="itemPanel">
       <h3 class="colHeader"><span class="sr-only">Schedule</span>
-        <div class="pull-right" ng-hide="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">
+        <div class="pull-right">
           <small>{{showWhen | headerText}}</small>
           <div class="btn-group">
             <div class="btn-group btn-group-sm">
@@ -63,23 +63,11 @@
               </div>
           </li>
       </ul>
-      <!--
-      <div class="itemPanelFooter">
+      <div class="itemPanelFooter" ng-if="scheduleErrors.length">
         <div style="text-align:right"><a style="text-decoration:none" href="" ng-click="toggleFooter = !toggleFooter">?</a></div>
           <div ng-show="toggleFooter">
-            <div ng-hide="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">
-              <p ng-show="scheduleStatus.ctools.status !==200 || scheduleStatus.canvas.status !==200">
-                <small ng-show="scheduleStatus.ctools.status !==200">CTools</small><small ng-show="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200"> and </small><small ng-show="scheduleStatus.canvas.status !==200"> Canvas</small><small> unreachable.</small>
-              </p>
-              <small> CTools: {{scheduleStatus.ctools.status}} {{scheduleStatus.ctools.message}}, {{scheduleStatus.ctools.count}} items | Canvas: {{scheduleStatus.canvas.status}} {{scheduleStatus.canvas.message}}, {{scheduleStatus.canvas.count}} items
-              </small>
-            </div>
+            <p ng-repeat="error in scheduleErrors">{{error.source}}:{{error.status}}</p>
           </div>
       </div>
-      -->
-
-
-
-
     </div>
 </div>
