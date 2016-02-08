@@ -89,17 +89,8 @@ var statusResolver = function(status, count) {
 
 
 var prepareSchedule = function(result) {
-  var combinedScheduleAndStatus = {
-    'status': {
-      'ctools': statusResolver(result.data.ctools.Meta.httpStatus, result.data.ctools.Result.length),
-      'canvas': statusResolver(result.data.canvas.Meta.httpStatus, result.data.canvas.Result.length)
-    },
-    'combinedSchedule': []
-  };
-
-  var combinedSchedule = result.data.ctools.Result.concat(result.data.canvas.Result);
-  if(combinedSchedule.length){
-    $.each(combinedSchedule, function() {
+  if(result.data.Result){
+    $.each(result.data.Result, function() {
       this.due_date_sort = parseInt(this.due_date_sort);
       this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
       this.due_date_medium = moment.unix(this.due_date_sort).format('MM/DD/YY h:mm a');
@@ -122,12 +113,12 @@ var prepareSchedule = function(result) {
         this.when = 'week';
       }
     });
-    combinedScheduleAndStatus.combinedSchedule = _.sortBy(combinedSchedule, 'due_date_sort');
+    //combinedSchedule = _.sortBy(combinedSchedule, 'due_date_sort');
   } else {
-    combinedScheduleAndStatus.combinedSchedule = [];
+    //combinedSchedule = [];
   } 
 
-  return combinedScheduleAndStatus;
+  return result;
 };
 
 var extractIds = function(data){
