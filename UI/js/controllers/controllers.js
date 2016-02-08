@@ -104,7 +104,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
-      $scope.scheduleErrors.push({'status':data.status, 'source':'ctools'});
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from CTools'});
     }
   });
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast').then(function(data) {
@@ -112,7 +112,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
-      $scope.scheduleErrors.push({'status':data.status, 'source':'ctoolspast'});
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting past assignments from CTools'});
     }
   });
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme').then(function(data) {
@@ -120,7 +120,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
-      $scope.scheduleErrors.push({'status':data.status, 'source':'mneme'});
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting Test Center items from CTools'});
     }
   });
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas').then(function(data) {
@@ -128,7 +128,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
-      $scope.scheduleErrors.push({'status':data.status, 'source':'ctoolspast'});
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from Canvas'});
     }
   });
 
