@@ -27,9 +27,9 @@
          </div>
       </div>
       <div class="alert alert-info" ng-show="!filteredItems.length  && !loadingSchedule">
-      <p ng-if="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
-      <span ng-show="(scheduleStatus.ctools.status ==200 || scheduleStatus.canvas.status ==200) && schedule.length!==0">{{showWhen | noItemsFoundForTime}}</span>
-      <span ng-show="schedule.length===0 && (scheduleStatus.ctools.status ===200 || scheduleStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
+        <span ng-show="schedule.length !==0">{{showWhen | noItemsFoundForTime}}</span>
+        <span ng-show="schedule.length ===0">No items due in CTools or Canvas.</span>
+      </div>
       <ul class="itemList">
           <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen)" class="container-fluid" ng-hide="item.when !== showWhen">
               <div class="row">
