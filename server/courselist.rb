@@ -3,8 +3,7 @@
 #require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
 
 ### Simple rest server for SD data.
-### This version will also server up the HTML page if no
-### specific page is requested.
+### This version will also server up the HTML page if no specific page is requested.
 
 ### Configuration will be read in from /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml file if available
 ### or from ./server/local/studentdashboard.yml in the build if necessary.
@@ -53,12 +52,14 @@ class CourseList < Sinatra::Base
   # where needed.
   set :latte_config, config_hash
 
+  # Add back when can figure out how to call CourseList.new at non-debug level.  This
+  # makes automated test output too long.
   # print environment when at debugging level.
-  if logger.debug? then
-    ENV.each_pair do |key, value|
-      logger.debug "key: [#{key}] value: [#{value}]"
-    end
-  end
+  # if logger.debug? then
+  #   ENV.each_pair do |key, value|
+  #     logger.debug "key: [#{key}] value: [#{value}]"
+  #   end
+  # end
 
   ## Allow override of the location of the studentdashboard.yml file.
   if ENV['LATTE_OPTS'] then
@@ -526,6 +527,7 @@ END
       # It is also ok if the user is asking about themselves.
       return nil if url_user.eql? user
 
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: about to check for is_admin"
       # Only if the user has super powers can they ask about others.
       # The check that they are an admin is delegated to the block passed in.
       # That makes testing much easier and for security related functions
@@ -572,6 +574,19 @@ END
       nil
     end
 
+  end
+
+  helpers do
+    # Use data url in this application and get the json out of the result.
+    # By convention the response is returned in a WAPI wrapper so error checking has been done.
+    # by the data url processing.
+    def run_url_parse_json(new_url)
+      status, headers, request_body = call! env.merge("PATH_INFO" => new_url)
+      logger.debug "#{__method__}: #{__LINE__}: #{new_url}: request_body[0].inspect: +++#{request_body[0].inspect}+++"
+      request_body_ruby = JSON.parse request_body[0]
+      logger.debug "#{__method__}: #{__LINE__}: #{new_url}: request_body_ruby: +++#{request_body_ruby.inspect}+++"
+      request_body_ruby
+    end
   end
 
   helpers do
@@ -705,7 +720,6 @@ END
 
     # NOTE: the {} block on the end is passed in and used to see if this is an admin user.
 
-    #    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto: REQUEST: #{request.env.inspect}"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto"
     vetoResult = CourseList.vetoRequest(request.env['REMOTE_USER'], request.env['REQUEST_URI']) { admin_user request.env['REMOTE_USER'] }
     logger.debug "#{__method__}: #{__LINE__}: REQUEST: * end veto check: [#{vetoResult}]"
@@ -912,27 +926,29 @@ END
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
 
-    # Call to the ctools dashboard REST source url in this application.
-    status, headers, ctools_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/ctools")
-    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: ctools_body[0].inspect: +++#{ctools_body[0].inspect}+++"
-    ctools_body_ruby = JSON.parse ctools_body[0]
+    # Call data urls in this application to get data.
+
+    ########## get ctools Dash data from this time forward
+    ctools_body_ruby = run_url_parse_json("/todolms/#{userid}/ctools")
+    ct_result = ctools_body_ruby['Result']
+
+    ########## get ctools Dash data from before this time
+    #### TODO: maybe only do this based on a property setting.
+    ctoolspast_body_ruby = run_url_parse_json("/todolms/#{userid}/ctoolspast")
+    ctpast_result = ctoolspast_body_ruby['Result']
+
+    # replace one Result with combined data.
+    ctools_body_ruby['Result'] = ct_result + ctpast_result
 
     ############# get canvas data ####
-    # Call to get canvas REST source url in this application.
-    status, headers, canvas_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/canvas")
-    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: canvas_body[0].inspect: +++#{canvas_body[0].inspect}+++"
-    canvas_body_ruby = JSON.parse canvas_body[0]
+    canvas_body_ruby = run_url_parse_json("/todolms/#{userid}/canvas")
 
     ############# get canvas data ####
-    # Call to get ctools mneme data from via ctools REST source url in this application.
-    status, headers, mneme_body = call! env.merge("PATH_INFO" => "/todolms/#{userid}/mneme")
-    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body.inspect: +++#{mneme_body.inspect}+++"
-    mneme_body_ruby = JSON.parse mneme_body[0]
-
-    logger.debug "#{__method__}: #{__LINE__}: todolms/#{userid}: mneme_body_ruby.inspect: +++#{mneme_body_ruby.inspect}+++"
+    mneme_body_ruby = run_url_parse_json("/todolms/#{userid}/mneme")
 
     ############## Compose the different ctools feeds together.  We keep them separate by the source LMS.
     ctools_merged_ruby = mergeCtoolsDashMneme(ctools_body_ruby, mneme_body_ruby)
+
     results = {
         'ctools' => ctools_merged_ruby,
         'canvas' => canvas_body_ruby
@@ -969,7 +985,8 @@ END
   ## ask for the LMS to get ctools information for a specific person.
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
 
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools"
+    #logger.debug "#{__method__}: #{__LINE__}:
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -984,7 +1001,30 @@ END
     end
 
     todolmsList = dataProviderToDoCToolsLMS(userid)
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
+
+    todolmsList.value_as_json
+  end
+
+  ### Ask for past CTools assignments.
+  get "/todolms/:userid/ctoolspast.?:format?" do |userid, format|
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast"
+
+    userid = request.env['REMOTE_USER'] if userid.nil?
+
+    ## The check for json implies that other format types will fail.
+    format = "json" unless (format)
+
+    if format && "json".casecmp(format).zero?
+      content_type :json
+    else
+      response.status = 400
+      return "format not supported: [#{format}]"
+    end
+
+    todolmsList = dataProviderToDoCToolsPastLMS(userid)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast: "+todolmsList.value_as_json
 
     todolmsList.value_as_json
   end
