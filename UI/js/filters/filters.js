@@ -79,9 +79,9 @@ angular.module('dashFilters', []).filter('dateAgo', function () {
     return function(str) {
       switch (str) {
         case 'overdue':
-          return 'No overdue items.';
+          return 'No items due the past seven days.';
         case 'week':
-          return 'No items due this week.';
+          return 'No items due next seven days.';
         case 'today':
           return 'No items due today.';
         default:

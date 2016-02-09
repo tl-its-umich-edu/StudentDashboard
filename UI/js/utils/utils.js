@@ -96,7 +96,6 @@ var prepareSchedule = function(result) {
       this.due_date_medium = moment.unix(this.due_date_sort).format('MM/DD/YY h:mm a');
       this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
       this.due_date_time = moment.unix(this.due_date_sort).format('h:mm a');
-
       var now = moment();
       var due = moment(this.due_date_sort * 1000);
 
