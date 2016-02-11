@@ -75,14 +75,14 @@ class ChannelCToolsDirectHTTP
 
     # Get a ctools session for the uber user.
     use_url = format_url "/session.json"
-    post_body = "_username=#{@user}&_password=#{@password}"
 
     elapsed = Stopwatch.new(Thread.current.to_s+": "+use_url)
     elapsed.start
 
     # It does not seem possible to turn off ssl check on osx :-(, so may need to use http or search server url for testing.
-    @session_id = RestClient.post use_url, post_body,
-                                  {:verify_ssl => true}
+    # pass post data via parameters to get correct uri encoding.
+    @session_id = RestClient.post use_url, { :"_username" => @user, :"_password" => @password},
+                                  {:verify_ssl => true, :content_type => 'multipart/form-data'}
 
     # make sure to print the elapsed time for the renewal.
     elapsed.stop
