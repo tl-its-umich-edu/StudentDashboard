@@ -27,9 +27,9 @@
          </div>
       </div>
       <div class="alert alert-info" ng-show="!filteredItems.length  && !loadingSchedule">
-      <p ng-if="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
-      <span ng-show="(scheduleStatus.ctools.status ==200 || scheduleStatus.canvas.status ==200) && schedule.length!==0">{{showWhen | noItemsFoundForTime}}</span>
-      <span ng-show="schedule.length===0 && (scheduleStatus.ctools.status ===200 || scheduleStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
+        <span ng-show="schedule.length !==0">{{showWhen | noItemsFoundForTime}}</span>
+        <span ng-show="schedule.length ===0">No items due in CTools or Canvas.</span>
+      </div>
       <ul class="itemList">
           <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen)" class="container-fluid" ng-hide="item.when !== showWhen">
               <div class="row">
@@ -63,10 +63,10 @@
               </div>
           </li>
       </ul>
-      <div class="itemPanelFooter" ng-if="scheduleErrors.length">
+      <div class="itemPanelFooter" ng-show="scheduleErrors.length">
         <div style="text-align:right"><a style="text-decoration:none" href="" ng-click="toggleFooter = !toggleFooter">?</a></div>
           <div ng-show="toggleFooter">
-            <p ng-repeat="error in scheduleErrors">{{error.source}}:{{error.status}}</p>
+            <p ng-repeat="error in scheduleErrors">{{error.message}} ({{error.status}})</p>
           </div>
       </div>
     </div>
