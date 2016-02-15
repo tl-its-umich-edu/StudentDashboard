@@ -27,9 +27,9 @@ use_log_level: INFO
 
 ################### String replacements
 
-CANVAS-TL-QA:
+CANVASTL-ADMIN-ESB-PROD:
   string-replace:
-     link: ['https://api-gw.its.umich.edu', 'https://umich.instructure.com']
+     link: ['https://api-gw.it.umich.edu', 'https://umich.instructure.com']
      contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.instructure.com']
 
 CTPROD-DIRECT:
