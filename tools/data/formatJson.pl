@@ -1,4 +1,5 @@
 #!/usr/bin/env perl -n
+# Take 3 tuple output of <ISO8601 time stamp, elapsed time in seconds, url> and format into expected json file.
 BEGIN {
   print "var fileData = '[\\\n";
 }
