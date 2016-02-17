@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, dashboardApp, _ */
+/* global $, dashboardApp, _, extractIds */
 
 
 /**
@@ -8,7 +8,7 @@
  * It adds the terms to the scope and binds them to the DOM
  * 
  */
-dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$scope',  function (Courses, Terms, $rootScope, $scope) {
+dashboardApp.controller('termsController', ['Courses', 'Terms', 'shareCanvas', '$rootScope', '$scope',  function (Courses, Terms, shareCanvas, $rootScope, $scope) {
   $scope.selectedTerm = null;
   $scope.terms = [];
  
@@ -41,7 +41,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
             $scope.courses.errors = data;
             $scope.loading = false;
           } else {
-            $rootScope.$broadcast('canvasCourses', extractIds(data));
+            shareCanvas.setCanvasArray(extractIds(data));
             $scope.courses = data;
             $scope.loading = false;
           }
@@ -82,7 +82,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   * Schedule controller
   */
 
-dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope', function(Schedule, $scope, $rootScope) {
+dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scope', '$rootScope', function(Schedule, shareCanvas, $scope, $rootScope) {
   $scope.loadingSchedule = true;
   $scope.schedule =[];
   $scope.schedule_time_options = [{
@@ -125,6 +125,22 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas').then(function(data) {
     $scope.loadingSchedule = false;
     if(data.status ===200){
+      $.each(data.data.Result, function() {
+        if(this.contextLMS === 'canvas'){
+          this.context = null;
+        }
+      });
+      var canvasArray = shareCanvas.getCanvasArray();
+      $.each(data.data.Result, function() {
+          var thisId = _.last(this.contextUrl.split('/'));
+          var thisContext = _.findWhere(canvasArray, {id: thisId});
+          if(thisContext){
+            this.context = thisContext.title;
+          }
+          else {
+            this.context = null;
+          }
+      });
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from Canvas'});
@@ -142,22 +158,6 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
        value: 'week'
     }];
 
-   $scope.$on('canvasCourses', function (event, canvasCourses) {
-      //listen for changes to the Canvas course array (created by the Courses controller)
-      // and match the course title of the Canvas assignments to the course title in the array
-      $.each($scope.schedule, function() {
-        if(this.contextLMS === 'canvas'){
-          var thisId = _.last(this.contextUrl.split('/'));
-          var thisContext = _.findWhere(canvasCourses, {id: thisId});
-          if(thisContext){
-            this.context = thisContext.title;
-          }
-          else {
-            this.context = null;
-          }
-        }
-    });
-  });
 
     $scope.showWhen = 'today';
 
