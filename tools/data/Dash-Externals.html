@@ -1,13 +1,18 @@
-<!-- started with Google chart timeline example -->
+<!-- Use Google timeline chart to display elapsed times for URL requests.
+See formatJson.pl for input format.
+URLs displayed and time range can be adjusted from the page.
+The 'singleLineDisplay variable can be set in the source to collapse all calls for a single URL into one line
+or display each individually.
+-->
 
 <!-- TTD: -->
+<!-- control to set same / separate line plotting  i.e. set singleLineDisplay via UI -->
+<!-- read json from file and then process without use eval -->
 <!-- left justify url -->
 <!-- better url shortening -->
 <!-- hover to display full URL -->
-<!-- control to set same / separate line plotting  i.e. set singleLineDisplay via UI -->
 <!-- make bars narrower? -->
 <!-- figure out rounding unit based on the elapsed time span of data. -->
-<!-- read json from file and then process without use eval -->
 <!-- control to set display time range -->
 <!-- be able to point at different data files from UI -->
 
@@ -28,7 +33,7 @@
         singleLineDisplay = true;
         //singleLineDisplay = false;
 
-        // Earliest timestamp in data.  Default to way, way, way in the future.
+        // Earliest timestamp in data.  Start with extreme value way, way, way in the future.
         var first_starttime = new Date().setTime(8640000000000000);
 
         options = {
