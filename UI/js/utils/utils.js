@@ -108,7 +108,7 @@ var prepareSchedule = function(result) {
       } else if (due > now && now.isSame(due, 'd')) {
           this.when = 'today';
           this.late = false;
-      } else if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {
+      } else if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 8)) {
           this.when = 'week';
       } else {
           this.when = 'out-of-scope';
