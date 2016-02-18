@@ -99,20 +99,21 @@ var prepareSchedule = function(result) {
       var now = moment();
       var due = moment(this.due_date_sort * 1000);
 
-      if (due < now) {
-        this.when = 'overdue';
-      }
 
-      if (now.isSame(due, 'd')) {
-        this.when = 'today';
-      }
-
-      // better for week - but still needs to incorporate todays items
-      if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {  
-        this.when = 'week';
+      if (due < now && !now.isSame(due, 'd')) {
+          this.when = 'overdue';
+      } else if (due < now && now.isSame(due, 'd')) {
+          this.when = 'today';
+          this.late = true;
+      } else if (due > now && now.isSame(due, 'd')) {
+          this.when = 'today';
+          this.late = false;
+      } else if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {
+          this.when = 'week';
+      } else {
+          this.when = 'out-of-scope';
       }
     });
-    //combinedSchedule = _.sortBy(combinedSchedule, 'due_date_sort');
   } else {
     //combinedSchedule = [];
   } 
