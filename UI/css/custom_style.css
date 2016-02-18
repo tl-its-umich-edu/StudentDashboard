@@ -174,7 +174,7 @@ ul {
 }
 
 
-#todo .overdue .dateSpan{
+#schedule .late, #schedule .late a {
     color:#c00
 }
 .footerInfo {

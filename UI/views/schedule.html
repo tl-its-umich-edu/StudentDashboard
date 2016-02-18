@@ -31,14 +31,14 @@
         <span ng-show="schedule.length ===0">No items due in CTools or Canvas.</span>
       </div>
       <ul class="itemList">
-          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen)" class="container-fluid" ng-hide="item.when !== showWhen">
+          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid" ng-hide="item.when !== showWhen">
               <div class="row">
                   <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
                   </div>
                   <div class="col-lg-7 col-md-7 col-xs-7">
                     <a target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
                   </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date {{item.when}}">
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date {{item.when}}" ng-class="{'late':item.late}">
                       <small class="dateSpan">
                         <span  ng-show="item.due_date_sort && item.when !=='today'">{{item.due_date_medium}}</span>
                         <span  ng-show="item.due_date_sort && item.when ==='today'"><a href="" ng-click="showTime = !showTime">{{item.due_date_sort | dateUntil}} </a></span>

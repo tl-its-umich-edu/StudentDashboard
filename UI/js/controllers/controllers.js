@@ -102,6 +102,8 @@ dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scop
     $scope.loadingSchedule = false;
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
+      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
+      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from CTools'});
     }
@@ -110,6 +112,8 @@ dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scop
     $scope.loadingSchedule = false;
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
+      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
+      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting past assignments from CTools'});
     }
