@@ -1,7 +1,7 @@
 <div ng-controller="scheduleController" ngcloak>
     <div id="schedule" class="itemPanel">
       <h3 class="colHeader"><span class="sr-only">Schedule</span>
-        <div class="pull-right" ng-hide="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">
+        <div class="pull-right">
           <small>{{showWhen | headerText}}</small>
           <div class="btn-group">
             <div class="btn-group btn-group-sm">
@@ -27,18 +27,18 @@
          </div>
       </div>
       <div class="alert alert-info" ng-show="!filteredItems.length  && !loadingSchedule">
-      <p ng-if="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">CTools and Canvas unreachable.</p>
-      <span ng-show="(scheduleStatus.ctools.status ==200 || scheduleStatus.canvas.status ==200) && schedule.length!==0">{{showWhen | noItemsFoundForTime}}</span>
-      <span ng-show="schedule.length===0 && (scheduleStatus.ctools.status ===200 || scheduleStatus.canvas.status ===200)">No items due in CTools or Canvas.</span></div>
+        <span ng-show="schedule.length !==0">{{showWhen | noItemsFoundForTime}}</span>
+        <span ng-show="schedule.length ===0">No items due in CTools or Canvas.</span>
+      </div>
       <ul class="itemList">
-          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen)" class="container-fluid" ng-hide="item.when !== showWhen">
+          <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid" ng-hide="item.when !== showWhen">
               <div class="row">
                   <div class="col-lg-1 col-md-1 col-xs-1 {{item.contextLMS}} iconContainer">
                   </div>
                   <div class="col-lg-7 col-md-7 col-xs-7">
                     <a target="_blank" href="{{item.link}}" class="assigLink{{item.contextLMS}}">{{item.title  | cut:true:30:'...'}} <span class="sr-only"> (opens in a new page)</span></a>
                   </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date {{item.when}}">
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 date {{item.when}}" ng-class="{'late':item.late}">
                       <small class="dateSpan">
                         <span  ng-show="item.due_date_sort && item.when !=='today'">{{item.due_date_medium}}</span>
                         <span  ng-show="item.due_date_sort && item.when ==='today'"><a href="" ng-click="showTime = !showTime">{{item.due_date_sort | dateUntil}} </a></span>
@@ -52,9 +52,9 @@
                   <small>
                     Go to
                     <a class="courseLink" target="_blank" href="{{item.contextUrl}}">
-                      {{item.context}}
+                      <span ng-if="item.context">{{item.context}}</span>
+                      <span ng-if="!item.context">course site</span>
                     </a>
-                    course site
                   </small>
                 </div>
                 <div class="col-lg-3 col-md-3 col-xs-3 date" style="text-align:right">
@@ -63,23 +63,11 @@
               </div>
           </li>
       </ul>
-      <!--
-      <div class="itemPanelFooter">
+      <div class="itemPanelFooter" ng-show="scheduleErrors.length">
         <div style="text-align:right"><a style="text-decoration:none" href="" ng-click="toggleFooter = !toggleFooter">?</a></div>
           <div ng-show="toggleFooter">
-            <div ng-hide="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200">
-              <p ng-show="scheduleStatus.ctools.status !==200 || scheduleStatus.canvas.status !==200">
-                <small ng-show="scheduleStatus.ctools.status !==200">CTools</small><small ng-show="scheduleStatus.ctools.status !==200 && scheduleStatus.canvas.status !==200"> and </small><small ng-show="scheduleStatus.canvas.status !==200"> Canvas</small><small> unreachable.</small>
-              </p>
-              <small> CTools: {{scheduleStatus.ctools.status}} {{scheduleStatus.ctools.message}}, {{scheduleStatus.ctools.count}} items | Canvas: {{scheduleStatus.canvas.status}} {{scheduleStatus.canvas.message}}, {{scheduleStatus.canvas.count}} items
-              </small>
-            </div>
+            <p ng-repeat="error in scheduleErrors">{{error.message}} ({{error.status}})</p>
           </div>
       </div>
-      -->
-
-
-
-
     </div>
 </div>

@@ -5,10 +5,10 @@
 ################## Data source configuration
 
 # course / term information application name (mpathways)
-mpathways_application_name: SD-QA
+mpathways_application_name: StudentDashboard-ESB-PROD
 # ctools information application name
-ctools_http_application_name: CTQA-DIRECT
-canvas_esb_application_name: CANVAS-TL-QA
+ctools_http_application_name: CTPROD-DIRECT
+canvas_esb_application_name: CANVASTL-ADMIN-ESB-PROD
 
 ############ external resources provider
 
@@ -27,6 +27,15 @@ use_log_level: INFO
 
 ################### String replacements
 
-# need these values for PROD
+CANVASTL-ADMIN-ESB-PROD:
+  string-replace:
+     link: ['https://api-gw.it.umich.edu', 'https://umich.instructure.com']
+     contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.instructure.com']
+
+CTPROD-DIRECT:
+  string-replace:
+      link: ['https://ctsearch.vip.itd.umich.edu', 'https://ctools.umich.edu']
+      contextUrl: ['https://ctsearch.vip.itd.umich.edu', 'https://ctools.umich.edu']
+
 
 ### end ###

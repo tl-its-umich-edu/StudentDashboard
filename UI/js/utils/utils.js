@@ -89,45 +89,36 @@ var statusResolver = function(status, count) {
 
 
 var prepareSchedule = function(result) {
-  var combinedScheduleAndStatus = {
-    'status': {
-      'ctools': statusResolver(result.data.ctools.Meta.httpStatus, result.data.ctools.Result.length),
-      'canvas': statusResolver(result.data.canvas.Meta.httpStatus, result.data.canvas.Result.length)
-    },
-    'combinedSchedule': []
-  };
-
-  var combinedSchedule = result.data.ctools.Result.concat(result.data.canvas.Result);
-  if(combinedSchedule.length){
-    $.each(combinedSchedule, function() {
+  if(result.data.Result){
+    $.each(result.data.Result, function() {
       this.due_date_sort = parseInt(this.due_date_sort);
       this.due_date_long = moment.unix(this.due_date_sort).format('dddd, MMMM Do YYYY, h:mm a');
       this.due_date_medium = moment.unix(this.due_date_sort).format('MM/DD/YY h:mm a');
       this.due_date_short = moment.unix(this.due_date_sort).format('MM/DD');
       this.due_date_time = moment.unix(this.due_date_sort).format('h:mm a');
-
       var now = moment();
       var due = moment(this.due_date_sort * 1000);
 
-      if (due < now) {
-        this.when = 'overdue';
-      }
 
-      if (now.isSame(due, 'd')) {
-        this.when = 'today';
-      }
-
-      // better for week - but still needs to incorporate todays items
-      if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 7)) {  
-        this.when = 'week';
+      if (due < now && !now.isSame(due, 'd')) {
+          this.when = 'overdue';
+      } else if (due < now && now.isSame(due, 'd')) {
+          this.when = 'today';
+          this.late = true;
+      } else if (due > now && now.isSame(due, 'd')) {
+          this.when = 'today';
+          this.late = false;
+      } else if ((due.diff(now, 'days') > 0) && (due.diff(now, 'days') < 8)) {
+          this.when = 'week';
+      } else {
+          this.when = 'out-of-scope';
       }
     });
-    combinedScheduleAndStatus.combinedSchedule = _.sortBy(combinedSchedule, 'due_date_sort');
   } else {
-    combinedScheduleAndStatus.combinedSchedule = [];
+    //combinedSchedule = [];
   } 
 
-  return combinedScheduleAndStatus;
+  return result;
 };
 
 var extractIds = function(data){

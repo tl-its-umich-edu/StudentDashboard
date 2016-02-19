@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, dashboardApp, _ */
+/* global $, dashboardApp, _, extractIds */
 
 
 /**
@@ -8,12 +8,11 @@
  * It adds the terms to the scope and binds them to the DOM
  * 
  */
-dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$scope',  function (Courses, Terms, $rootScope, $scope) {
+dashboardApp.controller('termsController', ['Courses', 'Terms', 'shareCanvas', '$rootScope', '$scope',  function (Courses, Terms, shareCanvas, $rootScope, $scope) {
   $scope.selectedTerm = null;
   $scope.terms = [];
  
   var termsUrl = 'terms';
-
   //use the Terms factory as a promise. Add returned data to the scope
 
   Terms.getTerms(termsUrl).then(function (data) {
@@ -42,7 +41,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
             $scope.courses.errors = data;
             $scope.loading = false;
           } else {
-            $rootScope.$broadcast('canvasCourses', extractIds(data));
+            shareCanvas.setCanvasArray(extractIds(data));
             $scope.courses = data;
             $scope.loading = false;
           }
@@ -83,12 +82,75 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', '$rootScope', '$
   * Schedule controller
   */
 
-dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope', function(Schedule, $scope, $rootScope) {
+dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scope', '$rootScope', function(Schedule, shareCanvas, $scope, $rootScope) {
   $scope.loadingSchedule = true;
-  Schedule.getSchedule('/todolms/' + $rootScope.user).then(function(data) {
+  $scope.schedule =[];
+  $scope.schedule_time_options = [{
+     name: 'Due last 7 days',
+     value: 'overdue'
+  }, {
+     name: 'Due today',
+     value: 'today'
+  }, {
+     name: 'Next 7 days',
+     value: 'week'
+  }];
+
+  $scope.scheduleErrors=[];
+
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools').then(function(data) {
     $scope.loadingSchedule = false;
-    $scope.schedule = data.combinedSchedule;
-    $scope.scheduleStatus = data.status;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
+      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from CTools'});
+    }
+  });
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
+      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting past assignments from CTools'});
+    }
+  });
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting Test Center items from CTools'});
+    }
+  });
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas').then(function(data) {
+    $scope.loadingSchedule = false;
+    if(data.status ===200){
+      $.each(data.data.Result, function() {
+        if(this.contextLMS === 'canvas'){
+          this.context = null;
+        }
+      });
+      var canvasArray = shareCanvas.getCanvasArray();
+      $.each(data.data.Result, function() {
+          var thisId = _.last(this.contextUrl.split('/'));
+          var thisContext = _.findWhere(canvasArray, {id: thisId});
+          if(thisContext){
+            this.context = thisContext.title;
+          }
+          else {
+            this.context = null;
+          }
+      });
+      $scope.schedule = data.data.Result.concat($scope.schedule);
+    } else {
+      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from Canvas'});
+    }
+  });
+
     $scope.schedule_time_options = [{
        name: 'Due last 7 days',
        value: 'overdue'
@@ -100,17 +162,6 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
        value: 'week'
     }];
 
-   $scope.$on('canvasCourses', function (event, canvasCourses) {
-      $.each($scope.schedule, function() {
-        if(this.contextLMS === 'canvas'){
-          var thisId = _.last(this.contextUrl.split('/'));
-          var thisContext = _.findWhere(canvasCourses, {id: thisId});
-          if(thisContext){
-            this.context = thisContext.title;
-          }          
-        }
-      });
-   });
 
     $scope.showWhen = 'today';
 
@@ -118,5 +169,7 @@ dashboardApp.controller('scheduleController', ['Schedule', '$scope', '$rootScope
        $scope.showWhen = when;
        $('#schedule .itemList').attr('tabindex',-1).focus();
     };
-  });
+
+
+
 }]);
