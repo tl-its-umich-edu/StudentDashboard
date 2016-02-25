@@ -100,7 +100,7 @@ var prepareSchedule = function(result) {
       var due = moment(this.due_date_sort * 1000);
 
 
-      if (due < now && !now.isSame(due, 'd') && (due.diff(now, 'days') > -8)) {
+      if (due < now && !now.isSame(due, 'd') && (due.diff(now, 'days') > -7)) {
           this.when = 'overdue';
       } else if (due < now && now.isSame(due, 'd')) {
           this.when = 'today';
