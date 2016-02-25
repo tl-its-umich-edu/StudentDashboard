@@ -100,7 +100,7 @@ var prepareSchedule = function(result) {
       var due = moment(this.due_date_sort * 1000);
 
 
-      if (due < now && !now.isSame(due, 'd')) {
+      if (due < now && !now.isSame(due, 'd') && (due.diff(now, 'days') > -7)) {
           this.when = 'overdue';
       } else if (due < now && now.isSame(due, 'd')) {
           this.when = 'today';
@@ -123,15 +123,15 @@ var prepareSchedule = function(result) {
 
 var extractIds = function(data){
   var canvasCourses=[];
-  var thisObj ={}
+  var thisObj ={};
   $.each(data, function() {
     if(this.Source ==='Canvas'){
-      thisObj= {'id': _.last(this.Link.split('/')),'title':this.Title + ' ' + this.SectionNumber}
-      canvasCourses.push(thisObj)
+      thisObj= {'id': _.last(this.Link.split('/')),'title':this.Title + ' ' + this.SectionNumber};
+      canvasCourses.push(thisObj);
     }
   });
   return canvasCourses;
-}
+};
 
 /**
  *
