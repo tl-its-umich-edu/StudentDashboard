@@ -175,6 +175,20 @@ END
 
     end
 
+    # This has it's own separate unit test file as the data can be complicated.
+    # get list of hash values for this key in nested hashes in mixed array / hash data structure.
+    def self.getValuesForKey(key, obj)
+      values = [] # local to this invocation.
+      case obj
+        when Array # check out the elements in the array
+          values = obj.flat_map { |o| getValuesForKey(key, o) }
+        when Hash # remember value if key is right, for other keys recurse on value.
+          obj.each_pair { |k, v| values.push(k === key ? v : getValuesForKey(key,v)) }
+          values.flatten! # get rid of any nested arrays
+      end
+      values
+    end
+
   end
 
   #### Use the Ruby approach to configuring environment.
@@ -504,6 +518,13 @@ END
   ## Add some class level helper methods.
   helpers do
 
+    # assemble context codes to specify the set of courses.  Explicit method is required since RestClient
+    # doesn't correctly deal with multiple parameters with same name as yet.
+    ## could generalize this to pass in prefix.
+    def self.course_list_string(courses)
+      courses.inject("") { |result, course| result << "&context_codes[]=course_#{course}" }
+    end
+
     # This method checks to see if the request is being made only for data for the stated userid.
     # It returns true if the request is NOT permitted.  It is phrased as a veto
     # because this method is only responsible for checking some conditions that might forbid the request.
@@ -726,6 +747,10 @@ END
     halt 403 if vetoResult == true
   end
 
+  before "*" do
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses: #{session[:canvas_courses]}"
+    #session[:canvas_courses] = canvas_courses
+  end
   ######################################
   ########### STATUS URLS ##############
   ######################################
@@ -853,7 +878,7 @@ END
   ### Return json array of the course objects for this user to the UI.  Currently if you don't
   ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |userid, format|
-    logger.debug "REQUEST: /courses start"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:REQUEST: /courses start"
     termid = params[:TERMID]
 
     if format && "json".casecmp(format).zero?
@@ -861,15 +886,24 @@ END
 
       course_data= dataProviderCourse(userid, termid)
       if "404".casecmp(course_data.meta_status.to_s).zero?
-        logger.info "courselist.rb: #{__LINE__}: returning 404 for missing file: userid: #{userid} termid: #{termid}"
+        logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}:returning 404 for missing file: userid: #{userid} termid: #{termid}"
         response.status = 404
         return ""
       end
     else
       response.status = 400
-      logger.debug "REQUEST: /courses bad format return"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:REQUEST: /courses bad format return"
       return "format missing or not supported: [#{format}]"
     end
+
+    #extract course ids from canvas course links
+    # could the pattern be a constant?
+    p = Regexp.new(/instructure.com\/courses\/(\d+)/)
+    # get the course link urls, extract course number (if canvas), remove nil from non-matches.  Push(nil) is added
+    # to make sure there is at least 1 nil.
+    canvas_courses = getValuesForKey('Link', course_data.value).map{|link| p.match(link); $1}.push(nil).compact
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas course numbers: #{canvas_courses.inspect}"
+    session[:canvas_courses] = canvas_courses
 
     course_data.value_as_json
   end

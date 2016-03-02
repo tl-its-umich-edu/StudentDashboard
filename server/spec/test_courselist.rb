@@ -187,5 +187,14 @@ class TestCourseList < MiniTest::Test
     refute r, "request my  courses admin"
   end
 
+
+  def test_assemble_course_parameters
+    course_ids = [43412, 44630]
+    correct="&context_codes[]=course_43412&context_codes[]=course_44630"
+    encoded = CourseList.course_list_string [43412, 44630]
+    assert_equal correct, encoded, "multiple courses as parameters"
+  end
+
+
 end
 
