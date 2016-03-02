@@ -16,3 +16,4 @@ server/spec/coverage/
 **/*HIDE
 **/tmp/**
 coverage
+transient
