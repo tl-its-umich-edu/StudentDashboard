@@ -96,7 +96,7 @@ class TestIntegrationChannelCToolsDirectESBDash < Minitest::Test
     @new_user = 'studenta'
     # change to the user of interest
     @ctools_response = @ctools_esb.get_request("/session/becomeuser/#{@new_user}.json")
-    puts "become user: ctools_RESPONSE: ["+@ctools_response.inspect+"]"
+    #puts "become user: ctools_RESPONSE: ["+@ctools_response.inspect+"]"
 
 
   end
@@ -113,7 +113,7 @@ class TestIntegrationChannelCToolsDirectESBDash < Minitest::Test
     skip ("not implemented")
     # verify that user for the session can be changed and is the new one as expected.
     response = @ctools_esb.get_request("/session.json")
-    puts "response: [@{response.value_as_json}]"
+    #puts "response: [@{response.value_as_json}]"
     json_response = JSON.parse response
     session_userEid = json_response['session_collection'][0]['userEid']
     assert_equal @new_user, session_userEid, "match current session user with user: #{@new_user}"
@@ -123,7 +123,7 @@ class TestIntegrationChannelCToolsDirectESBDash < Minitest::Test
     skip ("not implemented")
     # get the dash calendar information
     response = @ctools_esb.get_request("/dash/calendar.json")
-    puts "RESPONSE: ["+response.inspect+"]"
+    #puts "RESPONSE: ["+response.inspect+"]"
     json_response = JSON.parse response.value_as_json
     logger.debug "ctools dash calendar json: "+json_response.inspect
     # There may be no current calendar events, but there should be some valid json response.

@@ -61,6 +61,11 @@ class CanvasAPIResponse
       assignment_date = event['assignment']['due_at']
       standard_event[:due_date_sort] = DateTime.parse(assignment_date).strftime('%s') unless assignment_date.nil?
 
+      ## Allow fake dates for some testing
+      #logger.error "#{self.class.to_s}:#{__method__}:#{__LINE__}: FAKE DATE FOR CANVAS";
+      #      standard_event[:due_date_sort] = Time.now().to_i
+
+
     end
 
     # Allow string replacement.  This is needed to ensure that host names are correct.
