@@ -13,6 +13,9 @@ function runTest {
     )
 }
 
+# 20160306 - causes LoadError at RubyKernel.java:1040
+#export JRUBY_OPTS="-d"
+
 runTest test_WAPI_result_wrapper.rb
 runTest test_WAPI.rb
 runTest test_data_provider_file.rb
