@@ -108,11 +108,9 @@ module DataProviderCanvasESB
     full_request_url
   end
 
-  #  <canvas server>/api/v1/users/self/upcoming_events
-  # actually call out to canvas and return the value.  Caller will reformat if necessary.
+  #  <canvas server>/api/v1/users/self/calendar_events
   def canvasESBToDoLMS(uniqname, canvas_courses, security_file, esb_application)
-    #["43412", "44525", "44526", "44631", "44630", "44528", "44530"]}
-    canvas_courses ||=  ["43412", "44525", "44526", "44631", "44630", "44528", "44530"]
+    canvas_courses ||=  []
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses count: #{canvas_courses.length} canvas_courses: #{canvas_courses}"

@@ -903,9 +903,9 @@ END
     # get the course link urls, extract course number (if canvas), remove nil from non-matches.  Push(nil) is added
     # to make sure there is at least 1 nil.
     canvas_courses = CourseList.getValuesForKey('Link', course_data.value).map { |link| p.match(link); $1 }.push(nil).compact
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course numbers: #{canvas_courses.inspect}"
-    session[:canvas_courses] = canvas_courses
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course set session: #{session.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses numbers: #{canvas_courses.inspect}"
+    session[:canvas_courses] = canvas_courses.uniq
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses set session: #{session.inspect}"
 
     course_data.value_as_json
   end
@@ -1082,7 +1082,7 @@ END
       return "format not supported: [#{format}]"
     end
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: canvas_courses: session: "+session.inspect
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: canvas_courses: from session: #{session[:canvas_courses].inspect}"
     todolmsList = dataProviderToDoCanvasLMS(userid,session[:canvas_courses])
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
     todolmsList.value_as_json
