@@ -14,6 +14,8 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
+require 'tilt/erb'
+require 'erb'
 
 require_relative 'stopwatch'
 require_relative 'WAPI'
@@ -24,6 +26,7 @@ require_relative 'external_resources_file'
 require_relative 'OptionsParse'
 
 include Logging
+include ERB::Util
 
 class CourseList < Sinatra::Base
   include DataProvider
@@ -574,6 +577,14 @@ END
       nil
     end
 
+    ### Standard error message for bad request format.  It prevents cross site scripting.
+    def bad_format_error(response, msg, format)
+      response.status = 400
+      logger.debug msg
+      erb "format missing or not supported: #{html_escape(format)}"
+    end
+
+
   end
 
   helpers do
@@ -629,10 +640,6 @@ END
 
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
-
-  #before "*" do
-  #logger.debug "upfront request: "+request.inspect
-  #end
 
   # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
   before /\/self(\Z|(\/|\/[\w\/]+)?(\.\w+)?)$/ do
@@ -866,9 +873,7 @@ END
         return ""
       end
     else
-      response.status = 400
-      logger.debug "REQUEST: /courses bad format return"
-      return "format missing or not supported: [#{format}]"
+      return bad_format_error(response, "/courses request: bad format", format)
     end
 
     course_data.value_as_json
@@ -898,8 +903,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/terms request: bad format", format)
     end
 
     termList = dataProviderTerms(userid)
@@ -971,8 +975,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms request: bad format", format)
     end
 
     todolmsList = dataProviderToDoLMS(userid, lms)
@@ -996,8 +999,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms ctools request: bad format", format)
     end
 
     todolmsList = dataProviderToDoCToolsLMS(userid)
@@ -1019,8 +1021,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms ctoolspast bad format", format)
     end
 
     todolmsList = dataProviderToDoCToolsPastLMS(userid)
@@ -1042,8 +1043,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms canvas bad format", format)
     end
 
     todolmsList = dataProviderToDoCanvasLMS(userid)
@@ -1064,8 +1064,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms mnene bad format", format)
     end
 
     todolmsList = dataProviderToDoMnemeLMS(userid)
