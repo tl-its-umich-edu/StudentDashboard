@@ -1,9 +1,4 @@
 ## These lines make the required modules available.
-#require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
-#require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
-
-### Simple rest server for SD data.
-### This version will also server up the HTML page if no specific page is requested.
 
 ### Configuration will be read in from /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml file if available
 ### or from ./server/local/studentdashboard.yml in the build if necessary.
@@ -14,6 +9,8 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
+require 'tilt/erb'
+require 'erb'
 
 require_relative 'stopwatch'
 require_relative 'WAPI'
@@ -24,6 +21,7 @@ require_relative 'external_resources_file'
 require_relative 'OptionsParse'
 
 include Logging
+include ERB::Util
 
 class CourseList < Sinatra::Base
   include DataProvider
@@ -435,7 +433,7 @@ END
 
       config_hash = settings.latte_config
       # See if there is a candidate to use as authenticated userid name.
-      uniqname = params['UNIQNAME']
+      uniqname = html_escape(params['UNIQNAME'])
       logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
 
       # don't reset userid if don't have a name to reset it to.
@@ -449,6 +447,7 @@ END
 
       logger.debug "resetting remote user"
       # put in session to be available for internal calls to REST api
+      #uniqname has been escaped above
       session[:remote_user]=uniqname
       request.env['REMOTE_USER']=uniqname
 
@@ -574,6 +573,14 @@ END
       nil
     end
 
+    ### Standard error message for bad request format.  It prevents cross site scripting.
+    def bad_format_error(response, msg, format)
+      response.status = 400
+      logger.debug msg
+      erb "format missing or not supported: #{html_escape(format)}"
+    end
+
+
   end
 
   helpers do
@@ -629,10 +636,6 @@ END
 
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
-
-  #before "*" do
-  #logger.debug "upfront request: "+request.inspect
-  #end
 
   # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
   before /\/self(\Z|(\/|\/[\w\/]+)?(\.\w+)?)$/ do
@@ -732,6 +735,7 @@ END
   # top level request for status information and urls
 
   get '/status.?:format?/?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
     format.downcase!
 
@@ -757,6 +761,7 @@ END
 
   # Trivial request to verify that the server can respond.
   get '/status/ping.?:format?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
 
     if format && "json".casecmp(format) == 0 then
@@ -770,6 +775,7 @@ END
 
   # Verify that a simple round trip, using the ESB dependency, works.
   get '/status/check.?:format?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
     status_hash = check_esb(format)
     if format && "json".casecmp(format) == 0 then
@@ -788,6 +794,7 @@ END
   end
 
   get '/status/dependencies.?:format?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
     config_hash = settings.latte_config
     app_hash = Hash.new
@@ -853,8 +860,10 @@ END
   ### Return json array of the course objects for this user to the UI.  Currently if you don't
   ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
     logger.debug "REQUEST: /courses start"
-    termid = params[:TERMID]
+    termid = html_escape(params[:TERMID])
 
     if format && "json".casecmp(format).zero?
       content_type :json
@@ -866,9 +875,7 @@ END
         return ""
       end
     else
-      response.status = 400
-      logger.debug "REQUEST: /courses bad format return"
-      return "format missing or not supported: [#{format}]"
+      return bad_format_error(response, "/courses request: bad format", format)
     end
 
     course_data.value_as_json
@@ -887,7 +894,8 @@ END
 
   ## ask for terms for a specific person.
   get "/terms/:userid.?:format?" do |userid, format|
-
+    userid = html_escape(userid)
+    format = html_escape(format)
     logger.info "terms"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
@@ -898,8 +906,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/terms request: bad format", format)
     end
 
     termList = dataProviderTerms(userid)
@@ -918,7 +925,8 @@ END
   ## Here is the request for a specific user.
   # get all the results into ruby data structures then convert the whole thing to json
   get "/todolms/:userid.?:format?" do |userid, format|
-
+    userid = html_escape(userid)
+    format = html_escape(format)
     ### TODO: have this loop through the configured set of providers
     ### TODO: and assemble the results of the URL REST calls into the object to return.
     ### TODO: Each configured provider should have a url route.  Maybe able to
@@ -960,7 +968,9 @@ END
 
   ### generic version?
   get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
-
+    userid = html_escape(userid)
+    lms = html_escape(lms)
+    format = html_escape(format)
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
@@ -971,8 +981,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms request: bad format", format)
     end
 
     todolmsList = dataProviderToDoLMS(userid, lms)
@@ -984,7 +993,8 @@ END
   ### maybe this can be generic enough to call single data provider with variable lms value
   ## ask for the LMS to get ctools information for a specific person.
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
-
+    userid = html_escape(userid)
+    format = html_escape(format)
     #logger.debug "#{__method__}: #{__LINE__}:
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools"
 
@@ -996,8 +1006,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms ctools request: bad format", format)
     end
 
     todolmsList = dataProviderToDoCToolsLMS(userid)
@@ -1008,6 +1017,8 @@ END
 
   ### Ask for past CTools assignments.
   get "/todolms/:userid/ctoolspast.?:format?" do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast"
 
@@ -1019,8 +1030,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms ctoolspast bad format", format)
     end
 
     todolmsList = dataProviderToDoCToolsPastLMS(userid)
@@ -1031,6 +1041,8 @@ END
 
   ## ask for the LMS to get canvas information for a specific person.
   get "/todolms/:userid/canvas.?:format?" do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas"
 
@@ -1042,8 +1054,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms canvas bad format", format)
     end
 
     todolmsList = dataProviderToDoCanvasLMS(userid)
@@ -1053,6 +1064,8 @@ END
 
   ## ask for the LMS to get mneme information for a specific person.
   get "/todolms/:userid/mneme.?:format?" do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme"
 
@@ -1064,8 +1077,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms mnene bad format", format)
     end
 
     todolmsList = dataProviderToDoMnemeLMS(userid)
@@ -1087,6 +1099,10 @@ END
 
   # This recognizes only 1 level of directory and optional file under /external
   get '/external/?:directory?/?:file_name?' do |directory, file_name|
+
+    directory = html_escape(directory)
+    file_name = html_escape(file_name)
+
     er = dynamic_hash[:external_resources]
     logger.debug "request: external/#{directory}/#{file_name}"
 
