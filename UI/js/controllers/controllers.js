@@ -48,7 +48,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', '$ro
                                 $scope.shareCanvasTitles.push({ 'id': _.last(this.Link.split('/')), 'title': this.Title + ' ' + this.SectionNumber });
                             }
                         })
-                        Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas').then(function(data) {
+                        Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas.json').then(function(data) {
                             $scope.loadingSchedule = false;
                             if (data.status === 200) {
                                 $.each(data.data.Result, function() {
@@ -114,7 +114,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', '$ro
 
     $scope.scheduleErrors = [];
 
-    Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools').then(function(data) {
+    Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools.json').then(function(data) {
         $scope.loadingSchedule = false;
         if (data.status === 200) {
             $scope.schedule = data.data.Result.concat($scope.schedule);
@@ -126,7 +126,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', '$ro
             $scope.scheduleErrors.push({ 'status': data.status, 'message': 'Error getting upcoming assignments from CTools' });
         }
     });
-    Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast').then(function(data) {
+    Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast.json').then(function(data) {
         $scope.loadingSchedule = false;
         if (data.status === 200) {
             $scope.schedule = data.data.Result.concat($scope.schedule);
@@ -138,7 +138,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', '$ro
             $scope.scheduleErrors.push({ 'status': data.status, 'message': 'Error getting past assignments from CTools' });
         }
     });
-    Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme').then(function(data) {
+    Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme.json').then(function(data) {
         $scope.loadingSchedule = false;
         if (data.status === 200) {
             $scope.schedule = data.data.Result.concat($scope.schedule);
