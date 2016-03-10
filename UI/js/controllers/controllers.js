@@ -8,168 +8,161 @@
  * It adds the terms to the scope and binds them to the DOM
  * 
  */
-dashboardApp.controller('termsController', ['Courses', 'Terms', 'shareCanvas', '$rootScope', '$scope',  function (Courses, Terms, shareCanvas, $rootScope, $scope) {
-  $scope.selectedTerm = null;
-  $scope.terms = [];
- 
-  var termsUrl = 'terms';
-  //use the Terms factory as a promise. Add returned data to the scope
+dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', '$rootScope', '$scope', '$log', function(Courses, Terms, Schedule, $rootScope, $scope, $log) {
+    $scope.selectedTerm = null;
+    $scope.terms = [];
 
-  Terms.getTerms(termsUrl).then(function (data) {
-    if (data.failure) {
-      $scope.error  = $rootScope.lang.termFailure;
-    }
-    else {
-      // the ESB might return a single object rather than an array, turn it into an array
-      if (data.Result.length === undefined ){
-        data.Result = [].concat(data.Result);
-      }
-      if (data.Result.length !==0)  {
+    var termsUrl = 'terms';
+    //use the Terms factory as a promise. Add returned data to the scope
 
-        $scope.terms = data.Result;
-        $scope.$parent.term = data.Result[0].TermDescr;
-        $scope.$parent.shortDescription = data.Result[0].TermShortDescr;
-        $scope.$parent.termId = data.Result[0].TermCode;
+    Terms.getTerms(termsUrl).then(function(data) {
+        if (data.failure) {
+            $scope.error = $rootScope.lang.termFailure;
+        } else {
+            // the ESB might return a single object rather than an array, turn it into an array
+            if (data.Result.length === undefined) {
+                data.Result = [].concat(data.Result);
+            }
+            if (data.Result.length !== 0) {
 
-        $scope.courses = [];
-        $scope.loading = true;
-        var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
-      //use the Courses factory as a promise. Add returned data to the scope.
+                $scope.terms = data.Result;
+                $scope.$parent.term = data.Result[0].TermDescr;
+                $scope.$parent.shortDescription = data.Result[0].TermShortDescr;
+                $scope.$parent.termId = data.Result[0].TermCode;
 
-        Courses.getCourses(url).then(function (data) {
-          if (data.failure) {
-            $scope.courses.errors = data;
-            $scope.loading = false;
-          } else {
-            shareCanvas.setCanvasArray(extractIds(data));
-            $scope.courses = data;
-            $scope.loading = false;
-          }
-          $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
-        });
-      } else {
-        $scope.$parent.term  = 'You do not seem to have courses in any terms we know of.';
-      }
-    }    
-  });
+                $scope.courses = [];
+                $scope.loading = true;
+                var url = 'courses/' + $rootScope.user + '.json?TERMID=' + $scope.$parent.termId;
+                //use the Courses factory as a promise. Add returned data to the scope.
 
-  //Handler to change the term and retrieve the term's courses, using Course factory as a promise
+                Courses.getCourses(url).then(function(data) {
+                    if (data.failure) {
+                        $scope.courses.errors = data;
+                        $scope.loading = false;
+                    } else {
+                        $scope.courses = data;
+                        $scope.shareCanvasTitles = [];
+                        //shareCanvas.setCanvasArray(extractIds(data));
+                        $.each($scope.courses, function() {
+                            if (this.source = 'Canvas' && this.Link) {
+                                $scope.shareCanvasTitles.push({ 'id': _.last(this.Link.split('/')), 'title': this.Title + ' ' + this.SectionNumber });
+                            }
+                        })
+                        Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas.json').then(function(data) {
+                            $scope.loadingSchedule = false;
+                            if (data.status === 200) {
+                                $.each(data.data.Result, function() {
+                                    var thisId = _.last(this.context.split('_'));
+                                    this.context = null;
+                                    var thisContext = _.findWhere($scope.shareCanvasTitles, { id: thisId });
 
-  $scope.getTerm = function (termId, termName, shortDescription) {
-    $scope.loading = true;
-    $scope.courses = [];
-    $scope.$parent.term = termName;
-    $scope.$parent.shortDescription = shortDescription;
-    
-    var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
+                                    if (thisContext) {
+                                        this.context = thisContext.title;
+                                    } else {
+                                        this.context = null;
+                                    }
+                                });
 
-    Courses.getCourses(url).then(function (data) {
-      if (data.failure) {
-        $scope.courses.errors = data;
-        $scope.loading = false;
-      } else {
-          $scope.courses = data;
-          $scope.loading = false;
-      }
+                                $scope.schedule = data.data.Result.concat($scope.schedule);
+                            } else {
+                                $scope.scheduleErrors.push({ 'status': data.status, 'message': 'Error getting upcoming assignments from Canvas' });
+                            }
+                        });
+                        $scope.loading = false;
+                    }
+                    $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
+                });
+            } else {
+                $scope.$parent.term = 'You do not seem to have courses in any terms we know of.';
+            }
+        }
     });
 
-  };
+    //Handler to change the term and retrieve the term's courses, using Course factory as a promise
 
-}]);
+    $scope.getTerm = function(termId, termName, shortDescription) {
+        $scope.loading = true;
+        $scope.courses = [];
+        $scope.$parent.term = termName;
+        $scope.$parent.shortDescription = shortDescription;
 
+        var url = 'courses/' + $rootScope.user + '.json' + '?TERMID=' + termId;
 
- /**
-  * Schedule controller
-  */
+        Courses.getCourses(url).then(function(data) {
+            if (data.failure) {
+                $scope.courses.errors = data;
+                $scope.loading = false;
+            } else {
+                $scope.courses = data;
+                $scope.loading = false;
+            }
+        });
+    };
 
-dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scope', '$rootScope', function(Schedule, shareCanvas, $scope, $rootScope) {
-  $scope.loadingSchedule = true;
-  $scope.schedule =[];
-  $scope.schedule_time_options = [{
-     name: 'Due last 7 days',
-     value: 'overdue'
-  }, {
-     name: 'Due today',
-     value: 'today'
-  }, {
-     name: 'Next 7 days',
-     value: 'week'
-  }];
+    $scope.loadingSchedule = true;
+    $scope.schedule = [];
+    $scope.schedule_time_options = [{
+        name: 'Due last 7 days',
+        value: 'overdue'
+    }, {
+        name: 'Due today',
+        value: 'today'
+    }, {
+        name: 'Next 7 days',
+        value: 'week'
+    }];
 
-  $scope.scheduleErrors=[];
+    $scope.scheduleErrors = [];
 
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools').then(function(data) {
-    $scope.loadingSchedule = false;
-    if(data.status ===200){
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
-      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
-    } else {
-      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from CTools'});
-    }
-  });
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast').then(function(data) {
-    $scope.loadingSchedule = false;
-    if(data.status ===200){
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
-      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
-    } else {
-      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting past assignments from CTools'});
-    }
-  });
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme').then(function(data) {
-    $scope.loadingSchedule = false;
-    if(data.status ===200){
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-    } else {
-      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting Test Center items from CTools'});
-    }
-  });
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas').then(function(data) {
-    $scope.loadingSchedule = false;
-    if(data.status ===200){
-      $.each(data.data.Result, function() {
-        if(this.contextLMS === 'canvas'){
-          this.context = null;
+    Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools.json').then(function(data) {
+        $scope.loadingSchedule = false;
+        if (data.status === 200) {
+            $scope.schedule = data.data.Result.concat($scope.schedule);
+            // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
+            $scope.schedule = _.uniq($scope.schedule, false, function(s) {
+                return s.link;
+            });
+        } else {
+            $scope.scheduleErrors.push({ 'status': data.status, 'message': 'Error getting upcoming assignments from CTools' });
         }
-      });
-      var canvasArray = shareCanvas.getCanvasArray();
-      $.each(data.data.Result, function() {
-          var thisId = _.last(this.contextUrl.split('/'));
-          var thisContext = _.findWhere(canvasArray, {id: thisId});
-          if(thisContext){
-            this.context = thisContext.title;
-          }
-          else {
-            this.context = null;
-          }
-      });
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-    } else {
-      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from Canvas'});
-    }
-  });
+    });
+    Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast.json').then(function(data) {
+        $scope.loadingSchedule = false;
+        if (data.status === 200) {
+            $scope.schedule = data.data.Result.concat($scope.schedule);
+            // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
+            $scope.schedule = _.uniq($scope.schedule, false, function(s) {
+                return s.link;
+            });
+        } else {
+            $scope.scheduleErrors.push({ 'status': data.status, 'message': 'Error getting past assignments from CTools' });
+        }
+    });
+    Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme.json').then(function(data) {
+        $scope.loadingSchedule = false;
+        if (data.status === 200) {
+            $scope.schedule = data.data.Result.concat($scope.schedule);
+        } else {
+            $scope.scheduleErrors.push({ 'status': data.status, 'message': 'Error getting Test Center items from CTools' });
+        }
+    });
 
     $scope.schedule_time_options = [{
-       name: 'Due last 7 days',
-       value: 'overdue'
+        name: 'Due last 7 days',
+        value: 'overdue'
     }, {
-       name: 'Due today',
-       value: 'today'
+        name: 'Due today',
+        value: 'today'
     }, {
-       name: 'Next 7 days',
-       value: 'week'
+        name: 'Next 7 days',
+        value: 'week'
     }];
 
 
     $scope.showWhen = 'today';
 
     $scope.setWhen = function(when) {
-       $scope.showWhen = when;
-       $('#schedule .itemList').attr('tabindex',-1).focus();
+        $scope.showWhen = when;
+        $('#schedule .itemList').attr('tabindex', -1).focus();
     };
-
-
-
 }]);
