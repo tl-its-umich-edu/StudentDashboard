@@ -83,11 +83,11 @@ module DataProvider
   # Call the right source of specific todo data. Merging in handled in main module.
   def dataProviderToDoLMS(uniqname, lms)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}] session: [#{session.inspect}]"
 
     return dataProviderToDoCToolsLMS(uniqname) if lms == 'ctools'
     return dataProviderToDoCToolsPastLMS(uniqname) if lms == 'ctoolspast'
-    return dataProviderToDoCanvasLMS(uniqname) if lms == 'canvas'
+    return dataProviderToDoCanvasLMS(uniqname,session[:canvas_courses]) if lms == 'canvas'
     return dataProviderToDoMnemeLMS(uniqname) if lms == 'mneme'
   end
 
@@ -153,9 +153,9 @@ module DataProvider
 
 
 
-  def dataProviderToDoCanvasLMS(uniqname)
+  def dataProviderToDoCanvasLMS(uniqname,canvas_courses)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}:  uniqname: #{uniqname}"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}:  uniqname: #{uniqname} canvas_courses: #{canvas_courses.inspect}"
 
     dataProviderInit
 
@@ -164,7 +164,7 @@ module DataProvider
     unless @canvasHash[:useToDoLMSProvider].nil?
       logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
 
-      raw_todos = @canvasHash[:ToDoLMS].(uniqname)
+      raw_todos = @canvasHash[:ToDoLMS].(uniqname,canvas_courses)
       # TODO: check if the wrapper status is ok
       # now strip off the wrapper
       result = raw_todos.result

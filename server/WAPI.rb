@@ -113,7 +113,7 @@ class WAPI
       json_response = JSON.parse(response)
 
       ## json_response is a JSON object
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb parsed response "+json_response.inspect
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb response as json"+JSON.generate(json_response)
 
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
@@ -153,7 +153,7 @@ class WAPI
   def dump_json_object(json_response, response)
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: after initial parse"
     logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: response.code: "+json_response[response.code].to_s
-    json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
+    #json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
   end
 
   ## Figure out the response status code to return.  It might be from the response body or from the RestClient response.

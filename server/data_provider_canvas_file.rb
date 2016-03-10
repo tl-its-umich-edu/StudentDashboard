@@ -43,18 +43,18 @@ module DataProviderCanvasFile
     @canvasHash
   end
 
-  #  <canvas server>/api/v1/users/self/upcoming_events
-  # actually call out to canvas and return the value.  Caller will reformat if necessary.
-  def canvasESBToDoLMS(uniqname, security_file, esb_application)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
-    logger.debug "##{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
-
-    r = @canvasESB_w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:#{uniqname}"
-
-    canvas_body = r.result
-    canvas_body_ruby = JSON.parse canvas_body
-
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from canvas esb", canvas_body_ruby)
-  end
+  # #  <canvas server>/api/v1/users/self/upcoming_events
+  # # actually call out to canvas and return the value.  Caller will reformat if necessary.
+  # def canvasESBToDoLMS(uniqname, security_file, esb_application)
+  #   logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
+  #   logger.debug "##{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
+  #
+  #   r = @canvasESB_w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:#{uniqname}"
+  #
+  #   canvas_body = r.result
+  #   canvas_body_ruby = JSON.parse canvas_body
+  #
+  #   return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from canvas esb", canvas_body_ruby)
+  # end
 
 end
