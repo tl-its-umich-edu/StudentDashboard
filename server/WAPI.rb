@@ -14,7 +14,6 @@
 
 require 'base64'
 require 'rest-client'
-#require 'nokogiri'
 require "link_header"
 require_relative './Logging'
 require_relative './WAPI_result_wrapper'
