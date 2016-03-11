@@ -6,6 +6,7 @@ gem 'rack'
 gem 'rack-protection'
 gem 'rest-client'
 gem 'net-ldap'
+gem 'link_header'
 gem 'rake'
 #gem 'selenium-webdriver'
 group :development do
