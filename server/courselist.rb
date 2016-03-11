@@ -1,9 +1,4 @@
 ## These lines make the required modules available.
-#require File.expand_path(File.dirname(__FILE__) + '/data_provider_esb.rb')
-#require File.expand_path(File.dirname(__FILE__) + '/data_provider_file.rb')
-
-### Simple rest server for SD data.
-### This version will also server up the HTML page if no specific page is requested.
 
 ### Configuration will be read in from /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml file if available
 ### or from ./server/local/studentdashboard.yml in the build if necessary.
@@ -14,6 +9,8 @@ require 'sinatra'
 require 'json'
 require 'slim'
 require 'yaml'
+require 'tilt/erb'
+require 'erb'
 
 require_relative 'stopwatch'
 require_relative 'WAPI'
@@ -24,6 +21,7 @@ require_relative 'external_resources_file'
 require_relative 'OptionsParse'
 
 include Logging
+include ERB::Util
 
 class CourseList < Sinatra::Base
   include DataProvider
@@ -131,6 +129,14 @@ class CourseList < Sinatra::Base
   # initial default
   config_hash[:use_log_level] = "DEBUG"
 
+  # configuration settings for the canvas calender_events api call
+  # Someday make the string vs symbol keys consistent everywhere.
+  config_hash[:canvas_calendar_events] = {
+      'max_results_per_page' => 100,
+      'previous_days' => 7,
+      'next_days' => 8
+  }
+
   ## api docs
   config_hash[:apidoc] = <<END
 
@@ -173,6 +179,20 @@ END
       logger.info "local_config_yml: found file: [#{file_name}]"
       YAML.load_file(file_name)
 
+    end
+
+    # This has it's own separate unit test file as the data can be complicated.
+    # get list of hash values for this key in nested hashes in mixed array / hash data structure.
+    def self.getValuesForKey(key, obj)
+      values = [] # local to this invocation.
+      case obj
+        when Array # check out the elements in the array
+          values = obj.flat_map { |o| self.getValuesForKey(key, o) }
+        when Hash # remember value if key is right, for other keys recurse on value.
+          obj.each_pair { |k, v| values.push(k === key ? v : self.getValuesForKey(key, v)) }
+          values.flatten! # get rid of any nested arrays
+      end
+      values
     end
 
   end
@@ -319,6 +339,10 @@ END
 
     config_hash[:default_term] = external_config['default_term'] || config_hash[:default_term]
 
+    logger.debug "external_config: canvas_calendar_events: #{external_config['canvas_calendar_events']}"
+    config_hash[:canvas_calendar_events] = external_config['canvas_calendar_events'] || config_hash[:canvas_calendar_events]
+    logger.debug "config_hash: canvas_calendar_events: #{config_hash[:canvas_calendar_events]}"
+
     # set containing directory for (most of the) erb files
     set :views, "#{config_hash[:BASE_DIR]}/UI/views"
 
@@ -435,7 +459,7 @@ END
 
       config_hash = settings.latte_config
       # See if there is a candidate to use as authenticated userid name.
-      uniqname = params['UNIQNAME']
+      uniqname = html_escape(params['UNIQNAME'])
       logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
 
       # don't reset userid if don't have a name to reset it to.
@@ -449,6 +473,7 @@ END
 
       logger.debug "resetting remote user"
       # put in session to be available for internal calls to REST api
+      #uniqname has been escaped above
       session[:remote_user]=uniqname
       request.env['REMOTE_USER']=uniqname
 
@@ -503,6 +528,13 @@ END
 
   ## Add some class level helper methods.
   helpers do
+
+    # assemble context codes to specify the set of courses.  Explicit method is required since RestClient
+    # doesn't correctly deal with multiple parameters with same name as yet.
+    ## could generalize this to pass in prefix.
+    def self.course_list_string(courses)
+      courses.inject("") { |result, course| result << "&context_codes[]=course_#{course}" }
+    end
 
     # This method checks to see if the request is being made only for data for the stated userid.
     # It returns true if the request is NOT permitted.  It is phrased as a veto
@@ -574,6 +606,14 @@ END
       nil
     end
 
+    ### Standard error message for bad request format.  It prevents cross site scripting.
+    def bad_format_error(response, msg, format)
+      response.status = 400
+      logger.debug msg
+      erb "format missing or not supported: #{html_escape(format)}"
+    end
+
+
   end
 
   helpers do
@@ -629,10 +669,6 @@ END
 
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
-
-  #before "*" do
-  #logger.debug "upfront request: "+request.inspect
-  #end
 
   # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
   before /\/self(\Z|(\/|\/[\w\/]+)?(\.\w+)?)$/ do
@@ -726,12 +762,19 @@ END
     halt 403 if vetoResult == true
   end
 
+  ################# print canvas courses for user for debugging
+  before "*" do
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses: #{session[:canvas_courses]}"
+  end
+  ##################
+
   ######################################
   ########### STATUS URLS ##############
   ######################################
   # top level request for status information and urls
 
   get '/status.?:format?/?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
     format.downcase!
 
@@ -744,7 +787,6 @@ END
     # set default template and content type
     content_type :html
     template = :'status.html'
-
     # override default if appropriate
     if ('json'.eql? format) then
       content_type :json
@@ -757,6 +799,7 @@ END
 
   # Trivial request to verify that the server can respond.
   get '/status/ping.?:format?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
 
     if format && "json".casecmp(format) == 0 then
@@ -770,6 +813,7 @@ END
 
   # Verify that a simple round trip, using the ESB dependency, works.
   get '/status/check.?:format?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
     status_hash = check_esb(format)
     if format && "json".casecmp(format) == 0 then
@@ -788,6 +832,7 @@ END
   end
 
   get '/status/dependencies.?:format?' do |format|
+    format = html_escape(format)
     format = 'html' unless (format)
     config_hash = settings.latte_config
     app_hash = Hash.new
@@ -853,23 +898,33 @@ END
   ### Return json array of the course objects for this user to the UI.  Currently if you don't
   ### specify the json suffix it is an error.
   get '/courses/:userid.?:format?' do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
     logger.debug "REQUEST: /courses start"
-    termid = params[:TERMID]
+    termid = html_escape(params[:TERMID])
 
     if format && "json".casecmp(format).zero?
       content_type :json
 
       course_data= dataProviderCourse(userid, termid)
       if "404".casecmp(course_data.meta_status.to_s).zero?
-        logger.info "courselist.rb: #{__LINE__}: returning 404 for missing file: userid: #{userid} termid: #{termid}"
+        logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}:returning 404 for missing file: userid: #{userid} termid: #{termid}"
         response.status = 404
         return ""
       end
     else
-      response.status = 400
-      logger.debug "REQUEST: /courses bad format return"
-      return "format missing or not supported: [#{format}]"
+      return bad_format_error(response, "/courses request: bad format", format)
     end
+
+    #extract course ids from canvas course links
+    # could the pattern be a constant?
+    p = Regexp.new(/instructure.com\/courses\/(\d+)/)
+    # get the course link urls, extract course number (if canvas), remove nil from non-matches.  Push(nil) is added
+    # to make sure there is at least 1 nil.
+    canvas_courses = CourseList.getValuesForKey('Link', course_data.value).map { |link| p.match(link); $1 }.push(nil).compact
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses numbers: #{canvas_courses.inspect}"
+    session[:canvas_courses] = canvas_courses.uniq
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses set session: #{session.inspect}"
 
     course_data.value_as_json
   end
@@ -887,7 +942,8 @@ END
 
   ## ask for terms for a specific person.
   get "/terms/:userid.?:format?" do |userid, format|
-
+    userid = html_escape(userid)
+    format = html_escape(format)
     logger.info "terms"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
@@ -898,8 +954,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/terms request: bad format", format)
     end
 
     termList = dataProviderTerms(userid)
@@ -918,7 +973,8 @@ END
   ## Here is the request for a specific user.
   # get all the results into ruby data structures then convert the whole thing to json
   get "/todolms/:userid.?:format?" do |userid, format|
-
+    userid = html_escape(userid)
+    format = html_escape(format)
     ### TODO: have this loop through the configured set of providers
     ### TODO: and assemble the results of the URL REST calls into the object to return.
     ### TODO: Each configured provider should have a url route.  Maybe able to
@@ -960,7 +1016,9 @@ END
 
   ### generic version?
   get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
-
+    userid = html_escape(userid)
+    lms = html_escape(lms)
+    format = html_escape(format)
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
@@ -971,8 +1029,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms request: bad format", format)
     end
 
     todolmsList = dataProviderToDoLMS(userid, lms)
@@ -984,7 +1041,8 @@ END
   ### maybe this can be generic enough to call single data provider with variable lms value
   ## ask for the LMS to get ctools information for a specific person.
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
-
+    userid = html_escape(userid)
+    format = html_escape(format)
     #logger.debug "#{__method__}: #{__LINE__}:
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools"
 
@@ -996,8 +1054,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms ctools request: bad format", format)
     end
 
     todolmsList = dataProviderToDoCToolsLMS(userid)
@@ -1008,6 +1065,8 @@ END
 
   ### Ask for past CTools assignments.
   get "/todolms/:userid/ctoolspast.?:format?" do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast"
 
@@ -1019,8 +1078,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms ctoolspast bad format", format)
     end
 
     todolmsList = dataProviderToDoCToolsPastLMS(userid)
@@ -1031,8 +1089,10 @@ END
 
   ## ask for the LMS to get canvas information for a specific person.
   get "/todolms/:userid/canvas.?:format?" do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
 
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -1042,17 +1102,19 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms canvas bad format", format)
     end
 
-    todolmsList = dataProviderToDoCanvasLMS(userid)
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: canvas_courses: from session: #{session[:canvas_courses].inspect}"
+    todolmsList = dataProviderToDoCanvasLMS(userid, session[:canvas_courses])
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
     todolmsList.value_as_json
   end
 
   ## ask for the LMS to get mneme information for a specific person.
   get "/todolms/:userid/mneme.?:format?" do |userid, format|
+    userid = html_escape(userid)
+    format = html_escape(format)
 
     logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme"
 
@@ -1064,8 +1126,7 @@ END
     if format && "json".casecmp(format).zero?
       content_type :json
     else
-      response.status = 400
-      return "format not supported: [#{format}]"
+      return bad_format_error(response, "/todolms mnene bad format", format)
     end
 
     todolmsList = dataProviderToDoMnemeLMS(userid)
@@ -1087,6 +1148,10 @@ END
 
   # This recognizes only 1 level of directory and optional file under /external
   get '/external/?:directory?/?:file_name?' do |directory, file_name|
+
+    directory = html_escape(directory)
+    file_name = html_escape(file_name)
+
     er = dynamic_hash[:external_resources]
     logger.debug "request: external/#{directory}/#{file_name}"
 

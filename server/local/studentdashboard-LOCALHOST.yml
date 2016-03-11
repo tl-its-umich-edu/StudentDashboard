@@ -8,6 +8,7 @@
 
 # Mpathways term / course information provider
 mpathways_application_name: SD-QA
+#mpathways_application_name: SD-QA-STUB
 # CTools data provider for dashboard and mneme assignment data
 ctools_http_application_name: CTQA-DIRECT
 canvas_esb_application_name: CANVAS-TL-QA
@@ -26,6 +27,12 @@ authn_wait_min: 0.01
 authn_wait_max: 0.03
 latte_admin_group: TL-Latte-admin-test
 use_log_level: DEBUG
+
+# Added explicitly so it is easy to override for testing
+#canvas_calendar_events:
+#    max_results_per_page: 10
+#    previous_days: 7
+#    next_days: 8
 
 ################### String replacements
 

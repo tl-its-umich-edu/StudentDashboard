@@ -1,12 +1,15 @@
 'use strict';
 /* global dashboardApp */
-dashboardApp.service('shareCanvas', [function () {
-    var canvasArray = [];
-    this.setCanvasArray = function(newArr) {
-       canvasArray = newArr;
-       return canvasArray;
-    };
-    this.getCanvasArray = function(){
-        return canvasArray;
-    };
-}]);
+
+dashboardApp.service('canvasShare',function($rootScope){
+  var service = {};
+  service.data = false;
+  service.sendData = function(data){
+      this.data = data;
+      $rootScope.$broadcast('canvas_shared');
+  };
+  service.getData = function(){
+    return this.data;
+  };
+  return service;
+});

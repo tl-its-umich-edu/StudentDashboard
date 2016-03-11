@@ -1,6 +1,6 @@
 'use strict';
 /* jshint  strict: true*/
-/* global $, dashboardApp, _, extractIds */
+/* global $, dashboardApp, _, moment*/
 
 
 /**
@@ -8,7 +8,7 @@
  * It adds the terms to the scope and binds them to the DOM
  * 
  */
-dashboardApp.controller('termsController', ['Courses', 'Terms', 'shareCanvas', '$rootScope', '$scope',  function (Courses, Terms, shareCanvas, $rootScope, $scope) {
+dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', 'canvasShare', '$rootScope', '$scope', '$log', function (Courses, Terms, Schedule, canvasShare, $rootScope, $scope, $log) {
   $scope.selectedTerm = null;
   $scope.terms = [];
  
@@ -41,16 +41,41 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'shareCanvas', '
             $scope.courses.errors = data;
             $scope.loading = false;
           } else {
-            shareCanvas.setCanvasArray(extractIds(data));
             $scope.courses = data;
             $scope.loading = false;
+            var shareArr = [];
+            $.each(data, function() {
+              if(this.Source ==='Canvas' && this.Link) {
+                var thisId = _.last(this.Link.split('/'));
+                var thisTitle = this.Title;
+                shareArr.push({'id': thisId, 'title':thisTitle})
+              }
+            });
+
+            Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas.json').then(function(data) {
+              if(data.status ===200){
+                $.each(data.data.Result, function() {
+                    var thisId = _.last(this.contextUrl.split('/'));
+                    var thisContext = _.findWhere(shareArr, {id: thisId});
+                    if(thisContext){
+                      this.context = thisContext.title;
+                    }
+                    else {
+                      this.context = null;
+                    }
+                });
+                canvasShare.sendData(data);
+              } else {
+                canvasShare.sendData({'status':data.status, 'message':'Error getting upcoming assignments from Canvas'});
+              }
+            });
           }
           $('.colHeader small').append($('<span id="done" class="sr-only">' + $scope.courses.length + ' courses </span>'));
         });
       } else {
         $scope.$parent.term  = 'You do not seem to have courses in any terms we know of.';
       }
-    }    
+    }
   });
 
   //Handler to change the term and retrieve the term's courses, using Course factory as a promise
@@ -82,7 +107,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'shareCanvas', '
   * Schedule controller
   */
 
-dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scope', '$rootScope', function(Schedule, shareCanvas, $scope, $rootScope) {
+dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scope', '$rootScope', '$log', function(Schedule, canvasShare, $scope, $rootScope, $log) {
   $scope.loadingSchedule = true;
   $scope.schedule =[];
   $scope.schedule_time_options = [{
@@ -98,8 +123,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scop
 
   $scope.scheduleErrors=[];
 
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools').then(function(data) {
-    $scope.loadingSchedule = false;
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools.json').then(function(data) {
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
       // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
@@ -108,8 +132,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scop
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from CTools'});
     }
   });
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast').then(function(data) {
-    $scope.loadingSchedule = false;
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast.json').then(function(data) {
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
       // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
@@ -118,38 +141,25 @@ dashboardApp.controller('scheduleController', ['Schedule', 'shareCanvas', '$scop
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting past assignments from CTools'});
     }
   });
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme').then(function(data) {
-    $scope.loadingSchedule = false;
+  Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme.json').then(function(data) {
     if(data.status ===200){
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting Test Center items from CTools'});
     }
   });
-  Schedule.getSchedule('/todolms/' + $rootScope.user + '/canvas').then(function(data) {
+
+  $scope.$on('canvas_shared',function(){
     $scope.loadingSchedule = false;
-    if(data.status ===200){
-      $.each(data.data.Result, function() {
-        if(this.contextLMS === 'canvas'){
-          this.context = null;
-        }
-      });
-      var canvasArray = shareCanvas.getCanvasArray();
-      $.each(data.data.Result, function() {
-          var thisId = _.last(this.contextUrl.split('/'));
-          var thisContext = _.findWhere(canvasArray, {id: thisId});
-          if(thisContext){
-            this.context = thisContext.title;
-          }
-          else {
-            this.context = null;
-          }
-      });
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-    } else {
-      $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from Canvas'});
+    var canvasArray =  canvasShare.getData();
+    if(canvasArray.status ===200){
+      $scope.schedule = canvasArray.data.Result.concat($scope.schedule);
+    }
+    else {
+      $scope.scheduleErrors.push({'status':canvasArray.status, 'message':'Error getting upcoming assignments from Canvas'});
     }
   });
+  
 
     $scope.schedule_time_options = [{
        name: 'Due last 7 days',

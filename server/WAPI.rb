@@ -14,6 +14,7 @@
 
 require 'base64'
 require 'rest-client'
+require "link_header"
 require_relative './Logging'
 require_relative './WAPI_result_wrapper'
 require_relative './stopwatch'
@@ -109,11 +110,13 @@ class WAPI
                                       :accept => :json,
                                       :verify_ssl => true}
 
+      process_link_header(response)
+
       ## try to parse as json.  If can't do that generate an error
       json_response = JSON.parse(response)
 
       ## json_response is a JSON object
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb parsed response "+json_response.inspect
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb response as json"+JSON.generate(json_response)
 
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
@@ -149,11 +152,56 @@ class WAPI
     wrapped_response
   end
 
+  ### Log information if a query returns link headers indicating there is more data on another page.
+  ### Currently we only log this information.  We don't go get the additional information.
+
+  def process_link_header(response)
+    ### If there is a 'next' link the headers link section print it along with information for a rough estimate
+    ### of the total number of entries.
+
+    linkheader = LinkHeader.parse(response.headers[:link]).to_a
+
+    next_link, last_link = nil, nil
+
+    #### extract the interesting header links
+    linkheader.each { |link|
+      next_link ||= header_link_for_rel(link, 'next')
+      last_link ||= header_link_for_rel(link, 'last')
+    }
+
+    # If there is more data on another page log that.
+    if !next_link.nil?
+      prefix = ""
+      # Log last_page and per_page values so can get rough estimate of total number of entries for query.
+      if !last_link.nil?
+        # Note: We use the page/per_page information because it appears in the URL, but that isn't a standard
+        # and it might be removed at some point.
+        p = Regexp.new(/page=(\d+)&per_page=(\d+)/)
+        p.match(last_link)
+        last_page, per_page = $1, $2
+        prefix = "last_page: #{last_page} page_size: #{per_page} "
+      end
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: pagination: #{prefix} next_link: #{next_link}"
+    end
+
+  end
+
+  # Extract URL for this link entry if it is the desired link type.
+  def header_link_for_rel(link, desired)
+    # This looks way down in the link header structure to extract the type of the link relationship.
+    link_relationship = link[1][0][1]
+    if link_relationship == desired then
+      # this returns the actual url of the link
+      return link[0]
+    end
+    nil
+  end
+
   ## detailed dump of response object
   def dump_json_object(json_response, response)
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: after initial parse"
     logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: response.code: "+json_response[response.code].to_s
-    json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
+    #json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
   end
 
   ## Figure out the response status code to return.  It might be from the response body or from the RestClient response.
@@ -174,9 +222,9 @@ class WAPI
   def standardize_json(j, response)
     # if there is a nested response code then make sure it is an integer.
     begin
-      if  ( !j.kind_of?(Array) && j.has_key?('responseCode') )
+      if (!j.kind_of?(Array) && j.has_key?('responseCode'))
         # returned value may have a response code element that needs to be converted to an integer
-          j['responseCode'] = j['responseCode'].to_i
+        j['responseCode'] = j['responseCode'].to_i
       end
     rescue => err
       logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: conversion error "+j.inspect
