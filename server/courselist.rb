@@ -129,6 +129,14 @@ class CourseList < Sinatra::Base
   # initial default
   config_hash[:use_log_level] = "DEBUG"
 
+  # configuration settings for the canvas calender_events api call
+  # Someday make the string vs symbol keys consistent everywhere.
+  config_hash[:canvas_calendar_events] = {
+      'max_results_per_page' => 100,
+      'previous_days' => 7,
+      'next_days' => 8
+  }
+
   ## api docs
   config_hash[:apidoc] = <<END
 
@@ -330,6 +338,10 @@ END
     config_hash[:admin] = external_config['admin'] || []
 
     config_hash[:default_term] = external_config['default_term'] || config_hash[:default_term]
+
+    logger.debug "external_config: canvas_calendar_events: #{external_config['canvas_calendar_events']}"
+    config_hash[:canvas_calendar_events] = external_config['canvas_calendar_events'] || config_hash[:canvas_calendar_events]
+    logger.debug "config_hash: canvas_calendar_events: #{config_hash[:canvas_calendar_events]}"
 
     # set containing directory for (most of the) erb files
     set :views, "#{config_hash[:BASE_DIR]}/UI/views"
@@ -1094,7 +1106,7 @@ END
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: canvas_courses: from session: #{session[:canvas_courses].inspect}"
-    todolmsList = dataProviderToDoCanvasLMS(userid,session[:canvas_courses])
+    todolmsList = dataProviderToDoCanvasLMS(userid, session[:canvas_courses])
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
     todolmsList.value_as_json
   end
