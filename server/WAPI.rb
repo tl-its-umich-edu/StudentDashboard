@@ -188,8 +188,10 @@ class WAPI
 
   # Extract URL for this link entry if it is the desired link type.
   def header_link_for_rel(link, desired)
+    # This looks way down in the link header structure to extract the type of the link relationship.
     link_relationship = link[1][0][1]
     if link_relationship == desired then
+      # this returns the actual url of the link
       return link[0]
     end
     nil
