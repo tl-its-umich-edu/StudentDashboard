@@ -87,7 +87,7 @@ module DataProvider
 
     return dataProviderToDoCToolsLMS(uniqname) if lms == 'ctools'
     return dataProviderToDoCToolsPastLMS(uniqname) if lms == 'ctoolspast'
-    return dataProviderToDoCanvasLMS(uniqname,session[:canvas_courses]) if lms == 'canvas'
+    return dataProviderToDoCanvasLMS(uniqname, session[:canvas_courses]) if lms == 'canvas'
     return dataProviderToDoMnemeLMS(uniqname) if lms == 'mneme'
   end
 
@@ -152,8 +152,7 @@ module DataProvider
   end
 
 
-
-  def dataProviderToDoCanvasLMS(uniqname,canvas_courses)
+  def dataProviderToDoCanvasLMS(uniqname, canvas_courses)
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}:  uniqname: #{uniqname} canvas_courses: #{canvas_courses.inspect}"
 
@@ -164,18 +163,19 @@ module DataProvider
     unless @canvasHash[:useToDoLMSProvider].nil?
       logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
 
-      raw_todos = @canvasHash[:ToDoLMS].(uniqname,canvas_courses)
+      raw_todos = @canvasHash[:ToDoLMS].(uniqname, canvas_courses)
       # TODO: check if the wrapper status is ok
       # now strip off the wrapper
       result = raw_todos.result
       # TODO: do the reformatting
       # reformat the result for the Dash UI format.
       todos = @canvasHash[:formatResponse].(result.to_json).toDoLms
+      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas todos: #{todos.inspect}"
       # rewrap the formatted result.
       todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap Canvas API result", todos)
     end
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas: todos.value_as_json: #{todos.value_as_json}"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas: number of canvas assignments: #{todos.result.length}"
     logIfUnavailable(todos, "todolms: canvas: user: #{uniqname}")
 
     todos.value_as_json
@@ -232,7 +232,7 @@ module DataProvider
   end
 
   def configureMPathwaysProvider(config_hash)
-    logger.error "@@@@@@@@@@@@@ must specify one MPathways data provider" unless verifyExactlyOneProvider(config_hash,[:data_provider_file_directory,:mpathways_application_name])
+    logger.error "@@@@@@@@@@@@@ must specify one MPathways data provider" unless verifyExactlyOneProvider(config_hash, [:data_provider_file_directory, :mpathways_application_name])
     configureFileProvider(config_hash) unless config_hash[:data_provider_file_directory].nil?
     configureEsbProvider(config_hash) unless config_hash[:mpathways_application_name].nil?
     #!config_hash[:data_provider_file_directory].nil? ? configureFileProvider(config_hash) : configureEsbProvider(config_hash)
@@ -241,7 +241,7 @@ module DataProvider
   ### Hide any decisions about which ctools connection method to use.
   def configureCToolsProvider(config_hash)
 
-    logger.error "@@@@@@@@@@@@@ must specify one CTools data provider" unless verifyExactlyOneProvider(config_hash,[:data_provider_file_directory,:ctools_http_application_name])
+    logger.error "@@@@@@@@@@@@@ must specify one CTools data provider" unless verifyExactlyOneProvider(config_hash, [:data_provider_file_directory, :ctools_http_application_name])
     configureCToolsFileProvider(config_hash) unless (config_hash[:data_provider_file_directory].nil?)
     configureCToolsHTTPProvider(config_hash) unless (config_hash[:ctools_http_application_name].nil?)
 
@@ -263,7 +263,7 @@ module DataProvider
 
   ### Hide any decisions about which canvas provider to use.
   def configureCanvasProvider(config_hash)
-    logger.error "@@@@@@@@@@@@@ must specify one canvas data provider" unless verifyExactlyOneProvider(config_hash,[:data_provider_file_directory,:canvas_esb_application_name,:canvas_http_application_name])
+    logger.error "@@@@@@@@@@@@@ must specify one canvas data provider" unless verifyExactlyOneProvider(config_hash, [:data_provider_file_directory, :canvas_esb_application_name, :canvas_http_application_name])
     configureCanvasFileProvider(config_hash) unless (config_hash[:data_provider_file_directory].nil?)
     configureCanvasESBProvider(config_hash) unless (config_hash[:canvas_esb_application_name].nil?)
     configureCanvasHTTPProvider(config_hash) unless (config_hash[:canvas_http_application_name].nil?)
@@ -368,11 +368,11 @@ module DataProvider
   end
 
   ## make sure there is just one provider specified for this data stream.
-  def verifyExactlyOneProvider(config_hash,possible_providers)
+  def verifyExactlyOneProvider(config_hash, possible_providers)
     if logger.debug then
-      possible_providers.each  {|provider_symbol| logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: possible provider: [#{provider_symbol.to_s}] value: [#{config_hash[provider_symbol].to_s}]"}
+      possible_providers.each { |provider_symbol| logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: possible provider: [#{provider_symbol.to_s}] value: [#{config_hash[provider_symbol].to_s}]" }
     end
-    return possible_providers.one?  {|provider_symbol| !config_hash[provider_symbol].nil? }
+    return possible_providers.one? { |provider_symbol| !config_hash[provider_symbol].nil? }
   end
 
 end

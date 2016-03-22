@@ -15,6 +15,7 @@ module DataProviderCanvasESB
     @canvasESB_w = ""
     @canvasESB_yml = ""
     @canvasESB_response = ""
+    @canvasCalendarEvents = nil
   end
 
   ## Make a WAPI connection object.
@@ -51,6 +52,14 @@ module DataProviderCanvasESB
   def initConfigureCanvasESBProvider(config_hash)
     security_file = config_hash[:security_file]
     application_name = config_hash[:canvas_esb_application_name]
+
+    if @canvas_calendar_events.nil?
+      @canvas_calendar_events = config_hash[:canvas_calendar_events]
+    end
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_calendar_events setup: #{@canvas_calendar_events.inspect}"
+
+
     logger.error "@@@@@@@@@@@@@@@@@@@@ need canvas_esb_application_name!" if application_name.nil?
     # This is hash with string replacement values.
     if !config_hash[application_name].nil? && !config_hash[application_name]['string-replace'].nil? then
@@ -76,22 +85,29 @@ module DataProviderCanvasESB
 
   def canvasAPICalendarEventsURL(uniqname, canvas_courses)
 
-    ## calculate a 15 day range around now for the assignment search (last week, today, next week)
+    ## calculate a multi day range around now for the assignment search (last week, today, next week).
+    ## Can override defaults (above) in the studentdashboard.yml file.
     ## API call would support specifying attributes to ignore if we deem that necessary at some point.
     ## https://canvas.instructure.com/doc/api/calendar_events.html
 
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvas_calendar_events: #{@canvas_calendar_events.inspect}"
+
+    # setup query parameters
     now = DateTime.now
-    start_date = now.prev_day(7)
-    end_date = now.next_day(8)
+    start_date = now.prev_day(@canvas_calendar_events['previous_days'])
+    end_date = now.next_day(@canvas_calendar_events['next_days'])
+
+    max_results_per_page = @canvas_calendar_events['max_results_per_page']
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: start: #{start_date} now: #{now} end: #{end_date}"
 
     request_url = "/users/self/calendar_events"
+
     request_parameters = {:params => {:as_user_id => "sis_login_id:#{uniqname}",
                                       :type => 'assignment',
                                       :start_date => start_date,
                                       :end_date => end_date,
-                                      :page_size => 100
+                                      :per_page => max_results_per_page
     }}
 
     # Generate url with query parameters.
@@ -110,7 +126,7 @@ module DataProviderCanvasESB
 
   #  <canvas server>/api/v1/users/self/calendar_events
   def canvasESBToDoLMS(uniqname, canvas_courses, security_file, esb_application)
-    canvas_courses ||=  []
+    canvas_courses ||= []
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses count: #{canvas_courses.length} canvas_courses: #{canvas_courses}"
