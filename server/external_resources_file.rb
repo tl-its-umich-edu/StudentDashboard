@@ -61,7 +61,7 @@ class ExternalResourcesFile
 
   private
   def getExternalResource(directory, file_name)
-    file_name.nil? ? getDirList(directory) : getFile("#{directory}/#{file_name}")
+    (file_name.nil? || file_name.length == 0) ? getDirList(directory) : getFile("#{directory}/#{file_name}")
   end
 
 end
