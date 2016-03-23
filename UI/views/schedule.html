@@ -17,8 +17,8 @@
                   </ul>
               </div>
           </div>
-        </div>  
-      </h3>    
+        </div>
+      </h3>
       <div ng-show="loadingSchedule" class="row loadingBox">
          <div class="spinner col-lg-2 col-md-2 col-xs-2">
          </div>
@@ -26,9 +26,11 @@
           Getting schedule info from CTools and Canvas...
          </div>
       </div>
+
       <div class="alert alert-info" ng-show="!filteredItems.length  && !loadingSchedule">
         <span ng-show="schedule.length !==0">{{showWhen | noItemsFoundForTime}}</span>
-        <span ng-show="schedule.length ===0">No items due in CTools or Canvas.</span>
+        <span ng-show="schedule.length ===0 && !termError">No items due in CTools or Canvas.</span>
+        <span ng-show="schedule.length ===0 && termError">{{lang.scheduleTermFailure}}</span>
       </div>
       <ul class="itemList">
           <li ng-repeat="item in filteredItems  = (schedule | filter:showWhen) | orderBy:'due_date_sort'" class="container-fluid" ng-hide="item.when !== showWhen">

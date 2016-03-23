@@ -17,7 +17,8 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', 'can
 
   Terms.getTerms(termsUrl).then(function (data) {
     if (data.failure) {
-      $scope.error  = $rootScope.lang.termFailure;
+      $scope.error  = true;
+      $rootScope.termError = true;
     }
     else {
       // the ESB might return a single object rather than an array, turn it into an array
