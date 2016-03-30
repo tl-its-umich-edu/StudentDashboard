@@ -38,13 +38,28 @@ class TestExternalResourcesFile < Minitest::Test
     assert_equal @erf.resources_base_directory, @resources_dir, "set external resources directory name correctly"
   end
 
-  def test_list_resources_top
+  def test_list_resources_top_nil
     parsed_file_list = JSON.parse(@erf.get_resource nil)
+    assert_equal 2,parsed_file_list.length,"list resources in top level directory"
+  end
+
+  def test_list_resources_top_empty_string
+    parsed_file_list = JSON.parse(@erf.get_resource "")
     assert_equal 2,parsed_file_list.length,"list resources in top level directory"
   end
 
   def test_list_resources_images
     parsed_file_list = JSON.parse(@erf.get_resource "image")
+    assert_equal 8,parsed_file_list.length,"list resources in images directory"
+  end
+
+  def test_list_resources_images_nil_file_name
+    parsed_file_list = JSON.parse(@erf.get_resource "image", nil)
+    assert_equal 8,parsed_file_list.length,"list resources in images directory"
+  end
+
+  def test_list_resources_images_empty_file_name
+    parsed_file_list = JSON.parse(@erf.get_resource "image", "")
     assert_equal 8,parsed_file_list.length,"list resources in images directory"
   end
 

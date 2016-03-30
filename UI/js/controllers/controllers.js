@@ -6,18 +6,19 @@
 /**
  * Terms controller - Angular dependencies are injected.
  * It adds the terms to the scope and binds them to the DOM
- * 
+ *
  */
 dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', 'canvasShare', '$rootScope', '$scope', '$log', function (Courses, Terms, Schedule, canvasShare, $rootScope, $scope, $log) {
   $scope.selectedTerm = null;
   $scope.terms = [];
- 
+
   var termsUrl = 'terms';
   //use the Terms factory as a promise. Add returned data to the scope
 
   Terms.getTerms(termsUrl).then(function (data) {
     if (data.failure) {
-      $scope.error  = $rootScope.lang.termFailure;
+      $scope.error  = true;
+      $rootScope.termError = true;
     }
     else {
       // the ESB might return a single object rather than an array, turn it into an array
@@ -85,7 +86,7 @@ dashboardApp.controller('termsController', ['Courses', 'Terms', 'Schedule', 'can
     $scope.courses = [];
     $scope.$parent.term = termName;
     $scope.$parent.shortDescription = shortDescription;
-    
+
     var url = 'courses/' + $rootScope.user + '.json'+ '?TERMID='+termId;
 
     Courses.getCourses(url).then(function (data) {
@@ -125,6 +126,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
 
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools.json').then(function(data) {
     if(data.status ===200){
+      $scope.loadingSchedule = false;
       $scope.schedule = data.data.Result.concat($scope.schedule);
       // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
       $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
@@ -134,6 +136,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
   });
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast.json').then(function(data) {
     if(data.status ===200){
+      $scope.loadingSchedule = false;
       $scope.schedule = data.data.Result.concat($scope.schedule);
       // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
       $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
@@ -143,6 +146,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
   });
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme.json').then(function(data) {
     if(data.status ===200){
+      $scope.loadingSchedule = false;
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting Test Center items from CTools'});
@@ -159,7 +163,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
       $scope.scheduleErrors.push({'status':canvasArray.status, 'message':'Error getting upcoming assignments from Canvas'});
     }
   });
-  
+
 
     $scope.schedule_time_options = [{
        name: 'Due last 7 days',
