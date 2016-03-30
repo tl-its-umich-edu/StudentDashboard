@@ -627,6 +627,22 @@ END
       logger.debug "#{__method__}: #{__LINE__}: #{new_url}: request_body_ruby: +++#{request_body_ruby.inspect}+++"
       request_body_ruby
     end
+
+    # Get the canvas courses from the list provided by mpathways.
+
+    def getCanvasCourseList(course_data, userid)
+      # could the regexp be a constant?
+      instructure_regexp = Regexp.new(/instructure.com\/courses\/(\d+)/)
+
+      # get the course link urls, extract course number (if canvas per regexp), remove nil from non-matches.
+      # Push(nil) is added to make sure there is at least 1 nil.
+
+      mpathways_canvas_courses = CourseList.getValuesForKey('Link', course_data.value).map { |link| instructure_regexp.match(link); $1 }
+                                     .push(nil).compact.sort.uniq
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: uniq mpathways_canvas_courses: #{mpathways_canvas_courses}"
+
+      mpathways_canvas_courses
+    end
   end
 
   helpers do
@@ -900,13 +916,13 @@ END
   get '/courses/:userid.?:format?' do |userid, format|
     userid = html_escape(userid)
     format = html_escape(format)
-    logger.debug "REQUEST: /courses start"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: /courses start"
     termid = html_escape(params[:TERMID])
 
     if format && "json".casecmp(format).zero?
       content_type :json
 
-      course_data= dataProviderCourse(userid, termid)
+      course_data = dataProviderCourse(userid, termid)
       if "404".casecmp(course_data.meta_status.to_s).zero?
         logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}:returning 404 for missing file: userid: #{userid} termid: #{termid}"
         response.status = 404
@@ -916,15 +932,9 @@ END
       return bad_format_error(response, "/courses request: bad format", format)
     end
 
-    #extract course ids from canvas course links
-    # could the pattern be a constant?
-    p = Regexp.new(/instructure.com\/courses\/(\d+)/)
-    # get the course link urls, extract course number (if canvas), remove nil from non-matches.  Push(nil) is added
-    # to make sure there is at least 1 nil.
-    canvas_courses = CourseList.getValuesForKey('Link', course_data.value).map { |link| p.match(link); $1 }.push(nil).compact
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses numbers: #{canvas_courses.inspect}"
-    session[:canvas_courses] = canvas_courses.uniq
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses set session: #{session.inspect}"
+    # As a by-product save the list of canvas course ids.
+    session[:canvas_courses] = getCanvasCourseList(course_data, userid)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: session: active canvas_courses list: #{session[:canvas_courses]}"
 
     course_data.value_as_json
   end
@@ -1019,7 +1029,7 @@ END
     userid = html_escape(userid)
     lms = html_escape(lms)
     format = html_escape(format)
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -1033,7 +1043,7 @@ END
     end
 
     todolmsList = dataProviderToDoLMS(userid, lms)
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
 
     todolmsList
   end
@@ -1043,7 +1053,7 @@ END
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
     userid = html_escape(userid)
     format = html_escape(format)
-    #logger.debug "#{__method__}: #{__LINE__}:
+
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
@@ -1105,7 +1115,7 @@ END
       return bad_format_error(response, "/todolms canvas bad format", format)
     end
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: canvas_courses: from session: #{session[:canvas_courses].inspect}"
+    ## rely on courses call to generate the set of canvas courses to use.
     todolmsList = dataProviderToDoCanvasLMS(userid, session[:canvas_courses])
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
     todolmsList.value_as_json

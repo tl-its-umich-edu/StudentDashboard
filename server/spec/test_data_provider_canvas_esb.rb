@@ -88,7 +88,7 @@ class TestDataProviderCanvasESB < MiniTest::Test
     result_as_string = r.result
     logger.debug "test_upcoming_events_studenta: result: "+result_as_string
     result_as_ruby = JSON.parse result_as_string
-    #logger.debug "test_upcoming_events_studenta: "+result_as_json.inspect
+
     logger.debug "test_upcoming_events_studenta: result_as_ruby: "+result_as_ruby.inspect
 
     assert_equal(9, result_as_ruby.length, "find some upcoming events")

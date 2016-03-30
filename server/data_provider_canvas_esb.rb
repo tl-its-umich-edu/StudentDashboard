@@ -75,7 +75,7 @@ module DataProviderCanvasESB
     @canvasHash = Hash.new if @canvasHash.nil?
 
     @canvasHash[:useToDoLMSProvider] = true
-    @canvasHash[:ToDoLMS] = Proc.new { |uniqname, canvas_courses| canvasESBToDoLMS(uniqname, canvas_courses, security_file, application_name) }
+    @canvasHash[:ToDoLMS] = Proc.new { |uniqname, canvas_courses| canvasESBToDoLMSClassByClass(uniqname, canvas_courses, security_file, application_name) }
     @canvasHash[:formatResponse] = Proc.new { |body| CanvasAPIResponse.new(body, stringReplace) }
 
     initCanvasESB security_file, application_name
@@ -124,38 +124,41 @@ module DataProviderCanvasESB
     full_request_url
   end
 
-  #  <canvas server>/api/v1/users/self/calendar_events
-  def canvasESBToDoLMS(uniqname, canvas_courses, security_file, esb_application)
+  # get calendar events for all the classes one by one.
+  def canvasESBToDoLMSClassByClass(uniqname, canvas_courses, security_file, esb_application)
     canvas_courses ||= []
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses count: #{canvas_courses.length} canvas_courses: #{canvas_courses}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: uniqname: [#{uniqname}] mpathways canvas_courses count: #{canvas_courses.length} canvas_courses: #{canvas_courses}"
 
-    calendar_events_url = canvasAPICalendarEventsURL(uniqname, canvas_courses)
+    # accumulate the data for each course.  They are done individually to allow for error handling.
+    all_courses = canvas_courses.inject([]) do |all_classes, course|
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas course array check course: [#{course}]"
+      all_classes.concat(canvasCalendarEventsSingleCourse(course, uniqname))
+      # This must be returned to be used as the accumulator for inject.
+      all_classes
+    end
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: calendar_events_array count: #{all_courses.length} all_courses: #{all_courses}"
 
-    r = @canvasESB_w.get_request calendar_events_url
-
-    canvas_body = r.result
-    canvas_body_ruby = JSON.parse canvas_body
-
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "got calendar_events from canvas esb", canvas_body_ruby)
+    WAPIResultWrapper.new(WAPI::SUCCESS, "got calendar_events from canvas esb", all_courses)
   end
 
+  # get calendar events for one class and handle unauthorized error condition explicitly.
+  def canvasCalendarEventsSingleCourse(canvas_course, uniqname)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: get calendar events for this course: >>#{canvas_course}<<"
+    calendar_events_url = canvasAPICalendarEventsURL(uniqname, [canvas_course])
 
-  #  <canvas server>/api/v1/users/self/upcoming_events
-  # actually call out to canvas and return the value.  Caller will reformat if necessary.
-  # def canvasESBToDoLMS_upcoming_events(uniqname, security_file, esb_application)
-  #   logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### call canvas ESB todolms esb_application: #{esb_application}"
-  #   logger.debug "##{self.class.to_s}:#{__method__}:#{__LINE__}: canvas ESB: @canvasESB_w: [#{@canvasESB_w}]"
-  #
-  #   r = @canvasESB_w.get_request "/users/self/upcoming_events?as_user_id=sis_login_id:#{uniqname}"
-  #
-  #   canvas_body = r.result
-  #   canvas_body_ruby = JSON.parse canvas_body
-  #
-  #   return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from canvas esb", canvas_body_ruby)
-  # end
+    r = @canvasESB_w.get_request calendar_events_url
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course >>#{canvas_course}<< r:#{r.inspect}"
+    canvas_body = r.result
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course >>#{canvas_course}<< canvas_body:#{canvas_body.inspect}"
 
-  # fake list of "canvas_courses"=>["43412", "44525", "44526", "44631", "44630", "44528", "44530"]}
+    if canvas_body.class == RestClient::Unauthorized
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course >>#{canvas_course}<< UNAUTHORIZED<<<<<<<<<"
+      return []
+    end
+
+    canvas_body_as_ruby = JSON.parse canvas_body
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: single course calendar events for canvas_course >>#{canvas_course}<< #{canvas_body_as_ruby}"
+    canvas_body_as_ruby
+  end
 
 end

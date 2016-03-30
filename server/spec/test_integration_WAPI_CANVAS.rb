@@ -210,117 +210,62 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     full_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => request_parameters).url
     #full_request_url.gsub!(/%3A/, ':')
 
-   # puts "full_request_url: #{full_request_url}"
+    # puts "full_request_url: #{full_request_url}"
     result_as_json = run_and_get_ruby_result(full_request_url)
     #puts "result: "+result_as_json.inspect
     assert_operator result_as_json.length, ">=", 1, "got some upcoming events back"
   end
 
 
-  def test_canvas_api_todo
-
-    user='nabuzoor'
-    request_url = "/users/self/todo"
-    per_page = nil
-    start_date = nil
-    #per_page = 100
-    #start_date = '2016-01-01'
-
-    correct = "/users/self/calendar_events?as_user_id=sis_login_id:ralt&type=assignment&start_date=2016-01-01&per_page=100&context_codes[]=course_48961&context_codes[]=course_52008&context_codes[]=course_52010"
-    correct_array = correct.split(/&/).sort()
-
-    param = {
-        :as_user_id => "sis_login_id:#{user}",
-    }
-
-    if !per_page.nil? && per_page > 0
-      param[:per_page] = per_page
-    end
-
-    if !start_date.nil?
-      param[:start_date] = start_date
-    end
-
-    request_parameters = {:params => param}
-
-    string_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => request_parameters).url
-    #string_request_url << CourseList.course_list_string([48961, 52008, 52010])
-    string_request_url.gsub!(/%3A/, ':')
-
-    #assert_equal(correct.split(/&/).sort(), string_request_url.split(/&/).sort(), "query has correct entries")
-
-    ### sample of current link url.
-    #https://api-qa-gw.its.umich.edu/api/v1/users/self/calendar_events?as_user_id=sis_login_id%3Aralt&context_codes%5B%5D=course_48961&context_codes%5B%5D=course_52008&context_codes%5B%5D=course_52010&start_date=2016-01-01&type=assignment&page=1&per_page=10
-
-    #puts "string_request_url: #{string_request_url.inspect}"
-    result = run_and_get_ruby_result(string_request_url)
-    #puts "result_as_json: #{result.to_json}"
-
-    skip("experimenting with todo")
-  end
-
-  # URL="$BASE/v1/users/self/calendar_events?as_user_id=sis_login_id:$USER" # as_user_id
+  # def XXX_test_canvas_api_calendar_events_class_per_page
   #
-  # curl -G -H "Authorization: Bearer $TOKEN" \
-  #    -v --dump-header $$.header \
-  #    $URL \
-  #    --data-urlencode "type=assignment" \
-  #    --data-urlencode "start_date=2016-01-01" \
-  #    --data-urlencode "context_codes[]=course_48961" \
-  #    --data-urlencode "context_codes[]=course_52008" \
-  #    --data-urlencode "context_codes[]=course_52010" \
-  #    --data-urlencode "per_page=100" \
-
-
-  def test_canvas_api_calendar_events_class_per_page
-
-    user='ralt'
-    request_url = "/users/self/calendar_events"
-    per_page = nil
-    start_date = nil
-    per_page = 100
-    start_date = '2016-01-01'
-
-    correct = "/users/self/calendar_events?as_user_id=sis_login_id:ralt&type=assignment&start_date=2016-01-01&per_page=100&context_codes[]=course_48961&context_codes[]=course_52008&context_codes[]=course_52010"
-    correct_array = correct.split(/&/).sort()
-
-    param = {
-        :as_user_id => "sis_login_id:#{user}",
-        :type => "assignment",
-    }
-
-    if !per_page.nil? && per_page > 0
-      param[:per_page] = per_page
-    end
-
-    if !start_date.nil?
-      param[:start_date] = start_date
-    end
-
-    request_parameters = {:params => param}
-
-    string_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => request_parameters).url
-    string_request_url << CourseList.course_list_string([48961, 52008, 52010])
-    string_request_url.gsub!(/%3A/, ':')
-
-    assert_equal(correct.split(/&/).sort(), string_request_url.split(/&/).sort(), "query has correct entries")
-
-    ### sample of current link url.
-    #https://api-qa-gw.its.umich.edu/api/v1/users/self/calendar_events?as_user_id=sis_login_id%3Aralt&context_codes%5B%5D=course_48961&context_codes%5B%5D=course_52008&context_codes%5B%5D=course_52010&start_date=2016-01-01&type=assignment&page=1&per_page=10
-
-    #puts "string_request_url: #{string_request_url.inspect}"
-    result = run_and_get_ruby_result(string_request_url)
-    #puts "result: #{result.inspect}"
-
-    skip("Not sure about quoting in string as yet")
-  end
+  #   user='XXX'
+  #   request_url = "/users/self/calendar_events"
+  #   per_page = nil
+  #   start_date = nil
+  #   per_page = 100
+  #   start_date = '2016-01-01'
+  #
+  #   correct = "/users/self/calendar_events?as_user_id=sis_login_id:ralt&type=assignment&start_date=2016-01-01&per_page=100&context_codes[]=course_48961&context_codes[]=course_52008&context_codes[]=course_52010"
+  #   correct_array = correct.split(/&/).sort()
+  #
+  #   param = {
+  #       :as_user_id => "sis_login_id:#{user}",
+  #       :type => "assignment",
+  #   }
+  #
+  #   if !per_page.nil? && per_page > 0
+  #     param[:per_page] = per_page
+  #   end
+  #
+  #   if !start_date.nil?
+  #     param[:start_date] = start_date
+  #   end
+  #
+  #   request_parameters = {:params => param}
+  #
+  #   string_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => request_parameters).url
+  #   string_request_url << CourseList.course_list_string([48961, 52008, 52010])
+  #   string_request_url.gsub!(/%3A/, ':')
+  #
+  #   assert_equal(correct.split(/&/).sort(), string_request_url.split(/&/).sort(), "query has correct entries")
+  #
+  #   ### sample of current link url.
+  #   #https://api-qa-gw.its.umich.edu/api/v1/users/self/calendar_events?as_user_id=sis_login_id%3AXXX&context_codes%5B%5D=course_48961&context_codes%5B%5D=course_52008&context_codes%5B%5D=course_52010&start_date=2016-01-01&type=assignment&page=1&per_page=10
+  #
+  #   #puts "string_request_url: #{string_request_url.inspect}"
+  #   result = run_and_get_ruby_result(string_request_url)
+  #   #puts "result: #{result.inspect}"
+  #
+  #   skip("Not sure about quoting in string as yet")
+  # end
 
   #RestClient will effectively overwrite parameters with the same name
 
   # fake list of canvas courses (for nabuzoor)
   #"canvas_courses"=>["43412", "44525", "44526", "44631", "44630", "44528", "44530"]}
 
-  def test_canvas_api_studenta_calendar_events_headers
+  def XXX_test_canvas_api_studenta_calendar_events_headers
 
     ### want to construct full text url since not currently passing in separate parameters and
     ### it can't handle the context_code parameters anyway.
@@ -330,7 +275,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
     refute_nil @w
 
-    user='dlhaines'
+    user='XXX'
 
     request_url = "/users/self/calendar_events"
     request_parameters = {:params => {:as_user_id => "sis_login_id:#{user}",
@@ -351,21 +296,6 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     result_as_json = run_and_get_ruby_result(full_request_url)
     assert_operator result_as_json.length, ">=", 1, "got some upcoming events back"
   end
-
-  # # assemble context codes to specify the set of courses.  Explicit method is required since RestClient
-  # # doesn't correctly deal with multiple parameters with same name as yet.
-  # ## could generalize this to pass in prefix.
-  # def course_list_string(courses)
-  #   courses.inject("") { |result, course| result << "&context_codes[]=course_#{course}" }
-  # end
-  #
-  # def test_assemble_course_parameters
-  #   course_ids = [43412, 44630]
-  #   correct="&context_codes[]=course_43412&context_codes[]=course_44630"
-  #   #encoded = course_list_string ['43412','44630']
-  #   encoded = course_list_string [43412, 44630]
-  #   assert_equal correct, encoded, "multiple courses as parameters"
-  # end
 
 
   ## test for assignment data about a (test) student.  This uses masquerade.
