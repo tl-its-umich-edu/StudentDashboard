@@ -11,6 +11,8 @@ set +x
 # so we are stuck on jruby 1.7 (1.9.3) for the time being.
 
 RUBY_VERSION=jruby-1.7.24
+# Keep bundler at this version to support Vagrant deployment.
+BUNDLER_VERSION=1.10.6
 
 #### utility functions
 
@@ -36,15 +38,22 @@ function setupRVM  {
 function updateRuby {
 
     atStep "updating ruby and dependencies for $RUBY_VERSION.  (The unresolved specs message is harmless.)"
-    rm ./ruby.*.bundle
+    rm ./ruby.*.bundle*
     echo  "updating ruby and dependencies for $RUBY_VERSION." >| ./ruby.$ts.bundle
 
     rvm install $RUBY_VERSION
     rvm use $RUBY_VERSION
+
     gem install warbler
 
-    bundle install >> ./ruby.$ts.bundle
-    bundle outdated >> ./ruby.ts.bundle
+    # Install a standard bundler version, install gems,
+    # then document (but don't automatically update) any outdated gems.
+    
+    gem install bundler -v $BUNDLER_VERSION
+
+    bundle _${BUNDLER_VERSION}_ version
+    bundle _${BUNDLER_VERSION}_ install  >> ./ruby.$ts.bundle
+    bundle _${BUNDLER_VERSION}_ outdated >> ./ruby.$ts.bundle.outdated
 }
 
 # verify that rvm set up
@@ -188,7 +197,7 @@ makeVersion
 makeWarFile
 
 # make sure the ruby bundle information is available in the artifacts.
-cp ./*bundle ./ARTIFACTS
+cp ./ruby*bundle* ./ARTIFACTS
 
 ## make and name the configuration file tar and put in ARTIFACTS directory.
 makeConfigTar
