@@ -7,9 +7,10 @@
 
 set +x
 
-## 
-RUBY_VERSION=jruby-1.7.18
-#RUBY_VERSION=jruby-800
+# NOTE: warbler does not yet support JRUBY 9k (2.x compatible).
+# so we are stuck on jruby 1.7 (1.9.3) for the time being.
+
+RUBY_VERSION=jruby-1.7.24
 
 #### utility functions
 
@@ -39,12 +40,11 @@ function updateRuby {
     echo  "updating ruby and dependencies for $RUBY_VERSION." >| ./ruby.$ts.bundle
 
     rvm install $RUBY_VERSION
-    # What happens if does not exist?
     rvm use $RUBY_VERSION
     gem install warbler
 
-
     bundle install >> ./ruby.$ts.bundle
+    bundle outdated >> ./ruby.ts.bundle
 }
 
 # verify that rvm set up
