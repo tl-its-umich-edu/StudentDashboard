@@ -195,6 +195,26 @@ class TestCourseList < MiniTest::Test
     assert_equal correct, encoded, "multiple courses as parameters"
   end
 
+  # check if safe_html_escape respects nil input
+  def test_safe_html_escape
+
+    ## pass in variables
+    a = "HI"
+    a = CourseList.safe_html_escape(a)
+    assert_equal "HI",a,"return string input"
+
+    b = nil
+    b = CourseList.safe_html_escape(b)
+    assert_nil b,"nil remains nil"
+
+    ## pass in values
+    b = CourseList.safe_html_escape(nil)
+    assert_nil b,"nil remains nil"
+
+    a = CourseList.safe_html_escape("HI")
+    assert_equal "HI",a,"return string input"
+  end
+
 
 end
 
