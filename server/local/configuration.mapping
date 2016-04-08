@@ -1,22 +1,21 @@
-# This file documents the application instance specific configuration files which vary when running the application in different
-# clusters.  E.g. It lists the application files required to make this installation run as, say, a dev server rather
-# than a production server. The files referenced are provided in the configuration file tar proviced in the build artifacts.
-#
-# The process for Security files is separate and not covered here.
 
-# To find out the mapping for a specific configuration just grep for the configuration name.
-#  e.g. grep -i 'QA' configuration.mapping
-
+# This file documents the application specific configuration files required to run this application in different instances.
+# I.e. It lists the application files required to make this installation run as a dev instance rather than a production instance.
+# The files referenced are provided in the build artifacts to ensure that the proper version is always at hand for
+# installation.
 # The format for each line is:
 # [CONFIGURATION_NAME] EXPECTED_NAME PHYSICAL_NAME
-# Example>>>> [DEMO] $HOME/config/greatApp.properties ./config/greatAppDemo.properties
-# For the DEMO instance, the application will look for the greatApp.properties file and the installation
-# process will make sure reading that file gets the contents of the ./config/greatAppDemo.properties file.
+# Example:
+#[DEMO] $HOME/config/greatApp.properties ./config/greatAppDemo.properties
+# I.e. for the DEMO instance, when the application looks for the greatApp.properties file
+# the installation will make sure that it gets the contents of the ./config/greatAppDemo.properties file.
 # That assurance can be arranged by copying / renaming / linking files as AWI finds convenent.
+# To find out which files should be used for a configuration just run:
+#     grep -i "configuration_name" configuration.mapping
 ##########################################################
-# For Student dashboard the installation process makes a symbolic link to the physical file.  The physical name
-# is given with a relative path from the location of this very file since this file is included in the configuration
-# files in the build.
+# For Student dashboard the expected name has a standard default value.  Installation makes sure this is a symbolic
+# link the the physical file.  The physical name is given with a relative path from the location of this file since
+# this file is kept at the top of the configuration file directory.
 [LOCALHOST] /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-LOCALHOST.yml
 [DEV]       /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-DEV.yml
 [QA]        /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-QA.yml
