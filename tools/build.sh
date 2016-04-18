@@ -52,6 +52,7 @@ function updateRuby {
     gem install bundler -v $BUNDLER_VERSION
 
     bundle _${BUNDLER_VERSION}_ version
+    bundle _${BUNDLER_VERSION}_ exec gem pristine --all
     bundle _${BUNDLER_VERSION}_ install  >> ./ruby.$ts.bundle
     bundle _${BUNDLER_VERSION}_ outdated >> ./ruby.$ts.bundle.outdated
 }
