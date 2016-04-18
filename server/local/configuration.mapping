@@ -1,50 +1,25 @@
-# An application will need to run in several different environments with different configuration requirements.
-# E.g. development, QA, load testing, and production environments will not have identical needs.
-# So that it is simple to maintain the different configurations this configuration.mapping
-# file specifies, for different configurations, mappings between the specific file names that the application expects
-# to see and the actual physical location of those files. Typically the application will continue to look for
-# the customary files and we'll create a symbolic link to ensure the file appropriate
-# to the desired configuration is actually used.
+# This file documents the application instance specific configuration files which vary when running the application in different
+# clusters.  E.g. It lists the application files required to make this installation run as, say, a dev server rather
+# than a production server. The files referenced are provided in the configuration file tar proviced in the build artifacts.
 #
-# This configuration mapping file is delivered in the build artifacts.
-#
+# The process for Security files is separate and not covered here.
+
+# To find out the mapping for a specific configuration just grep for the configuration name.
+#  e.g. grep -i 'QA' configuration.mapping
+
 # The format for each line is:
-#[configuration_name] symbolic_name physical_name
-#
-# The "configuration_name" groups related file mappings.  E.g. There will be one or more files
-# files appropriate for DEV which are different from those for QA-LOADTESTING.  The
-# configuration_name value is specified during installation to determine which mappings
-# are appropriate for the chosen environment. The "symbolic_name" is the name that
-# the application itself will use to access the file. The "physical_name" is the
-# name of a physical file that actually contains information.
-#
-# These names may be specified as absolute file path names or relative path names.
-# If the name is an absolute path it will be used as it is given.
-# If the name is a relative name then if the environment variable SYMBOLIC_PREFIX has a value
-# that value will be prepended to the symbolic_name.  Similarly if the environment
-# variable PHYSICAL_PREFIX has a value it will be prepended to the physical_name.
-# These environment variables can be set during the the installation. For either PREFIX
-# variable, if it does not have a defined value then the referenced files will be expected
-# to be located relative to the directory that contains this mapping file.
-#
-# The correct number of configurations depends entirely on the current development and installation needs.
-# There are likely to be many more configurations for DEV than for the other instances.
-#
-####### DEV configurations.
-## PERMISSIVE means that uniqname override is turned on for everybody. RESTRICTIVE means that only the
-## members of the MCommunity group can use the uniqname override.
-## FILE means that data comes from local data files rather than the ESB.  By default we use the ESB provider.
-[DEV-PERMISSIVE-FILE]   studentdashboard.yml ./local/studentdashboard-DEV-permissive-file.yml
-[DEV-PERMISSIVE]        studentdashboard.yml ./local/studentdashboard-DEV-permissive.yml
-[DEV-RESTRICTIVE-FILE]  studentdashboard.yml ./local/studentdashboard-DEV-restrictive-file.yml
-[DEV-RESTRICTIVE]       studentdashboard.yml ./local/studentdashboard-DEV-restrictive.yml
-####### QA configurations.
-## There is no load test instance so QA is configured differently depending on what the load test needs are.
-[QA-LOAD-TEST]          studentdashboard.yml ./local/studentdashboard-QA-LOAD-TEST.yml
-## For one test we needed the load test configuration but using the production ESB.
-[QA-PESB]               studentdashboard.yml ./local/studentdashboard-QA-PESB.yml
-## Default QA configuration.
-[QA]                    studentdashboard.yml ./local/studentdashboard-QA.yml
-####### PROD configuration.
-[PROD]                  studentdashboard.yml ./local/studentdashboard-PROD.yml
+# [CONFIGURATION_NAME] EXPECTED_NAME PHYSICAL_NAME
+# Example>>>> [DEMO] $HOME/config/greatApp.properties ./config/greatAppDemo.properties
+# For the DEMO instance, the application will look for the greatApp.properties file and the installation
+# process will make sure reading that file gets the contents of the ./config/greatAppDemo.properties file.
+# That assurance can be arranged by copying / renaming / linking files as AWI finds convenent.
+##########################################################
+# For Student dashboard the installation process makes a symbolic link to the physical file.  The physical name
+# is given with a relative path from the location of this very file since this file is included in the configuration
+# files in the build.
+[LOCALHOST] /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-LOCALHOST.yml
+[DEV]       /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-DEV.yml
+[QA]        /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-QA.yml
+[PROD]      /usr/local/ctools/app/ctools/tl/home/studentdashboard.yml ./local/studentdashboard-PROD.yml
+##########################################################
 # end
