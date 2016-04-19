@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '1.9.3', engine: 'jruby', engine_version: '1.7.24'
+ruby '1.9.3', engine: 'jruby', engine_version: '1.7.18'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'slim'
