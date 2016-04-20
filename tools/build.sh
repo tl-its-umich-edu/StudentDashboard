@@ -10,7 +10,7 @@ set +x
 # NOTE: warbler does not yet support JRUBY 9k (2.x compatible).
 # so we are stuck on jruby 1.7 (1.9.3) for the time being.
 
-RUBY_VERSION=jruby-1.7.24
+RUBY_VERSION=jruby-1.7.25
 # Keep bundler at this version to support Vagrant deployment.
 BUNDLER_VERSION=1.10.6
 
@@ -44,6 +44,8 @@ function updateRuby {
     rvm install $RUBY_VERSION
     rvm use $RUBY_VERSION
 
+    gem pristine --all
+
     gem install warbler
 
     # Install a standard bundler version, install gems,
@@ -52,6 +54,7 @@ function updateRuby {
     gem install bundler -v $BUNDLER_VERSION
 
     bundle _${BUNDLER_VERSION}_ version
+    #bundle _${BUNDLER_VERSION}_ exec gem pristine --all
     bundle _${BUNDLER_VERSION}_ install  >> ./ruby.$ts.bundle
     bundle _${BUNDLER_VERSION}_ outdated >> ./ruby.$ts.bundle.outdated
 }
