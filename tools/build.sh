@@ -10,7 +10,7 @@ set +x
 # NOTE: warbler does not yet support JRUBY 9k (2.x compatible).
 # so we are stuck on jruby 1.7 (1.9.3) for the time being.
 
-RUBY_VERSION=jruby-1.7.25
+RUBY_VERSION=jruby-1.7.18
 # Keep bundler at this version to support Vagrant deployment.
 BUNDLER_VERSION=1.10.6
 
