@@ -149,9 +149,9 @@ class WAPI
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
 
-      # Now we have a parsed json object
-
-      # figure out the overall response code for the request.
+      ####### Now we have a parsed json object
+      # figure out the overall response code for the request.  That may come from the esb call or data returned
+      # from the request url
       rc = compute_response_code_to_return(json_response, response)
 
       ## We have parsed JSON, now make it a json string so it can be returned
@@ -279,9 +279,9 @@ class WAPI
       return wrapped_response
     end
 
-    ## Ran a query successfully.  See if got partial data and need to keep going.
-
+    # Ran a query successfully.  See if got partial data and need to keep going.
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: wrapped_response: data length: #{wrapped_response.result.length}"
+
     # See if there is a link header, if so get the rest of the data.
     if wrapped_response.meta_more.length > 0
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: found link header: >>#{wrapped_response.meta_more}<<"
