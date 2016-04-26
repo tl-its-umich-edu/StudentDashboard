@@ -279,9 +279,9 @@ class WAPI
       return wrapped_response
     end
 
-    ## Ran a query successfully.  See if got partial data and need to keep going.
-
+    # Ran a query successfully.  See if got partial data and need to keep going.
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: wrapped_response: data length: #{wrapped_response.result.length}"
+
     # See if there is a link header, if so get the rest of the data.
     if wrapped_response.meta_more.length > 0
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: found link header: >>#{wrapped_response.meta_more}<<"
