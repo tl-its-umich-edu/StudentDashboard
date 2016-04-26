@@ -103,8 +103,6 @@ module DataProvider
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash: [#{@ctoolsHash.inspect}]"
 
     unless @ctoolsHash[:ToDoLMSProviderDash].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
       raw_todos = @ctoolsHash[:ToDoLMSDash].(uniqname)
       # TODO: check if the wrapper status is ok
       # now strip off the wrapper
@@ -130,8 +128,6 @@ module DataProvider
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash: [#{@ctoolsHash.inspect}]"
 
     unless @ctoolsHash[:ToDoLMSProviderDashPast].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
       raw_todos = @ctoolsHash[:ToDoLMSDashPast].(uniqname)
       logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash past: [#{raw_todos.inspect}]"
       # TODO: check if the wrapper status is ok
@@ -161,8 +157,6 @@ module DataProvider
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvasHash: #{@canvasHash.inspect}"
 
     unless @canvasHash[:useToDoLMSProvider].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
       raw_todos = @canvasHash[:ToDoLMS].(uniqname, canvas_courses)
       # TODO: check if the wrapper status is ok
       # now strip off the wrapper
@@ -170,7 +164,7 @@ module DataProvider
       # TODO: do the reformatting
       # reformat the result for the Dash UI format.
       todos = @canvasHash[:formatResponse].(result.to_json).toDoLms
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas todos: #{todos.inspect}"
+      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas todos: #{todos.inspect[0..100]}..."
       # rewrap the formatted result.
       todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap Canvas API result", todos)
     end
@@ -188,8 +182,6 @@ module DataProvider
     dataProviderInit
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: mneme: [#{@ctoolsHash.inspect}]"
     unless @ctoolsHash[:ToDoLMSProviderMneme].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
       raw_todos = @ctoolsHash[:ToDoLMSMneme].(uniqname)
       # TODO: check if the wrapper status is ok
       # now strip off the wrapper
