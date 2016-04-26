@@ -1,9 +1,6 @@
-#require 'rubygems'
-
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/unit'
-# require 'webmock/minitest'
 
 require_relative '../WAPI_result_wrapper'
 require 'logger'
@@ -27,7 +24,7 @@ class TestWAPIResultWrapper < Minitest::Test
     # Do nothing
   end
 
-  def test_instance_creation
+  def test_instance_creation_default_more
     w = WAPIResultWrapper.new("A", "B", "C")
     z = WAPIResultWrapper.new("A", "B", "C")
     refute_nil(w, "create instance w")
@@ -35,12 +32,21 @@ class TestWAPIResultWrapper < Minitest::Test
     assert(z != w, "separate instances are different")
   end
 
-  def test_values_retrieval
-    w = WAPIResultWrapper.new("status", "msg", "result")
+  def test_instance_creation_default_explict_more
+    w = WAPIResultWrapper.new("A", "B", "C", "D")
+    z = WAPIResultWrapper.new("A", "B", "C", "D")
+    refute_nil(w, "create instance w")
+    refute_nil(z, "create instance z")
+    assert(z != w, "separate instances are different")
+  end
 
-    assert_equal("status", w.meta_status, "got meta status")
-    assert_equal("msg", w.meta_message, "got meta message")
-    assert_equal("result", w.result, "got wrapped result")
+  def test_values_retrieval
+    w = WAPIResultWrapper.new("status", "msg", "result", "more")
+
+    assert_equal("status", w.meta_status, "get meta status")
+    assert_equal("msg", w.meta_message, "get meta message")
+    assert_equal("more", w.meta_more, "get meta more")
+    assert_equal("result", w.result, "get wrapped result")
 
   end
 
@@ -69,7 +75,7 @@ class TestWAPIResultWrapper < Minitest::Test
   end
 
   def test_instance_full_value
-    w = WAPIResultWrapper.new("status", "msg", "result")
+    w = WAPIResultWrapper.new("status", "msg", "result", "more")
     refute_nil(w, "create wrapped object")
     x = w.value_as_json
     refute_nil(x)
@@ -106,4 +112,30 @@ class TestWAPIResultWrapper < Minitest::Test
     refute w.valid?, "check for valid wrapper object"
   end
 
+  def test_update_more
+    w = WAPIResultWrapper.new("status", "msg", "result", "MORE")
+    assert_equal(w.meta_more, "MORE", "get value of more")
+    w.meta_more_update("NEW_MORE")
+    assert_equal('NEW_MORE', w.meta_more, "get new value of more")
+  end
+
+  def test_append_wrappers
+    w = WAPIResultWrapper.new("status", "msg", '["resultA"]', "moreA")
+    x = WAPIResultWrapper.new("status B", "msg B", '["resultB"]')
+
+    y = w.append_json_results(x)
+    assert_equal('["resultA","resultB"]', y.result, "concatenate results")
+    assert_equal(0, y.meta_more.length, "more url is empty")
+
+  end
+
+  def test_append_wrappers_with_additional_link
+    w = WAPIResultWrapper.new("status", "msg", '["resultA"]', "moreA")
+    x = WAPIResultWrapper.new("status B", "msg B", '["resultB"]', "moreB")
+
+    y = w.append_json_results(x)
+    assert_equal('["resultA","resultB"]', y.result, "concatenate results")
+    assert_equal("moreB", y.meta_more, "more url is from second wrapper")
+
+  end
 end
