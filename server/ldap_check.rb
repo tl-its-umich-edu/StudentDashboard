@@ -55,9 +55,6 @@ class LdapCheck
       configuration.each_key { |k| logger.debug "key: [#{k}] value: [#{configuration[k]}]" }
     end
 
-    ## save members in this group if one is specified.
-    #save_group_members args['group'] if args['group']
-
   end
 
 
@@ -91,8 +88,6 @@ class LdapCheck
       # Might get a group with no members or that doesn't exist.
       @admin_hash = Hash.new unless (@admin_hash)
     end
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: admin_hash: " +@admin_hash.inspect
 
     @admin_hash.has_key? user
   end

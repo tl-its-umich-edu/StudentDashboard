@@ -19,8 +19,10 @@ require_relative 'WAPI_result_wrapper'
 require_relative 'ldap_check'
 require_relative 'external_resources_file'
 require_relative 'OptionsParse'
+require_relative 'Logging'
 
-include Logging
+#include Logging
+extend Logging
 include ERB::Util
 
 class CourseList < Sinatra::Base
@@ -49,15 +51,6 @@ class CourseList < Sinatra::Base
   # Will store the hash in the Sinatra settings object so it is available
   # where needed.
   set :latte_config, config_hash
-
-  # Add back when can figure out how to call CourseList.new at non-debug level.  This
-  # makes automated test output too long.
-  # print environment when at debugging level.
-  # if logger.debug? then
-  #   ENV.each_pair do |key, value|
-  #     logger.debug "key: [#{key}] value: [#{value}]"
-  #   end
-  # end
 
   ## Allow override of the location of the studentdashboard.yml file.
   if ENV['LATTE_OPTS'] then
@@ -172,11 +165,11 @@ END
       file_name = verify_file_is_usable(requested_file) || verify_file_is_usable(default_file) || nil
 
       if file_name.nil? then
-        logger.fatal "can not find requested or default configuration file: [#{requested_file}] or [#{default_file}]" if required
+        logger.fatal "#{self.class.to_s}:#{__method__}:#{__LINE__}: can not find requested or default configuration file: [#{requested_file}] or [#{default_file}]" if required
         return nil
       end
 
-      logger.info "local_config_yml: found file: [#{file_name}]"
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: local_config_yml: found file: [#{file_name}]"
       YAML.load_file(file_name)
 
     end
@@ -253,7 +246,7 @@ END
                      when "UNKNOWN" then
                        Logger::UNKNOWN
                      else
-                       logger.error("log level requested is not understood: #{use_log_level}");
+                       logger.error("#{self.class.to_s}:#{__method__}:#{__LINE__}: log level requested is not understood: #{use_log_level}");
                        starting_log_level
                    end
 
@@ -272,7 +265,6 @@ END
   def self.configureStatic
 
     f = File.dirname(__FILE__)+"/../UI"
-    logger.debug("UI files: "+f)
     set :public_folder, f
 
     config_hash = settings.latte_config
@@ -284,12 +276,14 @@ END
     ## separate jira.
 
     # read in yml configuration into a class variable
-    logger.info "requested configuration file is: #{config_hash[:studentdashboard]}"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: requested configuration file is: #{config_hash[:studentdashboard]}"
     external_config = self.get_local_config_yml(config_hash[:studentdashboard], "./server/local/studentdashboard.yml", true)
 
     config_hash[:use_log_level] = external_config['use_log_level'] || "INFO"
 
-    setLoggingLevel(config_hash[:use_log_level]);
+    setLoggingLevel(config_hash[:use_log_level])
+
+    config_hash[:debug_max_length] = external_config['debug_max_length'] || 50
 
     # override default values from configuration file if they are specified.
     config_hash[:default_user] = external_config['default_user'] || "anonymous"
@@ -325,37 +319,33 @@ END
 
     # default for the group controlling admin membership.
     config_hash[:latte_admin_group] = external_config['latte_admin_group'] || nil
-    logger.debug "admin group is: #{config_hash[:latte_admin_group]}"
 
     ##### setup information for authn override
     ## If there is an authn wait specified then setup a random number generator.
     ## create a variable with a random number generator
     if config_hash[:authn_uniqname_override] && (config_hash[:authn_wait_min] > 0 || config_hash[:authn_wait_max] > 0)
       config_hash[:authn_prng] = Random.new
-      logger.debug "authn wait range is: #{config_hash[:authn_wait_min]} to #{config_hash[:authn_wait_max]}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: authn wait range is: #{config_hash[:authn_wait_min]} to #{config_hash[:authn_wait_max]}"
     end
 
     config_hash[:admin] = external_config['admin'] || []
 
     config_hash[:default_term] = external_config['default_term'] || config_hash[:default_term]
 
-    logger.debug "external_config: canvas_calendar_events: #{external_config['canvas_calendar_events']}"
     config_hash[:canvas_calendar_events] = external_config['canvas_calendar_events'] || config_hash[:canvas_calendar_events]
-    logger.debug "config_hash: canvas_calendar_events: #{config_hash[:canvas_calendar_events]}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: config_hash: canvas_calendar_events: #{config_hash[:canvas_calendar_events]}"
 
     # set containing directory for (most of the) erb files
     set :views, "#{config_hash[:BASE_DIR]}/UI/views"
 
-    # read in yml for the build configuration into a class variable
+    # Read in yml for the build configuration into a class variable if available.
     begin
       config_hash[:build_full] = self.get_local_config_yml(config_hash[:build_file], "./server/local/build.yml", false)
       config_hash[:build] = config_hash[:build_full][:build]
-      logger.info "build.yml file is optional"
       config_hash[:build_time] = config_hash[:build]['time']
       config_hash[:build_id] = config_hash[:build]['tag'] || config_hash[:build]['last_commit']
     rescue
-      # The file only needs to be there when a build has been done.  If it isn't there
-      # then just use default values.
+      # Use default values.
       config_hash[:build] = "no build file specified"
       config_hash[:build_time] = Time.now
       config_hash[:build_id] = 'development'
@@ -365,11 +355,10 @@ END
     begin
       config_hash[:strings] = self.get_local_config_yml(config_hash[:strings_file], "./server/local/strings.yml", true)
     rescue
-      logger.warn "No strings yml configuration file found"
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: No strings yml configuration file found"
       config_hash[:strings] = Hash.new()
     end
 
-    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: config_hash: #{config_hash.inspect}"
   end
 
   ################################
@@ -378,42 +367,28 @@ END
   def self.configureDynamic
     config_hash = settings.latte_config
     dynamic_hash = settings.dynamic_config
-    logger.debug "configure dynamic dir: "+Dir.pwd.to_s
-    logger.debug "external resource config initial: "+config_hash[:external_resources_file_directory].to_s
 
     if config_hash[:external_resources_file_directory].nil?
       config_hash[:external_resources_file_directory] = config_hash[:BASE_DIR]+"/server/test-files/resources"
     end
-    logger.debug "external resource config final: "+config_hash[:external_resources_file_directory]
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: external resource directory final: "+config_hash[:external_resources_file_directory]
     resources_dir = config_hash[:external_resources_file_directory]
     ext_resources = ExternalResourcesFile.new(resources_dir)
     dynamic_hash[:external_resources] = ext_resources
   end
 
-  #end
-
-  #set :threaded true
   ## make sure logging is available
   configure :test do
 
-    #set :logging, Logger::INFO
-    #set :logging, Logger::DEBUG
-
-    #configureLogging
-
-    ## look for the UI files in a parallel directory.
-    ## this may not be necessary.
     configureStatic
     configureDynamic
-    #set :logging, Logger::INFO
-    #set :logging, Logger::DEBUG
+
   end
 
   ## make sure logging is available in localhost
   configure :production, :development do
 
-    #set :logging, Logger::INFO
-    #set :logging, Logger::DEBUG
     configureStatic
     configureDynamic
 
@@ -424,8 +399,6 @@ END
 
     configureLogging
 
-    #set :logging, Logger::INFO
-    #set :logging, Logger::DEBUG
     configureStatic
     configureDynamic
 
@@ -447,8 +420,15 @@ END
   ### Add helper instance methods
   helpers do
 
+    # truncate limit a string to specific length.  Default length to 50
+    def self.limit_msg(msg)
+       config_hash = settings.latte_config
+       use_length = config_hash[:debug_max_length] || 50
+       msg[0..use_length] + (msg.length < use_length ? '' : '....')
+     end
+
+
     def allow_uniqname_override user
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: authn_uniqname_override: #{settings.latte_config[:authn_uniqname_override]}"
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: admin_user(#{user}): #{admin_user(user)}"
       settings.latte_config[:authn_uniqname_override] == true || admin_user(user)
     end
@@ -461,7 +441,7 @@ END
       
       # See if there is a candidate to use as authenticated userid name.
       uniqname = CourseList.safe_html_escape(params['UNIQNAME'])
-      logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: uniqname: #{uniqname}"
 
       # don't reset userid if don't have a name to reset it to.
       pass if uniqname.nil? || uniqname.length == 0
@@ -470,9 +450,8 @@ END
       pass if request.env['REMOTE_USER'].eql? uniqname
 
       # now reset the name
-      logger.debug "#{__LINE__}:now switching REMOTE_USER to [#{uniqname}]."
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: now switching REMOTE_USER to [#{uniqname}]."
 
-      logger.debug "resetting remote user"
       # put in session to be available for internal calls to REST api
       #uniqname has been escaped above
       session[:remote_user]=uniqname
@@ -485,7 +464,7 @@ END
         config_hash[:authn_total_wait_time] += wait_sec
         config_hash[:authn_total_stub_calls] += 1
         sleep wait_sec
-        logger.debug "#{__LINE__}: wait_sec: #{wait_sec} auth total_wait: #{config_hash[:authn_total_wait_time]} total_calls: #{config_hash[:authn_total_stub_calls]}"
+        logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: wait_sec: #{wait_sec} auth total_wait: #{config_hash[:authn_total_wait_time]} total_calls: #{config_hash[:authn_total_stub_calls]}"
       end
 
       # things changed so redirect with the new information.
@@ -495,11 +474,10 @@ END
 
     # See if this user is an admin user.  If necessary
     # get the information from the admin users MCommunity group.
+
     def admin_user(user)
-      ## If no information to check nobody is an admin.
-
       config_hash = settings.latte_config
-
+      # nobody is admin if there is no admin group.
       return nil if config_hash[:latte_admin_group].nil?
 
       config_hash[:admin_members] = LdapCheck.new("group" => config_hash[:latte_admin_group]) if config_hash[:admin_members].nil?
@@ -508,7 +486,6 @@ END
     end
 
     #### Return status information in arrays of data by topic
-    #TODO: make the file a configuration variable
     def build_info
       build_configuration_file = 'server/local/build.yml'
       YAML.load_file(build_configuration_file)
@@ -530,52 +507,41 @@ END
   ## Add some class level helper methods.
   helpers do
 
-    # html escape but don't turn a nil into an empty string
+    # html escape text but don't turn a nil into an empty string.
     def self.safe_html_escape(arg)
       arg &&= html_escape(arg)
     end
 
-    # assemble context codes to specify the set of courses.  Explicit method is required since RestClient
+    # Assemble context codes to specify the set of courses.  Explicit method is required since RestClient
     # doesn't correctly deal with multiple parameters with same name as yet.
-    ## could generalize this to pass in prefix.
+    # could generalize this to pass in prefix.
     def self.course_list_string(courses)
       courses.inject("") { |result, course| result << "&context_codes[]=course_#{course}" }
     end
 
     # This method checks to see if the request is being made only for data for the stated userid.
     # It returns true if the request is NOT permitted.  It is phrased as a veto
-    # because this method is only responsible for checking some conditions that might forbid the request.
+    # because this method is only responsible for checking SOME conditions that might forbid the request.
 
+    # Calls to this method also supply a code block used to check if the user is an admin.
     def self.vetoRequest(user, request_url)
 
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: user: [#{user}] request_url: [#{request_url}]"
-      # This does the cheap internal checks first since it requires
-      # an external call to see if the user is a latte admin.
 
       # Make sure that someone explicit is making the request.
       return true if user.nil?
 
-      # find any user explicitly mentioned in the url.
+      # Find any user explicitly mentioned in the url.
       url_user = self.getURLUniqname(request_url)
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: url_user: [#{url_user}]"
-      # It's fine as long as no user is explicitly named in the url.
-      # It can only return information on the current user then.
-      return nil if url_user.nil?
 
-      # It is also ok if the user is asking about themselves.
+      # Things are ok of there is no explict user or the user requested in the current user.
+      return nil if url_user.nil?
       return nil if url_user.eql? user
 
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: about to check for is_admin"
-      # Only if the user has super powers can they ask about others.
-      # The check that they are an admin is delegated to the block passed in.
-      # That makes testing much easier and for security related functions
-      # testing is critical.
-
-      # This could be shorter but putting the yield in first clause of ternary operator didn't work.
+      # Invoke block to check if the user is an admin.
       is_admin = yield user
       veto = is_admin ? nil : true
       logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: vetoed request by [#{user}] for information url: [#{request_url}]" unless veto.nil?
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: vR: user: [#{user}] is_admin: [#{is_admin}] veto: [#{veto}]"
 
       veto
     end
@@ -588,7 +554,8 @@ END
     # /StudentDashboard/terms/ststvii.json
     # /todolms/ralt.json
     # /todolms/ralt/ctools.json
-    # TODO: could get the regexs from a list, which would make adding more easier.
+
+    # maybe put the sources (courses, terms, todolms, in a list?)
     def self.getURLUniqname(url)
 
       regex_courses = /courses\/([^.\/]+)/
@@ -612,30 +579,26 @@ END
       nil
     end
 
-    ### Standard error message for bad request format.  It prevents cross site scripting.
+    ### Standard error message for bad request format, escape output to prevent cross site scripting.
     def bad_format_error(response, msg, format)
       response.status = 400
-      logger.debug msg
       erb "format missing or not supported: #{CourseList.safe_html_escape(format)}"
     end
-
 
   end
 
   helpers do
-    # Use data url in this application and get the json out of the result.
-    # By convention the response is returned in a WAPI wrapper so error checking has been done.
+    # Run an self-directed url request for data and get the json out of the result.
+    # The response is returned in a WAPI wrapper so error checking has been done.
     # by the data url processing.
     def run_url_parse_json(new_url)
       status, headers, request_body = call! env.merge("PATH_INFO" => new_url)
-      logger.debug "#{__method__}: #{__LINE__}: #{new_url}: request_body[0].inspect: +++#{request_body[0].inspect}+++"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{new_url}: request_body[0].inspect: +++#{CourseList.limit_msg(request_body[0].inspect)}+++"
       request_body_ruby = JSON.parse request_body[0]
-      logger.debug "#{__method__}: #{__LINE__}: #{new_url}: request_body_ruby: +++#{request_body_ruby.inspect}+++"
       request_body_ruby
     end
 
     # Get the canvas courses from the list provided by mpathways.
-
     def getCanvasCourseList(course_data, userid)
       # could the regexp be a constant?
       instructure_regexp = Regexp.new(/instructure.com\/courses\/(\d+)/)
@@ -660,7 +623,7 @@ END
       check_result = dataProviderCheck()
       st.stop
 
-      logger.debug "status: "+check_result.inspect
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: status: #{check_result.inspect}"
 
       if (check_result.meta_status == 200)
         response.status = 200
@@ -683,11 +646,11 @@ END
 
   ############ Process request URLs ##############
 
-  ## Requests are matched and processed in the order matchers appear in the code.  Multiple matches may happen
-  ## for a single request if the processing for one match uses pass to let matching code later in the chain process.
+  # Requests are matched and processed in the order matchers that appear in the code.  Multiple matches may happen
+  # for a single request if the processing for one match uses 'pass' to let matching code later in the chain process.
 
-  ##### Before clauses are filters that apply before the verb based processing happens.
-  ## These before clauses deal with authentication.
+  # Before clauses are filters that apply before the verb based processing happens.
+  # These before clauses deal with authentication.
 
   # If permitted take the remote user from the session.  This
   # allows overrides to work for calls from the UI to the REST API.
@@ -695,16 +658,14 @@ END
   # if the URL has /self/ instead of a uniqname then replace self with the current user and redirect.
   before /\/self(\Z|(\/|\/[\w\/]+)?(\.\w+)?)$/ do
     original = String.new(request.env['PATH_INFO'])
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: self: session user: [#{session[:remote_user]}] env REMOTE_USER: [#{request.env['REMOTE_USER']}]"
     self_user = session[:remote_user]
     request.env['PATH_INFO'] = request.env['PATH_INFO'].gsub('/self', "/#{self_user}")
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: modified request [#{original}] to be: [#{request.env['PATH_INFO']}] and redirecting"
     redirect to(request.env['PATH_INFO'])
   end
 
-  #### content type configuration
-  ## Make sure that a URL with an explicit extension has the corresponding entry EARLY in the accept list.
-  ## There is probably a better way to do this.
+  # If explicit suffix then make sure the accept header contains it.
+
   before /.*/ do
     request.accept.unshift('application/json') if request.url.match(/.json$/)
     request.accept.unshift('text/html') if request.url.match(/.xml$/)
@@ -712,39 +673,31 @@ END
   end
 
 
-  ### NOTE ON REST CALLS TO SELF
-  # It's easy to call back to this app to get data. See the todolms section for an example.
-  # BUT note that should convert the json data retrieved back to Ruby and convert the final
-  # structure returned as a whole.  If you stick the json string return from a call back to the app it
-  # into a bigger structure it will end up as an escaped string in the return value.
+  # NOTE data rest calls to self
+  # The final Result for a data call is a JSON string from the WAPI wrapper.  If you need to pass it on
+  # convert to Ruby and then add to the new WAPI wrapper.  Just passing on the JSON string
+  # means the JSON string itself will end up escaped again.
 
   before "*" do
 
-    # Need to set session user and remote user.
-    # Remote user is the authenticated user. Session user
-    # the effective user.  It is kept so that UI calls know who the
-    # person of interest is.
+    # Need to set session user and remote user. The Remote user is the authenticated user. Session user
+    # the effective user.  They may differ if the user is considered an admin.
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: * start processing (user, session, stopwatch)"
     config_hash = settings.latte_config
 
-    ## Get a user name.
-    ## if there is no remote_user then set it to default.
+    # Get a user name. If there is no remote_user then set it to default.  This can happen in development.
     user = request.env['REMOTE_USER']
-    # If not set then use the default user
     if user.nil? || user.length == 0
       user = config_hash[:default_user]
     end
 
     ## Now check to see if allowed to override the user.
     if allow_uniqname_override user
-
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check if allowed to override user"
       ## If allowed and there is an user in the session then use that.
       session_user = session[:remote_user]
       if !session_user.nil? && session_user.length > 0
         user = session_user
-        logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  authn filter: take user from session: #{user}"
+        logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  authn filter: using session user: #{user}"
       end
     end
 
@@ -752,16 +705,15 @@ END
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: remote_user: [#{request.env['REMOTE_USER']}] computed user: [#{user}]"
     request.env['REMOTE_USER'] = user
 
-    # Store a stack of stopwatches in the session with the current thread id.
-    # The stack is required as Dash calls back to itself.
+    # Start a request timer.
     msg = Thread.current.to_s + "\t"+request.url.to_s
     sd = Stopwatch.new(msg)
     sd.start
 
+    # Store a stack of stopwatches since Dash calls back to itself.
     session[:thread] = Array.new if session[:thread].nil?
     session[:thread].push(sd)
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: end initial processing"
   end
 
   ## For testing allow specifying the userid identity to be used on the URL.
@@ -773,22 +725,13 @@ END
     uniqnameOverride if allow_uniqname_override request.env['REMOTE_USER']
   end
 
-  ## Check that any request for userid data is allowed.
+  ## Check that the request for userid data is allowed.
   before "*" do
 
-    # NOTE: the {} block on the end is passed in and used to see if this is an admin user.
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: check for veto"
     vetoResult = CourseList.vetoRequest(request.env['REMOTE_USER'], request.env['REQUEST_URI']) { admin_user request.env['REMOTE_USER'] }
-    logger.debug "#{__method__}: #{__LINE__}: REQUEST: * end veto check: [#{vetoResult}]"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: * end veto check: user: [#{request.env['REMOTE_USER']}] [#{vetoResult}]"
     halt 403 if vetoResult == true
   end
-
-  ################# print canvas courses for user for debugging
-  before "*" do
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_courses: #{session[:canvas_courses]}"
-  end
-  ##################
 
   ######################################
   ########### STATUS URLS ##############
@@ -800,10 +743,8 @@ END
     format = 'html' unless (format)
     format.downcase!
 
-    logger.debug "#{__method__}: #{__LINE__}: status format [#{format}]"
-
     # Assemble the raw top level of status information by merging hashs from
-    # different sources.  The @information instance variable will be available to the templates.
+    # different sources.  The @information instance variable is set to be available to the templates.
     @information = build_info().merge(status_urls())
 
     # set default template and content type
@@ -871,7 +812,7 @@ END
 
   ## Dump configuration settings to log upon request
   get '/status/settings' do
-    logger.info "PRINT CURRENT CONFIGURATION"
+    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: PRINT CURRENT CONFIGURATION SETTINGS"
     config_hash = settings.latte_config
 
     config_hash.keys.sort_by { |k| k.to_s }.map do |key|
@@ -890,7 +831,6 @@ END
   get '/' do
 
     config_hash = settings.latte_config
-    logger.debug "from (/) settings:"
 
     ### Currently pull the erb file from the UI directory.
     idx = File.read("#{config_hash[:BASE_DIR]}/UI/index.erb")
@@ -900,12 +840,8 @@ END
     @remote_user = request.env['REMOTE_USER']
     @build_time = config_hash[:build_time]
     @build_id = config_hash[:build_id]
-    logger.debug "REQUEST: / end root request"
 
-    # Make the strings hash available.  If there is ever a need to
-    # select different sets of strings at different times, perhaps by language,
-    # it would be trivial to expand the yml file and modify this
-    # line to pick amongst different sets of keys.
+    # Make the hash of standard text strings available.
     @strings = config_hash[:strings]["strings"]
 
     # This MUST be the last statement since it returns the output text.
@@ -922,15 +858,13 @@ END
   get '/courses/:userid.?:format?' do |userid, format|
     userid = CourseList.safe_html_escape(userid)
     format = CourseList.safe_html_escape(format)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: REQUEST: /courses start"
     termid = CourseList.safe_html_escape(params[:TERMID])
 
     if format && "json".casecmp(format).zero?
       content_type :json
-
       course_data = dataProviderCourse(userid, termid)
       if "404".casecmp(course_data.meta_status.to_s).zero?
-        logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}:returning 404 for missing file: userid: #{userid} termid: #{termid}"
+        logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}:returning 404 for missing information: userid: #{userid} termid: #{termid}"
         response.status = 404
         return ""
       end
@@ -949,7 +883,6 @@ END
 
   ## ask for terms from the current user.
   get "/terms/?" do
-    logger.info "just default terms"
     content_type :json
 
     termList = dataProviderTerms(request.env['REMOTE_USER'])
@@ -960,7 +893,6 @@ END
   get "/terms/:userid.?:format?" do |userid, format|
     userid = CourseList.safe_html_escape(userid)
     format = CourseList.safe_html_escape(format)
-    logger.info "terms"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -981,22 +913,17 @@ END
 
   ## can only ask for data for specific users
   get "/todolms/?" do
-    logger.debug "invalid request for todolms data with no qualifier"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid request for todolms data with no qualifier"
     response.status = 403
     return "must request specific user"
   end
 
-  ## Here is the request for a specific user.
-  # get all the results into ruby data structures then convert the whole thing to json
+  # NOTE: currently not used.
+  # For a specific user get all the results from multiple sources and
+  # combine into one JSON string.
   get "/todolms/:userid.?:format?" do |userid, format|
     userid = CourseList.safe_html_escape(userid)
     format = CourseList.safe_html_escape(format)
-    ### TODO: have this loop through the configured set of providers
-    ### TODO: and assemble the results of the URL REST calls into the object to return.
-    ### TODO: Each configured provider should have a url route.  Maybe able to
-    ### TODO: use generic one that recoginzes the source from url.
-
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
 
     # Call data urls in this application to get data.
 
@@ -1030,7 +957,7 @@ END
     results.to_json
   end
 
-  ### generic version?
+  # Handle requests to single data sources.
   get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
     userid = CourseList.safe_html_escape(userid)
     lms = CourseList.safe_html_escape(lms)
@@ -1048,14 +975,14 @@ END
       return bad_format_error(response, "/todolms request: bad format", format)
     end
 
+    config_hash = settings.latte_config
     todolmsList = dataProviderToDoLMS(userid, lms)
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+CourseList.limit_msg(todolmsList.inspect)
 
     todolmsList
   end
 
-  ### maybe this can be generic enough to call single data provider with variable lms value
-  ## ask for the LMS to get ctools information for a specific person.
+  # Current data from the CTools dashboard.
   get "/todolms/:userid/ctools.?:format?" do |userid, format|
     userid = CourseList.safe_html_escape(userid)
     format = CourseList.safe_html_escape(format)
@@ -1074,7 +1001,7 @@ END
     end
 
     todolmsList = dataProviderToDoCToolsLMS(userid)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools: "+CourseList.limit_msg(todolmsList.inspect)
 
     todolmsList.value_as_json
   end
@@ -1098,7 +1025,7 @@ END
     end
 
     todolmsList = dataProviderToDoCToolsPastLMS(userid)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast: "+todolmsList.value_as_json
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: "+CourseList.limit_msg(todolmsList.inspect)
 
     todolmsList.value_as_json
   end
@@ -1123,7 +1050,7 @@ END
 
     ## rely on courses call to generate the set of canvas courses to use.
     todolmsList = dataProviderToDoCanvasLMS(userid, session[:canvas_courses])
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: "+CourseList.limit_msg(todolmsList.inspect)
     todolmsList.value_as_json
   end
 
@@ -1146,7 +1073,7 @@ END
     end
 
     todolmsList = dataProviderToDoMnemeLMS(userid)
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme: "+todolmsList.value_as_json
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: "+CourseList.limit_msg(todolmsList.inspect)
     todolmsList.value_as_json
   end
 
@@ -1169,7 +1096,6 @@ END
     file_name = CourseList.safe_html_escape(file_name)
 
     er = dynamic_hash[:external_resources]
-    logger.debug "request: external/#{directory}/#{file_name}"
 
     config_hash = settings.latte_config
     valid_directories = config_hash[:external_resources_valid_directories]
@@ -1185,7 +1111,6 @@ END
     # get the return content type based on the file extension.
     file_name =~ /\.([^.]+)$/
     file_extension = $1
-    logger.debug "external file request: file extension: [#{file_extension}]"
     content_type file_extension
 
     result
@@ -1197,7 +1122,6 @@ END
   #################################################
   get '*' do
     config_hash = settings.latte_config
-    logger.debug "REQUEST: * bad query catch"
     response.status = 400
     return "#{config_hash[:invalid_query_text]}"
   end
@@ -1210,7 +1134,7 @@ END
     ## if redirect from self then the stopwatch doesn't get setup.
     unless request_sd.nil?
       request_sd.stop
-      logger.info "sd_request: stopwatch: "+request_sd.pretty_summary
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: stopwatch: "+request_sd.pretty_summary
     end
   end
 

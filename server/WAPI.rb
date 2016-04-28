@@ -149,9 +149,9 @@ class WAPI
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
 
-      ####### Now we have a parsed json object
-      # figure out the overall response code for the request.  That may come from the esb call or data returned
-      # from the request url
+      # Now we have a parsed json object
+
+      # figure out the overall response code for the request.
       rc = compute_response_code_to_return(json_response, response)
 
       ## We have parsed JSON, now make it a json string so it can be returned
@@ -314,7 +314,7 @@ class WAPI
       end
     rescue Exception => exp
       # If got an exception for the renewal then wrap that up to be returned.
-      logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
+      logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       return WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
     end
 

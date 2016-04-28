@@ -1,10 +1,10 @@
 ###### CTools direct URL provider ################
-# Format the CTools direct response into json format that UI expects.
+# Format the CTools mneme direct response into json format that UI expects.
 
 require_relative './Logging'
 require 'rest-client'
 
-# Handle interpretation and reformatting of a CTools direct call.
+# Handle interpretation and reformatting of a CTools mneme direct call.
 # The incoming data will NOT have the WAPI wrapper.
 
 ## Output format is defined in: https://docs.google.com/document/d/1KfhK6aMW1FdZdQwzTj5UO_zHq1qG6Fnpq80yWFV8hN4/edit
@@ -36,7 +36,7 @@ class MnemeAPIResponse
 
   def extractAssignment(assignment)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: assignment: [#{assignment}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: assignment: [#{CourseList.limit_msg(assignment.inspect)}]"
 
     # make sure there is something to do.
     return nil if (assignment.nil?)
@@ -67,13 +67,11 @@ class MnemeAPIResponse
     end
 
     # Allow string replacement.  This is needed to ensure that host names are correct.
-    # See studentdashboard.yml.TXT for information.
     @stringReplace.each_pair do |key, value|
       next if assign[key.to_sym].nil?
       from_name = @stringReplace[key][0]
       to_name = @stringReplace[key][1]
       assign[key.to_sym].gsub!(from_name, to_name)
-#      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: possible update for #{assign[key.to_sym]}"
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: assign: [#{assign.inspect}]"
@@ -92,14 +90,12 @@ class MnemeAPIResponse
   # This is an instance method to bind the time used for filtering to the current time.
   def filter(assignment)
     result = self.class.filter_out_irrelevant_assignments(assignment, now().to_i)
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: skipping assignment: [#{assignment.inspect}]" unless result
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: skipping assignment: [#{CourseList.limit_msg(assignment.inspect)}]" unless result
     return result
   end
 
   # This is a class method for easy testing.  The current time must be passed in
   def self.filter_out_irrelevant_assignments(assignment, now)
-
-    #logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: assignment: [#{assignment.inspect}]"
 
     closeDate = self.standard_epoch(assignment['closeDate'])
     openDate = self.standard_epoch(assignment['openDate'])
