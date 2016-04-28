@@ -100,7 +100,6 @@ class WAPI
     RestClient.log = logger if (logger.debug? and TRACE != FalseClass)
 
     url=format_url(request)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: url: #{url}"
     msg = Thread.current.to_s+": "+url
     r = Stopwatch.new(msg)
     r.start
@@ -121,8 +120,7 @@ class WAPI
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
 
-      ####### Now we have a parsed json object
-      dump_json_object(json_response, response) if logger.debug;
+      # Now we have a parsed json object
 
       # figure out the overall response code for the request.
       rc = compute_response_code_to_return(json_response, response)
@@ -138,7 +136,6 @@ class WAPI
 
     rescue Exception => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: "+exp.inspect
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: st: "+exp.backtrace.to_s
 
       if exp.response.code == WAPI::HTTP_NOT_FOUND
         wrapped_response = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "NOT FOUND", exp)
@@ -201,7 +198,6 @@ class WAPI
   def dump_json_object(json_response, response)
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: after initial parse"
     logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: response.code: "+json_response[response.code].to_s
-    #json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
   end
 
   ## Figure out the response status code to return.  It might be from the response body or from the RestClient response.
@@ -269,7 +265,7 @@ class WAPI
       end
     rescue Exception => exp
       # If got an exception for the renewal then wrap that up to be returned.
-      logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
+      logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       return WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
     end
 
@@ -296,7 +292,7 @@ class WAPI
   def runTokenRenewalPost
     msg = Thread.current.to_s
     renew = Stopwatch.new(msg)
-    renew.start;
+    renew.start
     response = RestClient.post @token_server,
                                "grant_type=client_credentials&scope=PRODUCTION",
                                {
@@ -305,7 +301,7 @@ class WAPI
                                }
   ensure
     # make sure to print the elapsed time for the renewal.
-    renew.stop;
+    renew.stop
     logger.info("WAPI: renew token post: stopwatch: "+renew.pretty_summary)
   end
 

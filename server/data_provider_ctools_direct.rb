@@ -33,27 +33,24 @@ module DataProviderCToolsDirect
 
     @ctoolsHash = Hash.new if @ctoolsHash.nil?
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
     return @ctoolsHash unless @ctoolsHash[:ToDoLMSProviderDash].nil?
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
 
     ## setup the dashboard query
     @ctoolsHash[:ToDoLMSProviderDash] = true
     @ctoolsHash[:ToDoLMSDash] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSDash(uniqname, security_file, application_name) }
-    @ctoolsHash[:formatResponseCToolsDash] = Proc.new { |body| CToolsDirectResponse.new(body,stringReplace) }
+    @ctoolsHash[:formatResponseCToolsDash] = Proc.new { |body| CToolsDirectResponse.new(body, stringReplace) }
 
     ## setup the past dashboard query
     @ctoolsHash[:ToDoLMSProviderDashPast] = true
     @ctoolsHash[:ToDoLMSDashPast] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSPastDash(uniqname, security_file, application_name) }
-    @ctoolsHash[:formatResponseCToolsDashPast] = Proc.new { |body| CToolsDirectResponse.new(body,stringReplace) }
+    @ctoolsHash[:formatResponseCToolsDashPast] = Proc.new { |body| CToolsDirectResponse.new(body, stringReplace) }
 
     ## setup the mneme query
     @ctoolsHash[:ToDoLMSProviderMneme] = true
     @ctoolsHash[:ToDoLMSMneme] = Proc.new { |uniqname| ctoolsHTTPDirectToDoLMSMneme(uniqname, security_file, application_name) }
-    @ctoolsHash[:formatResponseCToolsMneme] = Proc.new { |body| MnemeAPIResponse.new(body,stringReplace) }
+    @ctoolsHash[:formatResponseCToolsMneme] = Proc.new { |body| MnemeAPIResponse.new(body, stringReplace) }
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{@ctoolsHash.inspect}]"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @ctoolsHash: [#{CourseList.limit_msg(@ctoolsHash.inspect)}]"
 
     @ctoolsHash
   end
@@ -70,7 +67,7 @@ module DataProviderCToolsDirect
     # become the specific user.
     become_user = http_channel.do_request("/session/becomeuser/#{uniqname}.json")
 
-    logger.debug "#{__method__}: #{__LINE__}: becomeuser: response: "+become_user.inspect
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: becomeuser: response: "+become_user.inspect
 
     # if it didn't work then return that information in a WAPI wrapper.
     if /failure/i =~ become_user.to_s
@@ -83,7 +80,7 @@ module DataProviderCToolsDirect
 
   ### run a CTools request and return the wrapped result.
   def run_ctools_direct_request(http_application, request_string, security_file, uniqname)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ############### dash: request_string: #{request_string}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: request_string: #{request_string}"
 
     become_user, http_channel = become_ctools_user(http_application, security_file, uniqname)
     # If the result is already wrapped it is an error.

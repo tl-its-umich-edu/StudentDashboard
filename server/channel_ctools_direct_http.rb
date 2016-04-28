@@ -53,13 +53,13 @@ class ChannelCToolsDirectHTTP
       file_name = default_security_file
     end
 
-    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: use security file_name: #{file_name}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: use security file_name: #{file_name}"
 
     security_info = YAML.load_file(file_name)
     app_info = security_info[app_name]
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: app_info: "+app_info.inspect
     if app_info.nil?
-      logger.error "#{self.class.to_s}:#{__method__}: @@@@@@@@@@@@ NO SUCH APPLICATION NAME: security_file: #{file_name} application: #{app_name}"
+      logger.error "#{self.class.to_s}:#{__method__}: NO SUCH APPLICATION NAME: security_file: #{file_name} application: #{app_name}"
     end
     app_info
   end
@@ -79,14 +79,13 @@ class ChannelCToolsDirectHTTP
     elapsed = Stopwatch.new(Thread.current.to_s+": "+use_url)
     elapsed.start
 
-    # It does not seem possible to turn off ssl check on osx :-(, so may need to use http or search server url for testing.
     # pass post data via parameters to get correct uri encoding.
-    @session_id = RestClient.post use_url, { :"_username" => @user, :"_password" => @password},
+    @session_id = RestClient.post use_url, {:"_username" => @user, :"_password" => @password},
                                   {:verify_ssl => true, :content_type => 'multipart/form-data'}
 
     # make sure to print the elapsed time for the renewal.
     elapsed.stop
-    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: get session id post: stopwatch: "+elapsed.pretty_summary)
+    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: get session id post: stopwatch: "+elapsed.pretty_summary)
   end
 
   def do_request(request)
@@ -103,14 +102,8 @@ class ChannelCToolsDirectHTTP
     elapsed.start
     response = RestClient.get url, :verify_ssl => true
     elapsed.stop
-    logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: response: stopwatch: "+elapsed.pretty_summary)
+    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: response: stopwatch: "+elapsed.pretty_summary)
     response
   end
-
-  # def end
-  #   # unimplemented.  Not clear if it is necessary.
-  #   # if became another non-admin user may need to make another session and use that to delete both
-  #   # the original and the new one.  May not even work.
-  # end
 
 end
