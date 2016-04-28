@@ -10,7 +10,10 @@
 # get_request(string): This string will be appended to the api_prefix and
 # executed as a GET
 
-# Only GET is explicitly supported at the moment.
+# See the WAPI_result_wrapper class code for the output format.  The data for a request
+# is expected to be returned as a JSON string.
+
+# Only GET is explicitly supported at the moment. (Internally it also uses a POST to renew tokens.)
 
 require 'base64'
 require 'rest-client'
@@ -70,16 +73,6 @@ class WAPI
     logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: initialize WAPI with #{@api_prefix}")
   end
 
-
-  ### Consider making this a separate class with helpful methods
-  ### to access portions of the result and to convert types.
-  def self.wrap_result(status, msg, result)
-    Hash["Meta" => Hash["httpStatus" => e,
-                        "Message" => msg],
-         "Result" => result]
-  end
-
-
   def self.build_renewal(key, secret)
     b64 = base64_key_secret(key, secret)
     "Basic #{b64}"
@@ -90,56 +83,89 @@ class WAPI
     Base64.strict_encode64(ks)
   end
 
-  # use instance information to generate the proper url
+  ######### utilities for URL formatting
+  # use instance specific configuration information to generate the full url.
   def format_url(request)
     "#{@api_prefix}#{request}"
   end
 
-  def do_request(request)
+  # Responses may contain partial results.  In that case information about how to get the remaining data is returned
+  # in the 'Link' header. Link headers come back with explicit URLs pointing to Canvas servers.
+  # Remove that server added by the external service since we need to send queries back through the ESB rather than
+  # straight to the external service.
+  # This code assumes that the main portion of the next link (more_url) looks like the original request except that
+  # the beginning may be different (e.g. direct to canvas host vs through the ESB proxy) and the query parameters
+  # may be different (e.g. maybe add info about where to restart retrieval).
+
+  # A trivial more_url should become an empty string.
+  # Query parameters on the more_url should be passed through.
+  # Query parameters on the request_string should be ignored.
+  # The more_url is a complete URL that was returned from the external service.  The
+  # request_string it the partial url generated internally that doesn't have any explicit server / api
+  # version information.
+
+  def reduce_url(more_url, request_string)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: more_url: #{more_url} request_string: #{request_string}"
+
+    return "" if more_url.nil? || more_url.length == 0
+
+    # Get the main part of the original request without any query parameters.
+    main_request = request_string.index('?') ? request_string[/(^.+)\?/] : request_string
+
+    # Pull out the part of more_url that matches the original query and also pull along query parameters that were
+    # supplied in the more_url.
+    more_url = more_url[/#{main_request}.*/]
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: reduced more_url: #{more_url}"
+    more_url
+  end
+
+  # Make a request to an external service and handle error conditions and headers.
+  def do_request(request_string)
 
     RestClient.log = logger if (logger.debug? and TRACE != FalseClass)
 
-    url=format_url(request)
+    # make the request specific to the separately configured API.
+    url=format_url(request_string)
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: url: #{url}"
-    msg = Thread.current.to_s+": "+url
-    r = Stopwatch.new(msg)
+    r = Stopwatch.new(Thread.current.to_s+": "+url)
     r.start
     begin
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: get url: #{url}"
       response = RestClient.get url, {:Authorization => "Bearer #{@token}",
                                       :accept => :json,
                                       :verify_ssl => true}
 
-      process_link_header(response)
+      # If the request has more data pull out the external url to get it.
+      more_url = process_link_header(response)
+      # fix it up to go through our proxy.
+      more_url = reduce_url(more_url, request_string)
 
-      ## try to parse as json.  If can't do that generate an error
+      ## try to parse as json.  If can't do that generate an error.
       json_response = JSON.parse(response)
 
-      ## json_response is a JSON object
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb response as json"+JSON.generate(json_response)
+      ## json_response is a JSON object.  Only print part of it.
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: esb response as json"+JSON.generate(json_response)[0..30]
 
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
 
       ####### Now we have a parsed json object
-      dump_json_object(json_response, response) if logger.debug;
-
-      # figure out the overall response code for the request.
+      # figure out the overall response code for the request.  That may come from the esb call or data returned
+      # from the request url
       rc = compute_response_code_to_return(json_response, response)
 
       ## We have parsed JSON, now make it a json string so it can be returned
       json_response = JSON.generate(json_response)
-      wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", json_response)
 
-        ### handle error conditions explicitly.
+      wrapped_response = WAPIResultWrapper.new(rc, "COMPLETED", json_response, more_url)
+
+        ### handle some error conditions explicitly.
     rescue URI::InvalidURIError => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid URI: "+exp.to_s
       wrapped_response = WAPIResultWrapper.new(WAPI::BAD_REQUEST, "INVALID URL", exp.to_s)
 
     rescue Exception => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: "+exp.inspect
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: st: "+exp.backtrace.to_s
-
       if exp.response.code == WAPI::HTTP_NOT_FOUND
         wrapped_response = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "NOT FOUND", exp)
       else
@@ -152,12 +178,10 @@ class WAPI
     wrapped_response
   end
 
-  ### Log information if a query returns link headers indicating there is more data on another page.
-  ### Currently we only log this information.  We don't go get the additional information.
 
+  # A response may provide link headers that indicate the data returned is partial and more is available if you
+  # use the 'next' url provided.  Get that link and log some information so we can track this.
   def process_link_header(response)
-    ### If there is a 'next' link the headers link section print it along with information for a rough estimate
-    ### of the total number of entries.
 
     linkheader = LinkHeader.parse(response.headers[:link]).to_a
 
@@ -171,50 +195,45 @@ class WAPI
 
     # If there is more data on another page log that.
     if !next_link.nil?
-      prefix = ""
-      # Log last_page and per_page values so can get rough estimate of total number of entries for query.
+      page_estimate = ""
+      # Log last_page and per_page values from the 'last' url so can get rough estimate of total number of
+      # entries for query. Note: We use the page/per_page information because it turns out that Canvas puts that
+      # in the URL. However that isn't a standard and we shouldn't rely on it for processing.
       if !last_link.nil?
-        # Note: We use the page/per_page information because it appears in the URL, but that isn't a standard
-        # and it might be removed at some point.
         p = Regexp.new(/page=(\d+)&per_page=(\d+)/)
         p.match(last_link)
         last_page, per_page = $1, $2
-        prefix = "last_page: #{last_page} page_size: #{per_page} "
+        page_estimate = "last_page: #{last_page} page_size: #{per_page} "
       end
-      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: pagination: #{prefix} next_link: #{next_link}"
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: pagination: #{page_estimate} next_link: #{next_link}"
     end
 
+    # return the raw next link (or an empty string)
+    next_link.nil? ? "" : next_link
   end
 
-  # Extract URL for this link entry if it is the desired link type.
+  # Utility to extract URL for the desired link type from the full link header.
   def header_link_for_rel(link, desired)
-    # This looks way down in the link header structure to extract the type of the link relationship.
-    link_relationship = link[1][0][1]
-    if link_relationship == desired then
-      # this returns the actual url of the link
-      return link[0]
-    end
-    nil
+    link[1][0][1] == desired ? link[0] : nil
   end
 
   ## detailed dump of response object
   def dump_json_object(json_response, response)
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: after initial parse"
     logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: response.code: "+json_response[response.code].to_s
-    #json_response.each { |x| puts "x: #{x}" } if (TRACE != FalseClass)
   end
 
   ## Figure out the response status code to return.  It might be from the response body or from the RestClient response.
   def compute_response_code_to_return(j, response)
+    # default to the restClient value
+    rc = response.code
     if Hash.try_convert(j)
       # if there is a nested response code then use that.
       if j.has_key?('responseCode')
         rc = j['responseCode']
-      else
-        # use the one from the request to the esb.
-        rc = response.code
       end
     end
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: use response code: [#{rc}]"
     rc
   end
 
@@ -228,21 +247,22 @@ class WAPI
       end
     rescue => err
       logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: conversion error "+j.inspect
-      ## because of the error reset j back to the original json response.
+      # because of the error reset j back to the original json response.
       j = JSON.parse(response)
     end
     j
   end
 
-
-  ## Run the request.  If the result is unauthorized then renew the token and try again.
-  ## In any case will return a wrapped result.
-
+  # Entry point to make the URL request. It may end up making multiple calls to do_request since
+  # it may need to deal with authorization / token renewal and with big requests that make
+  # many calls in order to get a complete data set.
+  # In any case will return a WAPI wrapper result.
   def get_request(request)
-    wrapped_response = do_request(request)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: get_request: "+request.to_s
 
-    ## If appropriate try to renew the token.
+    wrapped_response = do_request(request)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: initial request: "+request.to_s
+
+    ## If required try to renew the token and redo the request.
     if wrapped_response.meta_status == WAPI::UNKNOWN_ERROR &&
         wrapped_response.result.respond_to?('http_code') &&
         wrapped_response.result.http_code == HTTP_UNAUTHORIZED
@@ -252,6 +272,31 @@ class WAPI
         wrapped_response = do_request(request)
       end
     end
+
+    # If it didn't work just return that information.
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: wrapped_response: meta_status: #{wrapped_response.meta_status}"
+    if wrapped_response.meta_status != WAPI::SUCCESS
+      return wrapped_response
+    end
+
+    ## Ran a query successfully.  See if got partial data and need to keep going.
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: wrapped_response: data length: #{wrapped_response.result.length}"
+    # See if there is a link header, if so get the rest of the data.
+    if wrapped_response.meta_more.length > 0
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: found link header: >>#{wrapped_response.meta_more}<<"
+
+      more_data = get_request(wrapped_response.meta_more)
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  more_data status: #{more_data.meta}"
+
+      if more_data.meta_status == WAPI::SUCCESS
+        logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  will merge data: initial wrapped_response: #{wrapped_response.result.length} more_data: #{more_data.result.length}"
+        wrapped_response = wrapped_response.append_json_results(more_data)
+      else
+        logger.error "#{self.class.to_s}:#{__method__}:#{__LINE__}: can not merge more_data: #{more_data.inspect}"
+      end
+    end
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: final wrapped_response: result length: #{wrapped_response.result.length}"
     wrapped_response
   end
 
@@ -296,7 +341,7 @@ class WAPI
   def runTokenRenewalPost
     msg = Thread.current.to_s
     renew = Stopwatch.new(msg)
-    renew.start;
+    renew.start
     response = RestClient.post @token_server,
                                "grant_type=client_credentials&scope=PRODUCTION",
                                {
@@ -305,7 +350,7 @@ class WAPI
                                }
   ensure
     # make sure to print the elapsed time for the renewal.
-    renew.stop;
+    renew.stop
     logger.info("WAPI: renew token post: stopwatch: "+renew.pretty_summary)
   end
 
