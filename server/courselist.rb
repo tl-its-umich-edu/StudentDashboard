@@ -458,7 +458,7 @@ END
     def uniqnameOverride
 
       config_hash = settings.latte_config
-      
+
       # See if there is a candidate to use as authenticated userid name.
       uniqname = CourseList.safe_html_escape(params['UNIQNAME'])
       logger.debug "#{__LINE__}:found uniqname: #{uniqname}"
@@ -977,65 +977,29 @@ END
     termList.value_as_json
   end
 
-  ################## todolms information about things to do from the lms #############
+  ### todolms:  get information about assignments from various data sources.
 
-  ## can only ask for data for specific users
-  get "/todolms/?" do
-    logger.debug "invalid request for todolms data with no qualifier"
-    response.status = 403
-    return "must request specific user"
-  end
-
-  ## Here is the request for a specific user.
-  # get all the results into ruby data structures then convert the whole thing to json
+  # For REST compatibility list the urls that contribute todolms data.
   get "/todolms/:userid.?:format?" do |userid, format|
-    userid = CourseList.safe_html_escape(userid)
     format = CourseList.safe_html_escape(format)
-    ### TODO: have this loop through the configured set of providers
-    ### TODO: and assemble the results of the URL REST calls into the object to return.
-    ### TODO: Each configured provider should have a url route.  Maybe able to
-    ### TODO: use generic one that recoginzes the source from url.
+    format = 'json' unless (format)
+    format.downcase!
 
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}"
+    return bad_format_error(response, "/todolms request only supports json", format) unless format && "json".casecmp(format).zero?
 
-    # Call data urls in this application to get data.
+    @information = ['canvas','ctools','ctoolspast','mneme'].map {|lms| url("/todolms/#{userid}/#{lms}.json")}
+    content_type :json
+    template = :'todolms.json'
 
-    ########## get ctools Dash data from this time forward
-    ctools_body_ruby = run_url_parse_json("/todolms/#{userid}/ctools")
-    ct_result = ctools_body_ruby['Result']
-
-    ########## get ctools Dash data from before this time
-    #### TODO: maybe only do this based on a property setting.
-    ctoolspast_body_ruby = run_url_parse_json("/todolms/#{userid}/ctoolspast")
-    ctpast_result = ctoolspast_body_ruby['Result']
-
-    # replace one Result with combined data.
-    ctools_body_ruby['Result'] = ct_result + ctpast_result
-
-    ############# get canvas data ####
-    canvas_body_ruby = run_url_parse_json("/todolms/#{userid}/canvas")
-
-    ############# get canvas data ####
-    mneme_body_ruby = run_url_parse_json("/todolms/#{userid}/mneme")
-
-    ############## Compose the different ctools feeds together.  We keep them separate by the source LMS.
-    ctools_merged_ruby = mergeCtoolsDashMneme(ctools_body_ruby, mneme_body_ruby)
-
-    results = {
-        'ctools' => ctools_merged_ruby,
-        'canvas' => canvas_body_ruby
-    }
-
-    # Make it all json
-    results.to_json
+    erb template
   end
 
-  ### generic version?
+  # route to the appropriate data source for this request.
   get "/todolms/:userid/:lms.?:format?" do |userid, lms, format|
     userid = CourseList.safe_html_escape(userid)
     lms = CourseList.safe_html_escape(lms)
     format = CourseList.safe_html_escape(format)
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: generic /todolms/#{userid}/#{lms}"
 
     userid = request.env['REMOTE_USER'] if userid.nil?
 
@@ -1052,102 +1016,6 @@ END
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: /todolms/#{userid}/#{lms}: "+todolmsList
 
     todolmsList
-  end
-
-  ### maybe this can be generic enough to call single data provider with variable lms value
-  ## ask for the LMS to get ctools information for a specific person.
-  get "/todolms/:userid/ctools.?:format?" do |userid, format|
-    userid = CourseList.safe_html_escape(userid)
-    format = CourseList.safe_html_escape(format)
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools"
-
-    userid = request.env['REMOTE_USER'] if userid.nil?
-
-    ## The check for json implies that other format types will fail.
-    format = "json" unless (format)
-
-    if format && "json".casecmp(format).zero?
-      content_type :json
-    else
-      return bad_format_error(response, "/todolms ctools request: bad format", format)
-    end
-
-    todolmsList = dataProviderToDoCToolsLMS(userid)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctools: "+todolmsList.value_as_json
-
-    todolmsList.value_as_json
-  end
-
-  ### Ask for past CTools assignments.
-  get "/todolms/:userid/ctoolspast.?:format?" do |userid, format|
-    userid = CourseList.safe_html_escape(userid)
-    format = CourseList.safe_html_escape(format)
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast"
-
-    userid = request.env['REMOTE_USER'] if userid.nil?
-
-    ## The check for json implies that other format types will fail.
-    format = "json" unless (format)
-
-    if format && "json".casecmp(format).zero?
-      content_type :json
-    else
-      return bad_format_error(response, "/todolms ctoolspast bad format", format)
-    end
-
-    todolmsList = dataProviderToDoCToolsPastLMS(userid)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/ctoolspast: "+todolmsList.value_as_json
-
-    todolmsList.value_as_json
-  end
-
-  ## ask for the LMS to get canvas information for a specific person.
-  get "/todolms/:userid/canvas.?:format?" do |userid, format|
-    userid = CourseList.safe_html_escape(userid)
-    format = CourseList.safe_html_escape(format)
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas"
-
-    userid = request.env['REMOTE_USER'] if userid.nil?
-
-    ## The check for json implies that other format types will fail.
-    format = "json" unless (format)
-
-    if format && "json".casecmp(format).zero?
-      content_type :json
-    else
-      return bad_format_error(response, "/todolms canvas bad format", format)
-    end
-
-    ## rely on courses call to generate the set of canvas courses to use.
-    todolmsList = dataProviderToDoCanvasLMS(userid, session[:canvas_courses])
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: /todolms/#{userid}/canvas: "+todolmsList.value_as_json
-    todolmsList.value_as_json
-  end
-
-  ## ask for the LMS to get mneme information for a specific person.
-  get "/todolms/:userid/mneme.?:format?" do |userid, format|
-    userid = CourseList.safe_html_escape(userid)
-    format = CourseList.safe_html_escape(format)
-
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme"
-
-    userid = request.env['REMOTE_USER'] if userid.nil?
-
-    ## The check for json implies that other format types will fail.
-    format = "json" unless (format)
-
-    if format && "json".casecmp(format).zero?
-      content_type :json
-    else
-      return bad_format_error(response, "/todolms mnene bad format", format)
-    end
-
-    todolmsList = dataProviderToDoMnemeLMS(userid)
-    logger.debug "#{__method__}: #{__LINE__}: /todolms/#{userid}/mneme: "+todolmsList.value_as_json
-    todolmsList.value_as_json
   end
 
   #################################################
