@@ -7,7 +7,6 @@
 # To find out the mapping for a specific configuration just grep for the configuration name.
 #  e.g. grep -i 'QA' configuration.mapping
 
->>>>>>> TLPORTAL-451: clarify
 # The format for each line is:
 # [CONFIGURATION_NAME] EXPECTED_NAME PHYSICAL_NAME
 # Example>>>> [DEMO] $HOME/config/greatApp.properties ./config/greatAppDemo.properties
