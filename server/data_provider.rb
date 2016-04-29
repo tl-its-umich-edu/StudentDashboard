@@ -80,7 +80,7 @@ module DataProvider
     courses
   end
 
-  # Call the right source of specific todo data. Merging in handled in main module.
+  # Call the right source of specific todo data.
   def dataProviderToDoLMS(uniqname, lms)
 
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}] session: [#{session.inspect}]"
