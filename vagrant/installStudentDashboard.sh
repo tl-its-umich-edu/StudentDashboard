@@ -59,8 +59,8 @@ if [ -e /vagrant/setenv.sh ]; then
    echo "installing setenv.sh file for tomcat"
    [ -d /var/lib/tomcat7/bin ] || mkdir /var/lib/tomcat7/bin
    chown tomcat7:tomcat7 /var/lib/tomcat7/bin
-   sudo cp /vagrant/setenv.sh /var/lib/tomcat7/bin/setenv.sh
-   sudo /etc/init.d/tomcat7 restart
+   cp /vagrant/setenv.sh /var/lib/tomcat7/bin/setenv.sh
+   /etc/init.d/tomcat7 restart
 fi
 
 # Install a Student Dashboard war file from /vagrant to the tomcat webapps directory.
