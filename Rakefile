@@ -42,9 +42,14 @@ namespace :vagrant do
     sh "(cd vagrant; vagrant ssh)"
   end
 
-  desc "Reload changing into the existing VM.  Avoids redoing initial OS updates."
+  desc "Restart and reprovision the existing VM."
   task :reload => :get_artifacts do
     sh "(cd vagrant; vagrant reload --provision)"
+  end
+
+  desc "(Re)provision a running VM."
+  task :provision => :get_artifacts do
+    sh "(cd vagrant; vagrant provision)"
   end
 end
 
