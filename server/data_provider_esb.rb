@@ -1,7 +1,11 @@
 ###### ESB provider ################
 # Use ESB to gather data for a request.
 
+require_relative './Logging'
+
 module DataProviderESB
+
+  include Logging
 
   ## constants for understanding data from ESB.
   TERM_REG_KEY = 'getMyRegTermsResponse'
@@ -76,14 +80,14 @@ module DataProviderESB
   # is the part of the returned information we want to get.
   def parseESBData(result, query_key, detail_key)
     begin
-      logger.debug(" #{self.class.to_s}:#{__method__}:#{__LINE__}:dataProviderESB parseESBData: #{__LINE__}:  input: #{result}: #{query_key}:#{detail_key}")
+      logger.debug(" #{self.class.to_s}:#{__method__}:#{__LINE__}: input: #{result}: #{query_key}:#{detail_key}")
 
       # If it doesn't parse then it is a problem addressed in the rescue.
       parsed = JSON.parse(result)
-      logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: dataProviderESB parseESBData: #{__LINE__}:  parsed:"+parsed.inspect)
+      logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: parsed: #{parsed}")
       query_key_value = parsed[query_key]
 
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__} pESBD: parsed A: #{parsed}"
+      #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: parsed A: #{parsed}"
 
       ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen,
       ## for example, a user has no term data at all.
@@ -94,7 +98,7 @@ module DataProviderESB
       # fix up any empty lists that only contain a nil.
       fixArrayWithNilInPlace! parsed
 
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__} pESBD: parsed B: #{parsed}"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: parsed: #{parsed}"
 
       parsed_value = parsed[query_key][detail_key]
 
