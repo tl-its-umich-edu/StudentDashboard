@@ -149,9 +149,9 @@ class WAPI
       # fix up the json a bit.
       json_response = standardize_json(json_response, response)
 
-      # Now we have a parsed json object
-
-      # figure out the overall response code for the request.
+      ####### Now we have a parsed json object
+      # figure out the overall response code for the request.  That may come from the esb call or data returned
+      # from the request url
       rc = compute_response_code_to_return(json_response, response)
 
       ## We have parsed JSON, now make it a json string so it can be returned
