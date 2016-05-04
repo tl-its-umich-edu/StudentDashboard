@@ -59,7 +59,6 @@ TOMCAT_HOME=$(pwd)/apache-tomcat
 /bin/su - tomcat -c ${TOMCAT_HOME}/bin/shutdown.sh
 
 #### install a setenv.sh file if it exists.
-#set -x
 
 if [ -e /vagrant/setenv.sh ]; then
     echo "installing setenv.sh file for tomcat"
@@ -89,10 +88,9 @@ if [ ! -e "$WAR" ]; then
     exit 1;
 fi
 
-echo "** list installed webapps"
-ls -l $WEBAPPS_DIR
 echo "** war file to install"
 ls -l $WAR
+
 # Clean out old war from webapp directory.  Don't remove other files
 # from webapps since this is a development setup.
 
@@ -105,6 +103,12 @@ sleep 10;
 echo "** list installed webapps"
 ls -l $WEBAPPS_DIR
 
+# clear out any existing log files
+if [ "$(ls -A ${TOMCAT_HOME}/logs)" ]; then
+    echo "removing log files"
+    rm -rf ${TOMCAT_HOME}/logs/*
+fi
+
 # start tomcat
 echo "starting tomcat"
 # make sure tomcat owns all those files.
@@ -112,7 +116,6 @@ chown -RH tomcat:tomcat ${TOMCAT_HOME}
 # start it up
 /bin/su - tomcat -c ${TOMCAT_HOME}/bin/startup.sh
 
-echo "StudentDashboard has been installed.  Log files are available on the VM"
-echo "in ${TOMCAT_HOME}/logs."
-echo "On OSX you can open this Dash with the command: open http://localhost:9090/"
+echo "StudentDashboard has been installed.  Log files are available on the VM in ${TOMCAT_HOME}/logs."
+echo "On OSX you can visit this Dash instance from the command line with: open http://localhost:9090/"
 #end
