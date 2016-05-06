@@ -154,7 +154,8 @@ Warbler::Config.new do |config|
   # Set JRuby to run in 1.9 mode.
   # config.webxml.jruby.compat.version = "1.9"
 
-  config.webxml.jruby.compat.version = "1.9"
+    # Use Ruby 2.
+    #  config.webxml.jruby.compat.version = "1.9"
   config.webxml.jruby.thread.pool.enabled = true
   config.webxml.jruby.thread.pool.max = 4
   config.webxml.jruby.thread.pool.min = 4
