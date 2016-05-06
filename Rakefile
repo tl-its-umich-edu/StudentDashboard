@@ -51,6 +51,11 @@ namespace :vagrant do
   task :provision => :get_artifacts do
     sh "(cd vagrant; vagrant provision)"
   end
+  
+  desc "Copy down current tomcat logs."
+  task :logs do
+    sh "(cd vagrant; ./vagrantLogs.sh)"
+  end
 end
 
 ########## testing tasks #################
