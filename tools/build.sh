@@ -22,7 +22,7 @@ source $VERSION_FILE || { echo "ERROR: build version file not found: [${VERSION_
 # Verify that the ruby version has a value.
 [ -n "$RUBY_VERSION" ] || { echo "ERROR: RUBY_VERSION must be set in version file." && exit 1; }
 
-#echo "JRUBY_OPTS: ${JRUBY_OPTS}"
+echo "using RUBY_VERSION: $RUBY_VERSION BUNDLER_VERSION: $BUNDLER_VERSION"
 
 #### utility functions
 
