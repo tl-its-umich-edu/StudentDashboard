@@ -14,7 +14,7 @@ TL_HOME=/usr/local/ctools/app/ctools/tl/home
 #WEBAPPS=$TOMCAT/webapps
 
 rm -rf $TOMCAT/webapps/ROOT*
-rm $TOMCAT/logs
+rm $TOMCAT/logs/*
 
 cp ./ARTIFACTS/StudentDashboard.*.war $TOMCAT/webapps/ROOT.war
 

@@ -14,6 +14,9 @@ export RUBY_VERSION= BUNDLER_VERSION=
 
 VERSION_FILE=${1:-./VERSIONS.sh}
 
+export RUBY_VERSION
+export BUNDLER_VERSION
+
 source $VERSION_FILE || { echo "ERROR: build version file not found: [${VERSION_FILE}]." && exit 1; }
 
 # Verify that the ruby version has a value.
@@ -53,13 +56,7 @@ function updateRuby {
        echo "rvm does not recognize this ruby version: $RUBY_VERSION"
        exit 1;
     fi
-       
     rvm use $RUBY_VERSION
-
-#    echo "ENV in update ruby"
-#    env
-    
-    gem pristine --all
 
     gem install warbler
 
@@ -67,9 +64,9 @@ function updateRuby {
     # then document (but don't automatically update) any outdated gems.
     
     gem install bundler -v $BUNDLER_VERSION
-
+    atStep "updating via bundler: gem / install / outdated"
     bundle _${BUNDLER_VERSION}_ version
-    #bundle _${BUNDLER_VERSION}_ exec gem pristine --all
+    bundle _${BUNDLER_VERSION}_ exec --keep-file-descriptors gem pristine --all
     bundle _${BUNDLER_VERSION}_ install  >> ./ruby.$ts.bundle
     bundle _${BUNDLER_VERSION}_ outdated >> ./ruby.$ts.bundle.outdated
 }
