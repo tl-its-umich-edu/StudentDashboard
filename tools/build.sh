@@ -7,12 +7,22 @@
 
 set +x
 
-# NOTE: warbler does not yet support JRUBY 9k (2.x compatible).
-# so we are stuck on jruby 1.7 (1.9.3) for the time being.
+# Get the file specifying version formation for builds.
+# Can specify name on command line or default to ../VERSIONS.sh
+# Reset these variables and so require that they are set in the version file itself.
+export RUBY_VERSION= BUNDLER_VERSION=
 
-RUBY_VERSION=jruby-1.7.18
-# Keep bundler at this version to support Vagrant deployment.
-BUNDLER_VERSION=1.10.6
+VERSION_FILE=${1:-./VERSIONS.sh}
+
+export RUBY_VERSION
+export BUNDLER_VERSION
+
+source $VERSION_FILE || { echo "ERROR: build version file not found: [${VERSION_FILE}]." && exit 1; }
+
+# Verify that the ruby version has a value.
+[ -n "$RUBY_VERSION" ] || { echo "ERROR: RUBY_VERSION must be set in version file." && exit 1; }
+
+echo "using RUBY_VERSION: $RUBY_VERSION BUNDLER_VERSION: $BUNDLER_VERSION"
 
 #### utility functions
 
@@ -27,7 +37,6 @@ function atStep {
 }
 
 function setupRVM  {
-    #   echo "setup rvm"
     atStep "setup rvm"
     ## Setup RVM
     source ~/.rvm/scripts/rvm
@@ -41,10 +50,13 @@ function updateRuby {
     rm ./ruby.*.bundle*
     echo  "updating ruby and dependencies for $RUBY_VERSION." >| ./ruby.$ts.bundle
 
-    rvm install $RUBY_VERSION
+    rvm install --binary $RUBY_VERSION
+    rc=$?
+    if [ "$rc" -ne  0 ]; then
+       echo "rvm does not recognize this ruby version: $RUBY_VERSION"
+       exit 1;
+    fi
     rvm use $RUBY_VERSION
-
-    gem pristine --all
 
     gem install warbler
 
@@ -52,9 +64,9 @@ function updateRuby {
     # then document (but don't automatically update) any outdated gems.
     
     gem install bundler -v $BUNDLER_VERSION
-
+    atStep "updating via bundler: gem / install / outdated"
     bundle _${BUNDLER_VERSION}_ version
-    #bundle _${BUNDLER_VERSION}_ exec gem pristine --all
+    bundle _${BUNDLER_VERSION}_ exec --keep-file-descriptors gem pristine --all
     bundle _${BUNDLER_VERSION}_ install  >> ./ruby.$ts.bundle
     bundle _${BUNDLER_VERSION}_ outdated >> ./ruby.$ts.bundle.outdated
 }
@@ -126,6 +138,8 @@ function makeVersion {
         remote=$(git remote show -n $user | grep -i 'fetch' | perl -n -e '/URL:\s+(\S+.git)$/ && print $1')
     fi
 
+    echo "  RUBY_VERSION: ${RUBY_VERSION} " >> $FILE
+    
     # print out jenkins build info or locally obtained info
     if [[ ! -z "$BUILD_URL" ]]; then
         echo "  JENKINS_BUILD_URL: ${BUILD_URL}" >> $FILE

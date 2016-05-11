@@ -9,7 +9,7 @@ desc "### Commands to setup and run Vagrant VM for Dashboard testing"
 task :vagrant
 
 namespace :vagrant do
-  desc "Make the application build artifacts available for creating the VM"
+  desc "Make the application build artifacts available for creating the VM."
   task :get_artifacts do
     sh "(cd vagrant; ./getArtifacts.sh)"
   end
@@ -19,15 +19,15 @@ namespace :vagrant do
     sh "(cd vagrant; vagrant up)"
   end
 
-  desc "Same as the halt task"
+  desc "Same as the halt task."
   task :down => :halt
 
-  desc "Stop VM and destroy it"
+  desc "Stop VM and destroy it."
   task :destroy do
     sh "(cd vagrant; vagrant destroy -f)"
   end
 
-  desc "Halt (stop) the vagrant VM but do not delete it"
+  desc "Halt (stop) the vagrant VM but do not delete it."
   task :halt do
     sh "(cd vagrant; vagrant halt)"
   end
@@ -42,9 +42,19 @@ namespace :vagrant do
     sh "(cd vagrant; vagrant ssh)"
   end
 
-  desc "Reload changing into the existing VM.  Avoids redoing initial OS updates."
+  desc "Restart (halt / up) the existing VM."
   task :reload => :get_artifacts do
-    sh "(cd vagrant; vagrant reload --provision)"
+    sh "(cd vagrant; vagrant reload)"
+  end
+
+  desc "(Re)provision a running VM (without restarting)."
+  task :provision => :get_artifacts do
+    sh "(cd vagrant; vagrant provision)"
+  end
+  
+  desc "Copy down current tomcat logs."
+  task :logs do
+    sh "(cd vagrant; ./vagrantLogs.sh)"
   end
 end
 

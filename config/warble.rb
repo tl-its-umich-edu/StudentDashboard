@@ -102,7 +102,7 @@ Warbler::Config.new do |config|
   # When set to true, Warbler will override the value of ENV['GEM_HOME'] even it
   # has already been set. When set to false it will use any existing value of
   # GEM_HOME if it is set.
-  # config.override_gem_home = true
+  config.override_gem_home = true
 
   # Allows for specifing custom executables
   # config.executable = ["rake", "bin/rake"]
@@ -123,7 +123,7 @@ Warbler::Config.new do |config|
   # Path to the pre-bundled gem directory inside the war file. Default
   # is 'WEB-INF/gems'. Specify path if gems are already bundled
   # before running Warbler. This also sets 'gem.path' inside web.xml.
-  # config.gem_path = "WEB-INF/vendor/bundler_gems"
+  config.gem_path = "WEB-INF/vendor/bundler_gems"
 
   # Files for WEB-INF directory (next to web.xml). This contains
   # web.xml by default. If there is an .erb-File it will be processed
@@ -154,7 +154,8 @@ Warbler::Config.new do |config|
   # Set JRuby to run in 1.9 mode.
   # config.webxml.jruby.compat.version = "1.9"
 
-  config.webxml.jruby.compat.version = "1.9"
+    # Use Ruby 2.
+    #  config.webxml.jruby.compat.version = "1.9"
   config.webxml.jruby.thread.pool.enabled = true
   config.webxml.jruby.thread.pool.max = 4
   config.webxml.jruby.thread.pool.min = 4
