@@ -130,28 +130,6 @@ class CourseList < Sinatra::Base
       'next_days' => 8
   }
 
-  ## api docs
-  config_hash[:apidoc] = <<END
-
-<p/>
-HOST://api - this documentation.
- <p/>
-HOST://courses/{uniqname}.json - An array of (fake) course data for this person.  The
-query parameter of TERMID=<termid> should be provided.
- <p/>
-HOST://terms - returns a list of terms for the current user
-<p/>
-HOST://terms/{uniqname}.json - return a list of terms for the specified user.
-<p/>
-HOST://settings - dump data to the log.
-<p/>
-HOST://external - list directories with available external static resources.
-<p/>
-HOST://external/<directory> - list available files within this directory.
-<p/>
-HOST://external/<directory>/<file> - return an available static file.
-END
-
   ## This method will return the contents of the requested (or default) configuration file.
   ## Methods in a Sinatra module need to be defined in a helpers section.
   helpers do
@@ -846,11 +824,6 @@ END
 
     # This MUST be the last statement since it returns the output text.
     erb idx
-  end
-
-  ### Print the API documentation.
-  get '/api' do
-    @@apidoc
   end
 
   ### Return json array of the course objects for this user to the UI.  Currently if you don't
