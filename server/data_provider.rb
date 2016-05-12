@@ -100,95 +100,82 @@ module DataProvider
   # The requests for each specific method are handled here.
 
   # Get and format the the todo values
-  def get_and_format_todos(formatter, method_hash, provider, provider_type, uniqname, wapi_msg)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: method_hash: #{method_hash.inspect}"
-    unless method_hash[provider_type].nil?
-      raw_todos = method_hash[provider].(uniqname)
+  def get_and_format_todos(method_hash, uniqname, provider_args)
+
+    unless method_hash[provider_args[:provider_type]].nil?
+      # call with extra argument if necessary
+      raw_todos = provider_args[:canvas_course_list] ? method_hash[provider_args[:provider]].(uniqname, provider_args[:canvas_course_list]) : method_hash[provider_args[:provider]].(uniqname)
       result = raw_todos.result
-      todos = method_hash[formatter].(result).toDoLms
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, wapi_msg, todos)
+      todos = method_hash[provider_args[:formatter]].(result).toDoLms
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, provider_args[:wapi_msg], todos)
     end
+
     todos
   end
 
+  # setup call and return as json, add debugging.
+  def get_todos_as_json(method_hash, provider_args, uniqname)
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: uniqname: [#{uniqname}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: provider_args: [#{provider_args}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: method_hash [#{CourseList.limit_msg(method_hash.inspect)}]"
+
+    todos = get_and_format_todos(method_hash, uniqname, provider_args)
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: todos #{CourseList.limit_msg(todos.inspect)}"
+    logIfUnavailable(todos, "todolms: user: #{uniqname}")
+
+    todos.value_as_json
+  end
 
   def dataProviderToDoCToolsLMS(uniqname, method_hash)
 
-    provider_type = :ToDoLMSProviderDash
-    provider = :ToDoLMSDash
-    formatter = :formatResponseCToolsDash
-    wapi_msg  = "re-wrap ctools Dash direct result"
+    provider_args = {
+        :provider_type => :ToDoLMSProviderDash,
+        :provider => :ToDoLMSDash,
+        :formatter => :formatResponseCToolsDash,
+        :wapi_msg => "re-wrap ctools Dash direct result"
+    }
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: dash: uniqname: [#{uniqname}]"
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: method_hash [#{CourseList.limit_msg(method_hash.inspect)}]"
-
-    todos = get_and_format_todos(formatter, method_hash, provider, provider_type, uniqname, wapi_msg)
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: todos #{CourseList.limit_msg(todos.inspect)}"
-    logIfUnavailable(todos, "todolms: ctools: dash: user: #{uniqname}")
-
-    todos.value_as_json
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
 
 
   def dataProviderToDoCToolsPastLMS(uniqname, method_hash)
 
-    provider_type = :ToDoLMSProviderDashPast
-    provider = :ToDoLMSDashPast
-    formatter = :formatResponseCToolsDashPast
-    wapi_msg = "re-wrap ctools past Dash direct result"
+    provider_args = {
+        :provider_type => :ToDoLMSProviderDashPast,
+        :provider => :ToDoLMSDashPast,
+        :formatter => :formatResponseCToolsDashPast,
+        :wapi_msg => "re-wrap ctools past Dash direct result"
+    }
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: uniqname: [#{uniqname}]"
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: method_hash: [#{CourseList.limit_msg(method_hash.inspect)}]"
-
-    todos = get_and_format_todos(formatter, method_hash, provider, provider_type, uniqname, wapi_msg)
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{CourseList.limit_msg(todos.inspect)}"
-    logIfUnavailable(todos, "todolms: ctools past: dash: user: #{uniqname}")
-
-    todos.value_as_json
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
-
 
   def dataProviderToDoCanvasLMS(uniqname, canvas_courses, method_hash)
 
-    provider_type = :useToDoLMSProvider
-    provider = :ToDoLMS
-    formatter = :formatResponse
-    wapi_msg = "re-wrap Canvas API result"
+    provider_args = {
+        :provider_type => :useToDoLMSProvider,
+        :provider => :ToDoLMS,
+        :formatter => :formatResponse,
+        :wapi_msg => "re-wrap Canvas API result",
+        :canvas_course_list => canvas_courses,
+    }
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}:  uniqname: #{uniqname} canvas_courses: #{canvas_courses.inspect}"
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: method_hash: #{CourseList.limit_msg(method_hash.inspect)}"
-
-    unless method_hash[provider_type].nil?
-      raw_todos = method_hash[provider].(uniqname, canvas_courses)
-      result = raw_todos.result
-      todos = method_hash[formatter].(result.to_json).toDoLms
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, wapi_msg, todos)
-    end
-
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas: number of canvas assignments: #{todos.result.length}"
-    logIfUnavailable(todos, "todolms: canvas: user: #{uniqname}")
-
-    todos.value_as_json
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
+
 
   def dataProviderToDoMnemeLMS(uniqname, method_hash)
 
-    provider_type = :ToDoLMSProviderMneme
-    provider = :ToDoLMSMneme
-    formatter = :formatResponseCToolsMneme
-    wapi_msg  = "re-wrap mneme result"
+    provider_args = {
+        :provider_type => :ToDoLMSProviderMneme,
+        :provider => :ToDoLMSMneme,
+        :formatter => :formatResponseCToolsMneme,
+        :wapi_msg => "re-wrap mneme result",
+    }
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: uniqname: #{uniqname} method_hash #{method_hash.inspect}"
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: [#{CourseList.limit_msg(method_hash.inspect)}]"
-
-    todos = get_and_format_todos(formatter, method_hash, provider, provider_type, uniqname, wapi_msg)
-
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: todos: [#{CourseList.limit_msg(todos.inspect)}]"
-    logIfUnavailable(todos, "todolms: mneme: user: #{uniqname}")
-
-    todos.value_as_json
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
 
   ############## Initialize and configure
