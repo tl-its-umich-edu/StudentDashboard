@@ -347,7 +347,7 @@ class CourseList < Sinatra::Base
     dynamic_hash = settings.dynamic_config
 
     if config_hash[:external_resources_file_directory].nil?
-      config_hash[:external_resources_file_directory] = config_hash[:BASE_DIR]+"/server/test-files/resources"
+      config_hash[:external_resources_file_directory] = config_hash[:BASE_DIR]+"/server/resources"
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: external resource directory final: "+config_hash[:external_resources_file_directory]
