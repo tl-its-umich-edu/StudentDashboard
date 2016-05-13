@@ -107,7 +107,7 @@ module DataProvider
       raw_todos = provider_args[:canvas_course_list] ? method_hash[provider_args[:provider]].(uniqname, provider_args[:canvas_course_list]) : method_hash[provider_args[:provider]].(uniqname)
       result = raw_todos.result
       todos = method_hash[provider_args[:formatter]].(result).toDoLms
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, provider_args[:wapi_msg], todos)
+      todos = WAPIResultWrapper.new(WAPIStatus::SUCCESS, provider_args[:wapi_msg], todos)
     end
 
     todos

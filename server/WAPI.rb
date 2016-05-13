@@ -20,6 +20,7 @@ require 'rest-client'
 require "link_header"
 require_relative './Logging'
 require_relative './WAPI_result_wrapper'
+require_relative './WAPI_status'
 require_relative './stopwatch'
 
 ## For detailed tracing set this to anything but FalseClass
@@ -28,19 +29,6 @@ TRACE=FalseClass
 include Logging
 
 class WAPI
-
-  # Constants for the status value of the wrapper. The potential
-  # errors / status can be different so they need not be the same
-  # as the HTTP_STATUS.  These are referenced with the namespace
-  # WAPI:: for consistency across modules.  E.g. WAPI::UNKNOWN_ERROR.
-  SUCCESS = 200
-  UNKNOWN_ERROR = 666
-  BAD_REQUEST = 400
-
-  # Constants for the http status of the underlying request.
-  HTTP_SUCCESS = 200
-  HTTP_UNAUTHORIZED = 401
-  HTTP_NOT_FOUND = 404
 
   # The application provides the values required to make a connection
   # to the WSO2 ESB.  The key and secret are oauth key and secret for generating tokens.
@@ -162,14 +150,14 @@ class WAPI
         ### handle some error conditions explicitly.
     rescue URI::InvalidURIError => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid URI: "+exp.to_s
-      wrapped_response = WAPIResultWrapper.new(WAPI::BAD_REQUEST, "INVALID URL", exp.to_s)
+      wrapped_response = WAPIResultWrapper.new(WAPIStatus::BAD_REQUEST, "INVALID URL", exp.to_s)
 
     rescue Exception => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: "+exp.inspect
-      if exp.response.code == WAPI::HTTP_NOT_FOUND
-        wrapped_response = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "NOT FOUND", exp)
+      if exp.response.code == WAPIStatus::HTTP_NOT_FOUND
+        wrapped_response = WAPIResultWrapper.new(WAPIStatus::HTTP_NOT_FOUND, "NOT FOUND", exp)
       else
-        wrapped_response = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "EXCEPTION", exp)
+        wrapped_response = WAPIResultWrapper.new(WAPIStatus::UNKNOWN_ERROR, "EXCEPTION", exp)
       end
     end
 
@@ -263,19 +251,19 @@ class WAPI
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: initial request: "+request.to_s
 
     ## If required try to renew the token and redo the request.
-    if wrapped_response.meta_status == WAPI::UNKNOWN_ERROR &&
+    if wrapped_response.meta_status == WAPIStatus::UNKNOWN_ERROR &&
         wrapped_response.result.respond_to?('http_code') &&
-        wrapped_response.result.http_code == HTTP_UNAUTHORIZED
+        wrapped_response.result.http_code == WAPIStatus::HTTP_UNAUTHORIZED
       wrapped_response = renew_token()
       ## if the token renewed ok then try the request again.
-      if wrapped_response.meta_status == WAPI::SUCCESS
+      if wrapped_response.meta_status == WAPIStatus::SUCCESS
         wrapped_response = do_request(request)
       end
     end
 
     # If it didn't work just return that information.
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: wrapped_response: meta_status: #{wrapped_response.meta_status}"
-    if wrapped_response.meta_status != WAPI::SUCCESS
+    if wrapped_response.meta_status != WAPIStatus::SUCCESS
       return wrapped_response
     end
 
@@ -289,7 +277,7 @@ class WAPI
       more_data = get_request(wrapped_response.meta_more)
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  more_data status: #{more_data.meta}"
 
-      if more_data.meta_status == WAPI::SUCCESS
+      if more_data.meta_status == WAPIStatus::SUCCESS
         logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}:  will merge data: initial wrapped_response: #{wrapped_response.result.length} more_data: #{more_data.result.length}"
         wrapped_response = wrapped_response.append_json_results(more_data)
       else
@@ -307,7 +295,7 @@ class WAPI
       logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: token_server: #{@token_server}")
       response = runTokenRenewalPost
       ## If it worked then parse the result as json.  This is here to capture any JSON parsing exceptions.
-      if response.code == HTTP_SUCCESS
+      if response.code == WAPIStatus::HTTP_SUCCESS
         ## will need to get the access_token below.  If it is not JSON that is an error.
         s = JSON.parse(response)
         @token = s['access_token']
@@ -321,19 +309,19 @@ class WAPI
     ## got no response so say that.
     if response.nil?
       logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: error renewing token: nil response ")
-      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "error renewing token: nil response", response)
+      return WAPIResultWrapper.new(WAPIStatus::UNKNOWN_ERROR, "error renewing token: nil response", response)
     end
 
     # if got an error so say that.
-    if response.code != HTTP_SUCCESS
+    if response.code != WAPIStatus::HTTP_SUCCESS
       logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: error renewing token: response code: "+response.code)
-      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "error renewing token: response code", response)
+      return WAPIResultWrapper.new(WAPIStatus::UNKNOWN_ERROR, "error renewing token: response code", response)
     end
 
     # all ok
     print_token = sprintf "%5s", @token
     logger.debug("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewed token: #{print_token}")
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "token renewed", response)
+    return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "token renewed", response)
   end
 
 

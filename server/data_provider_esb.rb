@@ -92,8 +92,8 @@ module DataProviderESB
       ## Fix up unexpected values from ESB where there is no detail level data at all.  This can happen,
       ## for example, a user has no term data at all.
       ## Make these conditions separate so it will be easy to take out when ESB returns expected values.
-      return WAPIResultWrapper.new(WAPI::SUCCESS, "replace nil value with empty array", []) if query_key_value.nil?
-      return WAPIResultWrapper.new(WAPI::SUCCESS, "replace empty string with empty array", []) if query_key_value.length == 0
+      return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "replace nil value with empty array", []) if query_key_value.nil?
+      return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "replace empty string with empty array", []) if query_key_value.length == 0
 
       # fix up any empty lists that only contain a nil.
       fixArrayWithNilInPlace! parsed
@@ -105,9 +105,9 @@ module DataProviderESB
       # if there is a detail_key but no data that's an error.
       raise "ESBInvalidData: input: #{result}" if parsed_value.nil?
       # we have data.
-      return WAPIResultWrapper.new(WAPI::SUCCESS, "found value [#{query_key}][:#{detail_key}] from ESB", parsed_value)
+      return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "found value [#{query_key}][:#{detail_key}] from ESB", parsed_value)
     rescue => excpt
-      return WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "bad data for key: #{query_key}:#{detail_key}: ",
+      return WAPIResultWrapper.new(WAPIStatus::UNKNOWN_ERROR, "bad data for key: #{query_key}:#{detail_key}: ",
                                    excpt.message+ " "+Logging.trimBackTraceRVM(excpt.backtrace).join("/n"))
     end
     # won't get here.
@@ -126,8 +126,8 @@ module DataProviderESB
     url = "/Students/#{uniqname}/Terms/#{termid}/Schedule"
     result = callDataUrl(url)
 
-    if result.meta_status == WAPI::HTTP_NOT_FOUND
-      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "resource not found", url)
+    if result.meta_status == WAPIStatus::HTTP_NOT_FOUND
+      return WAPIResultWrapper.new(WAPIStatus::HTTP_NOT_FOUND, "resource not found", url)
     end
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__}: result: #{result}"
@@ -146,8 +146,8 @@ module DataProviderESB
 
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: #{__LINE__}: result: #{result}"
 
-    if result.meta_status == WAPI::HTTP_NOT_FOUND
-      return WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "resource not found", url)
+    if result.meta_status == WAPIStatus::HTTP_NOT_FOUND
+      return WAPIResultWrapper.new(WAPIStatus::HTTP_NOT_FOUND, "resource not found", url)
     end
 
     parseESBData(result.result, TERM_REG_KEY, TERM_KEY)

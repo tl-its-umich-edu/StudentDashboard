@@ -49,7 +49,9 @@ class AuthCheck < MiniTest::Test
   def setup
     # by default assume the tests will run well and don't need
     # to have detailed log messages.
-    logger.level = Logger::ERROR
+    logger.level=TestHelper.getCommonLogLevel
+    #logger.level=Logger::ERROR
+    #logger.level=Logger::DEBUG
 
     @x = CourseList.new
     @coursesUrlststvii = "http://localhost:3000/courses/ststvii.json"

@@ -72,7 +72,7 @@ module DataProviderCToolsDirect
     # if it didn't work then return that information in a WAPI wrapper.
     if /failure/i =~ become_user.to_s
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: become user failed for user: #{uniqname}"
-      become_user = WAPIResultWrapper.new(WAPI::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
+      become_user = WAPIResultWrapper.new(WAPIStatus::HTTP_NOT_FOUND, "CTools becomeuser failed for user: #{uniqname}", "{}")
     end
 
     return become_user, http_channel
@@ -88,7 +88,7 @@ module DataProviderCToolsDirect
 
     ctools_todos = http_channel.do_request(request_string)
 
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "got dash todos from ctools direct", ctools_todos)
+    return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "got dash todos from ctools direct", ctools_todos)
   end
 
   ########################## get data from CTools.

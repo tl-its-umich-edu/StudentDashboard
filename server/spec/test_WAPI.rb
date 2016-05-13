@@ -7,6 +7,7 @@ require 'minitest/unit'
 require 'webmock/minitest'
 
 require_relative '../WAPI'
+require_relative '../WAPI_status'
 require_relative '../WAPI_result_wrapper'
 
 require_relative 'test_helper'
@@ -91,7 +92,8 @@ class TestWAPI < Minitest::Test
     ### token test
     key = "0A3JhgnyQqmp0zTo1bEy1ZjqCG8aDFKJ"
     secret = "MdMZUgWdtyCIaaVC6qkY3143qysaMDMx"
-    ks = key +":"+ secret
+    ks = "#{key}:${secret}"
+
 
     a = "MEEzSmhnbnlRcW1wMHpUbzFiRXkxWmpxQ0c4YURGS0o6TWRNWlVnV2R0eUNJYWFWQzZxa1kzMTQzcXlzYU1ETXg="
     b = WAPI.base64_key_secret(key, secret)

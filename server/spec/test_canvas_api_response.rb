@@ -17,7 +17,7 @@ include Logging
 
 class TestCanvasAPIResponse < Minitest::Test
 
-  @@string_A = '[]'
+  @@empty_response = []
   @@testFileDir = TestHelper.findTestFileDirectory
 
   def setup
@@ -45,13 +45,13 @@ class TestCanvasAPIResponse < Minitest::Test
 
   # verify that processing the minimal string version works
   def test_new_creates_something
-    @response = CanvasAPIResponse.new(@@string_A, Hash.new())
+    @response = CanvasAPIResponse.new(@@empty_response, Hash.new())
     refute_nil @response, "get object"
     refute_nil @@testFileDir, "locate test file directory"
   end
 
   def test_string_A_json_todolms
-    response = CanvasAPIResponse.new(@@string_A, Hash.new())
+    response = CanvasAPIResponse.new(@@empty_response, Hash.new())
     tdl = response.toDoLms
     assert_equal 0, tdl.length, "verify length of empty response"
   end
@@ -76,8 +76,7 @@ class TestCanvasAPIResponse < Minitest::Test
 
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
-    file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string, Hash.new())
+    response = CanvasAPIResponse.new(file_data, Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -110,8 +109,7 @@ class TestCanvasAPIResponse < Minitest::Test
 
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
-    file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string, Hash.new())
+    response = CanvasAPIResponse.new(file_data, Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -145,8 +143,7 @@ class TestCanvasAPIResponse < Minitest::Test
 
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
-    file_data_as_string = JSON.generate(file_data)
-    response = CanvasAPIResponse.new(file_data_as_string, Hash.new())
+    response = CanvasAPIResponse.new(file_data, Hash.new())
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms
@@ -158,10 +155,7 @@ class TestCanvasAPIResponse < Minitest::Test
     event = dash_format.pop
     verify_event event
 
-
-    #assert_equal 123,event[:]
     assert_nil event[:due_date_sort], "no due date"
-    #assert_equal 1445313599,event[:due_date_sort]
 
     # TODO:
     # test due date of some sort
@@ -181,13 +175,11 @@ class TestCanvasAPIResponse < Minitest::Test
 
     file_as_json = JSON.parse(file_as_string)
     file_data = file_as_json['Result']
-    file_data_as_string = JSON.generate(file_data)
     stringReplace = Hash.new()
     stringReplace['link'] = ["https://api-qa-gw.its.umich.edu", "https://umich.test.instructure.com"]
     stringReplace['contextUrl'] = ["CANVAS_INSTANCE_PREFIX", "https://umich.test.instructure.com"]
 
-    logger.debug "#{__method__}: #{__LINE__}: input: "+file_data_as_string.inspect
-    response = CanvasAPIResponse.new(file_data_as_string, stringReplace)
+    response = CanvasAPIResponse.new(file_data, stringReplace)
 
     logger.debug "#{__method__}: #{__LINE__}: response: "+response.inspect
     dash_format = response.toDoLms

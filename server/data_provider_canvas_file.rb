@@ -54,7 +54,7 @@ module DataProviderCanvasFile
   #   canvas_body = r.result
   #   canvas_body_ruby = JSON.parse canvas_body
   #
-  #   return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from canvas esb", canvas_body_ruby)
+  #   return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "got todos from canvas esb", canvas_body_ruby)
   # end
 
 end

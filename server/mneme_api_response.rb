@@ -2,6 +2,7 @@
 # Format the CTools mneme direct response into json format that UI expects.
 
 require_relative './Logging'
+require_relative './courselist'
 require 'rest-client'
 
 # Handle interpretation and reformatting of a CTools mneme direct call.

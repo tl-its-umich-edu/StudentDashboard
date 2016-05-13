@@ -17,7 +17,7 @@ include Logging
 
 class TestCtoolsDirectResponse < Minitest::Test
 
-  @@string_A = '{"entityPrefix":"dash"}'
+  @@empty_response = '{"entityPrefix":"dash"}'
   @@testFileDir = TestHelper.findTestFileDirectory
 
   def setup
@@ -32,13 +32,13 @@ class TestCtoolsDirectResponse < Minitest::Test
 
   # verify that processing the minimal string version works
   def test_new_creates_something
-    @response = CToolsDirectResponse.new(@@string_A, Hash.new)
+    @response = CToolsDirectResponse.new(@@empty_response, Hash.new)
     refute_nil @response, "get connector object"
     refute_nil @@testFileDir, "locate test file directory"
   end
 
   def test_string_A_json_todolms
-    response = CToolsDirectResponse.new(@@string_A, Hash.new)
+    response = CToolsDirectResponse.new(@@empty_response, Hash.new)
     tdl = response.toDoLms
     assert_equal 0, tdl.length, "verify length of empty response"
   end
