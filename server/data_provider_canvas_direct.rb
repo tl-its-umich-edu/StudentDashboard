@@ -32,7 +32,7 @@ module DataProviderCanvasDirect
     canvas_body_ruby = JSON.parse canvas_body
     logger.debug "#{__method__}: #{__LINE__}: calendar: todos: #{canvas_body_ruby}"
 
-    return WAPIResultWrapper.new(WAPI::SUCCESS, "got todos from canvas direct", canvas_body_ruby)
+    return WAPIResultWrapper.new(WAPIStatus::SUCCESS, "got todos from canvas direct", canvas_body_ruby)
   end
 
 end

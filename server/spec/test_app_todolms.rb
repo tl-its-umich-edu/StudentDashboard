@@ -32,7 +32,7 @@ class AppTodolmsTest < Minitest::Test
   def test_todolms_generic
 
     get '/todolms'
-    assert_equal 403, last_response.status, "don't respond to empty /todolms"
+    assert_equal 400, last_response.status, "don't respond to empty /todolms"
 
   end
 

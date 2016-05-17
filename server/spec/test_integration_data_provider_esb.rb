@@ -116,7 +116,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
     refute_nil(m, "create provider object")
     terms = m.dataProviderESBTerms("xxx", @security_file, @esb_application)
-    assert_equal(WAPI::HTTP_NOT_FOUND, terms.meta_status, "get bad result for missing uniqname meta_status: #{terms.meta_status}")
+    assert_equal(WAPIStatus::HTTP_NOT_FOUND, terms.meta_status, "get bad result for missing uniqname meta_status: #{terms.meta_status}")
 
   end
 

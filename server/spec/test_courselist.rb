@@ -22,7 +22,8 @@ class TestCourseList < MiniTest::Test
     # by default assume the tests will run well and don't need
     # detailed log messages
 
-    logger.level = Logger::ERROR
+    logger.level=TestHelper.getCommonLogLevel
+    #logger.level = Logger::ERROR
 
     ## create a Latte application
     ## The ! should get rid of the middle ware.
