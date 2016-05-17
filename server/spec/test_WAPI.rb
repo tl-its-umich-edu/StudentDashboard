@@ -24,9 +24,9 @@ class TestWAPI < Minitest::Test
   def setup
     # by default assume the tests will run well and don't
     # need detailed log messages.
+    logger.level=TestHelper.getCommonLogLevel
     #logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
-    logger.level=TestHelper.getCommonLogLevel
 
     @token_server="http://tokenserver.micky.edu"
     @api_prefix = "PREFIX"
@@ -38,8 +38,11 @@ class TestWAPI < Minitest::Test
         'token_server' => @token_server,
         'token' => 'sweet!'
     ]
-
     @w = WAPI.new(a)
+
+    @link_header_with_next = '<https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=2&per_page=100>; rel="next",<https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=1&per_page=100>; rel="first",<https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=10&per_page=100>; rel="last"'
+    @link_header_without_next = '<https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=2&per_page=100>; rel="current",<https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=1&per_page=100>; rel="first",<https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=10&per_page=100>; rel="last"'
+
   end
 
   def test_new_creates_something
@@ -50,6 +53,37 @@ class TestWAPI < Minitest::Test
     url = @w.format_url("/HOWDY")
     assert_equal "PREFIX/HOWDY", url
   end
+
+  def test_request_url_strip_prefix_query_parameters
+    stripped_request = @w.reduce_url("https://forgetme/HOWDY?this=NEW&that=NEWEST", "HOWDY")
+    assert_equal "HOWDY?this=NEW&that=NEWEST", stripped_request
+  end
+
+  def test_request_url_strip_prefix_query_parameters_on_request_string
+    stripped_request = @w.reduce_url("https://forgetme/HOWDY?this=NEW&that=NEWEST", "HOWDY?context_codes[]=course_34046")
+    assert_equal "HOWDY?this=NEW&that=NEWEST", stripped_request
+  end
+
+  def test_request_url_strip_prefix_no_query_parameters
+    stripped_request = @w.reduce_url("https://forgetme/HOWDY", "HOWDY")
+    assert_equal "HOWDY", stripped_request
+  end
+
+  def test_request_url_strip_prefix_query_parameters_special_characters
+    stripped_request = @w.reduce_url("https://forgetme/HOWDY?context_codes[]=course_34046", "HOWDY?context_codes[]=course_34046")
+    assert_equal "HOWDY?context_codes[]=course_34046", stripped_request
+  end
+
+  def test_request_url_nil
+    stripped_request = @w.reduce_url(nil, "HOWDY?context_codes[]=course_34046")
+    assert_equal "", stripped_request
+  end
+
+  def test_request_url_empty
+    stripped_request = @w.reduce_url("", "HOWDY?context_codes[]=course_34046")
+    assert_equal "", stripped_request
+  end
+
 
   ## verify that base64 coding / decoding is working as expected
   def test_b64_working
@@ -95,7 +129,6 @@ class TestWAPI < Minitest::Test
 
     h = WAPI.new(a)
     wr = h.get_request("/hey")
-    logger.info "#{__LINE__}: wr "+wr.inspect
 
     ## get status of successful in wrapper
     assert_equal 200, wr.meta_status, "successful request"
@@ -103,9 +136,7 @@ class TestWAPI < Minitest::Test
     # check that body got through
     r = wr.result
 
-    logger.info "#{__LINE__}: pre-parse r "+r.inspect
     r = JSON.parse(r)
-    logger.info "#{__LINE__}: post-parser "+r.inspect
 
     assert_equal "yourstuff", r["mystuff"]
 
@@ -128,7 +159,6 @@ class TestWAPI < Minitest::Test
     h = WAPI.new(a);
 
     r = h.do_request("/hey")
-    logger.info "tWdou: #{__LINE__}: r: "+r.inspect
 
     assert_equal(r.meta_status, 666, "didn't get wrapped exception")
 
@@ -179,17 +209,14 @@ class TestWAPI < Minitest::Test
     h = WAPI.new(a);
 
     wr = h.do_request("/hey")
-    logger.info "#{__LINE__}: wr "+wr.inspect
 
     ## get status of successful in wrapper
     assert_equal 200, wr.meta_status
 
     r = wr.result
-    logger.info "#{__LINE__}: r "+r.inspect
 
     ## verify that body came through
     body = JSON.parse(r)
-    logger.info "#{__LINE__}: body "+body.inspect
     assert_equal "yourstuff", body["mystuff"]
   end
 
@@ -236,34 +263,6 @@ class TestWAPI < Minitest::Test
 
     wr = @w.get_request("howdy")
     assert(wr)
-    logger.debug "#{__LINE__}: wr: "+wr.inspect
-    #assert(s, "should have unauthorized wrapped result")
-    #assert_equals("GROOVY", s, "lskd")
-
-  end
-
-  def test_get_request_uses_do_request_successful
-
-    skip("unidentified mock issue")
-    # add a singleton method to override internal method so can
-    # ensure that the desired result is returned
-    # http://ruby-doc.org/stdlib-1.9.3/libdoc/minitest/mock/rdoc/MiniTest/Mock.html
-
-    def @w.do_request(a)
-      mock = MiniTest::Mock.new()
-      mock.expect(:code, 999)
-      mock.expect(:code, 999)
-
-      WAPIResultWrapper.new(999, "MADEMEDOIT", mock)
-
-    end
-
-    wr = @w.get_request("howdy")
-    logger.info "#{__LINE__}: wr: "+wr.inspect
-    r = wr.result
-    logger.info "#{__LINE__}: r: "+r.inspect
-    assert_equal(999, r.code, "did not get response mock back")
-    r.verify
 
   end
 
@@ -283,10 +282,8 @@ class TestWAPI < Minitest::Test
     h = WAPI.new(a);
 
     r = h.renew_token
-    logger.info "#{__LINE__}: r: "+r.inspect
     assert_equal(r.meta_status, 200, "didn't get token renewal")
     exp = JSON.parse(r.result)
-    logger.info "#{__LINE__}: exp: "+exp.inspect
 
     assert_equal(exp['access_token'], "HAPPY_FEET", "got incorrect wrapped body")
 
@@ -309,9 +306,50 @@ class TestWAPI < Minitest::Test
     h = WAPI.new(a);
 
     r = h.renew_token
-    logger.info "#{__LINE__}: r: "+r.inspect
     assert_equal(401, r.meta_status, "token should not renew")
 
   end
+
+  #### extract correct link from link headers.
+
+  def test_process_link_headers_with_next
+
+    # using mock mostly as a stub.
+    response = MiniTest::Mock.new
+    response.expect :headers, {:link => @link_header_with_next}
+
+    x = @w.process_link_header(response)
+    assert_match /&page=2&/, x, "find existing link header"
+
+    response.verify
+  end
+
+  def test_process_link_headers_without_next
+
+    # using mock mostly as a stub.
+    response = MiniTest::Mock.new
+    response.expect :headers, {:link => @link_header_without_next}
+
+    x = @w.process_link_header(response)
+    assert_equal "", x, "empty string for missing 'next' link header"
+
+    response.verify
+  end
+
+  #header_link_for_rel(link, desired)
+
+
+  def test_find_existing_link_header
+    parsed_link = ["https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=10&per_page=100", [["rel", "next"]]]
+    x = @w.header_link_for_rel(parsed_link, 'next')
+    assert x.length > 0, "found existing next link"
+  end
+
+  def test_missing_link_header
+    parsed_link = ["https://umich.test.instructure.com/api/v1/users/self/enrollments?as_user_id=sis_login_id%3AHOWDY&state%5B%5D=active&page=10&per_page=100", [["rel", "next"]]]
+    x = @w.header_link_for_rel(parsed_link, 'ABBA')
+    assert_nil x, "did not find missing link header"
+  end
+
 
 end

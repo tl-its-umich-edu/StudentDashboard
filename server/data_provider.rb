@@ -33,7 +33,7 @@ module DataProvider
   def initialize
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ####### call super from initialize (CanvasESB)"
     super()
-    @ctoolsHash = Hash.new()
+    @ctools_hash = Hash.new()
   end
 
   ################## Requests for data about individuals.
@@ -80,132 +80,102 @@ module DataProvider
     courses
   end
 
-  # Call the right source of specific todo data. Merging in handled in main module.
+  # Call the right source of specific todo data.
   def dataProviderToDoLMS(uniqname, lms)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoLMS uniqname: #{uniqname} lms: [#{lms}] session: [#{session.inspect}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: uniqname: #{uniqname} lms: [#{lms}] session: [#{CourseList.limit_msg(session.inspect)}]"
 
-    return dataProviderToDoCToolsLMS(uniqname) if lms == 'ctools'
-    return dataProviderToDoCToolsPastLMS(uniqname) if lms == 'ctoolspast'
-    return dataProviderToDoCanvasLMS(uniqname, session[:canvas_courses]) if lms == 'canvas'
-    return dataProviderToDoMnemeLMS(uniqname) if lms == 'mneme'
+    dataProviderInit
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctools_hash [#{@ctools_hash.inspect}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @canvas_hash [#{@canvas_hash.inspect}]"
+    return dataProviderToDoCToolsLMS(uniqname, @ctools_hash) if lms == 'ctools'
+    return dataProviderToDoCToolsPastLMS(uniqname, @ctools_hash) if lms == 'ctoolspast'
+    return dataProviderToDoCanvasLMS(uniqname, session[:canvas_courses], @canvas_hash) if lms == 'canvas'
+    return dataProviderToDoMnemeLMS(uniqname, @ctools_hash) if lms == 'mneme'
   end
 
   ################## recursive REST data requests for ToDo / Schedule information
 
   # There is different configuration for the different sources of TODO / Schedule information.
   # The requests for each specific method are handled here.
-  def dataProviderToDoCToolsLMS(uniqname)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoCToolsLMS dash: uniqname: [#{uniqname}]"
+  # Get and format the the todo values
+  def get_and_format_todos(method_hash, uniqname, provider_args)
 
-    dataProviderInit
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash: [#{@ctoolsHash.inspect}]"
-
-    unless @ctoolsHash[:ToDoLMSProviderDash].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
-      raw_todos = @ctoolsHash[:ToDoLMSDash].(uniqname)
-      # TODO: check if the wrapper status is ok
-      # now strip off the wrapper
+    unless method_hash[provider_args[:provider_type]].nil?
+      # call with extra argument if necessary
+      raw_todos = provider_args[:canvas_course_list] ? method_hash[provider_args[:provider]].(uniqname, provider_args[:canvas_course_list]) : method_hash[provider_args[:provider]].(uniqname)
       result = raw_todos.result
-      # reformat the result for the Dash UI format.
-      todos = @ctoolsHash[:formatResponseCToolsDash].(result).toDoLms
-      # Put a new WAPI wrapper around it.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools Dash direct result", todos)
+      todos = method_hash[provider_args[:formatter]].(result).toDoLms
+      todos = WAPIResultWrapper.new(WAPI::SUCCESS, provider_args[:wapi_msg], todos)
     end
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools: dash: todos: [#{todos}]"
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools: dash: todos.value_as_json: #{todos.value_as_json}"
-    logIfUnavailable(todos, "todolms: ctools: dash: user: #{uniqname}")
+    todos
+  end
+
+  # setup call and return as json, add debugging.
+  def get_todos_as_json(method_hash, provider_args, uniqname)
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: uniqname: [#{uniqname}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: provider_args: [#{provider_args}]"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: method_hash [#{CourseList.limit_msg(method_hash.inspect)}]"
+
+    todos = get_and_format_todos(method_hash, uniqname, provider_args)
+
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: todos #{CourseList.limit_msg(todos.inspect)}"
+    logIfUnavailable(todos, "todolms: user: #{uniqname}")
 
     todos.value_as_json
   end
 
-  def dataProviderToDoCToolsPastLMS(uniqname)
+  def dataProviderToDoCToolsLMS(uniqname, method_hash)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoCToolsPastLMS dash: uniqname: [#{uniqname}]"
+    provider_args = {
+        :provider_type => :ToDoLMSProviderDash,
+        :provider => :ToDoLMSDash,
+        :formatter => :formatResponseCToolsDash,
+        :wapi_msg => "re-wrap ctools Dash direct result"
+    }
 
-    dataProviderInit
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash: [#{@ctoolsHash.inspect}]"
-
-    unless @ctoolsHash[:ToDoLMSProviderDashPast].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
-      raw_todos = @ctoolsHash[:ToDoLMSDashPast].(uniqname)
-      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash past: [#{raw_todos.inspect}]"
-      # TODO: check if the wrapper status is ok
-      # now strip off the wrapper
-      result = raw_todos.result
-      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: dash past: result: [#{result.inspect}]"
-      # reformat the result for the Dash UI format.
-      todos = @ctoolsHash[:formatResponseCToolsDashPast].(result).toDoLms
-      # Put a new WAPI wrapper around it.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap ctools past Dash direct result", todos)
-    end
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools past: dash: todos: [#{todos}]"
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ctools past: dash: todos.value_as_json: #{todos.value_as_json}"
-    logIfUnavailable(todos, "todolms: ctools past: dash: user: #{uniqname}")
-
-    todos.value_as_json
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
 
 
-  def dataProviderToDoCanvasLMS(uniqname, canvas_courses)
+  def dataProviderToDoCToolsPastLMS(uniqname, method_hash)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}:  uniqname: #{uniqname} canvas_courses: #{canvas_courses.inspect}"
+    provider_args = {
+        :provider_type => :ToDoLMSProviderDashPast,
+        :provider => :ToDoLMSDashPast,
+        :formatter => :formatResponseCToolsDashPast,
+        :wapi_msg => "re-wrap ctools past Dash direct result"
+    }
 
-    dataProviderInit
-
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvasHash: #{@canvasHash.inspect}"
-
-    unless @canvasHash[:useToDoLMSProvider].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
-
-      raw_todos = @canvasHash[:ToDoLMS].(uniqname, canvas_courses)
-      # TODO: check if the wrapper status is ok
-      # now strip off the wrapper
-      result = raw_todos.result
-      # TODO: do the reformatting
-      # reformat the result for the Dash UI format.
-      todos = @canvasHash[:formatResponse].(result.to_json).toDoLms
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas todos: #{todos.inspect}"
-      # rewrap the formatted result.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap Canvas API result", todos)
-    end
-
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: canvas: number of canvas assignments: #{todos.result.length}"
-    logIfUnavailable(todos, "todolms: canvas: user: #{uniqname}")
-
-    todos.value_as_json
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
 
-  def dataProviderToDoMnemeLMS(uniqname)
+  def dataProviderToDoCanvasLMS(uniqname, canvas_courses, method_hash)
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: DataProviderToDoMnemeLMS uniqname: #{uniqname}"
+    provider_args = {
+        :provider_type => :useToDoLMSProvider,
+        :provider => :ToDoLMS,
+        :formatter => :formatResponse,
+        :wapi_msg => "re-wrap Canvas API result",
+        :canvas_course_list => canvas_courses,
+    }
 
-    dataProviderInit
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: mneme: [#{@ctoolsHash.inspect}]"
-    unless @ctoolsHash[:ToDoLMSProviderMneme].nil?
-      logger.error "#{self.class.to_s}:#{__method__}: #{__LINE__}: deal with status in WAPI wrapper"
+    get_todos_as_json(method_hash, provider_args, uniqname)
+  end
 
-      raw_todos = @ctoolsHash[:ToDoLMSMneme].(uniqname)
-      # TODO: check if the wrapper status is ok
-      # now strip off the wrapper
-      result = raw_todos.result
-      # reformat the result for the Dash UI format.
-      logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: @ctoolsHash: mneme B: [#{@ctoolsHash.inspect}]"
-      todos = @ctoolsHash[:formatResponseCToolsMneme].(result).toDoLms
-      # Put a new WAPI wrapper around it.
-      todos = WAPIResultWrapper.new(WAPI::SUCCESS, "re-wrap mneme result", todos)
-    end
 
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme: todos: [#{todos}]"
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: mneme: todos.value_as_json: #{todos.value_as_json}"
-    logIfUnavailable(todos, "todolms: mneme: user: #{uniqname}")
+  def dataProviderToDoMnemeLMS(uniqname, method_hash)
 
-    todos.value_as_json
+    provider_args = {
+        :provider_type => :ToDoLMSProviderMneme,
+        :provider => :ToDoLMSMneme,
+        :formatter => :formatResponseCToolsMneme,
+        :wapi_msg => "re-wrap mneme result",
+    }
+
+    get_todos_as_json(method_hash, provider_args, uniqname)
   end
 
   ############## Initialize and configure
@@ -218,8 +188,9 @@ module DataProvider
   ## Initialize all the providers as configured.
   def dataProviderInit
     # only init if required.  At the moment if anything is configured they are all configured.
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: return as fileToDoLMS is not nil" unless @fileToDoLMS.nil?
     return unless @fileToDoLMS.nil?
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: init"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call dataProviderInit"
     config_hash = settings.latte_config
 
     # Configure providers for the different sources of data
@@ -227,6 +198,7 @@ module DataProvider
     # Mpathways provider
     configureMPathwaysProvider(config_hash)
     configureCToolsProvider(config_hash)
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configureCanvasProvider"
     configureCanvasProvider(config_hash)
 
   end
@@ -235,30 +207,27 @@ module DataProvider
     logger.error "@@@@@@@@@@@@@ must specify one MPathways data provider" unless verifyExactlyOneProvider(config_hash, [:data_provider_file_directory, :mpathways_application_name])
     configureFileProvider(config_hash) unless config_hash[:data_provider_file_directory].nil?
     configureEsbProvider(config_hash) unless config_hash[:mpathways_application_name].nil?
-    #!config_hash[:data_provider_file_directory].nil? ? configureFileProvider(config_hash) : configureEsbProvider(config_hash)
   end
 
   ### Hide any decisions about which ctools connection method to use.
   def configureCToolsProvider(config_hash)
-
     logger.error "@@@@@@@@@@@@@ must specify one CTools data provider" unless verifyExactlyOneProvider(config_hash, [:data_provider_file_directory, :ctools_http_application_name])
     configureCToolsFileProvider(config_hash) unless (config_hash[:data_provider_file_directory].nil?)
     configureCToolsHTTPProvider(config_hash) unless (config_hash[:ctools_http_application_name].nil?)
-
   end
 
   ## These methods delegate configuration to the provider.
   def configureCToolsFileProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
     # Assign or merge hash?
-    @ctoolsHash = initConfigureCToolsFileProvider(config_hash)
+    @ctools_hash = initConfigureCToolsFileProvider(config_hash)
   end
 
   ## These methods delegate configuration to the provider.
   def configureCanvasFileProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
     # Assign or merge hash?
-    @canvasHash = initConfigureCanvasFileProvider(config_hash)
+    @canvas_hash = initConfigureCanvasFileProvider(config_hash)
   end
 
   ### Hide any decisions about which canvas provider to use.
@@ -299,7 +268,7 @@ module DataProvider
   def configureCToolsHTTPProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
     # Assign or merge hash?
-    @ctoolsHash = initConfigureCToolsHTTPProvider(config_hash)
+    @ctools_hash = initConfigureCToolsHTTPProvider(config_hash)
   end
 
   ## These methods delegate configuration to the provider.
@@ -307,37 +276,37 @@ module DataProvider
   #### temp
   def initConfigureMnemeFileProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: called init"
-    @ctoolsHash = Hash.new if @ctoolsHash.nil?
+    @ctools_hash = Hash.new if @ctools_hash.nil?
     logger.error "#{self.class.to_s}:#{__method__}:#{__LINE__}: ######## fix dpfd"
-    #dpf_dir = config_hash[:data_provider_file_directory_mneme]
     dpf_dir = config_hash[:data_provider_file_directory]
 
-    @ctoolsHash[:ToDoLMSMProviderMneme] = true
+    @ctools_hash[:ToDoLMSMProviderMneme] = true
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: dpf_dir: #{dpf_dir}"
-    @ctoolsHash[:ToDoLMSMneme] = Proc.new { |uniqname| dataProviderFileTerms("#{dpf_dir}/todolms/mneme", uniqname) }
-    @ctoolsHash[:formatResponseCToolsMneme] = Proc.new { |body| MnemeAPIResponse.new(body) }
-    @ctoolsHash
+    @ctools_hash[:ToDoLMSMneme] = Proc.new { |uniqname| dataProviderFileTerms("#{dpf_dir}/todolms/mneme", uniqname) }
+    @ctools_hash[:formatResponseCToolsMneme] = Proc.new { |body| MnemeAPIResponse.new(body) }
+    @ctools_hash
   end
 
   def configureMnemeFileProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
-    @ctoolsHash = Hash.new if @ctoolsHash.nil?
-    @ctoolsHash.merge!(initConfigureMnemeFileProvider(config_hash))
+    @ctools_hash = Hash.new if @ctools_hash.nil?
+    @ctools_hash.merge!(initConfigureMnemeFileProvider(config_hash))
   end
 
   def configureCanvasHTTPProvider(config_hash)
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
     # is this a bug?  Might it exist but be empty?
-    return @canvasHash unless @canvasHash.nil?
-    @canvasHash = initConfigureCanvasHTTPProvider(config_hash)
+    return @canvas_hash unless @canvas_hash.nil?
+    @canvas_hash = initConfigureCanvasHTTPProvider(config_hash)
   end
 
   def configureCanvasESBProvider(config_hash)
-    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure"
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: call configure @canvas_hash: #{@canvas_hash}"
     # is this a bug?  Might it exist but be empty?
-    return @canvasHash unless @canvasHash.nil?
+    return @canvas_hash unless @canvas_hash.nil?
     logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: setup canvasHash"
-    @canvasHash = initConfigureCanvasESBProvider(config_hash)
+    @canvas_hash = initConfigureCanvasESBProvider(config_hash)
+    logger.debug "#{self.class.to_s}:#{__method__}: #{__LINE__}: setup canvasHash"
   end
 
   ######################################  UTILITY CLASSES

@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
-ruby '1.9.3', engine: 'jruby', engine_version: '1.7.24'
+# Check ruby version to set requirements.
+# Default to this to recent jruby
+ruby '2.3.0', engine: 'jruby', engine_version: '9.1.0.0'
+ruby '1.9.3', engine: 'jruby', engine_version: '1.7.18' if RUBY_VERSION =~ /1.7.18/
+ruby '1.9.3', engine: 'jruby', engine_version: '1.7.25' if RUBY_VERSION =~ /1.7.25/
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'slim'
@@ -9,26 +13,17 @@ gem 'rest-client'
 gem 'link_header'
 gem 'net-ldap', '<= 0.12.1'
 gem 'rake'
-#gem 'selenium-webdriver'
 group :development do
- # gem 'unicorn'
   gem 'guard'
   gem 'listen'
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
-#  gem 'guard-unicorn'
-#  gem 'simplecov', :require => false, :group => :test
 end
 group :test do
   gem 'simplecov', :require => false, :group => :test
   gem 'rack-test'
   gem 'rspec'
   gem 'minitest'
-  gem 'webmock'
+  gem 'webmock', '< 2'
   gem 'selenium-webdriver'
-#  gem 'ruby-debug-base19x'
-#  gem 'ruby-debug-ide'
 end
-
-#gem 'newrelic_rpm'
-

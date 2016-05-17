@@ -1,8 +1,3 @@
-## Unit tests for provider esb module
-
-
-
-require 'rubygems'
 
 require 'minitest'
 require 'minitest/autorun'
@@ -122,7 +117,8 @@ class TestProviderESB < MiniTest::Test
   def setup
     # by default assume the tests will run well and don't
     # need detailed log messages.
-    logger.level=Logger::ERROR
+    logger.level=TestHelper.getCommonLogLevel
+    #logger.level=Logger::ERROR
     #logger.level=Logger::DEBUG
 
     # create class to test module

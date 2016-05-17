@@ -14,8 +14,9 @@ class CanvasAPIResponse
   # Store the body of the response.  All output from Canvas API goes through this class.
   attr_accessor :body_string, :body_json
 
-  # Input is in string format.  Some values (e.g. host names) may need to be changed.
-  def initialize(body,stringReplace)
+  # input should be converted to json string.
+  def initialize(body, stringReplace)
+    body = body.to_json
     @body_string = body
     @body_json = JSON.parse(body)
     # specifies strings to be replaced.  The replacement is only done
@@ -70,11 +71,11 @@ class CanvasAPIResponse
 
     # Allow string replacement.  This is needed to ensure that host names are correct.
     # See studentdashboard.yml.TXT for information.
-    @stringReplace.each_pair do |key,value|
+    @stringReplace.each_pair do |key, value|
       next if standard_event[key.to_sym].nil?
       from_name = @stringReplace[key][0]
       to_name = @stringReplace[key][1]
-      standard_event[key.to_sym].gsub!(from_name,to_name)
+      standard_event[key.to_sym].gsub!(from_name, to_name)
       logger.debug "#{__FILE__}: #{__LINE__}: possible update for #{standard_event[key.to_sym]}"
     end
 

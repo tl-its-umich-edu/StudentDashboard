@@ -10,7 +10,6 @@ module DataProviderCanvasESB
 
   # initialize variables local to this access method
   def initialize
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: ####### call super from initialize (CanvasESB)"
     super()
     @canvasESB_w = ""
     @canvasESB_yml = ""
@@ -22,9 +21,7 @@ module DataProviderCanvasESB
   def setupCanvasWAPI(app_name)
 
     logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: setupCanvasAPI: canvasESB: use ESB application: #{app_name}"
-    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvasESB_yml: [#{@canvasESB_yml.to_json}]"
     application = @canvasESB_yml[app_name]
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvasESB: use ESB application: #{application.to_json}"
     @canvasESB_w = WAPI.new application
 
   end
@@ -42,7 +39,7 @@ module DataProviderCanvasESB
       file_name = default_security_file
     end
 
-    logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: init_ESB: use security file_name: #{file_name}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: init_ESB: use security file_name: #{file_name}"
     @canvasESB_yml = YAML.load_file(file_name)
     setupCanvasWAPI(app_name)
   end
@@ -57,10 +54,9 @@ module DataProviderCanvasESB
       @canvas_calendar_events = config_hash[:canvas_calendar_events]
     end
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_calendar_events setup: #{@canvas_calendar_events.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_calendar_events setup: #{CourseList.limit_msg(@canvas_calendar_events.inspect)}"
+    logger.error "#{self.class.to_s}:#{__method__}:#{__LINE__}: need missing canvas_esb_application_name!" if application_name.nil?
 
-
-    logger.error "@@@@@@@@@@@@@@@@@@@@ need canvas_esb_application_name!" if application_name.nil?
     # This is hash with string replacement values.
     if !config_hash[application_name].nil? && !config_hash[application_name]['string-replace'].nil? then
       stringReplace = config_hash[application_name]['string-replace']
@@ -90,7 +86,7 @@ module DataProviderCanvasESB
     ## API call would support specifying attributes to ignore if we deem that necessary at some point.
     ## https://canvas.instructure.com/doc/api/calendar_events.html
 
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvas_calendar_events: #{@canvas_calendar_events.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: @canvas_calendar_events: #{CourseList.limit_msg(@canvas_calendar_events.inspect)}"
 
     # setup query parameters
     now = DateTime.now
@@ -112,9 +108,7 @@ module DataProviderCanvasESB
 
     # Generate url with query parameters.
     string_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => request_parameters).url
-    #### test to see if need to unescape :
     string_request_url.gsub!(/%3A/, ':')
-    #puts string_request_url.inspect
     full_request_url = string_request_url
 
     ### add repeating query parameters.  This is specific to course list
@@ -127,37 +121,38 @@ module DataProviderCanvasESB
   # get calendar events for all the classes one by one.
   def canvasESBToDoLMSClassByClass(uniqname, canvas_courses, security_file, esb_application)
     canvas_courses ||= []
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: uniqname: [#{uniqname}] mpathways canvas_courses count: #{canvas_courses.length} canvas_courses: #{canvas_courses}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: uniqname: [#{uniqname}] mpathways canvas_courses count: #{canvas_courses.length} canvas_courses: #{CourseList.limit_msg(canvas_courses.inspect)}"
 
-    # accumulate the data for each course.  They are done individually to allow for error handling.
+    # Accumulate the data for each course.  Requests are done individually so that errors with one course
+    # doesn't prevent getting data from the other courses.
+
     all_courses = canvas_courses.inject([]) do |all_classes, course|
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas course array check course: [#{course}]"
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas course array check course: [#{CourseList.limit_msg(course.inspect)}]"
       all_classes.concat(canvasCalendarEventsSingleCourse(course, uniqname))
-      # This must be returned to be used as the accumulator for inject.
+      # block must return the accumulator used by inject.
       all_classes
     end
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: calendar_events_array count: #{all_courses.length} all_courses: #{all_courses}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: calendar_events_array count: #{all_courses.length} all_courses: #{CourseList.limit_msg(all_courses.inspect)}"
 
     WAPIResultWrapper.new(WAPI::SUCCESS, "got calendar_events from canvas esb", all_courses)
   end
 
   # get calendar events for one class and handle unauthorized error condition explicitly.
   def canvasCalendarEventsSingleCourse(canvas_course, uniqname)
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: get calendar events for this course: >>#{canvas_course}<<"
     calendar_events_url = canvasAPICalendarEventsURL(uniqname, [canvas_course])
 
     r = @canvasESB_w.get_request calendar_events_url
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course >>#{canvas_course}<< r:#{r.inspect}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course: >#{canvas_course} result:#{CourseList.limit_msg(r.inspect)}"
     canvas_body = r.result
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course >>#{canvas_course}<< canvas_body:#{canvas_body.inspect}"
 
     if canvas_body.class == RestClient::Unauthorized
-      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: canvas_course >>#{canvas_course}<< UNAUTHORIZED<<<<<<<<<"
+      # This is not an error since access may have been revoked on a class by class basis.
+      logger.info "#{self.class.to_s}:#{__method__}:#{__LINE__}: unauthorized access uniqname: #{uniqname} course: #{canvas_course}"
       return []
     end
 
     canvas_body_as_ruby = JSON.parse canvas_body
-    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: single course calendar events for canvas_course >>#{canvas_course}<< #{canvas_body_as_ruby}"
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: single course calendar events for canvas_course >>#{canvas_course}<< #{CourseList.limit_msg(canvas_body_as_ruby.inspect)}"
     canvas_body_as_ruby
   end
 
