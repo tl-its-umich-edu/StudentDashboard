@@ -136,7 +136,7 @@ class TestProviderESB < MiniTest::Test
     # fix null entry
     h = '{"getMyRegTermsResponse":null}'
     t = @m.parseESBData(h, DataProviderESB::TERM_REG_KEY, DataProviderESB::TERM_KEY)
-    assert_equal(WAPI::SUCCESS, t.meta_status, 'ESB returned value was null, we make it empty array')
+    assert_equal(WAPIStatus::SUCCESS, t.meta_status, 'ESB returned value was null, we make it empty array')
     assert_equal(0, t.result.length, "empty array")
   end
 
@@ -144,14 +144,14 @@ class TestProviderESB < MiniTest::Test
     # this is an error because it isn't valid json
     h = '{"getMyRegTermsResponse":nil}'
     t = @m.parseESBData(h, DataProviderESB::TERM_REG_KEY, DataProviderESB::TERM_KEY)
-    assert_equal(WAPI::UNKNOWN_ERROR, t.meta_status, 'ESB returned value was nil, which is not valid json')
+    assert_equal(WAPIStatus::UNKNOWN_ERROR, t.meta_status, 'ESB returned value was nil, which is not valid json')
   end
 
   def test_esb_terms_empty_string
     # make empty string into empty array
     h = '{"getMyRegTermsResponse":""}'
     t = @m.parseESBData(h, DataProviderESB::TERM_REG_KEY, DataProviderESB::TERM_KEY)
-    assert_equal(WAPI::SUCCESS, t.meta_status, 'ESB returned value was empty string, we make it empty array')
+    assert_equal(WAPIStatus::SUCCESS, t.meta_status, 'ESB returned value was empty string, we make it empty array')
     assert_equal(0, t.result.length, "empty array")
   end
 
@@ -159,7 +159,7 @@ class TestProviderESB < MiniTest::Test
     # make sure valid term is ok
     h = '{"getMyRegTermsResponse":{"Term":[{"TermCode":"2020","TermDescr":"Winter 2015","TermShortDescr":"WN 2015"}]}}'
     t = @m.parseESBData(h, DataProviderESB::TERM_REG_KEY, DataProviderESB::TERM_KEY)
-    assert_equal(WAPI::SUCCESS, t.meta_status, 'ESB returned value was good')
+    assert_equal(WAPIStatus::SUCCESS, t.meta_status, 'ESB returned value was good')
   end
 
   ## Ruby big hammer way of making a deep copy of an object.

@@ -26,7 +26,8 @@ class TestDataProviderFile < Minitest::Test
 
     #logger.level=TestHelper.getCommonLogLevel
     # use error since we expect some warning messages
-    logger.level = Logger::ERROR
+    logger.level=TestHelper.getCommonLogLevel
+    #logger.level = Logger::ERROR
     #logger.level = Logger::DEBUG
 
     ## Resolve test directory regardless of where the tests

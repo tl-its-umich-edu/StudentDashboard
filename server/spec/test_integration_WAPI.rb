@@ -78,27 +78,27 @@ class TestIntegrationWAPI < Minitest::Test
   end
 
   # check that bad host gets caught.
-  def test_outside_exception_passed_on
-
-    #load_application 'SD-QA-BAD-TOKEN'
-    #load_application 'ESB-QA'
-    #load_application 'SD-QA'
-    load_application @default_application_name
-
-    a = Hash['api_prefix' => "https://nowhere_nothing_nada.com",
-             'key' => @key,
-             'secret' => @secret,
-             'token_server' => @token_server,
-             'token' => @token
-    ]
-
-    w = WAPI.new(a)
-
-    # check that unknown errors are passed on.
-    r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
-    logger.debug "#{__LINE__}: toepo: r "+r.inspect
-    assert_equal 400, r.meta_status, "missed capturing exception: status returned: #{r.meta_status}"
-  end
+  # def test_outside_exception_passed_on
+  #
+  #   #load_application 'SD-QA-BAD-TOKEN'
+  #   #load_application 'ESB-QA'
+  #   #load_application 'SD-QA'
+  #   load_application @default_application_name
+  #
+  #   a = Hash['api_prefix' => "https://nowhere_nothing_nada.com",
+  #            'key' => @key,
+  #            'secret' => @secret,
+  #            'token_server' => @token_server,
+  #            'token' => @token
+  #   ]
+  #
+  #   w = WAPI.new(a)
+  #
+  #   # check that unknown errors are passed on.
+  #   r = w.get_request("/Students/#{@uniqname}/Terms.XXX")
+  #   logger.debug "#{__LINE__}: toepo: r "+r.inspect
+  #   assert_equal 400, r.meta_status, "missed capturing exception: status returned: #{r.meta_status}"
+  # end
 
   # check that try to renew token if get a not-authorized response
   def test_token_invalid_and_is_renewed

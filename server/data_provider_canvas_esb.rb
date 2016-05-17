@@ -134,7 +134,7 @@ module DataProviderCanvasESB
     end
     logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: calendar_events_array count: #{all_courses.length} all_courses: #{CourseList.limit_msg(all_courses.inspect)}"
 
-    WAPIResultWrapper.new(WAPI::SUCCESS, "got calendar_events from canvas esb", all_courses)
+    WAPIResultWrapper.new(WAPIStatus::SUCCESS, "got calendar_events from canvas esb", all_courses)
   end
 
   # get calendar events for one class and handle unauthorized error condition explicitly.

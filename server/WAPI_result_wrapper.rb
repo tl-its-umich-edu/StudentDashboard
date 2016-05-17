@@ -1,6 +1,6 @@
 require_relative './Logging'
 require 'json'
-require_relative 'WAPI'
+require_relative './WAPI_status'
 
 include Logging
 
@@ -57,7 +57,7 @@ class WAPIResultWrapper
     begin
       return true if @value.has_key?("Meta")
     rescue
-      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid WAPI wrapper:  " +self.to_s
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid WAPI wrapper:  #{+self.to_s}"
     end
     nil
   end
@@ -72,12 +72,12 @@ class WAPIResultWrapper
   # reconstituted ruby object.
   def self.value_from_json(json_string)
     # create a new wrapper
-    wr = WAPIResultWrapper.new(WAPI::SUCCESS, "dummy msg", "dummy result")
+    wr = WAPIResultWrapper.new(WAPIStatus::SUCCESS, "dummy msg", "dummy result")
     # set the content of the wrapper to the parsed contents of the json string.
     begin
       wr.setValue(JSON.parse(json_string))
     rescue
-      wr = WAPIResultWrapper.new(WAPI::UNKNOWN_ERROR, "dummy msg", "error json parsing #{json_string}")
+      wr = WAPIResultWrapper.new(WAPIStatus::UNKNOWN_ERROR, "dummy msg", "error json parsing #{json_string}")
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: WAPI_wrapper: error parsing as json: #{json_string}"
     end
 

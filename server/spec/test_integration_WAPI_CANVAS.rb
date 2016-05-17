@@ -165,6 +165,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   ## test for data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_self_upcoming_events
+    skip("verify that studenta has appropriate events")
     refute_nil @w
     ## this requires self in url
     request_url = "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
@@ -202,6 +203,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
   ## test for assignment data about a (test) student.  This uses masquerade.
   ## Test using RestClient to add parameters to url
   def test_canvas_api_studenta_upcoming_events_headers
+    skip("verify that studenta has appropriate events")
     refute_nil @w
     ## this requires self in url
     #request_url = "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
@@ -300,6 +302,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   ## test for assignment data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_calendar_events
+    skip("verify that studenta has appropriate events")
     refute_nil @w
     ## this requires self in url
     request_url = "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"

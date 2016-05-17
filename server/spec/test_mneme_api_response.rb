@@ -21,7 +21,7 @@ include Logging
 
 class TestMnemeAPIResponse < Minitest::Test
 
-  @@string_A = '{"entityPrefix":"mneme"}'
+  @@empty_response = '{"entityPrefix":"mneme"}'
   @@testFileDir = TestHelper.findTestFileDirectory
 
 
@@ -52,13 +52,13 @@ class TestMnemeAPIResponse < Minitest::Test
 
   # verify that processing the minimal string version works
   def test_new_creates_something
-    @response = MnemeAPIResponse.new(@@string_A)
+    @response = MnemeAPIResponse.new(@@empty_response)
     refute_nil @response, "get object"
     refute_nil @@testFileDir, "locate test file directory"
   end
 
   def test_string_A_json_todolms
-    response = MnemeAPIResponse.new(@@string_A)
+    response = MnemeAPIResponse.new(@@empty_response)
     tdl = response.toDoLms
     assert_equal 0, tdl.length, "verify length of empty response"
   end

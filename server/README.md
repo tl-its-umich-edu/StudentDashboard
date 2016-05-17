@@ -5,15 +5,14 @@ It expects to return data in json format.
 The server also supports running the main dashboard UI page.
 
 To get the UI page simply visit the base URL for 
-the application.  E.g. https://<host>/StudentDashboard/
+the application.  E.g. https://<host>/
 The root element of the URL can be configured.
 
-The API is documented at : http://localhost:3000/StudentDashboard/api
-
 # Data providers
-There are 2 data providers supplied:
+There are 3 data providers supplied:
 
 * ESB - API based
+* CTools Direct - Queries direct to CTools
 * DFB - disk file based
 
 The data is returned wrapped in some additional status json.  This is used so
@@ -27,6 +26,9 @@ in the status.
 This provider used the UMich WSO2 based ESB to get user data.  Configuration
 of this provider is entirely within the security.yml file.  See that file
 for details.
+
+## CTools Direct
+This provider directly queries the CTools / Sakai direct API
 
 ## File based Data provider
 The File based data provider will retrieve user data from
