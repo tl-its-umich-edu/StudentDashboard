@@ -129,7 +129,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
       $scope.loadingSchedule = false;
       $.each(data.data.Result, function (i, l) {
         if(!_.findWhere($scope.schedule, {link: l.link, title:l.title, due_date_sort:l.due_date_sort})){
-          $scope.schedule.push(l)
+          $scope.schedule.push(l);
         }  
       });
     } else {
@@ -141,7 +141,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
       $scope.loadingSchedule = false;
       $.each(data.data.Result, function (i, l) {
         if(!_.findWhere($scope.schedule, {link: l.link, title:l.title, due_date_sort:l.due_date_sort})){
-          $scope.schedule.push(l)
+          $scope.schedule.push(l);
         }  
       });
     } else {
@@ -150,7 +150,7 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
   });
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/mneme.json').then(function(data) {
     if(data.status ===200){
-      $scope.loadingSchedule = false;      
+      $scope.loadingSchedule = false;
       $scope.schedule = data.data.Result.concat($scope.schedule);
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting Test Center items from CTools'});
