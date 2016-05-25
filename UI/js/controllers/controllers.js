@@ -127,9 +127,11 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctools.json').then(function(data) {
     if(data.status ===200){
       $scope.loadingSchedule = false;
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
-      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
+      $.each(data.data.Result, function (i, l) {
+        if(!_.findWhere($scope.schedule, {link: l.link, title:l.title, due_date_sort:l.due_date_sort})){
+          $scope.schedule.push(l);
+        }  
+      });
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting upcoming assignments from CTools'});
     }
@@ -137,9 +139,11 @@ dashboardApp.controller('scheduleController', ['Schedule', 'canvasShare', '$scop
   Schedule.getSchedule('/todolms/' + $rootScope.user + '/ctoolspast.json').then(function(data) {
     if(data.status ===200){
       $scope.loadingSchedule = false;
-      $scope.schedule = data.data.Result.concat($scope.schedule);
-      // need to remove any dupes (since there is an overlap in data returned between ctools/dash/next and ctools/dash/past)
-      $scope.schedule = _.uniq($scope.schedule, false, function(s){ return s.link; });
+      $.each(data.data.Result, function (i, l) {
+        if(!_.findWhere($scope.schedule, {link: l.link, title:l.title, due_date_sort:l.due_date_sort})){
+          $scope.schedule.push(l);
+        }  
+      });
     } else {
       $scope.scheduleErrors.push({'status':data.status, 'message':'Error getting past assignments from CTools'});
     }
