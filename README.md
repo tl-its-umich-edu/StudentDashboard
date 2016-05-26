@@ -1,103 +1,117 @@
 
 # UMich Student Dashboard Repository
 
-This application will provide a single page that provides a link to a student's
-current courses regardless of whether are in CTools or Canvas.
+This application provides a single page view of a student's courses and assignments
+regardless of whether are in CTools or Canvas.  Links to class sites and assignments are provided when possible.
 
-This code is kept in github and will be public for the whole world to see forever.
+This code is available in a public GitHub repository at: https://github.com/tl-its-umich-edu/StudentDashboard.
 
 # Implementation
 
-This server implements both a single page UI and a Rest API.  The Rest api can be used
-independently if that is appropriate.  It assumes that authentication has
-already been done and the request object has a valid value for REMOTE_USER.
+This application implements both a user interface  and a REST data API.  The REST api is used
+by the UI and is also directly available to Dashboard administrators.  The application 
+requires that the user viewing the page has been authenticated and the value of
+REMOTE_USER has been set.
 
 The server is implemented  using Ruby and Sinatra.  The application is
-packaged into a war file along with JRuby 1.7 (implementing
-Ruby 1.9.3). It expects to run within a container, such as Tomcat 7,
-that will provide authentication.  The container must be configured to
-supply the REMOTE_USER environment variable value in the request.  An
-example server.xml file for Tomcat is included.
+packaged into a war file along with JRuby 9.x (implementing 
+Ruby 2.2) expects to run within a container
+such as Tomcat 7.
 
-# Building the project
+The development and build environments assume that the user is setup to use RVM to manage the 
+available version of Ruby and uses Bundler to manage GEMS.
 
-The application runs under Ruby 1.9.3.  After checking out the source
-use RVM to get the proper Ruby environment (1.9.3) and then  run the
-bundle command to update dependencies.
+For testing purposes an administrative user can impersonate other users 
+if the appropriate property has been set *and* the admin user is a member of a LDAP group.
 
-    bundle install
+# Running Student Dashboard Locally
 
-## Running via Ruby / JRuby
-The server can then be run locally using common Ruby web servers.
-StudentDashboard can be run locally using the included script
-"./runServerBundle.sh"  This will run on port 3000 at the URL: http://localhost:3000/
+Dashboard can be run locally without a build and compile step using the included script
+"./tools/runServerBundle.sh"  This will run on port 3000 at the URL: http://localhost:3000/
 
-Use RVM to select the version of ruby to use.  Using JRuby may require getting rid of
-the unicorn and/or guard gems.
+# Building and deploying
 
-## Running via Tomcat
+The application can run a number of different environments.
 
-To build the war file for installation under Tomcat use the command
+## Web Server
+The application is packaged for deployment as a war file and runs under jRuby.  The war is created 
+by the script tools/build.sh which configures 
+the Ruby environment, assembles the source and required GEM files, runs some unit tests,
+and then creates a war file.
+The build script is suitable for running a one-button build on a build server.
+The application war should be installed into the Tomcat webapps directory as ROOT.war 
+so it will run as the root application.
 
-    warble
+## Local
+The script tools/runServerBundle.sh can be used to run the current copy of StudentDashboard 
+on localhost.  It will run using a Ruby webserver on port 3000.  This does not require building
+the application. 
 
-The
-top level directory contains the Ruby configuration files required to build the
-war file.  Delivery of the application configuration files is handled separately.
+## Vagrant
+See the Rake section below for information on how to run a local vagrant VM which runs
+Dashboard in Tomcat.
 
-Depending on your setup the application will be available at a URL similar to: 
-http://localhost:8080/StudentDashboard
+# Utilities
+## tools scripts
+The tools directory contains a few useful / necessary scripts.  There are additional scripts
+available which may or may not be useful for your particular needs.
 
-Note that the urls for a server run locally with a default Ruby server
-will not require a context name but when running the war package in a container the
-URLS will require including the StudentDashboard context element.
+- tools/build.sh - Build and package the application into a war file.
 
-# Vagrant
-The vagrant directory contains configuration files to allow building
-and starting a VM to test a  build.  The control commands are
-available via the Rakefile.  Run 'rake -T' to see the available
-tasks. The README.TXT in the vagrant directory has more details.
+- tools/runServerBundle.sh - Run the local copy of the application on localhost at port 3000.
 
-#Application  Configuration and Deployment#
+## Ruby Rake
+Rake is used as an entry point for some common development tasks.  You can get a complete 
+listing of available rake targets with the command: 
 
-The application has default configuration values suitable for
-development testing but for any installation that is not simply for
-local testing two yaml configuration files should be provided.  See
-copies of those files in the application source for detailed
-information on the contents. 
-The configuration files will be read from the directory
-**/usr/local/ctools/app/ctools/tl/home** or, if a file isn't there,
-from the **server/local** directory under the current directory or, if running under Tomcat, in the expanded war file directory.
+    rake -T 
+    
+### testing
+The build script automatically runs some low level unit tests.  More tests are available
+through rake.  However these tests make more assumptions about the environment so they
+should be run only when specific development questions come up.  For various reasons these
+tests are noisier than they should be so they shouldn't be run all the time.
+### Vagrant
+There are also command to build, provision, and run a Vagrant instance to run Dashboard under tomcat.  
+This instance of Dashboard will be available at localhost:9090.
+
+#Application Configuration and Deployment
+
+The application relies on two configuration files. By default they are expected to be in  the directory
+**/usr/local/ctools/app/ctools/tl/home**.  If the file isn't there then the application 
+will check the directory  **server/local** in the war file.
+ 
+The expected configuration files are described later.
 
 The directory name used for configuration files  can be overridden by an
 environment variable.  The variable **LATTE_OPTS** will be checked and it
 is not nil then the contents will be parsed as command line options.
-Currently all command line values except for **--config_dir** will be ignored.  The value for **--config_dir** needs to be a directory - the file name expected in that directory is **studentdashboard.yml**. If it
-is required to set the environment variable then, when running from the command line, it can simply be set
-as an exported variable on the command line.  To set
-the value when running under Tomcat it needs to be set in the
+Currently all command line values except for **--config_dir** will be ignored.  
+The value for **--config_dir** needs to be a directory.
+To set environment variables  when running under Tomcat the value needs to be set in the
 setenv.sh file.  See the vagrant directory for an example of how to
 do that.
 
-The file
-**security.yml** contains the ESB connection information.  There are no appropriate defaults and it must be 
+## Configuration Files
+The file **security.yml** contains the information required to connect to data sources.  
+There are no appropriate defaults and it must be 
 configured for each installation.  Copy the file **security.yaml.TEMPLATE** and
 fill in values appropriate for your installation.  Note that the **security.yml** file 
 must have restricted read permissions.
 
 The file **studentdashboard.yml** contains values that may change from instance
 to instance but don't contain sensitive information.  The values in it 
-that are most likely to change change are the ESB application id and the
-auth settings.  The first identifies the information in the security file that
-will be used to connect to the ESB.  The auth values are for load testing
-and allow using a stub authentication service. See the sample file for details.  
-Suggested configuration files for QA, Load testing and Production deployments are included.
+that are most likely to change change are the name of the data source application id. 
+These need to match values in the security.yml file which provide the connection information
+that will be used to connect to the data sources.  
 
-
+Note while there is still some code in the application to provide stub data it will be easier 
+to simply use a mock/stub API provider such as [Mountebank](http://www.mbtest.org/) 
+when canned test data is required.
 
 #License#
 
-Copyright (c) 2014 University of Michigan
+Copyright (c) 2014, 2015, 2016  University of Michigan
 
 Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
@@ -105,5 +119,3 @@ Licensed under the Educational Community License, Version 2.0 (the "License"); y
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-#TEST
-Testing that Jenkins SCM polling works
