@@ -8,7 +8,11 @@
 set +x
 
 ## 
-RUBY_VERSION=jruby-1.7.18
+#RUBY_VERSION=jruby-1.7.18
+RUBY_VERSION=jruby-9.1.0.0
+BUNDLER_VERSION=1.10.6
+#WARBLER_VERSION=1.4.9
+WARBLER_VERSION=2.0.3
 #RUBY_VERSION=jruby-800
 
 #### utility functions
@@ -41,7 +45,7 @@ function updateRuby {
     rvm install $RUBY_VERSION
     # What happens if does not exist?
     rvm use $RUBY_VERSION
-    gem install warbler
+    gem install warbler -v "${WARBLER_VERSION}"
 
 
     bundle install >> ./ruby.$ts.bundle
@@ -90,7 +94,7 @@ function makeConfigTar {
 function makeWarFile {
     set -e
     atStep "make war file"
-    warble
+    warble _${WARBLER_VERSION}_
     mv StudentDashboard.war StudentDashboard.$ts.war
     mv *.war ./ARTIFACTS
 }
