@@ -1,0 +1,54 @@
+# See the studentdashboard.yml.TXT for details on this yaml configuration file.
+#
+# PURPOSE: default settings for running Latte on a local laptop.
+#
+################## Data source configuration
+
+# For non-disk providers specify a provider name that is defined later in this file.
+
+# Mpathways term / course information provider
+#mpathways_application_name: SD-QA
+mpathways_application_name: SD-QA-STUB
+# CTools data provider for dashboard and mneme assignment data
+ctools_http_application_name: CTQA-DIRECT
+canvas_esb_application_name: CANVAS-TL-QA
+
+############ external resources provider
+
+external_resources_valid_directories: [ image, text ]
+
+################### Application configuration
+
+invalid_query_text: Come on, ask something reasonable
+default_user: gsilver
+default_term: 2060
+authn_uniqname_override: true
+authn_wait_min: 0.01
+authn_wait_max: 0.03
+latte_admin_group: TL-Latte-admin-test
+use_log_level: DEBUG
+
+# Added explicitly so it is easy to override for testing
+#canvas_calendar_events:
+#    max_results_per_page: 10
+#    previous_days: 7
+#    next_days: 8
+
+################### String replacements
+
+CANVAS-TL-QA:
+  string-replace:
+     link: ['https://api-qa-gw.its.umich.edu', 'https://umich.test.instructure.com']
+     contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.test.instructure.com']
+
+CTQA-DIRECT:
+  string-replace:
+      link: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
+      contextUrl: ['https://ctqasearch.dsc.umich.edu', 'https://ctqa.dsc.umich.edu']
+
+CTDEV-DIRECT:
+  string-replace:
+      link: ['https://ctdevsearch.dsc.umich.edu', 'https://ctdev.dsc.umich.edu']
+      contextUrl: ['https://ctdevsearch.dsc.umich.edu', 'https://ctdev.dsc.umich.edu']
+
+### end ###
