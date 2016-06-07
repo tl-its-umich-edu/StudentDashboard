@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copy bundled artifacts to make them available to the Vagrant VM.
 # This script is run on the HOST server before building the VM.
-#set -x
+set -x
 set -e
 set -u
 
@@ -22,7 +22,8 @@ if [ ! -e $ARTIFACTS_SRC/ARTIFACTS ]; then
     exit 1;
 fi
 
-cp -rfv $ARTIFACTS_SRC/ARTIFACTS .
+# Make real copy even if ARTIFACTS is a symbolic link.
+cp -RLfv $ARTIFACTS_SRC/ARTIFACTS .
 
 # Check that a copy of security.yml will be available to the VM.
 # The user must make sure a copy is in the directory.

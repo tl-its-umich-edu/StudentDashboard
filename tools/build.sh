@@ -7,23 +7,26 @@
 
 set +x
 
+# Uncomment to have bash script line numbers printed.
+#export PS4='Line ${LINENO}: '
+
 # Get the file specifying version formation for builds.
 # Can specify name on command line or default to ../VERSIONS.sh
 # Reset these variables and so require that they are set in the version file itself.
-export RUBY_VERSION= BUNDLER_VERSION=
+export RUBY_VERSION= BUNDLER_VERSION= WARBLER_VERSION=
 
 VERSION_FILE=${1:-./VERSIONS.sh}
 
 export RUBY_VERSION
 export BUNDLER_VERSION
+export WARBLER_VERSION
 
 source $VERSION_FILE || { echo "ERROR: build version file not found: [${VERSION_FILE}]." && exit 1; }
 
 # Verify that the ruby version has a value.
 [ -n "$RUBY_VERSION" ] || { echo "ERROR: RUBY_VERSION must be set in version file." && exit 1; }
 
-echo "using RUBY_VERSION: $RUBY_VERSION BUNDLER_VERSION: $BUNDLER_VERSION"
-
+echo "using RUBY_VERSION: $RUBY_VERSION BUNDLER_VERSION: $BUNDLER_VERSION WARBLER_VERSION: ${WARBLER_VERSION}"
 #### utility functions
 
 # return a sortable timestamp as a string without a newline on the end.
@@ -42,6 +45,7 @@ function setupRVM  {
     source ~/.rvm/scripts/rvm
     # Print verification that rvm is setup
     type rvm | head -n 1
+    echo "setupRVM: RUBY_VERSION: ${RUBY_VERSION}"
 }
 
 function updateRuby {
@@ -58,7 +62,8 @@ function updateRuby {
     fi
     rvm use $RUBY_VERSION
 
-    gem install warbler
+    #    gem install warbler
+    gem install warbler -v $WARBLER_VERSION
 
     # Install a standard bundler version, install gems,
     # then document (but don't automatically update) any outdated gems.
@@ -112,9 +117,10 @@ function makeConfigTar {
 
 ## create the war file
 function makeWarFile {
-    set -e
     atStep "make war file"
-    warble
+    warble _${WARBLER_VERSION}_
+
+#    warble -v _${WARBLER_VERSION}_
     mv StudentDashboard.war StudentDashboard.$ts.war
     mv *.war ./ARTIFACTS
 }

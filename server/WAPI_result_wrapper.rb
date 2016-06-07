@@ -57,7 +57,7 @@ class WAPIResultWrapper
     begin
       return true if @value.has_key?("Meta")
     rescue
-      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid WAPI wrapper:  #{+self.to_s}"
+      logger.warn "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid WAPI wrapper:  #{self.to_s}"
     end
     nil
   end
