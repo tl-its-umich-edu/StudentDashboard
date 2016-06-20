@@ -180,11 +180,11 @@ checkRvm
 # turn on failure on error after RVM scripts
 set -e
 #Run unit tests, don't run integration tests by default.
-atStep "run unit tests"
-./tools/runTests.sh
-# ./runIntegrationTests.sh
-#rake test:local
-#rake test:resources
+atStep "SKIP: run unit tests"
+#./tools/runTests.sh
+## ./runIntegrationTests.sh
+##rake test:local
+##rake test:resources
 
 
 # Create version information file before making the war so that the build.yml

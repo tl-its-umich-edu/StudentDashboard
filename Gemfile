@@ -8,6 +8,7 @@ gem 'rest-client'
 gem 'net-ldap'
 gem 'link_header'
 gem 'rake'
+gem 'jruby-openssl', '>= 0.9.17'
 #gem 'selenium-webdriver'
 group :development do
  # gem 'unicorn'
