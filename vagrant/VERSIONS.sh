@@ -16,8 +16,8 @@ LOCAL_CONFIG_DIR=/usr/local/ctools/app/ctools/tl/home
 HOST_SECURITY_FILE=/vagrant/security.yml
 LOCAL_SECURITY_FILE=/usr/local/ctools/app/ctools/tl/home/security.yml
 
-#http://supergsego.com/apache/tomcat/tomcat-7/v7.0.69/bin/apache-tomcat-7.0.69.tar.gz
-APACHE_HOST=http://supergsego.com/apache
+#http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.69/
+APACHE_HOST=http://archive.apache.org/dist
 TOMCAT_VERSION=7
 TOMCAT_NUMBER=7.0.69
 
