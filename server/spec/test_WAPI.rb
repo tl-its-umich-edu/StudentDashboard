@@ -92,6 +92,7 @@ class TestWAPI < Minitest::Test
     ### token test
     key = "0A3JhgnyQqmp0zTo1bEy1ZjqCG8aDFKJ"
     secret = "MdMZUgWdtyCIaaVC6qkY3143qysaMDMx"
+
     ks = "#{key}:${secret}"
 
 

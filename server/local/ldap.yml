@@ -1,6 +1,9 @@
 ## Default values for anonymous access to UMich ldap.
 ## They can be overridden when a LdapCheck instance is constructed.
-host: ldap.itd.umich.edu
+#host: ldap.itd.umich.edu
+host: umod-test.mc.itd.umich.edu
+# ldap works
+#host: ldap.umich.edu
 port: 389
 search_base: ou=Groups,dc=umich,dc=edu
 cache_seconds: 300

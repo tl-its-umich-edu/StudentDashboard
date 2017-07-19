@@ -96,6 +96,16 @@ namespace :test do
     t.test_files = FileList['**/test_*resources*.rb']
     t.verbose = true
   end
+
+## integration tests, only done on request.
+  Rake::TestTask.new do |t|
+    t.libs << "test"
+    t.name = "ldap"
+    t.description = "Check ldap with local ldap.yml file"
+    t.test_files = FileList['**/test_integration_ldap_check.rb']
+    t.verbose = true
+  end
+  
 end
 
 ## end

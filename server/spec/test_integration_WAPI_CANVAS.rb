@@ -53,6 +53,8 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     @token = application['token']
     ## special uniqname is supplied for testing
     @uniqname = application['uniqname']
+    @grant_type = application['grant_type']
+    @scope = application['scope']
     #logger.debug "#{__LINE__}: la: token: #{@token} key: #{@key} secret: #{@secret}"
   end
 
@@ -79,17 +81,22 @@ class TestIntegrationWAPICANVAS < Minitest::Test
              'secret' => @secret,
              'token_server' => @token_server,
              #'token' => '!sweet',
-             'token' => @token
+             'token' => @token,
+             'grant_type' => @grant_type,
+             'scope' => @scope
     ]
 
     @w = WAPI.new(a)
   end
 
-
   ## run a request and parse result as json.  This assumes that request will work
   ## and the result is valid json.
   def run_and_get_ruby_result(url)
     r = @w.get_request url
+    logger.debug "ragrr: request status: #{r.meta_status}"
+    if (r.meta_status != 200)
+      logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: run_and_get_ruby_result: get_request: #{url}"
+    end
     result = r.result
     result_as_ruby = JSON.parse result
     result_as_ruby
@@ -110,7 +117,10 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     request_url = "/users/self"
     result_as_json = run_and_get_ruby_result(request_url)
-    assert_equal "api-esb-poweruser", result_as_json['sis_login_id'], "found tl poweruser"
+    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: result_as_json: #{result_as_json}"
+
+    #assert_equal "api-esb-poweruser", result_as_json['sis_login_id'], "found tl poweruser"
+    assert_equal 330485, result_as_json['id'], "found tl poweruser"
   end
 
   ## test for explicit self profile request
@@ -118,7 +128,8 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     request_url = "/users/self/profile"
     result_as_json = run_and_get_ruby_result(request_url)
-    assert_equal "api-esb-poweruser", result_as_json['sis_login_id'], "found tl poweruser"
+    #logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: result_as_json: #{result_as_json}"
+    assert_equal 330485, result_as_json['id'], "found tl poweruser"
   end
 
   ## test for data about another user.
@@ -129,7 +140,18 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     assert_equal "gsilver", result_as_json['sis_login_id'], "find tl gsilver"
   end
 
-  ## test for course data about a (test) student.  This uses masquerade.
+  ## test for data about another user.
+  def test_canvas_api_settable_profile
+    refute_nil @w
+    test_name = "XXXX"
+    request_url = "/users/sis_login_id:#{test_name}/profile"
+    result_as_json = run_and_get_ruby_result(request_url)
+    logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: result_as_json: #{result_as_json}"
+    assert_equal test_name, result_as_json['sis_login_id'], "find tl #{test_name}"
+  end
+
+
+  # test for course data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_courses
     refute_nil @w
     request_url = "/courses?as_user_id=sis_login_id:studenta"
@@ -137,7 +159,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     assert_operator result_as_json.length, ">=", 1, "got some classes back"
   end
 
-  ## test for activity_stream data about a (test) student.  This uses masquerade.
+  # test for activity_stream data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_activity_stream
     refute_nil @w
     request_url = "/users/activity_stream?as_user_id=sis_login_id:studenta"
@@ -145,7 +167,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     assert_operator result_as_json.length, ">=", 1, "got some activities back"
   end
 
-  ## test for data about a (test) student.  This uses masquerade.
+  # test for data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_self_activity_stream
     refute_nil @w
     ## this works with or without self in url
@@ -154,7 +176,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     assert_operator result_as_json.length, ">=", 1, "got some activities back"
   end
 
-  ## test for data about a (test) student.  This uses masquerade.
+  # test for data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_activity_stream_summary
     refute_nil @w
     ## this requires self in url
@@ -228,7 +250,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
   #   per_page = 100
   #   start_date = '2016-01-01'
   #
-  #   correct = "/users/self/calendar_events?as_user_id=sis_login_id:ralt&type=assignment&start_date=2016-01-01&per_page=100&context_codes[]=course_48961&context_codes[]=course_52008&context_codes[]=course_52010"
+  #   correct = "/users/self/calendar_events?as_user_id=sis_login_id:XXX&type=assignment&start_date=2016-01-01&per_page=100&context_codes[]=course_48961&context_codes[]=course_52008&context_codes[]=course_52010"
   #   correct_array = correct.split(/&/).sort()
   #
   #   param = {
@@ -306,16 +328,6 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     ## this requires self in url
     request_url = "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
-    result_as_json = run_and_get_ruby_result(request_url)
-    assert_operator result_as_json.length, ">=", 1, "got some upcoming events back"
-  end
-
-
-  ## test for data about a (test) student.  This uses masquerade.
-  def test_canvas_api_studenta_self_todo
-    refute_nil @w
-    ## this requires self in url
-    request_url = "/users/self/todo?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_ruby_result(request_url)
     assert_operator result_as_json.length, ">=", 1, "got some upcoming events back"
   end
