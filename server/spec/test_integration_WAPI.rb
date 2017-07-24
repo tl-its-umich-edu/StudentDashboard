@@ -45,6 +45,8 @@ class TestIntegrationWAPI < Minitest::Test
     @key = application['key']
     @secret = application['secret']
     @token = application['token']
+    @scope = application['scope']
+    @grant_type = application['grant_type']
     ## special uniqname is supplied for testing
     @uniqname = application['uniqname']
     @default_term = application['default_term']
@@ -65,13 +67,15 @@ class TestIntegrationWAPI < Minitest::Test
     #load_application 'SD-TEST-DLH'
     load_application @default_application_name
 
-    @default_term = '2020';
+    #@default_term = '2020';
 
     a = Hash['api_prefix' => @api_prefix,
              'key' => @key,
              'secret' => @secret,
              'token_server' => @token_server,
-             'token' => 'sweet!'
+             'token' => 'sweet!',
+             'grant_type' => @grant_type,
+             'scope' => @scope
     ]
 
     @w = WAPI.new(a)
@@ -110,7 +114,9 @@ class TestIntegrationWAPI < Minitest::Test
              'key' => @key,
              'secret' => @secret,
              'token_server' => @token_server,
-             'token' => @token
+             'token' => @token,
+             'grant_type' => @grant_type,
+             'scope' => @scope
     ]
 
     w = WAPI.new(a)
@@ -135,19 +141,18 @@ class TestIntegrationWAPI < Minitest::Test
   end
 
   def test_term_request_unknown_user
-    skip "Bad response from MPathways"
+    #skip "Bad response from MPathways"
     logger.info 'test_term_request_unknown_user'
 
     r = @w.get_request("/Students/FeelingGroovy/Terms")
 # check status
     httpStatus = r.meta_status
-    assert_equal 404, httpStatus, "unexpected response code"
+    assert_equal 500, httpStatus, "unexpected response code"
 
   end
 
   def test_course_request
 
-    @default_term = 2060
     r = @w.get_request("/Students/#{@uniqname}/Terms/#{@default_term}/Schedule")
     logger.info "#{__LINE__}: tcr: r "+r.inspect
 
