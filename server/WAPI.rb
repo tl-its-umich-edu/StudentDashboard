@@ -48,6 +48,8 @@ class WAPI
       raise StandardError, msg
     end
 
+    logger.debug("application: #{application}")
+    
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
@@ -58,14 +60,20 @@ class WAPI
     @scope = application['scope']
     @grant_type = application['grant_type']
     #
-    logger.error("missing value: scope") if (@scope.nil?)
-    logger.error("missing value: grant_type") if (@grant_type.nil?)
+    if (@scope.nil?)
+      logger.error("missing value: scope")
+      raise "WAPI: missing value: scope"
+    end
+    if (@grant_type.nil?)
+      logger.error("missing value: grant_type") if (@grant_type.nil?)
+      raise "WAPI: missing value: grant_type"
+    end
     #
     # ## special uniqname may be supplied for testing
     @uniqname = application['uniqname']
     #
     @renewal = WAPI.build_renewal(@key, @secret)
-    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: initialize WAPI with #{@api_prefix}")
+    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: initialized WAPI with #{@api_prefix}")
   end
 
   def self.build_renewal(key, secret)
@@ -160,7 +168,7 @@ class WAPI
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid URI: "+exp.to_s
       wrapped_response = WAPIResultWrapper.new(WAPIStatus::BAD_REQUEST, "INVALID URL", exp.to_s)
 
-    rescue Exception => exp
+    rescue StandardError => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: "+exp.inspect
       if exp.response.code == WAPIStatus::HTTP_NOT_FOUND
         wrapped_response = WAPIResultWrapper.new(WAPIStatus::HTTP_NOT_FOUND, "NOT FOUND", exp)

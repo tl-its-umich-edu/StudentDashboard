@@ -63,6 +63,8 @@ class TestDataProviderCanvasESB < MiniTest::Test
     a = Hash['api_prefix' => @api_prefix,
              'key' => @key,
              'secret' => @secret,
+             'scope' => 'nothing',
+             'grant_type' => 'tomb',
              'token_server' => @token_server,
              #'token' => '!sweet',
              'token' => @token

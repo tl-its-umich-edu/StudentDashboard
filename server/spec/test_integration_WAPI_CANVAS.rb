@@ -35,6 +35,8 @@ class TestIntegrationWAPICANVAS < Minitest::Test
   logger.debug "yml_file: #{@@yml_file}"
   @@yml = nil
   @@config = nil
+  
+  @@dummy_host="https://whitehouse.gov:"
 
   def load_yml
     @@yml = YAML::load_file(File.open(@@yml_file))
@@ -114,6 +116,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   ## get expected data for self request
   def test_canvas_api_self
+    skip("verify tl poweruser id number")
     refute_nil @w
     request_url = "/users/self"
     result_as_json = run_and_get_ruby_result(request_url)
@@ -125,6 +128,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   ## test for explicit self profile request
   def test_canvas_api_self_profile
+    skip("verify tl poweruse id number")
     refute_nil @w
     request_url = "/users/self/profile"
     result_as_json = run_and_get_ruby_result(request_url)
@@ -134,6 +138,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   ## test for data about another user.
   def test_canvas_api_gsilver_profile
+    skip("verify that have valid uniqname")
     refute_nil @w
     request_url = "/users/sis_login_id:gsilver/profile"
     result_as_json = run_and_get_ruby_result(request_url)
@@ -142,6 +147,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   ## test for data about another user.
   def test_canvas_api_settable_profile
+    skip("need valid test user")
     refute_nil @w
     test_name = "XXXX"
     request_url = "/users/sis_login_id:#{test_name}/profile"
@@ -161,6 +167,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   # test for activity_stream data about a (test) student.  This uses masquerade.
   def test_canvas_api_studenta_activity_stream
+    skip("verify student name and need for activity stream")
     refute_nil @w
     request_url = "/users/activity_stream?as_user_id=sis_login_id:studenta"
     result_as_json = run_and_get_ruby_result(request_url)
@@ -206,7 +213,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   def test_process_url_params_idempotent
     # verify that using url method from RestClient doesn't change existing url
-    request_url="/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
+    request_url=@@dummy_host+"/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
     full_request_url = RestClient::Request.new(:method => :get, :url => request_url).url
     #puts "full_request_url: [#{full_request_url}]"
     refute_nil full_request_url
@@ -215,11 +222,12 @@ class TestIntegrationWAPICANVAS < Minitest::Test
 
   def test_process_url_params_separate
     # verify that adding parameters via RestClient params header works as expected and escapes characters.
-    request_url="/users/self/upcoming_events"
+#    dummy_host="https://whitehouse.gov:"
+    request_url=@@dummy_host+"/users/self/upcoming_events"
     request_parameters = {:as_user_id => 'sis_login_id:studenta', :furballs => 'tom&jerry&bob'}
     full_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => {:params => request_parameters}).url
     refute_nil full_request_url
-    assert_equal '/users/self/upcoming_events?as_user_id=sis_login_id%3Astudenta&furballs=tom%26jerry%26bob', full_request_url
+    assert_equal @@dummy_host+'/users/self/upcoming_events?as_user_id=sis_login_id%3Astudenta&furballs=tom%26jerry%26bob', full_request_url
   end
 
   ## test for assignment data about a (test) student.  This uses masquerade.
@@ -229,7 +237,7 @@ class TestIntegrationWAPICANVAS < Minitest::Test
     refute_nil @w
     ## this requires self in url
     #request_url = "/users/self/upcoming_events?as_user_id=sis_login_id:studenta"
-    request_url = "/users/self/upcoming_events"
+    request_url = @@dummy_host+"/users/self/upcoming_events"
     request_parameters = {:params => {:as_user_id => 'sis_login_id:studenta'}}
     full_request_url = RestClient::Request.new(:method => :get, :url => request_url, :headers => request_parameters).url
     #full_request_url.gsub!(/%3A/, ':')

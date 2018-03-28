@@ -70,7 +70,19 @@ namespace :test do
   desc "available tests are: [:test:all, :test:local, :test_integration, :test_resources]"
   task :all => [:local, :integration, :resources]
 
-## default unit tests
+  ## The "current" test template is available to allow a place to specify tests
+  ## of current interest during development.  The files specified are whatever
+  ## is convenient at the moment.
+  Rake::TestTask.new do |t|
+    t.libs << "test"
+    t.name = "current"
+    t.description = "current tests of interest"
+    #    t.test_files = FileList['**/test_WAPI.rb']
+    t.test_files = FileList['**/test_WHATEVER.rb']
+    t.verbose = true
+  end
+  
+  ## default unit tests
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "local"
@@ -79,7 +91,7 @@ namespace :test do
     t.verbose = true
   end
 
-## integration tests, only done on request.
+  ## integration tests, only done on request.
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "integration"
@@ -88,7 +100,7 @@ namespace :test do
     t.verbose = true
   end
 
-## specific tests
+  ## specific tests
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "resources"
@@ -97,7 +109,7 @@ namespace :test do
     t.verbose = true
   end
 
-## integration tests, only done on request.
+  ## integration tests, only done on request.
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "ldap"

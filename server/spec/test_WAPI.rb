@@ -36,6 +36,8 @@ class TestWAPI < Minitest::Test
         'api_prefix' => @api_prefix,
         'key' => 'A',
         'secret' => 'B',
+        'scope' => 'mouthwash', 
+        'grant_type' => 'ulyssis',
         'token_server' => @token_server,
         'token' => 'sweet!'
     ]
@@ -120,12 +122,16 @@ class TestWAPI < Minitest::Test
   def test_get_request_successful_query
 
     stub_request(:get, "https://start/hey").
-        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!', 'User-Agent' => 'Ruby'}).
+        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!',
+          'Verify-Ssl'=>'true','X-Ibm-Client-Id'=>'key','Accept-Encoding'=>'gzip, deflate','Host'=>'start'
+        }).
         to_return(:status => 200, :body => '{"mystuff":"yourstuff"}', :headers => {})
 
     a = Hash['api_prefix' => "https://start",
              'key' => 'key',
              'secret' => 'secret',
+             'scope' => 'nothing',
+             'grant_type' => 'tomb',
              'token_server' => 'nowhere.edu',
              'token' => 'sweet!'
     ]
@@ -156,6 +162,8 @@ class TestWAPI < Minitest::Test
     a = Hash['api_prefix' => "https://start",
              'key' => 'key',
              'secret' => 'secret',
+             'scope' => 'nothing',
+             'grant_type' => 'tomb',
              'token_server' => 'nowhere.edu',
              'token' => 'sweet!'
     ]
@@ -181,7 +189,9 @@ class TestWAPI < Minitest::Test
     a = Hash['api_prefix' => "https://start",
              'key' => 'key',
              'secret' => 'secret',
-             'token_server' => 'nowhere.edu',
+             'scope' => 'something',
+             'grant_type' => 'wood',
+             'token_server' => 'nowhere.edu',  
              'token' => 'sweet!'
     ]
     h = WAPI.new(a);
@@ -200,12 +210,15 @@ class TestWAPI < Minitest::Test
     z='{"mystuff":"yourstuff"}'
 
     stub_request(:get, "https://start/hey").
-        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!', 'User-Agent' => 'Ruby'}).
+        with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!',
+          'Verify-Ssl'=>'true', 'X-Ibm-Client-Id'=>'key'}).
         to_return(:status => 200, :body => z, :headers => {})
 
     a = Hash['api_prefix' => "https://start",
              'key' => 'key',
              'secret' => 'secret',
+             'scope' => 'nothing',
+             'grant_type' => 'tomb',
              'token_server' => 'nowhere.edu',
              'token' => 'sweet!'
     ]
@@ -234,6 +247,8 @@ class TestWAPI < Minitest::Test
     a = Hash['api_prefix' => "https://start",
              'key' => 'key',
              'secret' => 'secret',
+             'scope' => 'nothing',
+             'grant_type' => 'tomb',
              'token_server' => 'nowhere.edu',
              'token' => 'sweet!'
     ]

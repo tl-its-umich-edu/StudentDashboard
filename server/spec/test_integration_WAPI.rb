@@ -147,7 +147,7 @@ class TestIntegrationWAPI < Minitest::Test
     r = @w.get_request("/Students/FeelingGroovy/Terms")
 # check status
     httpStatus = r.meta_status
-    assert_equal 500, httpStatus, "unexpected response code"
+    assert_equal 666, httpStatus, "unexpected response code"
 
   end
 

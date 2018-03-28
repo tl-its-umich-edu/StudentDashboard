@@ -141,8 +141,5 @@ DEPENDENCIES
   slim
   webmock (< 2)
 
-RUBY VERSION
-   ruby 2.3.0p0 (jruby 9.1.2.0)
-
 BUNDLED WITH
    1.14.3
