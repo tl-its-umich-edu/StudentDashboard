@@ -123,7 +123,8 @@ class TestWAPI < Minitest::Test
 
     stub_request(:get, "https://start/hey").
         with(:headers => {'Accept' => 'application/json', 'Authorization' => 'Bearer sweet!',
-          'Verify-Ssl'=>'true','X-Ibm-Client-Id'=>'key','Accept-Encoding'=>'gzip, deflate','Host'=>'start'
+          'Verify-Ssl'=>'true','X-Ibm-Client-Id'=>'key','Accept-Encoding'=>'gzip, deflate',
+          'Host'=>'start'
         }).
         to_return(:status => 200, :body => '{"mystuff":"yourstuff"}', :headers => {})
 
@@ -156,7 +157,8 @@ class TestWAPI < Minitest::Test
   def test_WAPI_do_request_unauthorized
 
     stub_request(:get, "https://start/hey").
-        with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 'Authorization' => 'Bearer sweet!'}).
+        with(:headers => {'Accept' => 'application/json', 'Accept-Encoding' => 'gzip, deflate', 
+          'Authorization' => 'Bearer sweet!'}).
         to_return(:status => 401, :body => "unauthorized", :headers => {})
 
     a = Hash['api_prefix' => "https://start",
@@ -165,7 +167,8 @@ class TestWAPI < Minitest::Test
              'scope' => 'nothing',
              'grant_type' => 'tomb',
              'token_server' => 'nowhere.edu',
-             'token' => 'sweet!'
+             'token' => 'sweet!',
+             'User-Agent'=> 'NONE'
     ]
     h = WAPI.new(a);
 
