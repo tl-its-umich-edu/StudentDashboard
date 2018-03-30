@@ -167,8 +167,7 @@ class TestWAPI < Minitest::Test
              'scope' => 'nothing',
              'grant_type' => 'tomb',
              'token_server' => 'nowhere.edu',
-             'token' => 'sweet!',
-             'User-Agent'=> 'NONE'
+             'token' => 'sweet!'
     ]
     h = WAPI.new(a);
 

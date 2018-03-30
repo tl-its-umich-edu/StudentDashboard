@@ -136,8 +136,8 @@ class WAPI
     begin
       response = RestClient.get url, {:Authorization => "Bearer #{@token}",
                                       'x-ibm-client-id' => @key,
-                                      :accept => :json,
-                                      :verify_ssl => true}
+                                      'accept' => :json,
+                                      'verify_ssl' => true}
 
       # If the request has more data pull out the external url to get it.
       more_url = process_link_header(response)
