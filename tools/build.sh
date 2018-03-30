@@ -47,8 +47,6 @@ function setupRVM  {
 
 function updateRuby {
 
-    set -x
-    
     atStep "updating ruby and dependencies for $RUBY_VERSION.  (The unresolved specs message is harmless.)"
     rm ./ruby.*.bundle*
     echo  "updating ruby and dependencies for $RUBY_VERSION." >| ./ruby.$ts.bundle
