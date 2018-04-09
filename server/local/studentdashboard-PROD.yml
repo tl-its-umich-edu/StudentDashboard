@@ -29,7 +29,7 @@ use_log_level: INFO
 
 CANVASTL-ADMIN-ESB-PROD:
   string-replace:
-     link: ['https://api-gw.it.umich.edu', 'https://umich.instructure.com']
+     link: ['https://apigw.it.umich.edu', 'https://umich.instructure.com']
      contextUrl: ['CANVAS_INSTANCE_PREFIX','https://umich.instructure.com']
 
 CTPROD-DIRECT:

@@ -29,5 +29,8 @@ export LANG=en_US.UTF-8
 #LATTE_OPTS="--config_dir=/Users/dlhaines/dev/GITHUB/dlh-umich.edu/FORKS/StudentDashboard/tmp" bundle exec rackup -p $PORT
 #LATTE_OPTS="--config_dir=/etc/"
 echo "LATTE_OPTS: [$LATTE_OPTS]"
+echo "running on port ${PORT}"
+
 bundle exec rackup -p $PORT
+
 #end

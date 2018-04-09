@@ -48,17 +48,32 @@ class WAPI
       raise StandardError, msg
     end
 
+    logger.debug("application: #{application}")
+    
     @token_server = application['token_server']
     @api_prefix = application['api_prefix']
     @key = application['key']
     @secret = application['secret']
     @token = application['token']
-
+    # # added for IBM Api manager
+    # # client_id and client_secret will be key and secret
+    @scope = application['scope']
+    @grant_type = application['grant_type']
+    #
+    if (@scope.nil?)
+      logger.error("missing value: scope")
+      raise "WAPI: missing value: scope"
+    end
+    if (@grant_type.nil?)
+      logger.error("missing value: grant_type") if (@grant_type.nil?)
+      raise "WAPI: missing value: grant_type"
+    end
+    #
     # ## special uniqname may be supplied for testing
     @uniqname = application['uniqname']
-
+    #
     @renewal = WAPI.build_renewal(@key, @secret)
-    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: initialize WAPI with #{@api_prefix}")
+    logger.info("#{self.class.to_s}:#{__method__}:#{__LINE__}: initialized WAPI with #{@api_prefix}")
   end
 
   def self.build_renewal(key, secret)
@@ -120,6 +135,7 @@ class WAPI
     r.start
     begin
       response = RestClient.get url, {:Authorization => "Bearer #{@token}",
+                                      'x-ibm-client-id' => @key,
                                       :accept => :json,
                                       :verify_ssl => true}
 
@@ -152,7 +168,7 @@ class WAPI
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: invalid URI: "+exp.to_s
       wrapped_response = WAPIResultWrapper.new(WAPIStatus::BAD_REQUEST, "INVALID URL", exp.to_s)
 
-    rescue Exception => exp
+    rescue StandardError => exp
       logger.debug "#{self.class.to_s}:#{__method__}:#{__LINE__}: exception: "+exp.inspect
       if exp.response.code == WAPIStatus::HTTP_NOT_FOUND
         wrapped_response = WAPIResultWrapper.new(WAPIStatus::HTTP_NOT_FOUND, "NOT FOUND", exp)
@@ -216,6 +232,11 @@ class WAPI
     # default to the restClient value
     rc = response.code
     if Hash.try_convert(j)
+      # if the whole thing in an error response then pull out the contents
+      # of the error response.
+      if j.has_key?('ErrorResponse')
+        j=j['ErrorResponse']
+      end
       # if there is a nested response code then use that.
       if j.has_key?('responseCode')
         rc = j['responseCode']
@@ -302,6 +323,7 @@ class WAPI
       end
     rescue Exception => exp
       # If got an exception for the renewal then wrap that up to be returned.
+      logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json)
       logger.warn("#{self.class.to_s}:#{__method__}:#{__LINE__}: renewal post exception: "+exp.to_json+":"+exp.http_code.to_s)
       return WAPIResultWrapper.new(exp.http_code, "EXCEPTION DURING TOKEN RENEWAL", exp)
     end
@@ -330,10 +352,10 @@ class WAPI
     msg = Thread.current.to_s
     renew = Stopwatch.new(msg)
     renew.start
+    payload = "grant_type=#{@grant_type}&scope=#{@scope}&client_id=#{@key}&client_secret=#{@secret}"
     response = RestClient.post @token_server,
-                               "grant_type=client_credentials&scope=PRODUCTION",
+                               payload,
                                {
-                                   :Authorization => @renewal,
                                    :content_type => "application/x-www-form-urlencoded"
                                }
   ensure
