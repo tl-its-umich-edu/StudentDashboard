@@ -20,7 +20,8 @@ class TestHelper < Object
   # store a global default log level that test files can
   # look up and share.
   #@@log_level = Logger::Severity::WARN
-  @@log_level  = Logger::Severity::DEBUG
+  @@log_level = Logger::Severity::INFO
+  #@@log_level  = Logger::Severity::DEBUG
 
   def self.getCommonLogLevel
     return @@log_level

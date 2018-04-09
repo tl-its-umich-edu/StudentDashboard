@@ -45,6 +45,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def test_esb_with_good_uniqname
 
+    skip("verify known_uniqnanme: #{@known_uniqname}")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -63,6 +64,8 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def test_esb_with_bad_uniqname
 
+    skip("KNOWN TO FAIL: TLPORTAL-176")
+    
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -72,7 +75,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
       @@yml = nil
     end.new
 
-    skip("KNOWN TO FAIL: TLPORTAL-176")
+
     refute_nil(m, "create provider object")
     classes = m.dataProviderESBCourse(@known_uniqname+"XXX", @default_term, @security_file, @esb_application, @default_term)
 
@@ -83,6 +86,7 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
   def test_esb_terms
 
+    skip("verify known_uniqname")
     ### create inline class and include the module under test.
     m = Class.new do
       include DataProviderESB
@@ -94,10 +98,10 @@ class TestIntegrationDataProviderESB < Minitest::Test
 
     refute_nil(m, "create provider object")
     terms = m.dataProviderESBTerms(@known_uniqname, @security_file, @esb_application)
-    assert_equal(200, terms.meta_status, 'find terms json meta status')
+    assert_equal(200, terms.meta_status, "find terms json meta status for #{@known_uniqname}")
     t = terms.result
 
-    assert(t.length > 0, "found some terms")
+    assert(t.length > 0, "found some terms for #{@known_uniqname}")
 
   end
 

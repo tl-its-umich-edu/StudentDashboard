@@ -1,9 +1,11 @@
 require 'rake/testtask'
 
-### TTD
-# - vagrant: check that build has been done?  Invoke if necessary?
+# Run non-default Student Dashboard development tasks.  Specify namespace
+# in front of the specific task.  E.g. "rake test:current".
+
 
 ######################################################
+## Is probably better to use Docker now.
 ## commands to setup and run vagrant VM with Dashboard
 desc "### Commands to setup and run Vagrant VM for Dashboard testing"
 task :vagrant
@@ -70,7 +72,24 @@ namespace :test do
   desc "available tests are: [:test:all, :test:local, :test_integration, :test_resources]"
   task :all => [:local, :integration, :resources]
 
-## default unit tests
+  ## The "current" test template is available to allow a place to
+  ## specify a specific small, variable, set of tests to run
+  ## frequently for testing specific things during development.  The
+  ## files specified are whatever is convenient at the moment.  This
+  ## will change with specific development goals so there is no point
+  ## in checking in the file specification you need at this exact
+  ## moment.
+  
+  Rake::TestTask.new do |t|
+    t.libs << "test"
+    t.name = "current"
+    t.description = "Tests of current interest.  Mostly for TTD."
+    # Specify file(s) of interest here.  See examples below for syntax.
+    t.test_files = FileList['**/test_WHATEVER.rb']
+    t.verbose = true
+  end
+  
+  ## default unit tests
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "local"
@@ -79,7 +98,7 @@ namespace :test do
     t.verbose = true
   end
 
-## integration tests, only done on request.
+  ## integration tests, only done on request.
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "integration"
@@ -88,7 +107,7 @@ namespace :test do
     t.verbose = true
   end
 
-## specific tests
+  ## specific tests
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "resources"
@@ -97,7 +116,7 @@ namespace :test do
     t.verbose = true
   end
 
-## integration tests, only done on request.
+  ## integration tests, only done on request.
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.name = "ldap"

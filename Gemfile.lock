@@ -39,7 +39,7 @@ GEM
     minitest (5.9.0)
     multi_json (1.12.1)
     nenv (0.3.0)
-    net-ldap (0.12.1)
+    net-ldap (0.16.1)
     netrc (0.11.0)
     notiffany (0.1.0)
       nenv (~> 0.1)
@@ -49,8 +49,8 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       spoon (~> 0.0)
-    rack (1.6.4)
-    rack-protection (1.5.3)
+    rack (1.6.9)
+    rack-protection (1.5.5)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -76,7 +76,7 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     ruby_dep (1.3.1)
-    rubyzip (1.2.0)
+    rubyzip (1.2.1)
     safe_yaml (1.0.4)
     selenium-webdriver (2.53.3)
       childprocess (~> 0.5)
@@ -124,24 +124,22 @@ DEPENDENCIES
   link_header
   listen
   minitest
-  net-ldap (<= 0.12.1)
+  net-ldap
   rack
-  rack-protection
+  rack-protection (~> 1.5.5)
   rack-test
   rake
   rb-fsevent
   rb-inotify
   rest-client
   rspec
+  rubyzip (~> 1.2.1)
   selenium-webdriver
   simplecov
   sinatra
   sinatra-contrib
   slim
   webmock (< 2)
-
-RUBY VERSION
-   ruby 2.3.0p0 (jruby 9.1.2.0)
 
 BUNDLED WITH
    1.14.3
