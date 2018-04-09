@@ -14,7 +14,6 @@ gem 'rack-protection', '~> 1.5.5'
 gem 'rubyzip', '~> 1.2.1'
 gem 'rest-client'
 gem 'link_header'
-#gem 'net-ldap', '<= 0.12.1'
 # update for security issue reported by github
 gem 'net-ldap'
 gem 'jruby-openssl', '>= 0.9.17'
